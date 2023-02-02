@@ -45,15 +45,18 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
-    "build:page": "NODE_ENV=development react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
     "storybook:clear-cache": "start-storybook --no-manager-cache",
     "build-storybook": "build-storybook -s public",
-    "predeploy": "npm run build:page",
-    "deploy": "gh-pages -d build"
+
+    "build": "react-scripts build",
+
+    "build:page": "NODE_ENV=development react-scripts build",
+    "predeploy:page": "npm run build:page",
+    "deploy:page": "gh-pages -d build"
+
   },
   "browserslist": {
     "production": [
