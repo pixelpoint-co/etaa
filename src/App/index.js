@@ -10,6 +10,7 @@ import styled from 'styled-components';
 
 import NotFound from '../pages/NotFound';
 import Home from '../pages/Home';
+import Inventory from '../pages/Inventory';
 import LeftMenu from '../containers/LeftMenu';
 import Header from '../containers/Header';
 import Flex from '../components/atoms/Flex';
@@ -60,6 +61,7 @@ const App = () => {
     <Wrapper>
       <Routes>
         <Route path="/" element={<Layout />}>
+          <Route index path="/inven" element={<Inventory />} />
           <Route index element={<Home />} />
           {routes.map((route) => {
             const isInternal = route.href[0] === '/';
