@@ -8,7 +8,6 @@ import { ifProp } from 'styled-tools';
 import Flex from '../../atoms/Flex';
 import ButtonRadio from '../ButtonRadio';
 import Text from '../../atoms/P';
-import DayOfWeekSelect from '../WeeklyHoursSelect';
 
 const borderColor = ({
   disabled,

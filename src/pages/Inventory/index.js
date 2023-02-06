@@ -2,52 +2,51 @@ import { useEffect } from 'react';
 import {
   Formik, Field, Form,
 } from 'formik';
+import {
+  palette, size,
+} from 'styled-theme';
+import styled from 'styled-components';
 
 import Flex from '../../components/atoms/Flex';
-import Text from '../../components/atoms/P';
-import Card from '../../components/atoms/Card';
-import Label from '../../components/atoms/Label';
 import Button from '../../components/atoms/Button';
 
 import useOrderData from '../../hooks/useOrderData';
+import OrderItemInput from '../../components/molecules/OrderItemInput';
 
+const Wrapper = styled(Flex)`
+  flex: 1;
+`;
+const StyledForm = styled(Form)`
+  display: flex; 
+  flex-direction: column;
+  flex: 1;
+`;
 const Inventory = () => {
   const {
     data,
     loading,
     error,
   } = useOrderData({ id: null });
-
+  if (data == null) return null;
   return (
-    <Flex>
+    <Wrapper>
       <Formik
         initialValues={{ checked: [] }}
         onSubmit={(values) => {
           alert(JSON.stringify(values, null, 1));
         }}
       >
-        <Form>
-          <Label>발주 물품 수령</Label>
-          <Card>
-            {/* {data.map((order) => (
-              <Text
-                key={`${order.created_at}${order.name}`}
-                role="group"
-                aria-labelledby="checkbox-group"
-              >
-                <Field
-                  type="checkbox"
-                  name="checked"
-                  value={`${order.order_id}${order.name}`}
-                />
-                주문번호: {order.order_id} / 상품명: {order.name} / 수량: {order.amount}
-              </Text>
-            ))} */}
-            <Button type="submit">Submit</Button>
-          </Card>
-        </Form>
+        <StyledForm>
+          {data.map((orderItemData) => (
+            <OrderItemInput
+              key={`${orderItemData.order_id}${orderItemData.name}`}
+              orderItem={orderItemData}
+            />
+          ))}
+          <Button type="submit">Submit</Button>
+        </StyledForm>
       </Formik>
-    </Flex>
+    </Wrapper>
   );
 };
 
