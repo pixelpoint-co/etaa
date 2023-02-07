@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { palette } from 'styled-theme';
 import { get } from 'lodash';
+import { useField } from 'formik';
 
 import Text from '../../atoms/P';
 import Flex from '../../atoms/Flex';
@@ -102,7 +104,13 @@ const OrderItemInput = ({
           </CellContainer>
         );
       })}
-      <StyledInput type="number" placeholder="수량" onChange={console.log} value={0} />
+      <StyledInput
+        {...props}
+        type="number"
+        placeholder="수량"
+        onChange={onChange}
+        value={value}
+      />
     </Wrapper>
   );
 };

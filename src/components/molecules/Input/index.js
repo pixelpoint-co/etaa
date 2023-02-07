@@ -83,7 +83,6 @@ const styles = css`
       }
     `,
   )}
-
 `;
 
 const Wrapper = styled.label`
