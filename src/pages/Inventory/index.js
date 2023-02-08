@@ -6,6 +6,9 @@ import {
 } from 'styled-theme';
 import styled from 'styled-components';
 import { cloneDeep } from 'lodash';
+import {
+  gql, useMutation,
+} from '@apollo/client';
 
 import Flex from '../../components/atoms/Flex';
 import Button from '../../components/atoms/Button';
@@ -21,8 +24,18 @@ const StyledForm = styled(Form)`
   flex-direction: column;
   flex: 1;
 `;
+
+const ADD_INVETORY = gql`
+  mutation AddInventory($inventory: InventoryInput) {
+    addInventory(inventory: $inventory) {
+      name
+    }
+  }
+`;
+
 const DummyDataField = (props) => {
   const [
+    field,
     meta,
     helpers,
   ] = useField(props);
@@ -51,19 +64,42 @@ const DummyDataField = (props) => {
     </div>
   );
 };
+
 const Inventory = () => {
   const {
     data,
     loading,
     error,
   } = useOrderData({ id: null });
+
+  const addInventoryCompleted = () => {
+    console.log(':x');
+  };
+
+  const [
+    addInventory,
+    {
+      data: inven_data,
+      loading: inven_loading,
+      error: inven_error,
+    },
+  ] = useMutation(ADD_INVETORY, { onCompleted: addInventoryCompleted });
+  console.log(inven_data);
   if (data == null) return null;
+
   return (
     <Wrapper>
       <Formik
         initialValues={{ data: cloneDeep(data) }}
-        onSubmit={(values) => {
-          alert(JSON.stringify(values, null, 1));
+        onSubmit={async (values) => {
+          try {
+            alert(JSON.stringify(values, null, 1));
+            const result = await addInventory({ variables: { inventory: { name: values.data[0].name } } });
+            console.log(result);
+          } catch (e) {
+            console.log(e);
+            throw e;
+          }
         }}
       >
         <StyledForm>
