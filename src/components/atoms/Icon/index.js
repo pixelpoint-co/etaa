@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 import { palette } from 'styled-theme';
@@ -8,20 +7,12 @@ import { ReactComponent as LoaderIcon } from './icons/loader.svg';
 import { ReactComponent as LogoIcon } from './icons/logo.svg';
 import { ReactComponent as CaretIcon } from './icons/caret.svg';
 import { ReactComponent as XIcon } from './icons/x.svg';
-import { ReactComponent as CalcIcon } from './icons/calc.svg';
-import { ReactComponent as CalendarIcon } from './icons/calendar.svg';
-import { ReactComponent as YearlyIcon } from './icons/yearly.svg';
-import { ReactComponent as HourlyIcon } from './icons/hourly.svg';
 
 const ReactIcons = {
   loader: LoaderIcon,
   logo: LogoIcon,
   caret: CaretIcon,
   x: XIcon,
-  calc: CalcIcon,
-  calendar: CalendarIcon,
-  yearly: YearlyIcon,
-  hourly: HourlyIcon,
 };
 
 const fillStyle = css`

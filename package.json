@@ -28,6 +28,7 @@
     "styled-components": "5.3.5",
     "styled-theme": "0.3.3",
     "styled-tools": "1.7.2",
+    "svgo": "3.0.2",
     "web-vitals": "2.1.4",
     "web3": "1.7.3",
     "workbox-background-sync": "6.5.4",
@@ -49,14 +50,12 @@
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
     "storybook:clear-cache": "start-storybook --no-manager-cache",
+    "svg": "svgo --folder ./src/components/atoms/Icon/icons -o ./src/components/atoms/Icon/icons-o",
     "build-storybook": "build-storybook -s public",
-
     "build": "react-scripts build",
-
     "build:page": "NODE_ENV=development react-scripts build",
     "predeploy:page": "npm run build:page",
     "deploy:page": "gh-pages -d build"
-
   },
   "browserslist": {
     "production": [
