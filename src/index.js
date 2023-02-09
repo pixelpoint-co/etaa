@@ -27,7 +27,6 @@ import theme from './theme';
 import store, { persistor } from './store';
 
 const httpLinkUri = process.env.REACT_APP_HTTPLINK_URI;
-const wsLinkUri = process.env.REACT_APP_WSLINK_URI;
 
 const httpLink = new HttpLink({
   uri: `${httpLinkUri}`,
@@ -36,20 +35,8 @@ const httpLink = new HttpLink({
   version: '0.0.1',
 });
 
-const splitLink = split(
-  ({ query }) => {
-    const definition = getMainDefinition(query);
-    return (
-      definition.kind === 'OperationDefinition'
-      && definition.operation === 'subscription'
-    );
-  },
-  // wsLink,
-  httpLink,
-);
-
 const client = new ApolloClient({
-  link: splitLink,
+  link: httpLink,
   cache: new InMemoryCache(),
 });
 

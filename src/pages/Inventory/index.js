@@ -27,9 +27,7 @@ const StyledForm = styled(Form)`
 
 const ADD_INVETORY = gql`
   mutation AddInventory($inventory: InventoryInput) {
-    addInventory(inventory: $inventory) {
-      name
-    }
+    addInventory(inventory: $inventory)
   }
 `;
 
@@ -73,33 +71,20 @@ const Inventory = () => {
   } = useOrderData({ id: null });
 
   const addInventoryCompleted = () => {
-    console.log(':x');
+    console.log('add inventory db');
   };
 
-  const [
-    addInventory,
-    {
-      data: inven_data,
-      loading: inven_loading,
-      error: inven_error,
-    },
-  ] = useMutation(ADD_INVETORY, { onCompleted: addInventoryCompleted });
-  console.log(inven_data);
+  const [addInventory] = useMutation(ADD_INVETORY, { onCompleted: addInventoryCompleted });
+
   if (data == null) return null;
 
   return (
     <Wrapper>
       <Formik
         initialValues={{ data: cloneDeep(data) }}
-        onSubmit={async (values) => {
-          try {
-            alert(JSON.stringify(values, null, 1));
-            const result = await addInventory({ variables: { inventory: { name: values.data[0].name } } });
-            console.log(result);
-          } catch (e) {
-            console.log(e);
-            throw e;
-          }
+        onSubmit={(values) => {
+          const { name } = values.data[0];
+          addInventory({ variables: { inventory: { name } } });
         }}
       >
         <StyledForm>
