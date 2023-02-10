@@ -10,14 +10,15 @@ import Text from '../../atoms/P';
 import Flex from '../../atoms/Flex';
 import Icon from '../../atoms/Icon';
 import Image from '../../atoms/Image';
+import Button from '../../atoms/Button';
 import Input from '../Input';
 
 const Wrapper = styled(Flex)`
   flex-direction: row;
-  justify-content: flex-start; 
-  padding: 10px 25px;
-  margin-left: -20px;
-  margin-right: -20px;
+  justify-content: flex-start;
+  flex: 1;
+  padding: 10px 5px;
+  width: 100%;
 `;
 const CellContainer = styled(Flex)`
   flex: 0;
@@ -34,14 +35,21 @@ const StyledInput = styled(Input)`
   line-height: 40px;
   flex: 0.5;
   min-width: 50px;
-  max-width: 100px;
+  max-width: 80px;
   align-self: center;
   justify-content: flex-end;
+  text-align: right;
 `;
+const ButtonsContainer = styled(Flex)`
+  flex: 0;
+  flex-basis: 100px;
+  align-self: center;
 
+`;
 const OrderItemInput = ({
   orderItem,
   onChange, // onChange(v) v = { g }
+  setValue,
   value, // { kg }
   ...props
 }) => {
@@ -86,6 +94,7 @@ const OrderItemInput = ({
   const defaultRenderer = (key) => {
     return (d) => String(d[key]);
   };
+  console.log(orderItem);
   return (
     <Wrapper>
       {cellKeys.map((cellKey) => {
@@ -111,6 +120,27 @@ const OrderItemInput = ({
         onChange={onChange}
         value={value}
       />
+      <ButtonsContainer>
+        <Button
+          transparent
+          palette="white"
+          onClick={() => {
+            setValue(Number(orderItem.unit_quantity));
+          }}
+        >
+          <Icon icon="check" size={36} stroke="black" fill="black" />
+        </Button>
+        <Button
+          transparent
+          palette="white"
+          onClick={() => {
+            setValue(0);
+          }}
+          style={{ marginLeft: 4 }}
+        >
+          <Icon icon="x" size={36} stroke="black" fill="black" />
+        </Button>
+      </ButtonsContainer>
     </Wrapper>
   );
 };

@@ -123,6 +123,7 @@ const Button = ({
   onClick,
   loaderStroke,
   loaderSize,
+  loading: propsLoading,
   label,
   children,
   ...props
@@ -130,7 +131,7 @@ const Button = ({
   const [
     loading,
     setLoading,
-  ] = useState(false);
+  ] = useState(propsLoading);
 
   if (props.to) {
     return <StyledLink {...props}>{label || children}</StyledLink>;
