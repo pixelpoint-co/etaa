@@ -27,12 +27,12 @@ theme.palette = {
 theme.fonts = { primary: 'Pretendard' };
 const sizes = {
   padding: {
-    default: '12px',
-    large: '36px',
+    // default: '12px',
+    // large: '36px',
   },
   margin: {
-    default: '12px',
-    large: '24px',
+    // default: '12px',
+    // large: '24px',
   },
   maxWidth: '1100px',
   mobileBreakpoint: '1024px',

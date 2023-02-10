@@ -49,7 +49,7 @@ const styles = css`
     border-color: ${({ borderColor }) => borderColor};
   `)}
   padding: 16px;
-  border-radius: 14px;
+  border-radius: 0px;
   align-items: center;
   white-space: nowrap;
   justify-content: center;

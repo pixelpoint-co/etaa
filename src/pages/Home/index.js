@@ -29,7 +29,7 @@ const HeaderContainer = styled(SectionContainer)`
 
   background-size: cover;
   background-position: center;
-  border-radius: 0px 0px 12px 12px;
+  border-radius: 0px 0px 0px 0px;
 `;
 
 const HeaderText = styled(Heading)`
@@ -100,6 +100,7 @@ const Home = ({
       <HeaderContainer>
         <HeaderText>
           ERP
+          <Button />
         </HeaderText>
       </HeaderContainer>
     </Wrapper>

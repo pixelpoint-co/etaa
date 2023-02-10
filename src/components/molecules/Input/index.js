@@ -50,7 +50,7 @@ const styles = css`
   color: ${ifProp('disabled', palette('grayscale', 0), palette('black', 0))};
   background-color: ${ifProp('disabled', palette('grayscale', 0), palette('grayscale', 2))};
   border: 2px solid ${borderColor};
-  border-radius: 12px;
+  border-radius: 0px;
   padding: 16px 20px;
   outline: none;
 

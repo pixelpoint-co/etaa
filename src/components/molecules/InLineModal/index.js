@@ -17,7 +17,7 @@ const Wrapper = styled(Flex)`
 const Container = styled(Flex)`
   justify-content: space-between;
   background-color: ${palette('black', 0)};
-  border-radius: 12px;
+  border-radius: 0px;
   flex-direction: row;
   padding: 20px;
   margin-top: 28px;
