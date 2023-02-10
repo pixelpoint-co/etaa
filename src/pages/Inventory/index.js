@@ -15,19 +15,23 @@ import Button from '../../components/atoms/Button';
 
 import useOrderData from '../../hooks/useOrderData';
 import OrderItemInput from '../../components/molecules/OrderItemInput';
+import PageAction from '../../components/molecules/PageAction';
 
 const Wrapper = styled(Flex)`
   flex: 1;
 `;
 const StyledForm = styled(Form)`
-  display: flex; 
+  display: flex;
   flex-direction: column;
   flex: 1;
 `;
 
-const ADD_INVETORY = gql`
-  mutation AddInventory($inventory: InventoryInput) {
-    addInventory(inventory: $inventory)
+const ADD_INVETORY_LIST = gql`
+  mutation AddInventoryList($inventoryList: [InventoryInput]) {
+    addInventoryList(inventoryList: $inventoryList) {
+      id,
+      name
+    }
   }
 `;
 
@@ -70,11 +74,11 @@ const Inventory = () => {
     error,
   } = useOrderData({ id: null });
 
-  const addInventoryCompleted = () => {
+  const addInventoryListCompleted = () => {
     console.log('add inventory db');
   };
 
-  const [addInventory] = useMutation(ADD_INVETORY, { onCompleted: addInventoryCompleted });
+  const [addInventoryList] = useMutation(ADD_INVETORY_LIST, { onCompleted: addInventoryListCompleted });
 
   if (data == null) return null;
 
@@ -83,8 +87,9 @@ const Inventory = () => {
       <Formik
         initialValues={{ data: cloneDeep(data) }}
         onSubmit={(values) => {
-          const { name } = values.data[0];
-          addInventory({ variables: { inventory: { name } } });
+          const { data } = values;
+          console.log(data);
+          addInventoryList({ variables: { inventoryList: data.map((v) => ({ name: v.name })) } });
         }}
       >
         <StyledForm>
@@ -92,7 +97,9 @@ const Inventory = () => {
             orderData={cloneDeep(data)}
             name="data"
           />
-          <Button type="submit">Submit</Button>
+          <PageAction actions={[]}>
+            <Button type="submit" label="저장" />
+          </PageAction>
         </StyledForm>
       </Formik>
     </Wrapper>
