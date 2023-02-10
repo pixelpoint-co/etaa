@@ -110,6 +110,7 @@ const Button = ({
   isAsync,
   onClick,
   loaderStroke,
+  loaderSize,
   label,
   children,
   ...props
@@ -153,9 +154,15 @@ const Button = ({
       onClick={parsedOnClick}
       type={type}
     >
-      {loading
-        ? <Spinner {...(loaderStroke ? { stroke: loaderStroke } : {})} />
-        : (label || children)}
+      {loading ? (
+        <Spinner
+          {...(loaderStroke ? {
+            stroke: loaderStroke,
+            fill: loaderStroke,
+            size: loaderSize || 24,
+          } : {})}
+        />
+      ) : (label || children)}
     </StyledButton>
   );
 };

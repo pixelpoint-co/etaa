@@ -18,11 +18,12 @@ const Wrapper = styled.div`
 const Spinner = ({
   loading,
   size,
+  ...others
 }) => {
   if (!loading) return null;
   return (
     <Wrapper>
-      <Icon icon="loader" height={size} width={size} animation={rotation} />
+      <Icon icon="loader" size={size} height={size} width={size} animation={rotation} {...others} />
     </Wrapper>
   );
 };
