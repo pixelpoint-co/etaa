@@ -7,12 +7,14 @@ import { ReactComponent as LoaderIcon } from './icons-o/loader.svg';
 import { ReactComponent as LogoIcon } from './icons-o/logo.svg';
 import { ReactComponent as CaretIcon } from './icons-o/caret.svg';
 import { ReactComponent as XIcon } from './icons-o/x.svg';
+import { ReactComponent as CheckIcon } from './icons-o/check.svg';
 
 const ReactIcons = {
   loader: LoaderIcon,
   logo: LogoIcon,
   caret: CaretIcon,
   x: XIcon,
+  check: CheckIcon,
 };
 
 const fillStyle = css`
@@ -92,8 +94,15 @@ const Wrapper = styled.span`
     'currentcolor',
     'white',
   )};
-  height: ${({ height }) => `${height}px`};
-  width: ${({ height }) => `${height}px`};
+
+  height: ${({
+    size,
+    height,
+  }) => `${size || height}px`};
+  width: ${({
+    size,
+    height,
+  }) => `${size || height}px`};
 
   & > svg {
     position: absolute;
@@ -133,12 +142,14 @@ const Icon = ({
 Icon.propTypes = {
   icon: PropTypes.string.isRequired,
   height: PropTypes.number,
+  size: PropTypes.number,
   hoverPalette: PropTypes.string,
   palette: PropTypes.string,
 };
 
 Icon.defaultProps = {
-  height: 1.5,
+  height: 24,
+  size: 24,
   hoverPalette: 'gray',
   palette: 'gray',
 };

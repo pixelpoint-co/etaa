@@ -11,10 +11,12 @@ import {
 import Spinner from '../Spinner';
 
 const backgroundColor = ({
+  transparent,
   disabled,
   primary,
 }) => {
   if (disabled) return palette('grayscale', 0);
+  if (transparent) return 'transparent';
   return palette('primary', 0);
 };
 
@@ -22,9 +24,7 @@ const foregroundColor = ({
   transparent,
   disabled,
 }) => {
-  if (transparent) {
-    return disabled ? palette('grayscale', 3) : palette(3);
-  }
+  if (transparent) return palette('primary', 0);
   return palette('white', 0);
 };
 
@@ -44,7 +44,7 @@ const styles = css`
   font-size: 14px;
   font-weight: 500;
   line-height: 14px;
-  border: 2px solid ${ifProp('transparent', 'currentcolor', 'transparent')};
+  // border: 2px solid ${ifProp('transparent', 'transparent', 'currentcolor')};
   ${ifProp('borderColor', css`
     border-color: ${({ borderColor }) => borderColor};
   `)}
@@ -62,12 +62,22 @@ const styles = css`
   background-color: ${backgroundColor};
   color: ${foregroundColor};
 
-  // &:hover,
-  // &:focus,
-  // &:active {
-  //   background-color: ${hoverBackgroundColor};
-  //   color: ${hoverForegroundColor};
-  // }
+  &:hover,
+  &:focus,
+  &:active {
+     ${ifProp(
+    'transparent',
+    css`
+        border: 2px solid ${foregroundColor};
+      `,
+    css`
+        border: 2px solid ${backgroundColor};
+      `,
+  )};
+
+    background-color: ${hoverBackgroundColor};
+    color: ${hoverForegroundColor};
+  }
 
   &:focus {
     outline: none;
@@ -165,7 +175,7 @@ Button.defaultProps = {
   to: null,
   href: null,
   type: 'button',
-  label: 'Button',
+  label: null,
 };
 
 export default Button;
