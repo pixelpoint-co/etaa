@@ -71,6 +71,20 @@ const styles = css`
   &:focus {
     border-color: ${palette('primary', 0)};
   }
+  ${ifProp(
+    { type: 'number' },
+    css`
+      ::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      ::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+    `,
+  )}
+
 `;
 
 const Wrapper = styled.label`
@@ -210,23 +224,6 @@ const Input = ({ ...props }) => {
     );
   }
 
-  if (type === 'dayOfWeek') {
-    return (
-      <Wrapper {...props}>
-        {label ? (
-          <LabelWrapper>
-            {label}
-            {!required && <RequiredText>(선택)</RequiredText>}
-          </LabelWrapper>
-        ) : null}
-        <DayOfWeekSelect
-          {...props}
-          onSelect={(v) => props.setMetaValue(v)}
-          selected={props.metaValue}
-        />
-      </Wrapper>
-    );
-  }
   return (
     <Wrapper {...props}>
       {label ? (

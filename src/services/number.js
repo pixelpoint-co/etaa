@@ -1,5 +1,6 @@
 import {
-  format, unformat,
+  format as formatCurr,
+  unformat as unformatCurr,
 } from 'number-currency-format';
 
 export const roundTo = (number, precision, type = 'round') => {
@@ -12,8 +13,12 @@ export const roundTo = (number, precision, type = 'round') => {
   return Math.round(number * power) / power;
 };
 
+export const unformat = (str) => {
+  return Number(String(str).split(',').join(''));
+};
+
 export const formatNumber = (v, opts = {}) => {
-  return format(v, {
+  return formatCurr(v, {
     spacing: false,
     decimalsDigits: 0,
     showDecimals: 'NEVER',
@@ -21,7 +26,7 @@ export const formatNumber = (v, opts = {}) => {
   });
 };
 export const formatCurrency = (v, opts = {}) => {
-  return format(v, {
+  return formatCurr(v, {
     currency: '원',
     currencyPosition: 'RIGHT',
     spacing: false,
@@ -33,7 +38,7 @@ export const formatCurrency = (v, opts = {}) => {
 
 export const roundCurrency = (v = 0, others = {}, roundType = 'up', precision = 2) => {
   const rounded = roundTo(v, precision, roundType);
-  return unformat(format(rounded, {
+  return unformat(formatCurr(rounded, {
     decimalsDigits: 0,
     ...others,
   }));
