@@ -5,15 +5,15 @@ const { flatten } = objectUtils;
 const theme = {};
 
 theme.palette = {
-  primary: ['#AE21FF'],
-  secondary: ['#B2F505'],
+  primary: ['#4B5563'],
+  secondary: ['#94ADCF'],
   white: [
     '#fff',
     '#f6f9fc',
   ],
   black: ['#000000'],
   grayscale: [
-    '#797979',
+    '#6D7888',
     '#CCCCCC',
     '#FAFAFB',
     '#E6E5EA',
