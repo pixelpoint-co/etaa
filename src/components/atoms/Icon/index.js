@@ -3,10 +3,10 @@ import styled, { css } from 'styled-components';
 import { palette } from 'styled-theme';
 import { ifProp } from 'styled-tools';
 
-import { ReactComponent as LoaderIcon } from './icons/loader.svg';
-import { ReactComponent as LogoIcon } from './icons/logo.svg';
-import { ReactComponent as CaretIcon } from './icons/caret.svg';
-import { ReactComponent as XIcon } from './icons/x.svg';
+import { ReactComponent as LoaderIcon } from './icons-o/loader.svg';
+import { ReactComponent as LogoIcon } from './icons-o/logo.svg';
+import { ReactComponent as CaretIcon } from './icons-o/caret.svg';
+import { ReactComponent as XIcon } from './icons-o/x.svg';
 
 const ReactIcons = {
   loader: LoaderIcon,
