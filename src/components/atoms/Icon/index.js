@@ -101,8 +101,9 @@ const Wrapper = styled.span`
   }) => `${size || height}px`};
   width: ${({
     size,
+    width,
     height,
-  }) => `${size || height}px`};
+  }) => `${size || width || height}px`};
 
   & > svg {
     position: absolute;
@@ -142,6 +143,7 @@ const Icon = ({
 Icon.propTypes = {
   icon: PropTypes.string.isRequired,
   height: PropTypes.number,
+  width: PropTypes.number,
   size: PropTypes.number,
   hoverPalette: PropTypes.string,
   palette: PropTypes.string,
@@ -149,7 +151,8 @@ Icon.propTypes = {
 
 Icon.defaultProps = {
   height: 24,
-  size: 24,
+  width: 24,
+  size: null,
   hoverPalette: 'gray',
   palette: 'gray',
 };

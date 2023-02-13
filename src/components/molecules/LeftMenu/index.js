@@ -5,6 +5,7 @@ import { palette } from 'styled-theme';
 import { ifProp } from 'styled-tools';
 
 import Link from '../../atoms/Link';
+import Icon from '../../atoms/Icon';
 
 const Wrapper = styled.div`
   position: fixed;
@@ -71,7 +72,7 @@ const LeftMenu = ({
 }) => (
   <Wrapper width={width}>
     <LogoWrapper to="/">
-      <div>logo</div>
+      <Icon icon="logo" width={80} height={40} />
     </LogoWrapper>
     <MenuWrapper onClick={() => { onClose(); }}>
       <ul>
