@@ -55,7 +55,7 @@ const MenuLink = styled(Link)`
   padding: 25px 35px;
   border-left: 4px solid transparent;
 
-  &.current-link,
+  &.active,
   &:hover,
   &:focus {
     color: ${palette('black', 0)};;
@@ -80,12 +80,6 @@ const LeftMenu = ({
           <li key={link.href}>
             <MenuLink
               to={link.href}
-              className={(navData) => {
-                if (navData.isActive) {
-                  return 'current-link';
-                }
-                return null;
-              }}
               label={link.label}
             >
               {startCase(link.label)}

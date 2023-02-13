@@ -59,7 +59,7 @@ body.no-scroll {
     text-transform: capitalize;
     a {
       padding: 10px 0;
-      &.current-link {
+      &.active {
         color: #8C64A0;
       }
     }
