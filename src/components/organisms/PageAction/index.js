@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import startCase from 'lodash/startCase';
-import { palette } from 'styled-theme';
 import { ifProp } from 'styled-tools';
+import {
+  palette, size,
+} from 'styled-theme';
 
 import Button from '../../atoms/Button';
 import Flex from '../../atoms/Flex';
@@ -14,6 +16,9 @@ const Wrapper = styled(Flex)`
   right: 15px;
   flex-direction: column;
   background-color: transparent;
+  @media (min-width: ${size('mobileBreakpoint')}) {
+    left: calc(250px + 15px);
+  }
 `;
 
 const PageAction = ({

@@ -13,6 +13,7 @@ import Button from '../../components/atoms/Button';
 import propTypes from '../../propTypes';
 import Heading from '../../components/atoms/Heading';
 import IconCard from '../../components/molecules/IconCard';
+import PageAction from '../../components/organisms/PageAction/index';
 
 const Wrapper = styled(Flex)`
   flex: 1;
@@ -101,6 +102,7 @@ const Home = ({
         <HeaderText>
           ERP
           <Button />
+          <PageAction actions={[{ label: 'page action' }]} />
         </HeaderText>
       </HeaderContainer>
     </Wrapper>
