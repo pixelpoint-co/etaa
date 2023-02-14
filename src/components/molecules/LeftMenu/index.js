@@ -79,7 +79,7 @@ const LeftMenu = ({
         {links.map((link) => (
           <li key={link.href}>
             <MenuLink
-              to={link.href}
+              to={link.href.replace('/*', '')}
               label={link.label}
             >
               {startCase(link.label)}

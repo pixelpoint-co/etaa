@@ -15,7 +15,18 @@ import LeftMenu from '../containers/LeftMenu';
 import Header from '../containers/Header';
 import Flex from '../components/atoms/Flex';
 
-const routes = [
+const routes = [{
+  label: '자재관리',
+  href: '/inventory/*',
+  element: <Inventory />,
+  rootRoute: true,
+},
+  // {
+  //   label: '자재관리',
+  //   href: '/inventory/:id',
+  //   element: <Inventory />,
+  //   rootRoute: true,
+  // },
 ];
 
 const Wrapper = styled(Flex)`
@@ -45,7 +56,7 @@ const PageWrapper = styled.div`
 const Layout = () => {
   return (
     <Wrapper>
-      <LeftMenu links={routes} />
+      <LeftMenu links={routes.filter((v) => v.rootRoute)} />
       <PageWrapper>
         <Header />
 
@@ -61,7 +72,6 @@ const App = () => {
     <Wrapper>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index path="/inven" element={<Inventory />} />
           <Route index element={<Home />} />
           {routes.map((route) => {
             const isInternal = route.href[0] === '/';
