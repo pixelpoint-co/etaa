@@ -6,6 +6,7 @@ import {
   palette, size,
 } from 'styled-theme';
 import styled from 'styled-components';
+
 import moment from 'moment';
 import _, {
   cloneDeep,
@@ -29,6 +30,10 @@ import {
 
 const Wrapper = styled(Flex)`
   flex: 1;
+  @media (max-width: ${size('mobileBreakpoint')}) {
+    overflow-x: auto;
+    max-width: 100%;
+  }
 `;
 const StyledForm = styled(Form)`
   display: flex;

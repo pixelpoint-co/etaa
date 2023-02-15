@@ -2,7 +2,10 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { palette } from 'styled-theme';
+import {
+  palette, size,
+} from 'styled-theme';
+
 import { get } from 'lodash';
 import { useField } from 'formik';
 
@@ -13,7 +16,8 @@ import Image from '../../atoms/Image';
 import Button from '../../atoms/Button';
 import Input from '../Input';
 
-const Wrapper = styled(Flex)`
+const Wrapper = styled.label`
+  display: flex;
   flex-direction: row;
   justify-content: flex-start;
   flex: 1;
@@ -25,27 +29,44 @@ const CellContainer = styled(Flex)`
   margin-left: 20px;
   margin-right: 20px;
   align-items: center;
-`;
+  @media (max-width: ${size('mobileBreakpoint')}) {
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+  `;
 const StyledText = styled(Text)`
   font-size: 32px;
-  line-height: 40px;
+  line-height: 30px;
+  @media (max-width: ${size('mobileBreakpoint')}) {
+    font-size: 18px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 `;
 const StyledInput = styled(Input)`
   font-size: 32px;
   line-height: 40px;
   flex: 0.5;
-  min-width: 50px;
-  max-width: 80px;
+  min-width: 80px;
+  max-width: 120px;
   align-self: center;
   justify-content: flex-end;
   text-align: right;
+  @media (max-width: ${size('mobileBreakpoint')}) {
+    font-size: 18px;
+    line-height: 24px;
+  }
 `;
 const ButtonsContainer = styled(Flex)`
   flex: 0;
   flex-basis: 100px;
   align-self: center;
-
 `;
+
+const isMobile = window.innerWidth <= 1024;
+
 const OrderItemInput = ({
   orderItem,
   onChange, // onChange(v) v = { g }
@@ -65,29 +86,29 @@ const OrderItemInput = ({
   const cellKeys = [
     {
       key: 'order_id',
-      cellStyle: {
-        flexBasis: '120px',
-        flexWrap: 'nowrap',
-        whiteSpace: 'nowrap',
-      },
+      cellStyle: { flexBasis: '80px' },
+      cellTextStyle: { whiteSpace: 'nowrap' },
     },
     {
       key: 'name',
       cellStyle: {
-        flexBasis: '300px',
+        flexBasis: '240px',
         flex: 1,
+        minWidth: 180,
       },
     },
     {
       key: 'item_unit',
-      cellStyle: { flexBasis: '120px' },
+      cellStyle: { flexBasis: '80px' },
+      cellTextStyle: { whiteSpace: 'nowrap' },
       renderer: (data) => {
         return `${data.unit_amount}${unit}`; // 1.5kg
       },
     },
     {
       key: 'unit_quantity',
-      cellStyle: { flexBasis: '50px' },
+      cellStyle: { flexBasis: '60px' },
+      cellTextStyle: { whiteSpace: 'nowrap' },
     },
   ];
 
@@ -98,7 +119,10 @@ const OrderItemInput = ({
   return (
     <Wrapper>
       {cellKeys.map((cellKey) => {
-        const { cellStyle: style = {} } = cellKey;
+        const {
+          cellStyle = {},
+          cellTextStyle = {},
+        } = cellKey;
         const key = typeof cellKey === 'string' ? cellKey : get(cellKey, 'key');
         const renderer = typeof cellKey.renderer === 'function' ? cellKey.renderer : defaultRenderer(key);
 
@@ -106,8 +130,8 @@ const OrderItemInput = ({
           ? orderItem[key]
           : renderer(orderItem);
         return (
-          <CellContainer key={key} style={style}>
-            <StyledText>
+          <CellContainer key={key} style={cellStyle}>
+            <StyledText style={cellTextStyle}>
               {cellLabel}
             </StyledText>
           </CellContainer>
@@ -128,7 +152,7 @@ const OrderItemInput = ({
             setValue(Number(orderItem.unit_quantity));
           }}
         >
-          <Icon icon="check" size={36} stroke="black" fill="black" />
+          <Icon icon="check" size={isMobile ? 24 : 36} stroke="black" fill="black" />
         </Button>
         <Button
           transparent
@@ -138,7 +162,7 @@ const OrderItemInput = ({
           }}
           style={{ marginLeft: 4 }}
         >
-          <Icon icon="x" size={36} stroke="black" fill="black" />
+          <Icon icon="x" size={isMobile ? 24 : 36} stroke="black" fill="black" />
         </Button>
       </ButtonsContainer>
     </Wrapper>

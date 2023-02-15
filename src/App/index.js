@@ -58,7 +58,7 @@ const Layout = () => {
     <Wrapper>
       <LeftMenu links={routes.filter((v) => v.rootRoute)} />
       <PageWrapper>
-        <Header />
+        <Header title="ERP" />
 
         <Outlet />
 

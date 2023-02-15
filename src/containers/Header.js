@@ -14,11 +14,12 @@ import moment from 'moment';
 import get from 'lodash/get';
 import Icon from '../components/atoms/Icon';
 import Text from '../components/atoms/P';
-import Button from '../components/atoms/Button';
 import { selectUser } from '../store/authentication/selectors';
 import action from '../store/leftMenu/actions';
 import RightMenuContainerComp from '../components/molecules/RightMenuContainer';
 import Flex from '../components/atoms/Flex';
+
+import { defaultStyle as buttonDefaultStyle } from '../components/atoms/Button';
 
 const { open } = action;
 
@@ -76,14 +77,16 @@ const LeftMenuButtonContainer = styled(Flex)`
     flex-direction: row;
     color: white;
     width: 20%;
+    flex: 1;
   }
 `;
 
-const LeftMenuButton = styled(Flex)`
-  flex: 0;
-  min-width: 28px;
+const LeftMenuButton = styled.button`
+  ${buttonDefaultStyle};
   height: 28px;
-  justify-content: center;
+  min-width: 40px;
+  max-width: 120px;
+  justify-content: flex-start;
   align-items: center;
 `;
 
@@ -117,11 +120,11 @@ const Header = ({
     <HeaderContainer>
       <LeftMenuButtonContainer>
         <LeftMenuButton onClick={() => open()} tabIndex="0">
-          <Icon icon="logo" classnames="filled" height={20} />
+          <Icon icon="logo" classnames="filled" height={28} width={60} />
         </LeftMenuButton>
-        <LogoTextContainer>
+        {/* <LogoTextContainer>
           <LogoText>erp</LogoText>
-        </LogoTextContainer>
+        </LogoTextContainer> */}
       </LeftMenuButtonContainer>
       <StyledHeading>
         { icon && <StyledIcon icon={icon} />}
