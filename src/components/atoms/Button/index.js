@@ -10,6 +10,8 @@ import {
 } from 'styled-tools';
 import Spinner from '../Spinner';
 
+import defaultStyle, { unsetStyle } from './style';
+
 const backgroundColor = ({
   transparent,
   disabled,
@@ -38,13 +40,14 @@ const hoverForegroundColor = ({
 }) => !disabled && transparent && palette(0);
 
 const styles = css`
-  display: block;
+  ${defaultStyle};
+  display: flex;
   text-align: center;
   font-family: ${font('secondary')};
+  box-sizing: border-box;
   font-size: 14px;
   font-weight: 500;
   line-height: 14px;
-  // border: 2px solid ${ifProp('transparent', 'transparent', 'currentcolor')};
   ${ifProp('borderColor', css`
     border-color: ${({ borderColor }) => borderColor};
   `)}
@@ -53,14 +56,13 @@ const styles = css`
   align-items: center;
   white-space: nowrap;
   justify-content: center;
-  text-decoration: none;
   cursor: ${ifProp('disabled', 'no-drop', 'pointer')};
-  appearance: none;
-  box-sizing: border-box;
   pointer-events: ${ifProp('disabled', 'none', 'auto')};
   transition: all 0.15s ease;
-  background-color: ${backgroundColor};
+
   color: ${foregroundColor};
+  border: 2px solid ${foregroundColor};
+  background-color: ${backgroundColor};
 
   &:hover,
   &:focus,
@@ -77,10 +79,6 @@ const styles = css`
 
     background-color: ${hoverBackgroundColor};
     color: ${hoverForegroundColor};
-  }
-
-  &:focus {
-    outline: none;
   }
 `;
 
@@ -186,3 +184,7 @@ Button.defaultProps = {
 };
 
 export default Button;
+export {
+  defaultStyle,
+  unsetStyle,
+};
