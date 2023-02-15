@@ -8,7 +8,9 @@ import {
 import styled from 'styled-components';
 import moment from 'moment';
 import _, {
-  cloneDeep, lowerCase,
+  cloneDeep,
+  lowerCase,
+  get,
 } from 'lodash';
 import {
   gql, useMutation,
@@ -49,14 +51,14 @@ const DummyDataField = (props) => {
     meta,
     helpers,
   ] = useField(props);
-  const { orderData } = props;
+  const { purchaseList } = props;
   const { value } = meta;
   const onChange = helpers.setValue;
-  console.log('orderData: ', orderData);
+  console.log('purchaseList: ', purchaseList);
   console.log('value: ', value);
   return (
     <div>
-      {(orderData || []).map((orderItemData, i) => (
+      {(purchaseList || []).map((orderItemData, i) => (
         <OrderItemInput
           key={`${orderItemData.order_id}${orderItemData.name}`}
           {...props}
@@ -108,19 +110,22 @@ const convertUnit = (amount, unit, quantity) => {
   return unformat(amount) * multiplier * unformat(quantity);
 };
 
-const today = moment().toISOString();
+const today = moment().add(9, 'hours').toISOString(); // TODO waiter db.Timestamp에 따라 수동으로 UTC기준으로 전환
 
 const Inventory = () => {
   const {
-    pId,
-    data,
+    purchaseData: data,
     loading,
     error,
   } = usePurchaseData({
     id: null,
     created: today,
+    type: 'single',
   });
-
+  const {
+    id,
+    detail: purchaseItemList,
+  } = data;
   const addInventoryListCompleted = () => {
     console.log('add inventory db');
   };
@@ -129,25 +134,26 @@ const Inventory = () => {
     ADD_INVETORY_LIST,
     { onCompleted: addInventoryListCompleted },
   );
-
+  console.log('loading: ', loading);
+  console.log('data: ', data);
   if (data == null) return null;
   if (loading) return null;
-  console.log('data: ', data);
-  console.log('pId: ', pId);
 
   return (
     <Wrapper>
       <Formik
-        initialValues={{ data: cloneDeep(data) }}
+        initialValues={{
+          purchaseItemList: cloneDeep(purchaseItemList),
+          inventoryList: cloneDeep(purchaseItemList),
+        }}
         onSubmit={(values) => {
-          const { data } = values;
-          const inventoryList = data.map((v) => {
+          const { inventoryList } = values;
+          const formattedInventoryList = inventoryList.map((v) => {
             const gramAmount = convertUnit(v.unit_amount, v.unit, v.unit_quantity);
             return {
-              purchaseId: pId,
+              purchaseId: id,
               id: v.id,
               name: v.name,
-              orderHeroOrderId: v.order_id,
               unitQuantity: gramAmount,
               // unitWeight: 'g',
               unitPrice: roundTo(
@@ -157,17 +163,19 @@ const Inventory = () => {
             };
           });
           console.log(inventoryList);
-          addInventoryList({ variables: { inventoryList } });
+          console.log(formattedInventoryList);
+          addInventoryList({ variables: { inventoryList: formattedInventoryList } });
         }}
       >
         <StyledForm>
           <DummyDataField
-            orderData={cloneDeep(data)}
-            name="data"
+            purchaseList={cloneDeep(purchaseItemList)}
+            name="inventoryList"
           />
           <PageAction actions={[]}>
             <Button type="submit" label="저장" loaderStroke="white" loaderSize={32} />
           </PageAction>
+          <div style={{ padding: `${50 + 15 + 15}px 0px` }} />
         </StyledForm>
       </Formik>
     </Wrapper>

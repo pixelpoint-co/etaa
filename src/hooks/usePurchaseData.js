@@ -40,8 +40,10 @@ const FETCH_PURCHASE_LIST = gql`
 
 export default (options = {}) => {
   const {
+    type = 'many',
     id: rawId = 'latest',
     created,
+    startDate,
   } = options;
   const [
     loading,
@@ -56,38 +58,26 @@ export default (options = {}) => {
     setError,
   ] = useState(null);
 
-  // const fetchPurchase = useCallback(async ({ id, created }) => {
+  const query = type === 'many'
+    ? [
+      FETCH_PURCHASE_LIST,
+      { variables: { startDate: startDate || '2023-02-10' } },
+    ]
+    : [
+      FETCH_PURCHASE,
+      { variables: { created: created || '2023-02-10' } },
+    ];
+
   const {
     loading: qLoading,
     error: qError,
     data: qData,
-  } = useQuery(FETCH_PURCHASE, {
-    variables: {
-      // id: 123,
-      // startDate: '2023-02-10',
-      created: '2023-02-10',
-    },
-  });
+  } = useQuery(...query);
   console.log('qData: ', qData);
-  const purchaseData = _.get(qData, [
-    'fetchPurchase',
-    'purchase',
-    'detail',
-  ], []);
-  const inventoryData = _.get(qData, [
-    'fetchPurchase',
-    'inventoryList',
-    'detail',
-  ], []);
+  const purchaseData = _.get(qData, ['purchase'], []);
+  const purchaseListData = _.get(qData, ['purchaseList'], []);
   // }, [])
   const id = rawId === 'latest' ? moment().format('YYYY-MM-DDD') : rawId;
-  console.log('purchaseData: ', purchaseData);
-  // const getPurchaseData = useCallback(async () => {
-  //   await waitMs(1000);
-  //   setData(defaultData);
-  //   setLoading(false);
-  //   setError(null);
-  // }, []);
 
   // useEffect(() => {
   //   getPurchaseData(id);
@@ -98,15 +88,14 @@ export default (options = {}) => {
   // useEffect(() => {
   //   getPurchaseData(id);
   // }, []);
-  console.log();
   return {
     pId: _.get(qData, [
       'fetchPurchase',
       'purchase',
       'id',
     ], null),
-    data: purchaseData,
-    inventoryData,
+    purchaseData,
+    purchaseListData,
     loading: qLoading,
     error: qError,
   };

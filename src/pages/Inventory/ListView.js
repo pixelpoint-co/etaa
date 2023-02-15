@@ -19,7 +19,8 @@ import Button from '../../components/atoms/Button';
 
 import usePurchaseData from '../../hooks/usePurchaseData';
 import OrderItemInput from '../../components/molecules/OrderItemInput';
-import AntDTable from '../../components/organisms/AntDTable';
+import PurchaseRow from '../../components/molecules/PurchaseRow';
+import AntDList from '../../components/organisms/AntDList';
 
 import {
   unformat, roundTo,
@@ -113,7 +114,7 @@ const today = moment().toISOString();
 const Inventory = () => {
   const {
     pId,
-    data,
+    purchaseListData: data,
     loading,
     error,
   } = usePurchaseData({
@@ -137,7 +138,10 @@ const Inventory = () => {
 
   return (
     <Wrapper>
-      <AntDTable />
+      <AntDList
+        data={data}
+        RowComponent={PurchaseRow}
+      />
     </Wrapper>
   );
 };
