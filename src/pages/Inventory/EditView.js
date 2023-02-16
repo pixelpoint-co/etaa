@@ -117,7 +117,7 @@ const convertUnit = (amount, unit, quantity) => {
   return unformat(amount) * multiplier * unformat(quantity);
 };
 
-const today = moment().subtract(1, 'day').toISOString(); // TODO waiter db.Timestamp에 따라 수동으로 UTC기준으로 전환
+const today = moment().toISOString(); // TODO waiter db.Timestamp에 따라 수동으로 UTC기준으로 전환
 
 const Inventory = () => {
   const {
@@ -137,6 +137,7 @@ const Inventory = () => {
   const addInventoryListCompleted = () => {
     console.log('add inventory db');
   };
+  const parsedPurchaseItemList = typeof purchaseItemList === 'string' ? JSON.parse(purchaseItemList) : purchaseItemList;
 
   const [addInventoryList] = useMutation(
     ADD_INVETORY_LIST,
@@ -147,7 +148,7 @@ const Inventory = () => {
   if (data == null) return null;
   if (loading) return null;
   console.log(inventoryList);
-  const formattedPurchaseItemList = purchaseItemList.map((item) => {
+  const formattedPurchaseItemList = parsedPurchaseItemList.map((item) => {
     const [foundInventory] = inventoryList
       .filter((inventoryItem) => inventoryItem.name === item.name);
 
@@ -163,8 +164,8 @@ const Inventory = () => {
     <Wrapper>
       <Formik
         initialValues={{
-          purchaseItemList: formattedPurchaseItemList,
-          inventoryList: cloneDeep(purchaseItemList),
+          parsedPurchaseItemList: formattedPurchaseItemList,
+          inventoryList: cloneDeep(parsedPurchaseItemList),
         }}
         onSubmit={(values) => {
           const { inventoryList } = values;
@@ -184,12 +185,12 @@ const Inventory = () => {
           });
           console.log(inventoryList);
           console.log(formattedInventoryList);
-          // addInventoryList({ variables: { inventoryList: formattedInventoryList } });
+          addInventoryList({ variables: { inventoryList: formattedInventoryList } });
         }}
       >
         <StyledForm>
           <DummyDataField
-            purchaseList={cloneDeep(purchaseItemList)}
+            purchaseList={cloneDeep(parsedPurchaseItemList)}
             name="inventoryList"
           />
           <PageAction actions={[]}>
