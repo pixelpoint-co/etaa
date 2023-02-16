@@ -32,13 +32,13 @@ const Wrapper = styled(Flex)`
   flex: 1;
   @media (max-width: ${size('mobileBreakpoint')}) {
     overflow-x: auto;
-    max-width: 100%;
   }
 `;
 const StyledForm = styled(Form)`
   display: flex;
-  flex-direction: column;
   flex: 1;
+  max-width: 100%;
+  flex-direction: column;
 `;
 
 const ADD_INVETORY_LIST = gql`
@@ -49,7 +49,9 @@ const ADD_INVETORY_LIST = gql`
     }
   }
 `;
-
+const DDContainer = styled(Flex)`
+  flex-direction: column;
+`;
 const DummyDataField = (props) => {
   const [
     field,
@@ -62,7 +64,7 @@ const DummyDataField = (props) => {
   console.log('purchaseList: ', purchaseList);
   console.log('value: ', value);
   return (
-    <div>
+    <DDContainer>
       {(purchaseList || []).map((orderItemData, i) => (
         <OrderItemInput
           key={`${orderItemData.order_id}${orderItemData.name}`}
@@ -89,7 +91,7 @@ const DummyDataField = (props) => {
           ])}
         />
       ))}
-    </div>
+    </DDContainer>
   );
 };
 
@@ -115,7 +117,7 @@ const convertUnit = (amount, unit, quantity) => {
   return unformat(amount) * multiplier * unformat(quantity);
 };
 
-const today = moment().add(9, 'hours').toISOString(); // TODO waiter db.Timestamp에 따라 수동으로 UTC기준으로 전환
+const today = moment().subtract(1, 'day').toISOString(); // TODO waiter db.Timestamp에 따라 수동으로 UTC기준으로 전환
 
 const Inventory = () => {
   const {
@@ -130,6 +132,7 @@ const Inventory = () => {
   const {
     id,
     detail: purchaseItemList,
+    inventory: inventoryList,
   } = data;
   const addInventoryListCompleted = () => {
     console.log('add inventory db');
@@ -143,12 +146,24 @@ const Inventory = () => {
   console.log('data: ', data);
   if (data == null) return null;
   if (loading) return null;
+  console.log(inventoryList);
+  const formattedPurchaseItemList = purchaseItemList.map((item) => {
+    const [foundInventory] = inventoryList
+      .filter((inventoryItem) => inventoryItem.name === item.name);
+
+    if (!foundInventory) return item;
+
+    return {
+      ...item,
+      id: foundInventory.id,
+    };
+  });
 
   return (
     <Wrapper>
       <Formik
         initialValues={{
-          purchaseItemList: cloneDeep(purchaseItemList),
+          purchaseItemList: formattedPurchaseItemList,
           inventoryList: cloneDeep(purchaseItemList),
         }}
         onSubmit={(values) => {
@@ -169,7 +184,7 @@ const Inventory = () => {
           });
           console.log(inventoryList);
           console.log(formattedInventoryList);
-          addInventoryList({ variables: { inventoryList: formattedInventoryList } });
+          // addInventoryList({ variables: { inventoryList: formattedInventoryList } });
         }}
       >
         <StyledForm>
@@ -180,7 +195,7 @@ const Inventory = () => {
           <PageAction actions={[]}>
             <Button type="submit" label="저장" loaderStroke="white" loaderSize={32} />
           </PageAction>
-          <div style={{ padding: `${50 + 15 + 15}px 0px` }} />
+          <div style={{ padding: `${(50 + 15 + 15) / 2}px 0px` }} />
         </StyledForm>
       </Formik>
     </Wrapper>

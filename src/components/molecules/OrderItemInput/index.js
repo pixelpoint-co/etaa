@@ -21,24 +21,25 @@ const Wrapper = styled.label`
   flex-direction: row;
   justify-content: flex-start;
   flex: 1;
-  padding: 10px 5px;
-  width: 100%;
+  padding: 10px 15px;
 `;
 const CellContainer = styled(Flex)`
-  flex: 0;
+  flex: 1;
   margin-left: 20px;
   margin-right: 20px;
   align-items: center;
   @media (max-width: ${size('mobileBreakpoint')}) {
     margin-left: 8px;
     margin-right: 8px;
+    min-width: 200px;
   }
-  `;
+`;
 const StyledText = styled(Text)`
   font-size: 32px;
-  line-height: 30px;
+  line-height: 38px;
   @media (max-width: ${size('mobileBreakpoint')}) {
     font-size: 18px;
+    line-height: 24px;
 
     overflow: hidden;
     text-overflow: ellipsis;
@@ -46,17 +47,31 @@ const StyledText = styled(Text)`
   }
 `;
 const StyledInput = styled(Input)`
+  flex: 0;
+  justify-content: flex-end;
+  align-self: center;
+
   font-size: 32px;
   line-height: 40px;
-  flex: 0.5;
-  min-width: 80px;
-  max-width: 120px;
-  align-self: center;
-  justify-content: flex-end;
+
   text-align: right;
+
+  margin-left: 20px;
+  margin-right: 20px;
+
+
+  min-width: 80px;
+
   @media (max-width: ${size('mobileBreakpoint')}) {
+    margin-left: 8px;
+    margin-right: 8px;
+    min-width: 60px;
+
     font-size: 18px;
     line-height: 24px;
+    & > input {
+      padding: 16px 12px;
+    }
   }
 `;
 const ButtonsContainer = styled(Flex)`
@@ -86,20 +101,28 @@ const OrderItemInput = ({
   const cellKeys = [
     {
       key: 'order_id',
-      cellStyle: { flexBasis: '80px' },
+      cellStyle: {
+        flexBasis: '120px',
+        minWidth: '120px',
+        flex: 0,
+      },
       cellTextStyle: { whiteSpace: 'nowrap' },
     },
     {
       key: 'name',
       cellStyle: {
-        flexBasis: '240px',
         flex: 1,
-        minWidth: 180,
+        flexShrink: 1,
       },
     },
     {
       key: 'item_unit',
-      cellStyle: { flexBasis: '80px' },
+      cellStyle: {
+        flexBasis: '80px',
+        minWidth: '80px',
+        justifyContent: 'flex-end',
+        flex: 0,
+      },
       cellTextStyle: { whiteSpace: 'nowrap' },
       renderer: (data) => {
         return `${data.unit_amount}${unit}`; // 1.5kg
@@ -107,7 +130,12 @@ const OrderItemInput = ({
     },
     {
       key: 'unit_quantity',
-      cellStyle: { flexBasis: '60px' },
+      cellStyle: {
+        flexBasis: '60px',
+        minWidth: '60px',
+        justifyContent: 'flex-end',
+        flex: 0,
+      },
       cellTextStyle: { whiteSpace: 'nowrap' },
     },
   ];
@@ -115,7 +143,6 @@ const OrderItemInput = ({
   const defaultRenderer = (key) => {
     return (d) => String(d[key]);
   };
-  console.log(orderItem);
   return (
     <Wrapper>
       {cellKeys.map((cellKey) => {

@@ -65,7 +65,7 @@ export default (options = {}) => {
     ]
     : [
       FETCH_PURCHASE,
-      { variables: { created: created || '2023-02-10' } },
+      { variables: { created: created || '2023-02-15' } },
     ];
 
   const {

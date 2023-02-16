@@ -31,6 +31,12 @@ const foregroundColor = ({
   return palette('white', 0);
 };
 
+const borderColor = (props) => {
+  const { transparent } = props;
+  if (transparent) return foregroundColor(props);
+  return backgroundColor(props);
+};
+
 const hoverBackgroundColor = ({
   disabled,
   transparent,
@@ -41,7 +47,7 @@ const hoverForegroundColor = ({
 }) => !disabled && transparent && palette(0);
 
 const styles = css`
-  ${defaultStyle};
+  ${defaultStyle}
   display: flex;
   text-align: center;
   font-family: ${font('secondary')};
@@ -62,7 +68,7 @@ const styles = css`
   transition: all 0.15s ease;
 
   color: ${foregroundColor};
-  border: 2px solid ${foregroundColor};
+  border: 2px solid ${borderColor};
   background-color: ${backgroundColor};
 
   &:hover,
