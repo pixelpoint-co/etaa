@@ -22,6 +22,14 @@ const waitMs = async (ms = 0) => {
 const FETCH_PURCHASE = gql`
   query FetchPurchase($id: Int, $created: String) {
     purchase (id: $id, created: $created)
+    {
+      id
+      created
+      detail
+      inventory {
+        id
+      }
+    }
   }
 `;
 
@@ -32,7 +40,11 @@ const FETCH_PURCHASE_LIST = gql`
       endDate: $endDate,
       limit: $limit,
       offset: $offset,
-    )
+    ) {
+      id
+      created
+      detail
+    }
   }
 `;
 
