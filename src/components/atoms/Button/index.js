@@ -9,7 +9,8 @@ import {
   ifProp, switchProp, prop,
 } from 'styled-tools';
 import Spinner from '../Spinner';
-
+import Text from '../P';
+import Flex from '../Flex';
 import defaultStyle, { unsetStyle } from './style';
 
 const backgroundColor = ({
@@ -82,6 +83,19 @@ const styles = css`
   }
 `;
 
+const StyledText = styled(Text)`
+  color: ${foregroundColor};
+  opacity: ${ifProp('loading', 0, 1)};
+`;
+
+const SpinnerContainer = styled(Flex)`
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+`;
+
 const StyledLink = styled(
   // eslint-disable-next-line no-shadow
   ({
@@ -145,22 +159,30 @@ const Button = ({
   };
 
   const parsedOnClick = !isAsync ? onClick : asyncOnClick;
-
+  const parsedLoading = propsLoading || loading;
   return (
     <StyledButton
       {...props}
       onClick={parsedOnClick}
       type={type}
     >
-      {loading ? (
-        <Spinner
-          {...(loaderStroke ? {
-            stroke: loaderStroke,
-            fill: loaderStroke,
-            size: loaderSize || 24,
-          } : {})}
-        />
-      ) : (label || children)}
+      {label ? (
+        <StyledText loading={parsedLoading}>
+          {label}
+        </StyledText>
+      ) : children}
+      {(parsedLoading) ? (
+        <SpinnerContainer>
+          <Spinner
+            {...(loaderStroke ? {
+              stroke: loaderStroke,
+              fill: loaderStroke,
+              size: loaderSize || 24,
+            } : {})}
+          />
+
+        </SpinnerContainer>
+      ) : null}
     </StyledButton>
   );
 };
