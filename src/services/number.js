@@ -1,3 +1,4 @@
+import { lowerCase } from 'lodash';
 import {
   format as formatCurr,
   unformat as unformatCurr,
@@ -42,4 +43,34 @@ export const roundCurrency = (v = 0, others = {}, roundType = 'up', precision = 
     decimalsDigits: 0,
     ...others,
   }));
+};
+
+export const convertUnit = (amount, unit, quantity, reverse = false) => {
+  // eslint-disable-next-line no-nested-ternary
+  console.log({
+    amount,
+    unit,
+    quantity,
+    reverse,
+  });
+  const lowerCaseUnit = lowerCase(unit);
+  let multiplier = 1;
+  switch (lowerCaseUnit) {
+    case 'kg':
+      multiplier = 1000;
+      break;
+    case 'g':
+      multiplier = 1;
+      break;
+    case 'l':
+      multiplier = 1;
+      break;
+    default:
+      multiplier = 1;
+      break;
+  }
+  const result = (unformat(amount) * multiplier) * unformat(quantity);
+  const reverseResult = (unformat(quantity) / multiplier) / unformat(amount);
+
+  return reverse ? reverseResult : result;
 };
