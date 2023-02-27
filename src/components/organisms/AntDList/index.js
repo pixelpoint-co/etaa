@@ -15,6 +15,14 @@ import Flex from '../../atoms/Flex';
 import Text from '../../atoms/P';
 
 const StyledList = styled(List)`
+
+`;
+const RowContainer = styled(Flex)`
+  flex: 1;
+  padding: ${({
+    verticalMargin,
+    horizontalMargin,
+  }) => `${verticalMargin}px ${horizontalMargin}px`};
 `;
 
 const StyledText = styled.div`
@@ -26,25 +34,38 @@ const AntDList = (props) => {
     data,
     RowComponent,
     cellRenderers,
+    verticalMargin,
+    horizontalMargin,
     ...others
   } = props;
-
   return (
     <StyledList
       {...others}
       dataSource={data}
       loading={loading}
       renderItem={(item) => (
-        <RowComponent
-          data={item}
-        />
+        <RowContainer
+          verticalMargin={verticalMargin}
+          horizontalMargin={horizontalMargin}
+        >
+          <RowComponent
+            data={item}
+          />
+        </RowContainer>
       )}
     />
   );
 };
 
-AntDList.defaultProps = {};
+AntDList.defaultProps = {
+  verticalMargin: 8,
+  horizontalMargin: 16,
+};
 
-AntDList.propTypes = {};
+AntDList.propTypes = {
+  verticalMargin: PropTypes.number,
+  horizontalMargin: PropTypes.number,
+
+};
 
 export default AntDList;

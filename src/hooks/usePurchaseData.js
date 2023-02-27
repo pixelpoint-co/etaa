@@ -6,7 +6,8 @@ import {
 import moment from 'moment';
 import _ from 'lodash';
 import {
-  gql, useQuery,
+  gql,
+  useQuery,
 } from '@apollo/client';
 
 import defaultData from './default-data.json';
@@ -26,24 +27,42 @@ const FETCH_PURCHASE = gql`
       id
       created
       detail
+      account
       inventory {
         id
+        productId
+        name
+        amount
+        unitPrice
+        unitWeight
+        unitQuantity
       }
     }
   }
 `;
-
 const FETCH_PURCHASE_LIST = gql`
-  query FetchPurchaseList($startDate: String, $endDate: String, $limit: Int, $offset:Int) {
+  query FetchPurchaseList($id: Int, $startDate: String, $endDate: String, $limit: Int, $offset:Int, $orderBy: JSON = {}) {
     purchaseList (
+      id: $id,
       startDate: $startDate,
       endDate: $endDate,
       limit: $limit,
       offset: $offset,
+      orderBy: $orderBy,
     ) {
       id
       created
       detail
+      account
+      inventory {
+        id
+        productId
+        name
+        amount
+        unitPrice
+        unitWeight
+        unitQuantity
+      }
     }
   }
 `;
@@ -53,9 +72,10 @@ const FETCH_PURCHASE_LIST = gql`
 export default (options = {}) => {
   const {
     type = 'many',
-    id: rawId = 'latest',
+    id = 'latest',
     created,
     startDate,
+    endDate,
   } = options;
   const [
     loading,
@@ -69,15 +89,36 @@ export default (options = {}) => {
     error,
     setError,
   ] = useState(null);
-
-  const query = type === 'many'
+  console.log(id);
+  console.log(id != null);
+  const query = (type === 'many')
     ? [
       FETCH_PURCHASE_LIST,
-      { variables: { startDate: startDate || '2023-02-10' } },
+      {
+        variables: {
+          ...(
+            id != null
+              ? { id: Number(id) }
+              : {
+                startDate,
+                endDate,
+              }
+          ),
+        },
+      },
     ]
     : [
       FETCH_PURCHASE,
-      { variables: { created: created || '2023-02-15' } },
+      {
+        variables: {
+          created: created || '2023-02-15',
+          ...(
+            id != null
+              ? { id: Number(id) }
+              : {}
+          ),
+        },
+      },
     ];
 
   const {
@@ -89,17 +130,8 @@ export default (options = {}) => {
   const purchaseData = _.get(qData, ['purchase'], []);
   const purchaseListData = _.get(qData, ['purchaseList'], []);
   // }, [])
-  const id = rawId === 'latest' ? moment().format('YYYY-MM-DDD') : rawId;
+  // const id = rawId === 'latest' ? moment().format('YYYY-MM-DDD') : rawId;
 
-  // useEffect(() => {
-  //   getPurchaseData(id);
-  // }, [
-  //   id,
-  //   getPurchaseData,
-  // ]);
-  // useEffect(() => {
-  //   getPurchaseData(id);
-  // }, []);
   return {
     pId: _.get(qData, [
       'fetchPurchase',

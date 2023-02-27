@@ -16,17 +16,19 @@ import {
 
 import Flex from '../../components/atoms/Flex';
 import Button from '../../components/atoms/Button';
+import Link from '../../components/atoms/Link';
 
 import usePurchaseData from '../../hooks/usePurchaseData';
 import OrderItemInput from '../../components/molecules/OrderItemInput';
-import PurchaseRow from '../../components/molecules/PurchaseRow';
+import PurchaseRow from '../../components/organisms/PurchaseRow';
 import AntDList from '../../components/organisms/AntDList';
 
-import {
-  unformat, roundTo,
-} from '../../services/number';
+import { unformat } from '../../services/number';
 
 const Wrapper = styled(Flex)`
+  flex: 1;
+`;
+const StyledList = styled(AntDList)`
   flex: 1;
 `;
 const StyledForm = styled(Form)`
@@ -87,29 +89,24 @@ const DummyDataField = (props) => {
   );
 };
 
-const convertUnit = (amount, unit, quantity) => {
-  // eslint-disable-next-line no-nested-ternary
-  const lowerCaseUnit = lowerCase(unit);
-  let multiplier = 1;
-  switch (lowerCaseUnit) {
-    case 'kg':
-      multiplier = 1000;
-      break;
-    case 'g':
-      multiplier = 1;
-      break;
+const today = moment().startOf('day');
+const endDate = moment().endOf('day');
 
-    case 'l':
-      multiplier = 1;
-      break;
-    default:
-      multiplier = 1;
-      break;
-  }
-  return unformat(amount) * multiplier * unformat(quantity);
+const PurchaseRowLink = (props) => {
+  const { data } = props;
+  console.log(data);
+  // const todayStart = moment(Number(data.created)).startOf('day').toISOString();
+  // const todayEnd = moment(Number(data.created)).endOf('day').toISOString();
+  return (
+    <Link
+      fill
+      to={`/inventory/edit/${data.id}`}
+      // to={`/inventory/edit/group?startDate=${todayStart}&endDate=${todayEnd}`}
+    >
+      <PurchaseRow {...props} />
+    </Link>
+  );
 };
-
-const today = moment().toISOString();
 
 const Inventory = () => {
   const {
@@ -119,7 +116,8 @@ const Inventory = () => {
     error,
   } = usePurchaseData({
     id: null,
-    created: today,
+    startDate: today.toISOString(),
+    endDate: endDate.toISOString(),
   });
 
   const addInventoryListCompleted = () => {
@@ -133,14 +131,14 @@ const Inventory = () => {
 
   if (data == null) return null;
   if (loading) return null;
-  console.log('data: ', data);
-  console.log('pId: ', pId);
+
+  // const grouped
 
   return (
     <Wrapper>
-      <AntDList
+      <StyledList
         data={data}
-        RowComponent={PurchaseRow}
+        RowComponent={PurchaseRowLink}
       />
     </Wrapper>
   );

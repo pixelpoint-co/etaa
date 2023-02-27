@@ -7,10 +7,13 @@ import {
 } from 'styled-theme';
 import styled from 'styled-components';
 
+import { useParams } from 'react-router-dom';
+
 import moment from 'moment';
 import _, {
   cloneDeep,
   lowerCase,
+  reduce,
   get,
 } from 'lodash';
 import {
@@ -19,17 +22,18 @@ import {
 
 import Flex from '../../components/atoms/Flex';
 import Button from '../../components/atoms/Button';
-
+import LabelValue from '../../components/molecules/LabelValue';
 import usePurchaseData from '../../hooks/usePurchaseData';
 import OrderItemInput from '../../components/molecules/OrderItemInput';
 import PageAction from '../../components/organisms/PageAction';
 
 import {
-  unformat, roundTo,
+  unformat, roundTo, convertUnit,
 } from '../../services/number';
 
 const Wrapper = styled(Flex)`
   flex: 1;
+  flex-direction: column;
   @media (max-width: ${size('mobileBreakpoint')}) {
     overflow-x: auto;
   }
@@ -61,8 +65,6 @@ const DummyDataField = (props) => {
   const { purchaseList } = props;
   const { value } = meta;
   const onChange = helpers.setValue;
-  console.log('purchaseList: ', purchaseList);
-  console.log('value: ', value);
   return (
     <DDContainer>
       {(purchaseList || []).map((orderItemData, i) => (
@@ -76,8 +78,6 @@ const DummyDataField = (props) => {
             onChange(newData);
           }}
           setValue={(quantity) => {
-            console.log('value: ', value);
-
             const newData = cloneDeep(value);
             newData[i].unit_quantity = quantity;
             onChange(newData);
@@ -95,84 +95,147 @@ const DummyDataField = (props) => {
   );
 };
 
-const convertUnit = (amount, unit, quantity) => {
-  // eslint-disable-next-line no-nested-ternary
-  const lowerCaseUnit = lowerCase(unit);
-  let multiplier = 1;
-  switch (lowerCaseUnit) {
-    case 'kg':
-      multiplier = 1000;
-      break;
-    case 'g':
-      multiplier = 1;
-      break;
-
-    case 'l':
-      multiplier = 1;
-      break;
-    default:
-      multiplier = 1;
-      break;
-  }
-  return unformat(amount) * multiplier * unformat(quantity);
-};
-
 const today = moment().toISOString(); // TODO waiter db.Timestamp에 따라 수동으로 UTC기준으로 전환
 
 const Inventory = () => {
+  const { id } = useParams();
   const {
     purchaseData: data,
+    purchaseListData: listData,
     loading,
     error,
   } = usePurchaseData({
-    id: null,
-    created: today,
-    type: 'single',
-  });
-  const {
     id,
-    detail: purchaseItemList,
-    inventory: inventoryList,
-  } = data;
+    created: today,
+    startDate: moment(today).subtract(1, 'day'),
+    endDate: today,
+    type: 'many',
+  });
+  // const {
+  //   id,
+  //   detail: purchaseItemList,
+  //   inventory: inventoryList,
+  // } = data;
   const addInventoryListCompleted = () => {
     console.log('add inventory db');
+    alert('기록되었습니다');
+    window.location.reload();
   };
-  const parsedPurchaseItemList = typeof purchaseItemList === 'string' ? JSON.parse(purchaseItemList) : purchaseItemList;
 
-  const [addInventoryList] = useMutation(
+  const [
+    addInventoryList,
+    {
+      loading: addInventoryListLoading,
+      error: addInventoryListError,
+    },
+  ] = useMutation(
     ADD_INVETORY_LIST,
     { onCompleted: addInventoryListCompleted },
   );
-  console.log('loading: ', loading);
-  console.log('data: ', data);
   if (data == null) return null;
   if (loading) return null;
-  console.log(inventoryList);
+  const parsedData = listData;
+  const parsedPurchaseItemList = reduce(
+    parsedData,
+    (ac, cu) => {
+      return [
+        ...ac,
+        ...cu.detail.map((purchaseItem) => ({
+          ...purchaseItem,
+          // unit_quantity: 0,
+          purchase_id: cu.id,
+          account: cu.account,
+          created: cu.created,
+        })),
+      ];
+    },
+    [],
+  );
+  const inventoryList = reduce(
+    parsedData,
+    (ac, cu) => {
+      const { inventory } = cu;
+      return [
+        ...ac,
+        ...cu.inventory,
+        // ...snakeInventory,
+      ];
+    },
+    [],
+  );
   const formattedPurchaseItemList = parsedPurchaseItemList.map((item) => {
-    const [foundInventory] = inventoryList
-      .filter((inventoryItem) => inventoryItem.name === item.name);
+    return { ...item };
+  });
+  const totalCountByName = parsedPurchaseItemList
+    .map((item) => {
+      return item.name;
+    })
+    .reduce((ac, cu) => {
+      return {
+        ...ac,
+        [cu]: (ac[cu] || 0) + 1,
+      };
+    }, {});
+  const currentCountByName = _.mapValues(
+    totalCountByName,
+    (val) => {
+      return 0;
+    },
+  );
+  const formattedInventoryList = parsedPurchaseItemList.map((item) => {
+    const currentIndex = currentCountByName[item.name];
+    const foundInventoryList = inventoryList.filter((v) => v.name === item.name);
+    const foundInventory = foundInventoryList[currentIndex];
 
-    if (!foundInventory) return item;
-
+    if (!foundInventory) {
+      return {
+        ...item,
+        unit_quantity: 0,
+      };
+    }
+    currentCountByName[item.name] += 1;
     return {
       ...item,
-      id: foundInventory.id,
+      ...foundInventory,
+      unit_quantity: convertUnit(
+        item.unit_amount,
+        item.unit,
+        foundInventory.unitQuantity,
+        true,
+      ),
     };
   });
+  console.log({
+    inventoryList,
+    formattedInventoryList,
+    formattedPurchaseItemList,
+    parsedData,
+  });
 
+  const {
+    created,
+    account,
+  } = parsedData[0];
+  const createdAt = moment(Number(created));
   return (
     <Wrapper>
+      <LabelValue
+        style={{ padding: 15 }}
+        bold
+        label={`기록날짜 (${account})`}
+        value={`${createdAt.format('YYYY-MM-DD')}`}
+      />
       <Formik
         initialValues={{
           parsedPurchaseItemList: formattedPurchaseItemList,
-          inventoryList: cloneDeep(parsedPurchaseItemList),
+          inventoryList: cloneDeep(formattedInventoryList),
         }}
         onSubmit={(values) => {
           const { inventoryList } = values;
           const formattedInventoryList = inventoryList.map((v) => {
             const gramAmount = convertUnit(v.unit_amount, v.unit, v.unit_quantity);
             return {
-              purchaseId: id,
+              purchaseId: v.purchase_id,
               id: v.id,
               name: v.name,
               unitQuantity: gramAmount,
@@ -183,8 +246,6 @@ const Inventory = () => {
               ),
             };
           });
-          console.log(inventoryList);
-          console.log(formattedInventoryList);
           addInventoryList({ variables: { inventoryList: formattedInventoryList } });
         }}
       >
@@ -194,7 +255,7 @@ const Inventory = () => {
             name="inventoryList"
           />
           <PageAction actions={[]}>
-            <Button type="submit" label="저장" loaderStroke="white" loaderSize={32} />
+            <Button type="submit" label="저장" loaderStroke="white" loaderSize={32} loading={addInventoryListLoading} />
           </PageAction>
           <div style={{ padding: `${(50 + 15 + 15) / 2}px 0px` }} />
         </StyledForm>
