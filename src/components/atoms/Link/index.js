@@ -7,6 +7,14 @@ import { ifProp } from 'styled-tools';
 import { NavLink } from 'react-router-dom';
 
 const styles = css`
+  ${ifProp(
+    'fill',
+    `
+      display: flex;
+      flex: 1;
+    `,
+    '',
+  )}
   font-family: ${font('primary')};
   text-decoration: none;
   color: ${ifProp({ disabled: true }, palette('grayscale', 4), palette(3))};
@@ -16,10 +24,15 @@ const styles = css`
 
   &:hover,
   &:focus {
-    text-decoration: ${ifProp([
-    { disabled: true },
-    { disableStyle: true },
-  ], 'none', 'underline')};
+    text-decoration: ${ifProp(
+    'disabled',
+    'none',
+    ifProp(
+      'disabledStyle',
+      'none',
+    ),
+    'underline',
+  )};
   }
 `;
 
@@ -36,25 +49,34 @@ const Anchor = styled.a`
   ${styles};
 `;
 
-const Link = ({ ...props }) => {
+const Link = (props) => {
+  const {
+    fill,
+    disableStyle,
+    ...others
+  } = props;
   if (props.to) {
-    return <StyledNavLink {...props} />;
+    return <StyledNavLink {...props} fill={fill} />;
   }
-  return <Anchor {...props} />;
+  return <Anchor {...others} />;
 };
 
 Link.propTypes = {
   disabled: PropTypes.bool,
+  disableStyle: PropTypes.bool,
   palette: PropTypes.string,
   reverse: PropTypes.bool,
   to: PropTypes.string,
+  fill: PropTypes.bool,
 };
 
 Link.defaultProps = {
   palette: 'primary',
   disabled: false,
+  disableStyle: true,
   reverse: false,
   to: '/',
+  fill: false,
 };
 
 export default Link;
