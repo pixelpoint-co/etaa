@@ -128,7 +128,11 @@ export default (options = {}) => {
   } = useQuery(...query);
   console.log('qData: ', qData);
   const purchaseData = _.get(qData, ['purchase'], []);
-  const purchaseListData = _.get(qData, ['purchaseList'], []);
+  const purchaseListData = _.orderBy(
+    _.get(qData, ['purchaseList'], []),
+    'created',
+    'desc',
+  );
   // }, [])
   // const id = rawId === 'latest' ? moment().format('YYYY-MM-DDD') : rawId;
 

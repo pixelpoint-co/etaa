@@ -90,6 +90,7 @@ const DummyDataField = (props) => {
 };
 
 const today = moment().startOf('day');
+const startDate = today.subtract(7, 'days');
 const endDate = moment().endOf('day');
 
 const PurchaseRowLink = (props) => {
@@ -116,7 +117,7 @@ const Inventory = () => {
     error,
   } = usePurchaseData({
     id: null,
-    startDate: today.toISOString(),
+    startDate: startDate.toISOString(),
     endDate: endDate.toISOString(),
   });
 
