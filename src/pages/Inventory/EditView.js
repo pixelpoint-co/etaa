@@ -134,9 +134,8 @@ const Inventory = () => {
   );
   if (data == null) return null;
   if (loading) return null;
-  const parsedData = listData;
   const parsedPurchaseItemList = reduce(
-    parsedData,
+    listData,
     (ac, cu) => {
       return [
         ...ac,
@@ -152,7 +151,7 @@ const Inventory = () => {
     [],
   );
   const inventoryList = reduce(
-    parsedData,
+    listData,
     (ac, cu) => {
       const { inventory } = cu;
       return [
@@ -209,13 +208,13 @@ const Inventory = () => {
     inventoryList,
     formattedInventoryList,
     formattedPurchaseItemList,
-    parsedData,
+    listData,
   });
 
   const {
     created,
     account,
-  } = parsedData[0];
+  } = listData[0];
   const createdAt = moment(Number(created));
   return (
     <Wrapper>
