@@ -8,8 +8,7 @@ import styled from 'styled-components';
 import Flex from '../../components/atoms/Flex';
 import Header from '../../containers/Header';
 
-import EditView from './EditView';
-import ListView from './ListView';
+import TreeView from './TreeView';
 
 const PageWrapper = styled(Flex)`
   flex-direction: column;
@@ -23,15 +22,14 @@ const Layout = () => {
   );
 };
 
-const InventoryPage = () => {
+const RecipePage = () => {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        <Route path="/" element={<ListView />} />
-        <Route path="/edit/:id" element={<EditView />} />
+        <Route path="/tree" element={<TreeView />} />
       </Route>
     </Routes>
   );
 };
 
-export default InventoryPage;
+export default RecipePage;

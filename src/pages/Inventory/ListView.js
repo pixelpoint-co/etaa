@@ -27,6 +27,7 @@ import { unformat } from '../../services/number';
 
 const Wrapper = styled(Flex)`
   flex: 1;
+  flex-direction: column;
 `;
 const StyledList = styled(AntDList)`
   flex: 1;
@@ -133,10 +134,12 @@ const Inventory = () => {
   if (data == null) return null;
   if (loading) return null;
 
-  // const grouped
-
   return (
     <Wrapper>
+      <Button
+        link="/inventory/"
+        label="sdf"
+      />
       <StyledList
         data={data}
         RowComponent={PurchaseRowLink}

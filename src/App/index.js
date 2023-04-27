@@ -11,16 +11,26 @@ import styled from 'styled-components';
 import NotFound from '../pages/NotFound';
 import Home from '../pages/Home';
 import Inventory from '../pages/Inventory';
+import Recipe from '../pages/Recipe';
 import LeftMenu from '../containers/LeftMenu';
 import Header from '../containers/Header';
+
 import Flex from '../components/atoms/Flex';
 
-const routes = [{
-  label: '자재관리',
-  href: '/inventory/*',
-  element: <Inventory />,
-  rootRoute: true,
-},
+const routes = [
+  {
+    label: '자재관리',
+    href: '/inventory/*',
+    element: <Inventory />,
+    rootRoute: true,
+  },
+  {
+    label: '레시피',
+    href: '/recipe/*',
+    element: <Recipe />,
+    rootRoute: true,
+  },
+
   // {
   //   label: '자재관리',
   //   href: '/inventory/:id',
@@ -38,8 +48,8 @@ const Wrapper = styled(Flex)`
   overflow: auto;
 `;
 
-const PageWrapper = styled.div`
-  padding-left: calc(250px + 25px);
+const PageWrapper = styled(Flex)`
+  padding-left: calc(250px);
   max-width: 100vw;
   padding-right: ${size('padding.default')};
   flex-grow: 1;
@@ -58,7 +68,6 @@ const Layout = () => {
     <Wrapper>
       <LeftMenu links={routes.filter((v) => v.rootRoute)} />
       <PageWrapper>
-        <Header title="ERP" />
 
         <Outlet />
 
