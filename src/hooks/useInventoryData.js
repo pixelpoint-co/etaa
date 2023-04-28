@@ -1,5 +1,4 @@
 import {
-  useEffect,
   useCallback,
   useState,
 } from 'react';
@@ -11,23 +10,27 @@ import {
 } from '@apollo/client';
 
 const FETCH_INVENTORY_LIST = gql`
-  query FetchInventoryList($offset:Int) {
+  query FetchInventoryList($offset:Int, $limit:Int) {
     inventoryList (
       offset: $offset,
+      limit: $limit,
     ) {
-      id
-      productId
-      name
-      amount
-      unitPrice
-      parentId
-      created
-      unitWeight
-      unitQuantity
-      product {
+      count
+      list {
         id
-        unit
+        productId
         name
+        amount
+        unitPrice
+        parentId
+        created
+        unitWeight
+        unitQuantity
+        product {
+          id
+          unit
+          name
+        }
       }
     }
   }
@@ -37,12 +40,10 @@ const FETCH_INVENTORY_LIST = gql`
 
 export default (options = {}) => {
   const {
-    type = 'many',
-    id = 'latest',
-    created,
-    startDate,
-    endDate,
+    limit,
+    offset,
   } = options;
+  console.log(options);
   // const [
   //   loading,
   //   setLoading,
@@ -58,7 +59,12 @@ export default (options = {}) => {
 
   const query = [
     FETCH_INVENTORY_LIST,
-    {},
+    {
+      variables: {
+        limit,
+        offset,
+      },
+    },
   ];
 
   const {
@@ -70,9 +76,16 @@ export default (options = {}) => {
   // const  = _.get(nodeData, ['inventoryList'], []);
   // }, [])
   // const id = rawId === 'latest' ? moment().format('YYYY-MM-DDD') : rawId;
-
+  console.log(data);
   return {
-    data: _.get(data, ['inventoryList'], []),
+    data: _.get(data, [
+      'inventoryList',
+      'list',
+    ], []),
+    count: _.get(data, [
+      'inventoryList',
+      'count',
+    ], 0),
     loading,
     error,
   };
