@@ -14,14 +14,14 @@ export default (options = {}) => {
   const {
     queryParams,
     setQueryParams,
-  } = useQueryParams();
+  } = useQueryParams({ initialQueryParams: {} });
 
-  const { currentPage = 1 } = queryParams;
+  const { page = 1 } = queryParams;
 
   const setCurrentPage = useCallback((newPage) => {
     setQueryParams((old) => ({
       ...old,
-      currentPage: newPage,
+      page: newPage,
     }));
   }, [setQueryParams]);
 
@@ -35,7 +35,7 @@ export default (options = {}) => {
 
   return {
     onPageChange,
-    currentPage,
+    currentPage: page,
     pageSize: itemsPerPage,
     onItemsPerPageChange,
   };

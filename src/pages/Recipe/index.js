@@ -9,6 +9,7 @@ import Flex from '../../components/atoms/Flex';
 import Header from '../../containers/Header';
 
 import TreeView from './TreeView';
+import ListView from './ListView';
 
 const PageWrapper = styled(Flex)`
   flex-direction: column;
@@ -26,6 +27,7 @@ const RecipePage = () => {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
+        <Route path="/" index element={<ListView />} />
         <Route path="/tree" element={<TreeView />} />
       </Route>
     </Routes>
