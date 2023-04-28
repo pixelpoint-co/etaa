@@ -50,18 +50,21 @@ const FETCH_PURCHASE_LIST = gql`
       offset: $offset,
       orderBy: $orderBy,
     ) {
-      id
-      created
-      detail
-      account
-      inventory {
+      count
+      list {
         id
-        productId
-        name
-        amount
-        unitPrice
-        unitWeight
-        unitQuantity
+        created
+        detail
+        account
+        inventory {
+          id
+          productId
+          name
+          amount
+          unitPrice
+          unitWeight
+          unitQuantity
+        }
       }
     }
   }
@@ -129,7 +132,10 @@ export default (options = {}) => {
   console.log('qData: ', qData);
   const purchaseData = _.get(qData, ['purchase'], []);
   const purchaseListData = _.orderBy(
-    _.get(qData, ['purchaseList'], []),
+    _.get(qData, [
+      'purchaseList',
+      'list',
+    ], []),
     'created',
     'desc',
   );
@@ -144,6 +150,10 @@ export default (options = {}) => {
     ], null),
     purchaseData,
     purchaseListData,
+    purchaseListCount: _.get(qData, [
+      'purchaseList',
+      'count',
+    ], 0),
     loading: qLoading,
     error: qError,
   };
