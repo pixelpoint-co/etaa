@@ -11,6 +11,7 @@ import styled from 'styled-components';
 import NotFound from '../pages/NotFound';
 import Home from '../pages/Home';
 import Inventory from '../pages/Inventory';
+import Storage from '../pages/Storage';
 import Recipe from '../pages/Recipe';
 import LeftMenu from '../containers/LeftMenu';
 import Header from '../containers/Header';
@@ -18,6 +19,12 @@ import Header from '../containers/Header';
 import Flex from '../components/atoms/Flex';
 
 const routes = [
+  {
+    label: '입고',
+    href: '/storage/*',
+    element: <Storage />,
+    rootRoute: true,
+  },
   {
     label: '자재관리',
     href: '/inventory/*',

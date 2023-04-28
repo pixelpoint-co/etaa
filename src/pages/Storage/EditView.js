@@ -97,7 +97,7 @@ const DummyDataField = (props) => {
 
 const today = moment().toISOString(); // TODO waiter db.Timestamp에 따라 수동으로 UTC기준으로 전환
 
-const StorageEdit = () => {
+const Inventory = () => {
   const { id } = useParams();
   const {
     purchaseData: data,
@@ -157,6 +157,7 @@ const StorageEdit = () => {
       return [
         ...ac,
         ...cu.inventory,
+        // ...snakeInventory,
       ];
     },
     [],
@@ -262,4 +263,4 @@ const StorageEdit = () => {
   );
 };
 
-export default StorageEdit;
+export default Inventory;

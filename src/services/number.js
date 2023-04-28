@@ -47,12 +47,6 @@ export const roundCurrency = (v = 0, others = {}, roundType = 'up', precision = 
 
 export const convertUnit = (amount, unit, quantity, reverse = false) => {
   // eslint-disable-next-line no-nested-ternary
-  console.log({
-    amount,
-    unit,
-    quantity,
-    reverse,
-  });
   const lowerCaseUnit = lowerCase(unit);
   let multiplier = 1;
   switch (lowerCaseUnit) {

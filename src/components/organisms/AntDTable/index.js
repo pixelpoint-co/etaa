@@ -110,12 +110,13 @@ const AntDTable = (props) => {
         expandable={expandable}
         pagination={itemsPerPage > 0 ? {
           ...pagination,
+          ...{ pageSize: itemsPerPage },
           total: count,
           current: Number(currentPage),
           simple: isMobile,
           hideOnSinglePage: false,
         } : false}
-        scroll={scroll}
+        scroll={true || scroll}
         onChange={handleChange}
         isExpanded={isExpanded}
         loading={loading}
@@ -135,6 +136,7 @@ AntDTable.defaultProps = {
   expandable: false,
   isExpanded: false,
   rowSelection: false,
+  onItemsPerPageChange: (v) => console.log('[AntDTable] onItemsPerPage(): ', v),
 };
 
 AntDTable.propTypes = {
@@ -162,6 +164,7 @@ AntDTable.propTypes = {
   count: PropTypes.number.isRequired,
   currentPage: PropTypes.number.isRequired,
   onPageChange: PropTypes.func,
+  onItemsPerPageChange: PropTypes.func,
   onSort: PropTypes.func,
   loading: PropTypes.bool,
 };

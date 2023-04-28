@@ -7,9 +7,7 @@ import {
 } from 'styled-theme';
 import styled from 'styled-components';
 import moment from 'moment';
-import _, {
-  cloneDeep, lowerCase,
-} from 'lodash';
+import _, { get } from 'lodash';
 import {
   gql, useMutation,
 } from '@apollo/client';
@@ -18,18 +16,22 @@ import Flex from '../../components/atoms/Flex';
 import Button from '../../components/atoms/Button';
 import Link from '../../components/atoms/Link';
 
-import usePurchaseData from '../../hooks/usePurchaseData';
-import OrderItemInput from '../../components/molecules/OrderItemInput';
 import PurchaseRow from '../../components/organisms/PurchaseRow';
-import AntDList from '../../components/organisms/AntDList';
+import AntDTable from '../../components/organisms/AntDTable';
+import Cell from '../../components/atoms/AntDTableCell';
 
-import { unformat } from '../../services/number';
+import useInventoryData from '../../hooks/useInventoryData';
+import {
+  formatCurrency,
+  formatNumber,
+} from '../../services/number';
 
 const Wrapper = styled(Flex)`
   flex: 1;
   flex-direction: column;
+  max-height: 500px;
 `;
-const StyledList = styled(AntDList)`
+const StyledList = styled(AntDTable)`
   flex: 1;
 `;
 const StyledForm = styled(Form)`
@@ -47,80 +49,85 @@ const ADD_INVETORY_LIST = gql`
   }
 `;
 
-const DummyDataField = (props) => {
-  const [
-    field,
-    meta,
-    helpers,
-  ] = useField(props);
-  const { orderData } = props;
-  const { value } = meta;
-  const onChange = helpers.setValue;
-  console.log('orderData: ', orderData);
-  console.log('value: ', value);
-  return (
-    <div>
-      {(orderData || []).map((orderItemData, i) => (
-        <OrderItemInput
-          key={`${orderItemData.order_id}${orderItemData.name}`}
-          {...props}
-          orderItem={orderItemData}
-          onChange={(e) => {
-            const newData = cloneDeep(value);
-            newData[i].unit_quantity = Number(e.target.value);
-            onChange(newData);
-          }}
-          setValue={(quantity) => {
-            console.log('value: ', value);
+const cellRenderers = [
+  {
+    title: 'Id',
+    dataIndex: 'id',
+    // key: 'id',
+    // render: (description) => description,
+    width: 60,
+  },
+  {
+    title: '등록날짜',
+    dataIndex: 'created',
+    width: 120,
+    render: (data) => <Cell>{moment(Number(data)).format('L LT')}</Cell>,
+  },
+  {
+    title: '재료',
+    dataIndex: [
+      'product',
+      'name',
+    ],
+    width: 120,
+  },
+  {
+    title: '상품명',
+    dataIndex: 'name',
+    width: 120,
+  },
+  {
+    title: '용량',
+    dataIndex: 'unitQuantity',
+    width: 120,
+    render: (data, row) => {
+      const unit = get(row, 'product.unit');
+      const unitText = unit ? `(${get(row, 'product.unit', '')})` : '';
+      return (
+        <Cell>
+          {`${formatNumber(data)}${unitText}`}
+        </Cell>
+      );
+    },
+  },
+  {
+    title: '구매 수량',
+    dataIndex: 'amount',
+    width: 120,
+  },
+  {
+    title: '구매 가격',
+    dataIndex: 'amount',
+    render: (data, row) => {
+      const unit = get(row, 'product.unit', '');
+      const unitPrice = get(row, 'unitPrice', 0);
+      const unitQuantity = get(row, 'unitQuantity', 0);
+      return (
+        <Cell>
+          {`${formatCurrency(unitPrice * unitQuantity)}`}
+        </Cell>
+      );
+    },
+    width: 120,
+  },
+  // {
+  //   title: '단위별 가격',
+  //   dataIndex: 'unitPrice',
+  //   width: 120,
+  // },
+];
 
-            const newData = cloneDeep(value);
-            newData[i].unit_quantity = quantity;
-            onChange(newData);
-          }}
-          max={orderItemData.unit_quantity}
-          min={0}
-          type="number"
-          value={_.get(value, [
-            i,
-            'unit_quantity',
-          ])}
-        />
-      ))}
-    </div>
-  );
-};
-
-const today = moment().startOf('day');
-const startDate = today.subtract(7, 'days');
-const endDate = moment().endOf('day');
-
-const PurchaseRowLink = (props) => {
-  const { data } = props;
-  console.log(data);
-  // const todayStart = moment(Number(data.created)).startOf('day').toISOString();
-  // const todayEnd = moment(Number(data.created)).endOf('day').toISOString();
-  return (
-    <Link
-      fill
-      to={`/inventory/edit/${data.id}`}
-      // to={`/inventory/edit/group?startDate=${todayStart}&endDate=${todayEnd}`}
-    >
-      <PurchaseRow {...props} />
-    </Link>
-  );
-};
-
-const Inventory = () => {
+const Storage = () => {
   const {
-    pId,
-    purchaseListData: data,
+    queryParams,
+    setQueryParams,
+  } = useQueryParams({ initialQueryParams: initialQuery });
+
+  const {
+    data,
     loading,
     error,
-  } = usePurchaseData({
-    id: null,
-    startDate: startDate.toISOString(),
-    endDate: endDate.toISOString(),
-  });
+  } = useInventoryData({});
 
   const addInventoryListCompleted = () => {
     console.log('add inventory db');
@@ -136,16 +143,33 @@ const Inventory = () => {
 
   return (
     <Wrapper>
-      <Button
-        link="/inventory/"
-        label="sdf"
-      />
-      <StyledList
+      <AntDTable
+        modelName="model"
+        cellRenderers={cellRenderers}
         data={data}
-        RowComponent={PurchaseRowLink}
+        itemsPerPage={10}
+        currentPage={1}
+        count={data.length}
+        rowKey="id"
       />
+      {/* dataSource={data}
+        rowKey={rowKey}
+        expandable={expandable}
+        pagination={itemsPerPage > 0 ? {
+          ...pagination,
+          total: count,
+          current: Number(currentPage),
+          simple: isMobile,
+          hideOnSinglePage: false,
+        } : false}
+        scroll={true || scroll}
+        onChange={handleChange}
+        isExpanded={isExpanded}
+        loading={loading}
+        tableLayout={tableLayout}
+        rowSelection={rowSelection} */}
     </Wrapper>
   );
 };
 
-export default Inventory;
+export default Storage;

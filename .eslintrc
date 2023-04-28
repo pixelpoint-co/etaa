@@ -38,12 +38,12 @@
         "multiline": true,
         "minProperties": 2
       }
-      }],
-      "quotes": [2, "single"],
-      "react/destructuring-assignment": 0,
-      "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-      "react/jsx-props-no-spreading": 0,
-      "react/jsx-one-expression-per-line": 0,
+    }],
+    "quotes": [2, "single"],
+    "react/destructuring-assignment": 0,
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/jsx-props-no-spreading": 0,
+    "react/jsx-one-expression-per-line": 0,
     "react/jsx-fragments": 0,
     "react/function-component-definition": [2, {
       "namedComponents": "arrow-function",
