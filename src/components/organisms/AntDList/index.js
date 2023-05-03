@@ -13,6 +13,7 @@ import { List } from 'antd';
 import Link from '../../atoms/Link';
 import Flex from '../../atoms/Flex';
 import Text from '../../atoms/P';
+import Divider from '../../atoms/Divider';
 
 const StyledList = styled(List)`
 
@@ -23,6 +24,7 @@ const RowContainer = styled(Flex)`
     verticalMargin,
     horizontalMargin,
   }) => `${verticalMargin}px ${horizontalMargin}px`};
+  flex-direction: column;
 `;
 
 const StyledText = styled.div`
@@ -31,9 +33,8 @@ const StyledText = styled.div`
 const AntDList = (props) => {
   const {
     loading,
-    data,
+    dataSource,
     RowComponent,
-    cellRenderers,
     verticalMargin,
     horizontalMargin,
     ...others
@@ -41,17 +42,26 @@ const AntDList = (props) => {
   return (
     <StyledList
       {...others}
-      dataSource={data}
+      dataSource={dataSource}
       loading={loading}
-      renderItem={(item) => (
-        <RowContainer
-          verticalMargin={verticalMargin}
-          horizontalMargin={horizontalMargin}
-        >
-          <RowComponent
-            data={item}
-          />
-        </RowContainer>
+      renderItem={({
+        data,
+        ...otherProps
+      }, i) => (
+        <>
+          {i > 0 ? (
+            <Divider />
+          ) : null}
+          <RowContainer
+            horizontalMargin={horizontalMargin}
+            verticalMargin={verticalMargin}
+          >
+            <RowComponent
+              data={data}
+              {...otherProps}
+            />
+          </RowContainer>
+        </>
       )}
     />
   );

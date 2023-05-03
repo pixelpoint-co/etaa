@@ -11,14 +11,29 @@ import Flex from '../../atoms/Flex';
 
 const Wrapper = styled(Flex)`
   position: fixed;
-  bottom: 20px;
-  left: 15px;
-  right: 15px;
-  flex-direction: column;
-  background-color: transparent;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+
+  padding: 20px 12px;
+
+  flex-direction: row;
+  justify-content: flex-end;
+
+  background-color: rgba(255,255,255,0.4);
+  backdrop-filter: blur(16px) brightness(100%);
+
+
   @media (min-width: ${size('mobileBreakpoint')}) {
-    left: calc(250px + 15px);
+    left: calc(250px + 0px);
   }
+`;
+
+const ActionButton = styled(Button)`
+  min-width: 320px;
+  padding: 15px;
+  font-size: 30px;
+  line-height: 36px;
 `;
 
 const PageAction = ({
@@ -32,7 +47,7 @@ const PageAction = ({
       label,
       ...otherActionProps
     }) => (
-      <Button
+      <ActionButton
         key={label}
         label={label}
         onClick={action}
