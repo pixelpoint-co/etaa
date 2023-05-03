@@ -17,7 +17,7 @@ const borderColor = ({
 }) => {
   if (disabled) return palette('grayscale', 3);
   if (invalid) return palette('red', 0);
-  return palette('primary', 0);
+  return palette('grayscale', 5);
 };
 
 const hoverBorderColor = ({ disabled }) => {
@@ -57,7 +57,7 @@ const styles = css`
   )} padding: ${ifProp({ type: 'textarea' }, '8px', '0 8px')};
   box-sizing: border-box;
   color: ${ifProp('disabled', palette('grayscale', 0), palette('black', 0))};
-  background-color: ${ifProp('disabled', palette('grayscale', 0), palette('grayscale', 6))};
+  background-color: ${ifProp('disabled', palette('grayscale', 6), palette('grayscale', 7))};
   border: 2px solid ${borderColor};
   border-radius: 16px;
   padding: 16px 20px;
@@ -69,6 +69,8 @@ const styles = css`
     flex: 1;
     border: 2px solid ${checkBorderColor};
     background-color: ${ifProp('disabled', palette('grayscale', 0), palette('white', 0))};
+
+
   }
 
   &::placeholder {
@@ -76,6 +78,7 @@ const styles = css`
   }
 
   &:focus {
+    border: 2px solid ${palette('blue', 0)};
   }
   ${ifProp(
     { type: 'number' },
@@ -90,6 +93,7 @@ const styles = css`
       }
     `,
   )}
+
 `;
 
 const Wrapper = styled.label`

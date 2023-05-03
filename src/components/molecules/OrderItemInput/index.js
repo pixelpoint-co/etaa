@@ -60,7 +60,7 @@ const StyledInput = styled(Input)`
   margin-right: 20px;
 
 
-  min-width: 80px;
+  min-width: 120px;
 
   @media (max-width: ${size('mobileBreakpoint')}) {
     margin-left: 8px;
