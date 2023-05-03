@@ -75,13 +75,10 @@ const StyledInput = styled(Input)`
   }
 `;
 const StyledCheckbox = styled(Input)`
-  width: 72px;
-  height: 72px;
+  flex: 0;
 `;
 const ButtonsContainer = styled(Flex)`
   flex: 0;
-  flex-basis: 100px;
-  align-self: center;
 `;
 
 const isMobile = window.innerWidth <= 1024;
@@ -183,20 +180,21 @@ const OrderItemInput = ({
         value={value}
       />
       <ButtonsContainer>
-        <Button
+        {/* <Button
           palette="blue"
           onClick={() => {
             setValue(Number(orderItem.unit_quantity));
           }}
         >
           <Icon icon="check" size={isMobile ? 24 : 36} stroke="white" fill="white" />
-        </Button>
+        </Button> */}
         <StyledCheckbox
           type="checkbox"
           inputStyle={{
-            width: 72,
-            height: 72,
+            width: 76,
+            height: 76,
           }}
+          palette="blue"
         />
       </ButtonsContainer>
     </Wrapper>
