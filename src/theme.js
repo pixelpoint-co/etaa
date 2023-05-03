@@ -5,7 +5,7 @@ const { flatten } = objectUtils;
 const theme = {};
 
 theme.palette = {
-  primary: ['#4B5563'],
+  primary: ['#1E1E1E'],
   secondary: ['#94ADCF'],
   white: [
     '#fff',
@@ -13,15 +13,19 @@ theme.palette = {
   ],
   black: ['#000000'],
   grayscale: [
-    '#6D7888',
-    '#CCCCCC',
-    '#FAFAFB',
-    '#E6E5EA',
+    '#1E1E1E',
+    '#313235',
+    '#7B7E81',
+    '#A8A9AD',
+    '#D8D9DD',
+    '#EEF0F3',
+    '#F8F8F8',
+    '#FCFCFC',
   ],
   red: ['#47000a'],
   yellow: ['#a16600'],
   green: ['#0d200e'],
-  blue: ['#072E4B'],
+  blue: ['#0D35D5'],
 };
 
 theme.fonts = { primary: 'Pretendard' };

@@ -47,7 +47,7 @@ const styles = css`
   )} padding: ${ifProp({ type: 'textarea' }, '8px', '0 8px')};
   box-sizing: border-box;
   color: ${ifProp('disabled', palette('grayscale', 0), palette('black', 0))};
-  background-color: ${ifProp('disabled', palette('grayscale', 0), palette('grayscale', 2))};
+  background-color: ${ifProp('disabled', palette('grayscale', 0), palette('grayscale', 6))};
   border: 2px solid ${borderColor};
   border-radius: 0px;
   padding: 16px 20px;
@@ -146,7 +146,6 @@ const Wrapper = styled.label`
     css`
         // checkbox
         background-color: ${ifProp('disabled', palette('white', 0), palette('primary', 3))};
-        background-color:#37C5B9;
         & > svg {
           stroke: ${ifProp('disabled', palette('grayscale', 4), palette('white', 0))};
         }

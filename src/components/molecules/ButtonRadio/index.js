@@ -21,7 +21,7 @@ const Container = styled(Flex)`
   `;
 
 const StyledButton = styled(Button)`
-  background-color: ${palette('grayscale', 2)};
+  background-color: ${palette('grayscale', 6)};
   background-color: ${ifProp(
     {
       selected: true,
@@ -30,7 +30,7 @@ const StyledButton = styled(Button)`
     palette('black', 0),
     'null',
   )};
-  border-color: ${ifProp({ selected: true }, palette('primary', 0), palette('grayscale', 2))};
+  border-color: ${ifProp({ selected: true }, palette('primary', 0), palette('grayscale', 6))};
   border-color: ${ifProp(
     {
       selected: true,

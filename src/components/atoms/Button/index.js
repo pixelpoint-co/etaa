@@ -20,7 +20,7 @@ const backgroundColor = ({
 }) => {
   if (disabled) return palette('grayscale', 0);
   if (transparent) return 'transparent';
-  return palette('primary', 0);
+  return palette(0);
 };
 
 const foregroundColor = ({
@@ -59,7 +59,7 @@ const styles = css`
     border-color: ${({ borderColor }) => borderColor};
   `)}
   padding: 16px;
-  border-radius: 0px;
+  border-radius: 16px;
   align-items: center;
   white-space: nowrap;
   justify-content: center;
@@ -108,7 +108,6 @@ const StyledLink = styled(
     disabled,
     transparent,
     reverse,
-    palette,
     theme,
     ...props
   }) => <Link {...props} />,

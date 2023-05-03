@@ -18,7 +18,7 @@ import PageAction from '../../components/organisms/PageAction/index';
 const Wrapper = styled(Flex)`
   flex: 1;
   flex-direction: column;
-  background-color: ${palette('grayscale', 2)}
+  background-color: ${palette('grayscale', 6)}
 `;
 
 const SectionContainer = styled(Flex)`
