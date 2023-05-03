@@ -74,6 +74,10 @@ const StyledInput = styled(Input)`
     }
   }
 `;
+const StyledCheckbox = styled(Input)`
+  width: 72px;
+  height: 72px;
+`;
 const ButtonsContainer = styled(Flex)`
   flex: 0;
   flex-basis: 100px;
@@ -136,7 +140,13 @@ const OrderItemInput = ({
         justifyContent: 'flex-end',
         flex: 0,
       },
-      cellTextStyle: { whiteSpace: 'nowrap' },
+      onClick: () => {
+        setValue(Number(orderItem.unit_quantity));
+      },
+      cellTextStyle: {
+        whiteSpace: 'nowrap',
+        textDecoration: 'underline',
+      },
     },
   ];
 
@@ -149,6 +159,7 @@ const OrderItemInput = ({
         const {
           cellStyle = {},
           cellTextStyle = {},
+          ...others
         } = cellKey;
         const key = typeof cellKey === 'string' ? cellKey : get(cellKey, 'key');
         const renderer = typeof cellKey.renderer === 'function' ? cellKey.renderer : defaultRenderer(key);
@@ -157,7 +168,7 @@ const OrderItemInput = ({
           ? orderItem[key]
           : renderer(orderItem);
         return (
-          <CellContainer key={key} style={cellStyle}>
+          <CellContainer key={key} style={cellStyle} {...others}>
             <StyledText style={cellTextStyle}>
               {cellLabel}
             </StyledText>
@@ -173,24 +184,20 @@ const OrderItemInput = ({
       />
       <ButtonsContainer>
         <Button
-          transparent
-          palette="white"
+          palette="blue"
           onClick={() => {
             setValue(Number(orderItem.unit_quantity));
           }}
         >
-          <Icon icon="check" size={isMobile ? 24 : 36} stroke="black" fill="black" />
+          <Icon icon="check" size={isMobile ? 24 : 36} stroke="white" fill="white" />
         </Button>
-        <Button
-          transparent
-          palette="white"
-          onClick={() => {
-            setValue(0);
+        <StyledCheckbox
+          type="checkbox"
+          inputStyle={{
+            width: 72,
+            height: 72,
           }}
-          style={{ marginLeft: 4 }}
-        >
-          <Icon icon="x" size={isMobile ? 24 : 36} stroke="black" fill="black" />
-        </Button>
+        />
       </ButtonsContainer>
     </Wrapper>
   );

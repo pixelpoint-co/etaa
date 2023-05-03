@@ -25,11 +25,13 @@ import Button from '../../components/atoms/Button';
 import LabelValue from '../../components/molecules/LabelValue';
 import usePurchaseData from '../../hooks/usePurchaseData';
 import OrderItemInput from '../../components/molecules/OrderItemInput';
+import AntDList from '../../components/organisms/AntDList';
 import PageAction from '../../components/organisms/PageAction';
 
 import {
   unformat, roundTo, convertUnit,
 } from '../../services/number';
+import Card from '../../components/atoms/Card';
 
 const Wrapper = styled(Flex)`
   flex: 1;
@@ -55,6 +57,7 @@ const ADD_INVETORY_LIST = gql`
 `;
 const DDContainer = styled(Flex)`
   flex-direction: column;
+  padding: 20px;
 `;
 const DummyDataField = (props) => {
   const [
@@ -67,30 +70,34 @@ const DummyDataField = (props) => {
   const onChange = helpers.setValue;
   return (
     <DDContainer>
-      {(purchaseList || []).map((orderItemData, i) => (
-        <OrderItemInput
-          key={`${orderItemData.order_id}${orderItemData.name}`}
-          {...props}
-          orderItem={orderItemData}
-          onChange={(e) => {
-            const newData = cloneDeep(value);
-            newData[i].unit_quantity = Number(e.target.value);
-            onChange(newData);
-          }}
-          setValue={(quantity) => {
-            const newData = cloneDeep(value);
-            newData[i].unit_quantity = quantity;
-            onChange(newData);
-          }}
-          max={orderItemData.unit_quantity}
-          min={0}
-          type="number"
-          value={_.get(value, [
-            i,
-            'unit_quantity',
-          ])}
+      <Card>
+        <AntDList
+          RowComponent={OrderItemInput}
+          dataSource={purchaseList.map((orderItemData, i) => ({
+            data: orderItemData,
+            key: `${orderItemData.order_id}${orderItemData.name}`,
+            ...props,
+            orderItem: orderItemData,
+            onChange: (e) => {
+              const newData = cloneDeep(value);
+              newData[i].unit_quantity = Number(e.target.value);
+              onChange(newData);
+            },
+            setValue: (quantity) => {
+              const newData = cloneDeep(value);
+              newData[i].unit_quantity = quantity;
+              onChange(newData);
+            },
+            max: orderItemData.unit_quantity,
+            min: 0,
+            type: 'number',
+            value: _.get(value, [
+              i,
+              'unit_quantity',
+            ]),
+          }))}
         />
-      ))}
+      </Card>
     </DDContainer>
   );
 };
@@ -252,10 +259,16 @@ const StorageEdit = () => {
             purchaseList={cloneDeep(parsedPurchaseItemList)}
             name="inventoryList"
           />
-          <PageAction actions={[]}>
-            <Button type="submit" label="저장" loaderStroke="white" loaderSize={32} loading={addInventoryListLoading} />
-          </PageAction>
-          <div style={{ padding: `${(50 + 15 + 15) / 2}px 0px` }} />
+          <PageAction
+            actions={[{
+              type: 'submit',
+              label: '저장',
+              loaderStroke: 'white',
+              loaderSize: 32,
+              loading: addInventoryListLoading,
+            }]}
+          />
+          <div style={{ padding: `${(76 + 15 + 15) / 2}px 0px` }} />
         </StyledForm>
       </Formik>
     </Wrapper>

@@ -113,7 +113,7 @@ const PurchaseRowLink = (props) => {
 const Inventory = () => {
   const {
     pId,
-    purchaseListData: data,
+    purchaseListData,
     loading,
     error,
   } = usePurchaseData({
@@ -131,9 +131,9 @@ const Inventory = () => {
     { onCompleted: addInventoryListCompleted },
   );
 
-  if (data == null) return null;
+  if (purchaseListData == null) return null;
   if (loading) return null;
-
+  const listSource = purchaseListData.map((d) => ({ data: d }));
   return (
     <Wrapper>
       <Button
@@ -141,7 +141,7 @@ const Inventory = () => {
         label="sdf"
       />
       <StyledList
-        data={data}
+        dataSource={listSource}
         RowComponent={PurchaseRowLink}
       />
     </Wrapper>
