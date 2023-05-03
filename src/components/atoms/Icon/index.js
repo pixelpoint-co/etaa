@@ -18,23 +18,6 @@ const ReactIcons = {
 };
 
 const fillStyle = css`
-  .filled {
-    fill: none;
-    stroke: none;
-  }
-  ${ifProp(
-    'filled',
-    css`
-      .filled {
-        fill: currentcolor;
-        stroke: currentcolor;
-      }
-      .unfilled {
-        fill: none;
-        stroke: none;
-      }
-    `,
-  )};
 `;
 
 const fillHover = css`
@@ -90,7 +73,7 @@ const Wrapper = styled.span`
   display: inline-block;
   color: ${ifProp(
     'palette',
-    // ifProp({ palette: 'white' }, palette({ gray: 0 }, 0), palette({ gray: 0 }, 3)),
+    ifProp({ palette: 'white' }, palette({ gray: 0 }, 0), palette({ blue: 0 }, 0)),
     'currentcolor',
     'white',
   )};
@@ -102,8 +85,14 @@ const Wrapper = styled.span`
   width: ${({
     size,
     width,
-    height,
-  }) => `${size || width || height}px`};
+  }) => `${size || width}px`};
+  ${ifProp(
+    'fill',
+    css`
+      width: 100%;
+      height: 100%;
+    `,
+  )}
 
   & > svg {
     position: absolute;
@@ -111,11 +100,8 @@ const Wrapper = styled.span`
     left: 0;
     width: 100%;
     height: 100%;
-    /* fill: currentcolor; */
-    /* stroke: currentcolor; */
     fill: ${(props) => (props.fill ? props.fill : '')};
     stroke: ${(props) => (props.stroke ? props.stroke : '')};
-    ${fillStyle};
   }
 
   ${ifProp(
@@ -137,7 +123,7 @@ const Icon = ({
   ...props
 }) => {
   const ReactIcon = ReactIcons[icon];
-  return <Wrapper {...props}>{ReactIcon && <ReactIcon />}</Wrapper>;
+  return <Wrapper {...props} className="icon">{ReactIcon && <ReactIcon />}</Wrapper>;
 };
 
 Icon.propTypes = {

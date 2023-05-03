@@ -5,9 +5,11 @@ import {
   font, palette,
 } from 'styled-theme';
 import { ifProp } from 'styled-tools';
+import theme from '../../../theme';
 import Flex from '../../atoms/Flex';
 import ButtonRadio from '../ButtonRadio';
 import Text from '../../atoms/P';
+import Icon from '../../atoms/Icon';
 
 const borderColor = ({
   disabled,
@@ -15,17 +17,25 @@ const borderColor = ({
 }) => {
   if (disabled) return palette('grayscale', 3);
   if (invalid) return palette('red', 0);
-  return palette('grayscale', 3);
+  return palette('primary', 0);
 };
 
 const hoverBorderColor = ({ disabled }) => {
-  return disabled ? palette('grayscale', 0) : palette('primary', 0);
+  return disabled ? palette('grayscale', 0) : palette('blue', 0);
 };
-
 const checkBorderColor = ({ disabled }) => {
-  return disabled ? palette('grayscale', 0) : palette('primary', 0);
+  return disabled ? palette('grayscale', 0) : palette('blue', 0);
 };
-
+const IconWrapper = styled(Flex)`
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  bottom: 16px;
+  right: 16px;
+  pointer-events: none;
+`;
+const StyledIcon = styled(Icon)`
+`;
 const styles = css`
   font-family: ${font('primary')};
   font-size: 16px;
@@ -49,18 +59,16 @@ const styles = css`
   color: ${ifProp('disabled', palette('grayscale', 0), palette('black', 0))};
   background-color: ${ifProp('disabled', palette('grayscale', 0), palette('grayscale', 6))};
   border: 2px solid ${borderColor};
-  border-radius: 0px;
+  border-radius: 16px;
   padding: 16px 20px;
   outline: none;
 
   &[type='checkbox'],
   &[type='radio'] {
-    display: inline-block;
-    border: 0;
-    border-radius: 0;
-    width: auto;
-    height: auto;
-    margin: 0 8px 0 0;
+    display: flex;
+    flex: 1;
+    border: 2px solid ${checkBorderColor};
+    background-color: ${ifProp('disabled', palette('grayscale', 0), palette('white', 0))};
   }
 
   &::placeholder {
@@ -68,7 +76,6 @@ const styles = css`
   }
 
   &:focus {
-    border-color: ${palette('primary', 0)};
   }
   ${ifProp(
     { type: 'number' },
@@ -94,21 +101,25 @@ const Wrapper = styled.label`
   justify-content: center;
   position: relative;
   margin-right: 8px;
-  margin-bottom: 0rem;
+  margin-bottom: 0px;
   user-select: none;
-  /* & > [type='checkbox'], */
+  & > [type='checkbox'],
   & > [type='radio'] {
-    position: absolute;
-    opacity: 0;
+    appearance: none;
+    cursor: pointer;
+    // position: absolute;
+    // opacity: 0;
+
+    // icon
+    :not(:checked) ~ div {
+      opacity: 0;
+    }
   }
-  & > .check {
+  & > [type='checkbox'] {
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    border: 0.0625rem solid; // 1px
-    border-color: ${borderColor};
-    background-color: ${palette('white', 0)};
-    border-radius: ${ifProp({ type: 'checkbox' }, '0.125rem', '100%')};
+
     height: 14px;
     width: 14px;
     &:hover {
@@ -184,6 +195,7 @@ const Input = ({ ...props }) => {
     label,
     required,
     inputStyle,
+    palette,
   } = props;
   if (type === 'textarea') {
     return <StyledTextarea {...props} style={inputStyle} />;
@@ -197,7 +209,14 @@ const Input = ({ ...props }) => {
             {!required && <RequiredText>(선택)</RequiredText>}
           </LabelWrapper>
         ) : null}
-        {type === 'checkbox' && <StyledInput {...props} style={inputStyle} />}
+        {type === 'checkbox' ? (
+          <>
+            <StyledInput {...props} style={inputStyle} />
+            <IconWrapper>
+              <StyledIcon icon="check" size={44} fill={theme.palette.blue[0]} />
+            </IconWrapper>
+          </>
+        ) : null}
         {type !== 'checkbox' && <StyledInput {...props} style={inputStyle} />}
         {type === 'radio' && <span className="check" />}
       </Wrapper>

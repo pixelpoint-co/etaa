@@ -1,22 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="72" height="72" viewBox="0 0 72 72">
-  <defs>
-    <clipPath id="clip-path">
-      <rect id="Rectangle_1216" data-name="Rectangle 1216" width="72" height="72" transform="translate(0.194 0.194)" fill="#fff"/>
-    </clipPath>
-    <clipPath id="clip-path-2">
-      <rect id="Rectangle_1218" data-name="Rectangle 1218" width="67.75" height="46.86" fill="#fff"/>
-    </clipPath>
-  </defs>
-  <g id="Group_1334" data-name="Group 1334" transform="translate(-2252.194 -360.194)">
-    <g id="Group_1333" data-name="Group 1333" transform="translate(2252 360)">
-      <g id="Group_1332" data-name="Group 1332" transform="translate(0 0)" clip-path="url(#clip-path)">
-        <g id="Group_1337" data-name="Group 1337" transform="translate(2.319 12.764)">
-          <g id="Group_1336" data-name="Group 1336" transform="translate(0 0)" clip-path="url(#clip-path-2)">
-            <path id="Path_538" data-name="Path 538" d="M27.907,46.861h-.039a4.028,4.028,0,0,1-2.978-1.355L1.017,18.648a4.032,4.032,0,1,1,6.03-5.355L27.965,36.821,60.753,1.3a4.033,4.033,0,0,1,5.93,5.468l-35.811,38.8a4.041,4.041,0,0,1-2.965,1.3" transform="translate(-0.001 -0.003)" fill="#fff"/>
-          </g>
-        </g>
-      </g>
-    </g>
-    <rect id="Rectangle_1217" data-name="Rectangle 1217" width="72" height="72" transform="translate(2252.194 360.194)" fill="none"/>
-  </g>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 27.4.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="레이어_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+	 y="0px" viewBox="0 0 70 49.5" style="enable-background:new 0 0 70 49.5;" xml:space="preserve">
+<path d="M28.83,48.96c-0.01,0-0.03,0-0.04,0c-1.18-0.01-2.29-0.52-3.08-1.4L1.05,19.81c-1.53-1.72-1.37-4.35,0.35-5.88
+	c1.71-1.52,4.35-1.38,5.88,0.35l21.61,24.31l33.88-36.7c1.57-1.7,4.2-1.79,5.89-0.24c1.69,1.56,1.8,4.2,0.24,5.89l-37,40.08
+	C31.11,48.47,30,48.96,28.83,48.96z"/>
 </svg>
