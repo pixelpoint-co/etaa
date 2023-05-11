@@ -6,6 +6,9 @@ import {
   palette, size,
 } from 'styled-theme';
 import styled from 'styled-components';
+import {
+  DatePicker, Space,
+} from 'antd';
 
 import { useParams } from 'react-router-dom';
 
@@ -20,26 +23,63 @@ import {
   gql, useMutation,
 } from '@apollo/client';
 
+import { withProp } from 'styled-tools';
 import Flex from '../../components/atoms/Flex';
 import Button from '../../components/atoms/Button';
 import LabelValue from '../../components/molecules/LabelValue';
 import usePurchaseData from '../../hooks/usePurchaseData';
 import OrderItemInput from '../../components/molecules/OrderItemInput';
 import AntDList from '../../components/organisms/AntDList';
+import Card from '../../components/atoms/Card';
 import PageAction from '../../components/organisms/PageAction';
+
+import InventoryTable from '../../containers/InventoryTable';
 
 import {
   unformat, roundTo, convertUnit,
 } from '../../services/number';
-import Card from '../../components/atoms/Card';
+import IconCard from '../../components/molecules/IconCard';
+import Heading from '../../components/atoms/Heading';
+import Divider from '../../components/atoms/Divider';
+
+import SaleSummary from '../../components/organisms/SaleSummary';
+
+const { RangePicker } = DatePicker;
 
 const Wrapper = styled(Flex)`
   flex: 1;
   flex-direction: column;
-  @media (max-width: ${size('mobileBreakpoint')}) {
-    overflow-x: auto;
-  }
+  padding: 20px;
 `;
+
+const OverViewCard = styled(Card)`
+  flex-direction: column;
+  flex: 1;
+  margin: 16px 0px;
+  padding: 16px;
+`;
+const OverViewHeader = styled(Flex)`
+  flex-direction: row;
+
+`;
+const HeadingContainer = styled(Flex)`
+  min-height: 90px;
+  align-items: center;
+  justify-content: space-between;
+`;
+const StyledHeading = styled(Heading)`
+  font-size: 22px;
+  line-height: 22px;
+`;
+const OverViewStatsContainer = styled(Flex)`
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 0px -10px 30px -10px;
+`;
+const OverviewStatContainer = styled(Flex)`
+  margin: 0px 10px;
+`;
+
 const StyledForm = styled(Form)`
   display: flex;
   flex: 1;
@@ -69,42 +109,13 @@ const DummyDataField = (props) => {
   const { value } = meta;
   const onChange = helpers.setValue;
   return (
-    <DDContainer>
-      <Card>
-        <AntDList
-          RowComponent={OrderItemInput}
-          dataSource={purchaseList.map((orderItemData, i) => ({
-            data: orderItemData,
-            key: `${orderItemData.order_id}${orderItemData.name}`,
-            ...props,
-            orderItem: orderItemData,
-            onChange: (e) => {
-              const newData = cloneDeep(value);
-              newData[i].unit_quantity = Number(e.target.value);
-              onChange(newData);
-            },
-            setValue: (quantity) => {
-              const newData = cloneDeep(value);
-              newData[i].unit_quantity = quantity;
-              onChange(newData);
-            },
-            max: orderItemData.unit_quantity,
-            min: 0,
-            type: 'number',
-            value: _.get(value, [
-              i,
-              'unit_quantity',
-            ]),
-          }))}
-        />
-      </Card>
-    </DDContainer>
+    <DDContainer />
   );
 };
 
 const today = moment().toISOString(); // TODO waiter db.Timestamp에 따라 수동으로 UTC기준으로 전환
 
-const StorageEdit = () => {
+const InventoryDashboard = () => {
   const { id } = useParams();
   const {
     purchaseData: data,
@@ -210,12 +221,7 @@ const StorageEdit = () => {
       ),
     };
   });
-  console.log({
-    inventoryList,
-    formattedInventoryList,
-    formattedPurchaseItemList,
-    listData,
-  });
+  console.log('입고');
 
   const {
     created,
@@ -224,64 +230,54 @@ const StorageEdit = () => {
   const createdAt = moment(Number(created));
   return (
     <Wrapper>
-      <LabelValue
-        style={{ padding: 15 }}
-        bold
-        label={`기록날짜 (${account})`}
-        value={`${createdAt.format('YYYY-MM-DD')}`}
-      />
-      <Formik
-        initialValues={{
-          parsedPurchaseItemList: formattedPurchaseItemList,
-          inventoryList: cloneDeep(formattedInventoryList),
-        }}
-        onSubmit={(values) => {
-          const { inventoryList } = values;
-          const formattedInventoryList = inventoryList.map((v) => {
-            const gramAmount = convertUnit(v.unit_amount, v.unit, v.unit_quantity);
-            return {
-              purchaseId: v.purchase_id,
-              id: v.id,
-              name: v.name,
-              unitQuantity: gramAmount,
-              // unitWeight: 'g',
-              unitPrice: roundTo(
-                unformat(v.unit_price) / gramAmount,
-                4,
-              ),
-            };
-          });
-          addInventoryList({ variables: { inventoryList: formattedInventoryList } });
-        }}
-      >
-        <StyledForm>
-          <DummyDataField
-            purchaseList={cloneDeep(parsedPurchaseItemList)}
-            name="inventoryList"
+      <HeadingContainer>
+        <StyledHeading level={3}>
+          Overview
+        </StyledHeading>
+        <RangePicker
+          format="YYYY/MM/DD"
+        />
+      </HeadingContainer>
+      <OverViewStatsContainer>
+        <OverviewStatContainer>
+          <SaleSummary
+            title="사용량"
+            diffTitle="지난 주"
+            value={68}
+            diffValue={40}
+            formatValue={(v) => `${v}회`}
           />
-          <PageAction
-            actions={[
-              {
-                type: 'submit',
-                label: '저장',
-                loaderStroke: 'white',
-                loaderSize: 32,
-                loading: addInventoryListLoading,
-              },
-              {
-                type: 'submit',
-                label: '저장',
-                loaderStroke: 'white',
-                loaderSize: 32,
-                loading: addInventoryListLoading,
-              },
-            ]}
+        </OverviewStatContainer>
+        <OverviewStatContainer>
+          <SaleSummary
+            title="출고액"
+            diffTitle="지난 주"
+            value={287000}
+            diffValue={287000}
           />
-          <div style={{ padding: `${(76 + 15 + 15) / 2}px 0px` }} />
-        </StyledForm>
-      </Formik>
+        </OverviewStatContainer>
+        <OverviewStatContainer>
+          <SaleSummary
+            title="총 재고 보유액"
+            diffTitle="지난 주"
+            value={249000}
+            diffValue={227000}
+          />
+        </OverviewStatContainer>
+
+      </OverViewStatsContainer>
+
+      <HeadingContainer>
+        <StyledHeading level={3}>
+          판매가능재고
+        </StyledHeading>
+
+      </HeadingContainer>
+      <Card style={{ padding: 16 }}>
+        <InventoryTable />
+      </Card>
     </Wrapper>
   );
 };
 
-export default StorageEdit;
+export default InventoryDashboard;

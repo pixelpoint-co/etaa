@@ -10,6 +10,7 @@ import Header from '../../containers/Header';
 
 import EditView from './EditView';
 import ListView from './ListView';
+import Dashboard from './Dashboard.js';
 
 const PageWrapper = styled(Flex)`
   flex-direction: column;
@@ -27,7 +28,8 @@ const StoragePage = () => {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        <Route path="/" element={<ListView />} />
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/list" element={<ListView />} />
         <Route path="/edit/:id" element={<EditView />} />
       </Route>
     </Routes>

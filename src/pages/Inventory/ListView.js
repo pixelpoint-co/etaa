@@ -31,7 +31,6 @@ import {
 const Wrapper = styled(Flex)`
   flex: 1;
   flex-direction: column;
-  max-height: 500px;
 `;
 const StyledList = styled(AntDTable)`
   flex: 1;

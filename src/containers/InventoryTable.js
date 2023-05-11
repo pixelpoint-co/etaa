@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import {
   Formik, useField, Form,
 } from 'formik';
@@ -12,19 +13,20 @@ import {
   gql, useMutation,
 } from '@apollo/client';
 
-import Flex from '../../components/atoms/Flex';
-import Button from '../../components/atoms/Button';
-import Link from '../../components/atoms/Link';
+import Flex from '../components/atoms/Flex';
+import Button from '../components/atoms/Button';
+import Link from '../components/atoms/Link';
 
-import useInventoryData from '../../hooks/useInventoryData';
-import PurchaseRow from '../../components/organisms/PurchaseRow';
-import AntDTable from '../../components/organisms/AntDTable';
-import Cell from '../../components/atoms/AntDTableCell';
+import PurchaseRow from '../components/organisms/PurchaseRow';
+import AntDTable from '../components/organisms/AntDTable';
+import Cell from '../components/atoms/AntDTableCell';
 
+import useInventoryData from '../hooks/useInventoryData';
+import useQueryParams from '../hooks/useQueryParams';
 import {
   formatCurrency,
   formatNumber,
-} from '../../services/number';
+} from '../services/number';
 
 const Wrapper = styled(Flex)`
   flex: 1;
@@ -48,31 +50,6 @@ const ADD_INVETORY_LIST = gql`
   }
 `;
 
-const today = moment().startOf('day');
-const startDate = today.subtract(7, 'days');
-const endDate = moment().endOf('day');
-
-const PurchaseRowLink = (props) => {
-  const { data } = props;
-  return (
-    <Link
-      fill
-      to={`/storage/edit/${data.id}`}
-      // to={`/storage/edit/group?startDate=${todayStart}&endDate=${todayEnd}`}
-    >
-      <PurchaseRow {...props} />
-    </Link>
-  );
-};
-// id 				: Int
-// productId		: Int
-// name 			: String
-// amount 			: Int
-// unitPrice 		: Float
-// parentId 		: Int
-// created 		: String
-// unitWeight 		: Int
-// unitQuantity 	: Int
 const cellRenderers = [
   {
     title: 'Id',
@@ -143,22 +120,38 @@ const cellRenderers = [
 
 const Storage = () => {
   const {
-    data,
-    loading,
-    error,
-  } = useInventoryData({});
-
-  const addInventoryListCompleted = () => {
-    console.log('add inventory db');
-  };
-
-  const [addInventoryList] = useMutation(
-    ADD_INVETORY_LIST,
-    { onCompleted: addInventoryListCompleted },
+    queryParams,
+    setQueryParams,
+  } = useQueryParams(
+    {
+      initialQueryParams: {
+        page: 1,
+        pageSize: 10,
+      },
+    },
   );
 
-  if (data == null) return null;
-  if (loading) return null;
+  const {
+    data,
+    count,
+    loading,
+    error,
+  } = useInventoryData({
+    limit: Number(queryParams.pageSize),
+    offset: (queryParams.pageSize * (queryParams.page - 1)) || 0,
+  });
+
+  const {
+    pageSize,
+    page: currentPage,
+  } = queryParams;
+
+  const onPageChange = useCallback(async ({ currentPage: newPage }) => {
+    setQueryParams((prev) => ({
+      ...prev,
+      page: newPage,
+    }));
+  }, [setQueryParams]);
 
   return (
     <Wrapper>
@@ -166,27 +159,12 @@ const Storage = () => {
         modelName="model"
         cellRenderers={cellRenderers}
         data={data}
-        itemsPerPage={10}
-        currentPage={1}
-        count={data.length}
+        itemsPerPage={pageSize}
+        onPageChange={onPageChange}
+        currentPage={currentPage}
+        count={count}
         rowKey="id"
       />
-      {/* dataSource={data}
-        rowKey={rowKey}
-        expandable={expandable}
-        pagination={itemsPerPage > 0 ? {
-          ...pagination,
-          total: count,
-          current: Number(currentPage),
-          simple: isMobile,
-          hideOnSinglePage: false,
-        } : false}
-        scroll={true || scroll}
-        onChange={handleChange}
-        isExpanded={isExpanded}
-        loading={loading}
-        tableLayout={tableLayout}
-        rowSelection={rowSelection} */}
     </Wrapper>
   );
 };

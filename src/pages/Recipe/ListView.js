@@ -10,7 +10,6 @@ import useTableData from '../../hooks/useTableData';
 const Wrapper = styled(Flex)`
   flex: 1;
   flex-direction: column;
-  max-height: 500px;
 `;
 
 const cellRenderers = [
