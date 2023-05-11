@@ -2,10 +2,9 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
+import { font } from 'styled-theme';
 import {
-  palette, font,
-} from 'styled-theme';
-import {
+  palette,
   ifProp, switchProp, prop,
 } from 'styled-tools';
 import Spinner from '../Spinner';
@@ -200,6 +199,7 @@ Button.propTypes = {
   href: PropTypes.string,
   label: PropTypes.string,
   palette: PropTypes.string,
+  loading: PropTypes.bool,
 };
 
 Button.defaultProps = {
@@ -209,6 +209,7 @@ Button.defaultProps = {
   href: null,
   type: 'button',
   label: null,
+  loading: false,
 };
 
 export default Button;

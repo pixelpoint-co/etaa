@@ -49,7 +49,7 @@ const routes = [
 const Wrapper = styled(Flex)`
   flex-direction: row;
   flex-grow: 1;
-  background: ${palette('grayscale', 6)};
+  background: ${palette('grayscale', 5)};
   box-shadow: rgba(50, 50, 93, 0.1) 0px 2px 4px;
   height: 100%;
   overflow: auto;

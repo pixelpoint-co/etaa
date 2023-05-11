@@ -66,7 +66,7 @@ const styles = css`
   &[type='checkbox'],
   &[type='radio'] {
     display: flex;
-    flex: 1;
+    flex: initial;
     border: 2px solid ${checkBorderColor};
     background-color: ${ifProp('disabled', palette('grayscale', 0), palette('white', 0))};
 

@@ -17,14 +17,17 @@ const styles = css`
   font-size: ${switchProp(prop('level'), {
     1: '30px',
     2: '26px',
+    3: '16px',
   })};
   line-height: ${switchProp(prop('level'), {
     1: '36px',
     2: '30px',
+    3: '16px',
   })};
   font-weight: ${switchProp(prop('level'), {
     1: '700', // bold
     2: '500', // medium
+    3: '500', // medium
   })};
   text-align: ${ifProp({ center: true }, 'center')};
 `;
