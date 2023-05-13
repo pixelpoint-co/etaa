@@ -125,7 +125,9 @@ const InventoryDashboard = () => {
   } = usePurchaseData({
     id,
     created: today,
-    startDate: moment(today).subtract(1, 'day'),
+    startDate: moment(today).subtract(
+      1, 'day',
+    ),
     endDate: today,
     type: 'many',
   });
@@ -154,7 +156,9 @@ const InventoryDashboard = () => {
   if (loading) return null;
   const parsedPurchaseItemList = reduce(
     listData,
-    (ac, cu) => {
+    (
+      ac, cu,
+    ) => {
       return [
         ...ac,
         ...cu.detail.map((purchaseItem) => ({
@@ -170,7 +174,9 @@ const InventoryDashboard = () => {
   );
   const inventoryList = reduce(
     listData,
-    (ac, cu) => {
+    (
+      ac, cu,
+    ) => {
       const { inventory } = cu;
       return [
         ...ac,
@@ -186,12 +192,16 @@ const InventoryDashboard = () => {
     .map((item) => {
       return item.name;
     })
-    .reduce((ac, cu) => {
-      return {
-        ...ac,
-        [cu]: (ac[cu] || 0) + 1,
-      };
-    }, {});
+    .reduce(
+      (
+        ac, cu,
+      ) => {
+        return {
+          ...ac,
+          [cu]: (ac[cu] || 0) + 1,
+        };
+      }, {},
+    );
   const currentCountByName = _.mapValues(
     totalCountByName,
     (val) => {
@@ -261,7 +271,7 @@ const InventoryDashboard = () => {
             title="총 재고 보유액"
             diffTitle="지난 주"
             value={249000}
-            diffValue={227000}
+            diffValue={287000}
           />
         </OverviewStatContainer>
 
