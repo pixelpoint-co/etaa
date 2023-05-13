@@ -158,7 +158,9 @@ const OrderItemInput = ({
           cellTextStyle = {},
           ...others
         } = cellKey;
-        const key = typeof cellKey === 'string' ? cellKey : get(cellKey, 'key');
+        const key = typeof cellKey === 'string' ? cellKey : get(
+          cellKey, 'key',
+        );
         const renderer = typeof cellKey.renderer === 'function' ? cellKey.renderer : defaultRenderer(key);
 
         const cellLabel = typeof cellKey === 'string'
@@ -180,14 +182,6 @@ const OrderItemInput = ({
         value={value}
       />
       <ButtonsContainer>
-        {/* <Button
-          palette="blue"
-          onClick={() => {
-            setValue(Number(orderItem.unit_quantity));
-          }}
-        >
-          <Icon icon="check" size={isMobile ? 24 : 36} stroke="white" fill="white" />
-        </Button> */}
         <StyledCheckbox
           type="checkbox"
           inputStyle={{

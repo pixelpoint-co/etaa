@@ -30,17 +30,29 @@ const Container = styled(Flex)`
     !filled
       // eslint-disable-next-line no-nested-ternary
       ? (value === 0
-        ? hexToRgba(theme.palette.primary[0], 0.1)
+        ? hexToRgba(
+          theme.palette.grayscale[0], 0.1,
+        )
         : (value > 0
-          ? hexToRgba(theme.palette.orange[0], 0.1)
-          : hexToRgba(theme.palette.blue[0], 0.1)
+          ? hexToRgba(
+            theme.palette.orange[0], 0.1,
+          )
+          : hexToRgba(
+            theme.palette.blue[0], 0.1,
+          )
         )
         // eslint-disable-next-line no-nested-ternary
       ) : (value === 0
-        ? hexToRgba(theme.palette.primary[0], 1)
+        ? hexToRgba(
+          theme.palette.grayscale[0], 1,
+        )
         : (value > 0
-          ? hexToRgba(theme.palette.orange[0], 1)
-          : hexToRgba(theme.palette.blue[0], 1)
+          ? hexToRgba(
+            theme.palette.orange[0], 1,
+          )
+          : hexToRgba(
+            theme.palette.blue[0], 1,
+          )
         )
       )
   )};
@@ -55,8 +67,14 @@ const SignContainer = styled(Flex)`
     filled ? (value === 0 ? 'black' : 'white')
     // eslint-disable-next-line no-nested-ternary
       : (value === 0
-        ? hexToRgba(theme.palette.primary[0], 1)
-        : (value > 0 ? palette('orange', 0) : palette('blue', 0)))
+        ? hexToRgba(
+          theme.palette.grayscale[0], 1,
+        )
+        : (value > 0 ? palette(
+          'orange', 0,
+        ) : palette(
+          'blue', 0,
+        )))
   )};
 `;
 const Sign = styled(P)`
@@ -68,8 +86,14 @@ const Sign = styled(P)`
     filled ? (value === 0 ? 'black' : 'white')
     // eslint-disable-next-line no-nested-ternary
       : (value === 0
-        ? hexToRgba(theme.palette.primary[0], 1)
-        : (value > 0 ? palette('orange', 0) : palette('blue', 0)))
+        ? hexToRgba(
+          theme.palette.grayscale[0], 1,
+        )
+        : (value > 0 ? palette(
+          'orange', 0,
+        ) : palette(
+          'blue', 0,
+        )))
   )};
 `;
 
@@ -83,13 +107,21 @@ const Value = styled(P)`
     filled ? (value === 0 ? 'black' : 'white')
     // eslint-disable-next-line no-nested-ternary
       : (value === 0
-        ? hexToRgba(theme.palette.primary[0], 1)
-        : (value > 0 ? palette('orange', 0) : palette('blue', 0)))
+        ? hexToRgba(
+          theme.palette.grayscale[0], 1,
+        )
+        : (value > 0 ? palette(
+          'orange', 0,
+        ) : palette(
+          'blue', 0,
+        )))
   )};
 `;
 
 function numberWithCommas(x) {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return x.toString().replace(
+    /\B(?=(\d{3})+(?!\d))/g, ',',
+  );
 }
 
 const DiffText = (props) => {
@@ -100,7 +132,9 @@ const DiffText = (props) => {
     ...otherProps
   } = props;
 
-  const formattedValue = numberWithCommas(Math.abs(round(value, 2)));
+  const formattedValue = numberWithCommas(Math.abs(round(
+    value, 2,
+  )));
   const isPositive = value >= 0;
   // eslint-disable-next-line no-nested-ternary
   const sign = value === 0 ? null : (

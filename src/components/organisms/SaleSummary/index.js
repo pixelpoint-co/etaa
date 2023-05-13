@@ -22,32 +22,40 @@ const Title = styled(Text)`
   white-space: nowrap;
   font-size: 22px;
   line-height: 22px;
-  color: ${palette('grayscale', 2)};
+  color: ${palette(
+    'grayscale', 2,
+  )};
 `;
 const Value = styled(Text)`
   white-space: nowrap;
   font-weight: bold;
   font-size: 30px;
+  font-weight: 600;
   line-height: 30px;
   margin-top: 10px;
   margin-bottom: 10px;
 `;
 const DiffValue = styled(Value)`
   margin-left: 16px;
+  font-size: 22px;
+  font-weight: 500;
 `;
 
 const DiffContainer = styled(Flex)`
   flex-direction: row;
   align-items: center;
+
 `;
 const DiffTitle = styled(Text)`
   white-space: nowrap;
   font-size: 14px;
-  color: ${palette('grayscale', 2)};
+  color: ${palette(
+    'grayscale', 2,
+  )};
 `;
 
 const StyledDiffText = styled(DiffText)`
-  margin-left: 20px;
+  margin-left: auto;
 `;
 
 const SaleSummary = (props) => {
@@ -70,7 +78,7 @@ const SaleSummary = (props) => {
         <DiffTitle>{diffTitle}</DiffTitle>
         <DiffValue>{formatValue(diffValue)}</DiffValue>
         <StyledDiffText
-          value={((diffValue - value) / value) * 100}
+          value={((value - diffValue) / value) * 100}
           filled={false}
           type="percentage"
         />
