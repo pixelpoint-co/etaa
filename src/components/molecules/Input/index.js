@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
+import { font } from 'styled-theme';
 import {
-  font, palette,
-} from 'styled-theme';
-import { ifProp } from 'styled-tools';
+  palette, ifProp,
+} from 'styled-tools';
 import theme from '../../../theme';
 import Flex from '../../atoms/Flex';
 import ButtonRadio from '../ButtonRadio';
@@ -15,16 +15,44 @@ const borderColor = ({
   disabled,
   invalid,
 }) => {
-  if (disabled) return palette('grayscale', 3);
-  if (invalid) return palette('red', 0);
-  return palette('grayscale', 5);
+  if (disabled) {
+    return palette(
+      'grayscale',
+      3,
+    );
+  }
+  if (invalid) {
+    return palette(
+      'red',
+      0,
+    );
+  }
+  return palette(
+    {
+      grayscale: 5,
+      primary: 0,
+    },
+    0,
+  );
 };
 
 const hoverBorderColor = ({ disabled }) => {
-  return disabled ? palette('grayscale', 0) : palette('blue', 0);
+  return disabled ? palette(
+    'grayscale',
+    0,
+  ) : palette(
+    'blue',
+    0,
+  );
 };
 const checkBorderColor = ({ disabled }) => {
-  return disabled ? palette('grayscale', 0) : palette('blue', 0);
+  return disabled ? palette(
+    'grayscale',
+    0,
+  ) : palette(
+    'blue',
+    0,
+  );
 };
 const IconWrapper = styled(Flex)`
   position: absolute;
@@ -54,10 +82,34 @@ const styles = css`
     css`
       min-height: 24px;
     `,
-  )} padding: ${ifProp({ type: 'textarea' }, '8px', '0 8px')};
+  )} padding: ${ifProp(
+  { type: 'textarea' },
+  '8px',
+  '0 8px',
+)};
   box-sizing: border-box;
-  color: ${ifProp('disabled', palette('grayscale', 0), palette('black', 0))};
-  background-color: ${ifProp('disabled', palette('grayscale', 6), palette('grayscale', 7))};
+  color: ${ifProp(
+    'disabled',
+    palette(
+      'grayscale',
+      0,
+    ),
+    palette(
+      'black',
+      0,
+    ),
+  )};
+  background-color: ${ifProp(
+    'disabled',
+    palette(
+      'grayscale',
+      6,
+    ),
+    palette(
+      'grayscale',
+      7,
+    ),
+  )};
   border: 2px solid ${borderColor};
   border-radius: 16px;
   padding: 16px 20px;
@@ -68,17 +120,37 @@ const styles = css`
     display: flex;
     flex: initial;
     border: 2px solid ${checkBorderColor};
-    background-color: ${ifProp('disabled', palette('grayscale', 0), palette('white', 0))};
+    background-color: ${ifProp(
+    'disabled',
+    palette(
+      'grayscale',
+      0,
+    ),
+    palette(
+      'white',
+      0,
+    ),
+  )};
 
 
   }
 
   &::placeholder {
-    color: ${palette('grayscale', 0)};
+    color: ${palette(
+    'grayscale',
+    3,
+  )};
   }
 
   &:focus {
-    border: 2px solid ${palette('blue', 0)};
+    ${({ invalid }) => (
+    !invalid
+      ? css`border-color: ${palette(
+        'blue',
+        0,
+      )};`
+      : null)
+}
   }
   ${ifProp(
     { type: 'number' },
@@ -98,13 +170,11 @@ const styles = css`
 
 const Wrapper = styled.label`
   display: flex;
-  flex: 1;
   flex-direction: column;
   align-items: flex-start;
   vertical-align: middle;
   justify-content: center;
   position: relative;
-  margin-right: 8px;
   margin-bottom: 0px;
   user-select: none;
   & > [type='checkbox'],
@@ -160,9 +230,29 @@ const Wrapper = styled.label`
     { type: 'checkbox' },
     css`
         // checkbox
-        background-color: ${ifProp('disabled', palette('white', 0), palette('primary', 3))};
+        background-color: ${ifProp(
+    'disabled',
+    palette(
+      'white',
+      0,
+    ),
+    palette(
+      'primary',
+      3,
+    ),
+  )};
         & > svg {
-          stroke: ${ifProp('disabled', palette('grayscale', 4), palette('white', 0))};
+          stroke: ${ifProp(
+    'disabled',
+    palette(
+      'grayscale',
+      4,
+    ),
+    palette(
+      'white',
+      0,
+    ),
+  )};
         }
       `,
     css`
@@ -183,13 +273,26 @@ const StyledInput = styled.input`
 `;
 const LabelWrapper = styled(Flex)`
   left: 8px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   font-family: ${font('primary')};
   font-size: 18px;
-  color: ${ifProp('disabled', palette('grayscale', 4), palette('black', 0))};
+  color: ${ifProp(
+    'disabled',
+    palette(
+      'grayscale',
+      4,
+    ),
+    palette(
+      'black',
+      0,
+    ),
+  )};
 `;
 const RequiredText = styled(Text)`
-  color: ${palette('primary', 0)};
+  color: ${palette(
+    'primary',
+    0,
+  )};
   margin-left: 8px;
 `;
 
@@ -252,7 +355,7 @@ const Input = ({ ...props }) => {
           {!required && <RequiredText>(선택)</RequiredText>}
         </LabelWrapper>
       ) : null}
-      <StyledInput {...props} />
+      <StyledInput {...props} style={inputStyle} />
     </Wrapper>
   );
 };
@@ -262,6 +365,7 @@ Input.propTypes = {
   reverse: PropTypes.bool,
   invalid: PropTypes.bool,
   label: PropTypes.string,
+  tone: PropTypes.number,
 };
 
 Input.defaultProps = { type: 'text' };

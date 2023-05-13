@@ -10,38 +10,48 @@ import {
 
 const styles = css`
   font-family: ${(props) => (props.fontFamily ? props.fontFamily : font('primary'))};
-  color: ${palette({
-    grayscale: 1,
-    secondary: 0,
-  }, 0)};
-  font-size: ${switchProp(prop('level'), {
-    1: '30px',
-    2: '26px',
-    3: '16px',
-  })};
-  line-height: ${switchProp(prop('level'), {
-    1: '36px',
-    2: '30px',
-    3: '16px',
-  })};
-  font-weight: ${switchProp(prop('level'), {
-    1: '700', // bold
-    2: '500', // medium
-    3: '500', // medium
-  })};
-  text-align: ${ifProp({ center: true }, 'center')};
+  color: ${palette(
+    {
+      grayscale: 0,
+      secondary: 0,
+    }, 0,
+  )};
+  font-size: ${switchProp(
+    prop('level'), {
+      1: '30px',
+      2: '26px',
+      3: '16px',
+    },
+  )};
+  line-height: ${switchProp(
+    prop('level'), {
+      1: '36px',
+      2: '30px',
+      3: '16px',
+    },
+  )};
+  font-weight: ${switchProp(
+    prop('level'), {
+      1: '700', // bold
+      2: '500', // medium
+      3: '500', // medium
+    },
+  )};
+  text-align: ${ifProp(
+    { center: true }, 'center',
+  )};
 `;
 
-const Heading = styled(
-  ({
-    level,
-    children,
-    reverse,
-    palette,
-    theme,
-    ...props
-  }) => React.createElement(`h${level}`, props, children),
-)`
+const Heading = styled(({
+  level,
+  children,
+  reverse,
+  palette,
+  theme,
+  ...props
+}) => React.createElement(
+  `h${level}`, props, children,
+))`
   ${styles};
 `;
 
@@ -54,7 +64,7 @@ Heading.propTypes = {
 
 Heading.defaultProps = {
   level: 1,
-  palette: 'primary',
+  palette: 'grayscale',
 };
 
 export default Heading;

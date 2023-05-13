@@ -68,8 +68,8 @@ const AntDList = (props) => {
 };
 
 AntDList.defaultProps = {
-  verticalMargin: 8,
-  horizontalMargin: 16,
+  verticalMargin: 0,
+  horizontalMargin: 0,
 };
 
 AntDList.propTypes = {

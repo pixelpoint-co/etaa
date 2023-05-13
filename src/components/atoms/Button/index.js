@@ -17,17 +17,29 @@ const backgroundColor = ({
   disabled,
   primary,
 }) => {
-  if (disabled) return palette('grayscale', 0);
+  if (disabled) {
+    return palette(
+      'grayscale', 0,
+    );
+  }
   if (transparent) return 'transparent';
-  return palette(0);
+  return palette(
+    { primary: 0 }, 0,
+  );
 };
 
 const foregroundColor = ({
   transparent,
   disabled,
 }) => {
-  if (transparent) return palette('primary', 0);
-  return palette('white', 0);
+  if (transparent) {
+    return palette(
+      'primary', 0,
+    );
+  }
+  return palette(
+    'white', 0,
+  );
 };
 
 const borderColor = (props) => {
@@ -39,7 +51,9 @@ const borderColor = (props) => {
 const hoverBackgroundColor = ({
   disabled,
   transparent,
-}) => !disabled && (transparent ? palette('white', 1) : palette(0));
+}) => !disabled && (transparent ? palette(
+  'white', 1,
+) : palette(0));
 const hoverForegroundColor = ({
   disabled,
   transparent,
@@ -54,16 +68,22 @@ const styles = css`
   font-size: 14px;
   font-weight: 500;
   line-height: 14px;
-  ${ifProp('borderColor', css`
+  ${ifProp(
+    'borderColor', css`
     border-color: ${({ borderColor }) => borderColor};
-  `)}
+  `,
+  )}
   padding: 16px;
   border-radius: 16px;
   align-items: center;
   white-space: nowrap;
   justify-content: center;
-  cursor: ${ifProp('disabled', 'no-drop', 'pointer')};
-  pointer-events: ${ifProp('disabled', 'none', 'auto')};
+  cursor: ${ifProp(
+    'disabled', 'no-drop', 'pointer',
+  )};
+  pointer-events: ${ifProp(
+    'disabled', 'none', 'auto',
+  )};
   transition: all 0.15s ease;
 
   color: ${foregroundColor};
@@ -90,7 +110,9 @@ const styles = css`
 
 const StyledText = styled(Text)`
   color: ${foregroundColor};
-  opacity: ${ifProp('loading', 0, 1)};
+  opacity: ${ifProp(
+    'loading', 0, 1,
+  )};
 `;
 
 const SpinnerContainer = styled(Flex)`
@@ -109,8 +131,7 @@ const StyledLink = styled(
     reverse,
     theme,
     ...props
-  }) => <Link {...props} />,
-)`
+  }) => <Link {...props} />)`
   ${styles};
 `;
 const Anchor = styled.a`
@@ -148,13 +169,17 @@ const Button = ({
     setLoading(true);
     if (loading) return null;
     return new Promise((resolve) => {
-      setTimeout(() => resolve(), 100);
+      setTimeout(
+        () => resolve(), 100,
+      );
     })
       .then(() => Promise.resolve(onClick(...args)))
       .then((result) => {
-        setTimeout(() => {
-          setLoading(false);
-        }, 100);
+        setTimeout(
+          () => {
+            setLoading(false);
+          }, 100,
+        );
         return result;
       })
       .catch((e) => {
