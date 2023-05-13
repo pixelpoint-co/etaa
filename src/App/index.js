@@ -11,6 +11,8 @@ import styled from 'styled-components';
 import NotFound from '../pages/NotFound';
 import Home from '../pages/Home';
 import Inventory from '../pages/Inventory';
+import Purchase from '../pages/Purchase';
+import SignIn from '../pages/SignIn';
 import Storage from '../pages/Storage';
 import Recipe from '../pages/Recipe';
 import LeftMenu from '../containers/LeftMenu';
@@ -19,6 +21,12 @@ import Header from '../containers/Header';
 import Flex from '../components/atoms/Flex';
 
 const routes = [
+  {
+    label: '발주',
+    href: '/purchase/*',
+    element: <Purchase />,
+    rootRoute: true,
+  },
   {
     label: '입고',
     href: '/storage/*',
@@ -49,7 +57,9 @@ const routes = [
 const Wrapper = styled(Flex)`
   flex-direction: row;
   flex-grow: 1;
-  background: ${palette('grayscale', 5)};
+  background: ${palette(
+    'grayscale', 5,
+  )};
   box-shadow: rgba(50, 50, 93, 0.1) 0px 2px 4px;
   height: 100%;
   overflow: auto;
@@ -87,6 +97,7 @@ const App = () => {
   return (
     <Wrapper>
       <Routes>
+        <Route path="/signin" element={<SignIn />} />
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           {routes.map((route) => {

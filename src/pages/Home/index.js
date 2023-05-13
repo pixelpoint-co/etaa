@@ -1,8 +1,10 @@
 // import { connect } from 'react-redux';
 import {
   useNavigate,
+  Navigate,
   useLocation,
 } from 'react-router-dom';
+
 import styled from 'styled-components';
 import {
   size, palette,
@@ -18,7 +20,9 @@ import PageAction from '../../components/organisms/PageAction/index';
 const Wrapper = styled(Flex)`
   flex: 1;
   flex-direction: column;
-  background-color: ${palette('grayscale', 6)};
+  background-color: ${palette(
+    'grayscale', 6,
+  )};
 `;
 
 const SectionContainer = styled(Flex)`
@@ -94,7 +98,7 @@ const Home = ({
 
   const { from } = location.state || { from: { pathname: getDefaultPathName() } };
 
-  // if (authenticated) return <Navigate to={from} />; // todo
+  if (authenticated) return <Navigate to={from} />; // todo
 
   return (
     <Wrapper>
