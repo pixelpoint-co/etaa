@@ -23,18 +23,15 @@ import OrderItemInput from '../../components/molecules/OrderItemInput';
 import PurchaseRow from '../../components/organisms/PurchaseRow';
 import AntDList from '../../components/organisms/AntDList';
 
-import { unformat } from '../../services/number';
+import {
+  unformat,
+} from '../../services/number';
 
 const Wrapper = styled(Flex)`
   flex: 1;
   flex-direction: column;
 `;
 const StyledList = styled(AntDList)`
-  flex: 1;
-`;
-const StyledForm = styled(Form)`
-  display: flex;
-  flex-direction: column;
   flex: 1;
 `;
 
@@ -47,51 +44,11 @@ const ADD_INVETORY_LIST = gql`
   }
 `;
 
-const DummyDataField = (props) => {
-  const [
-    field,
-    meta,
-    helpers,
-  ] = useField(props);
-  const { orderData } = props;
-  const { value } = meta;
-  const onChange = helpers.setValue;
-  console.log('orderData: ', orderData);
-  console.log('value: ', value);
-  return (
-    <div>
-      {(orderData || []).map((orderItemData, i) => (
-        <OrderItemInput
-          key={`${orderItemData.order_id}${orderItemData.name}`}
-          {...props}
-          orderItem={orderItemData}
-          onChange={(e) => {
-            const newData = cloneDeep(value);
-            newData[i].unit_quantity = Number(e.target.value);
-            onChange(newData);
-          }}
-          setValue={(quantity) => {
-            console.log('value: ', value);
-
-            const newData = cloneDeep(value);
-            newData[i].unit_quantity = quantity;
-            onChange(newData);
-          }}
-          max={orderItemData.unit_quantity}
-          min={0}
-          type="number"
-          value={_.get(value, [
-            i,
-            'unit_quantity',
-          ])}
-        />
-      ))}
-    </div>
-  );
-};
-
 const today = moment().startOf('day');
-const startDate = today.subtract(7, 'days');
+const startDate = today.subtract(
+  3,
+  'days',
+);
 const endDate = moment().endOf('day');
 
 const PurchaseRowLink = (props) => {

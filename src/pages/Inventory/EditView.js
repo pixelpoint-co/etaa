@@ -7,7 +7,9 @@ import {
 } from 'styled-theme';
 import styled from 'styled-components';
 
-import { useParams } from 'react-router-dom';
+import {
+  useParams,
+} from 'react-router-dom';
 
 import moment from 'moment';
 import _, {
@@ -34,7 +36,6 @@ import {
 import Card from '../../components/atoms/Card';
 
 const Wrapper = styled(Flex)`
-  flex: 1;
   flex-direction: column;
   @media (max-width: ${size('mobileBreakpoint')}) {
     overflow-x: auto;
@@ -73,9 +74,7 @@ const DummyDataField = (props) => {
       <Card>
         <AntDList
           RowComponent={OrderItemInput}
-          dataSource={purchaseList.map((
-            orderItemData, i,
-          ) => ({
+          dataSource={purchaseList.map((orderItemData, i) => ({
             data: orderItemData,
             key: `${orderItemData.order_id}${orderItemData.name}`,
             ...props,
@@ -94,7 +93,8 @@ const DummyDataField = (props) => {
             min: 0,
             type: 'number',
             value: _.get(
-              value, [
+              value,
+              [
                 i,
                 'unit_quantity',
               ],
@@ -119,7 +119,8 @@ const StorageEdit = () => {
     id,
     created: today,
     startDate: moment(today).subtract(
-      1, 'day',
+      1,
+      'day',
     ),
     endDate: today,
     type: 'many',
@@ -149,9 +150,7 @@ const StorageEdit = () => {
   if (loading) return null;
   const parsedPurchaseItemList = reduce(
     listData,
-    (
-      ac, cu,
-    ) => {
+    (ac, cu) => {
       return [
         ...ac,
         ...cu.detail.map((purchaseItem) => ({
@@ -167,9 +166,7 @@ const StorageEdit = () => {
   );
   const inventoryList = reduce(
     listData,
-    (
-      ac, cu,
-    ) => {
+    (ac, cu) => {
       const { inventory } = cu;
       return [
         ...ac,
@@ -186,14 +183,13 @@ const StorageEdit = () => {
       return item.name;
     })
     .reduce(
-      (
-        ac, cu,
-      ) => {
+      (ac, cu) => {
         return {
           ...ac,
           [cu]: (ac[cu] || 0) + 1,
         };
-      }, {},
+      },
+      {},
     );
   const currentCountByName = _.mapValues(
     totalCountByName,
@@ -239,7 +235,10 @@ const StorageEdit = () => {
   return (
     <Wrapper>
       <LabelValue
-        style={{ padding: 15 }}
+        style={{
+          padding: 15,
+          flex: 0,
+        }}
         bold
         label={`기록날짜 (${account})`}
         value={`${createdAt.format('YYYY-MM-DD')}`}
@@ -253,7 +252,9 @@ const StorageEdit = () => {
           const { inventoryList } = values;
           const formattedInventoryList = inventoryList.map((v) => {
             const gramAmount = convertUnit(
-              v.unit_amount, v.unit, v.unit_quantity,
+              v.unit_amount,
+              v.unit,
+              v.unit_quantity,
             );
             return {
               purchaseId: v.purchase_id,
@@ -284,7 +285,6 @@ const StorageEdit = () => {
               loading: addInventoryListLoading,
             }]}
           />
-          <div style={{ padding: `${(76 + 15 + 15) / 2}px 0px` }} />
         </StyledForm>
       </Formik>
     </Wrapper>

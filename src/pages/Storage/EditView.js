@@ -7,7 +7,9 @@ import {
 } from 'styled-theme';
 import styled from 'styled-components';
 
-import { useParams } from 'react-router-dom';
+import {
+  useParams,
+} from 'react-router-dom';
 
 import moment from 'moment';
 import _, {
@@ -85,10 +87,13 @@ const DummyDataField = (props) => {
           max={orderItemData.unit_quantity}
           min={0}
           type="number"
-          value={_.get(value, [
-            i,
-            'unit_quantity',
-          ])}
+          value={_.get(
+            value,
+            [
+              i,
+              'unit_quantity',
+            ],
+          )}
         />
       ))}
     </DDContainer>
@@ -107,7 +112,10 @@ const Inventory = () => {
   } = usePurchaseData({
     id,
     created: today,
-    startDate: moment(today).subtract(1, 'day'),
+    startDate: moment(today).subtract(
+      1,
+      'day',
+    ),
     endDate: today,
     type: 'many',
   });
@@ -169,12 +177,15 @@ const Inventory = () => {
     .map((item) => {
       return item.name;
     })
-    .reduce((ac, cu) => {
-      return {
-        ...ac,
-        [cu]: (ac[cu] || 0) + 1,
-      };
-    }, {});
+    .reduce(
+      (ac, cu) => {
+        return {
+          ...ac,
+          [cu]: (ac[cu] || 0) + 1,
+        };
+      },
+      {},
+    );
   const currentCountByName = _.mapValues(
     totalCountByName,
     (val) => {
@@ -232,7 +243,11 @@ const Inventory = () => {
         onSubmit={(values) => {
           const { inventoryList } = values;
           const formattedInventoryList = inventoryList.map((v) => {
-            const gramAmount = convertUnit(v.unit_amount, v.unit, v.unit_quantity);
+            const gramAmount = convertUnit(
+              v.unit_amount,
+              v.unit,
+              v.unit_quantity,
+            );
             return {
               purchaseId: v.purchase_id,
               id: v.id,
@@ -256,7 +271,6 @@ const Inventory = () => {
           <PageAction actions={[]}>
             <Button type="submit" label="저장" loaderStroke="white" loaderSize={32} loading={addInventoryListLoading} />
           </PageAction>
-          <div style={{ padding: `${(50 + 15 + 15) / 2}px 0px` }} />
         </StyledForm>
       </Formik>
     </Wrapper>

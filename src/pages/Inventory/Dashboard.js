@@ -10,7 +10,9 @@ import {
   DatePicker, Space,
 } from 'antd';
 
-import { useParams } from 'react-router-dom';
+import {
+  useParams,
+} from 'react-router-dom';
 
 import moment from 'moment';
 import _, {
@@ -23,7 +25,9 @@ import {
   gql, useMutation,
 } from '@apollo/client';
 
-import { withProp } from 'styled-tools';
+import {
+  withProp,
+} from 'styled-tools';
 import Flex from '../../components/atoms/Flex';
 import Button from '../../components/atoms/Button';
 import LabelValue from '../../components/molecules/LabelValue';
@@ -126,7 +130,8 @@ const InventoryDashboard = () => {
     id,
     created: today,
     startDate: moment(today).subtract(
-      1, 'day',
+      1,
+      'day',
     ),
     endDate: today,
     type: 'many',
@@ -156,9 +161,7 @@ const InventoryDashboard = () => {
   if (loading) return null;
   const parsedPurchaseItemList = reduce(
     listData,
-    (
-      ac, cu,
-    ) => {
+    (ac, cu) => {
       return [
         ...ac,
         ...cu.detail.map((purchaseItem) => ({
@@ -174,9 +177,7 @@ const InventoryDashboard = () => {
   );
   const inventoryList = reduce(
     listData,
-    (
-      ac, cu,
-    ) => {
+    (ac, cu) => {
       const { inventory } = cu;
       return [
         ...ac,
@@ -193,14 +194,13 @@ const InventoryDashboard = () => {
       return item.name;
     })
     .reduce(
-      (
-        ac, cu,
-      ) => {
+      (ac, cu) => {
         return {
           ...ac,
           [cu]: (ac[cu] || 0) + 1,
         };
-      }, {},
+      },
+      {},
     );
   const currentCountByName = _.mapValues(
     totalCountByName,
@@ -231,13 +231,7 @@ const InventoryDashboard = () => {
       ),
     };
   });
-  console.log('입고');
 
-  const {
-    created,
-    account,
-  } = listData[0];
-  const createdAt = moment(Number(created));
   return (
     <Wrapper>
       <HeadingContainer>
