@@ -1,5 +1,7 @@
 import styled from 'styled-components';
-import { palette } from 'styled-theme';
+import {
+  palette,
+} from 'styled-theme';
 import {
   ifProp, switchProp, prop,
 } from 'styled-tools';
@@ -17,15 +19,29 @@ const Label = styled(Text)`
   flex: 1;
   font-size: 14px;
   align-self: flex-start;
-  color: ${palette('grayscale', 0)};
-  font-weight: ${ifProp('bold', 800, 400)};
+  color: ${palette(
+    'grayscale',
+    0,
+  )};
+  font-weight: ${ifProp(
+    'bold',
+    800,
+    400,
+  )};
 `;
 
 const Value = styled(Text)`
   font-size: 14px;
   align-self: flex-end;
-  color: ${palette('black', 0)};
-  font-weight: ${ifProp('bold', 800, 400)};
+  color: ${palette(
+    'black',
+    0,
+  )};
+  font-weight: ${ifProp(
+    'bold',
+    800,
+    400,
+  )};
 `;
 const LabelValue = ({
   label,

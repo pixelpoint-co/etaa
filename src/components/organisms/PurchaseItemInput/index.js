@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import {
+  useState,
+} from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -6,15 +8,24 @@ import {
   palette, size,
 } from 'styled-theme';
 
-import { get } from 'lodash';
-import { useField } from 'formik';
+import {
+  get,
+} from 'lodash';
+import {
+  useField,
+} from 'formik';
 
+import {
+  gql,
+} from '@apollo/client';
 import Text from '../../atoms/P';
 import Flex from '../../atoms/Flex';
 import Icon from '../../atoms/Icon';
 import Image from '../../atoms/Image';
 import Button from '../../atoms/Button';
 import Input from '../../molecules/Input';
+import ModelSelect from '../../../containers/ModelSelect';
+import Select from '../../molecules/Select';
 
 const Wrapper = styled(Flex)`
   display: flex;
@@ -29,6 +40,9 @@ const CellContainer = styled(Flex)`
   margin-left: 20px;
   margin-right: 20px;
   align-items: center;
+  flex-basis: 0px;
+  overflow: hidden;
+  position: relative;
 `;
 const StyledInput = styled(Input)`
   justify-content: flex-end;
@@ -37,7 +51,6 @@ const StyledInput = styled(Input)`
   line-height: 40px;
   text-align: left;
   margin-right: 0px;
-
 `;
 
 const keyToLabel = {
@@ -63,14 +76,65 @@ const PurchaseItemInput = (props) => {
 
   return (
     <Wrapper>
-      <CellContainer>
+      {/* <CellContainer>
         <StyledInput
           inputStyle={{ flex: 1 }}
           placeholder={keyToLabel.name}
           onChange={(e) => onChangeKey('name')(e.target.value)}
           value={data.name}
         />
+      </CellContainer> */}
+      <CellContainer>
+        <ModelSelect
+          style={{ width: '100%' }}
+          placeholder="재료명"
+          required
+          query={gql`
+            query FetchProductList($offset:Int, $limit:Int) {
+              productList (
+                offset: $offset,
+                limit: $limit,
+              ) {
+                list {
+                  id
+                  name
+                }
+              }
+            }
+          `}
+          addItemQuery={gql`
+            mutation AddProduct($name:String, $unit:String) {
+              addProduct(name: $name, unit: $unit) {
+                name,
+                unit,
+              }
+            }
+          `}
+          onChange={(v, a) => {
+            console.log(
+              v,
+              a,
+            );
+            onChangeKey('productId')(a);
+          }}
+          value={data.productId?.value}
+          mapDataToItems={(data) => {
+            console.log(data);
+            const dataList = get(
+              data,
+              [
+                'productList',
+                'list',
+              ],
+            );
+            return dataList.map((d) => ({
+              value: d.id,
+              label: d.name,
+            }));
+          }}
+        />
       </CellContainer>
+
       <CellContainer>
         <StyledInput
           inputStyle={{ flex: 1 }}
@@ -81,10 +145,21 @@ const PurchaseItemInput = (props) => {
         />
       </CellContainer>
       <CellContainer>
-        <StyledInput
-          inputStyle={{ flex: 1 }}
+        <Select
+          style={{
+            flex: 1,
+            height: '100%',
+          }}
           placeholder={keyToLabel.unit}
-          onChange={(e) => onChangeKey('unit')(e.target.value)}
+          can={false}
+          items={[
+            'g',
+            'kg',
+            'ea',
+            'l',
+            'ml',
+          ]}
+          onChange={(v) => onChangeKey('unit')(v)}
           value={data.unit}
         />
       </CellContainer>

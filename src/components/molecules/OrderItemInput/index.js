@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import {
+  useState,
+} from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -6,8 +8,12 @@ import {
   palette, size,
 } from 'styled-theme';
 
-import { get } from 'lodash';
-import { useField } from 'formik';
+import {
+  get,
+} from 'lodash';
+import {
+  useField,
+} from 'formik';
 
 import Text from '../../atoms/P';
 import Flex from '../../atoms/Flex';
@@ -100,15 +106,19 @@ const OrderItemInput = ({
   } = orderItem;
 
   const cellKeys = [
-    {
-      key: 'order_id',
-      cellStyle: {
-        flexBasis: '120px',
-        minWidth: '120px',
-        flex: 0,
-      },
-      cellTextStyle: { whiteSpace: 'nowrap' },
-    },
+    // {
+    //   key: 'order_id',
+    //   cellStyle: {
+    //     flexBasis: '120px',
+    //     minWidth: '120px',
+    //     flex: 0,
+    //   },
+    //   cellTextStyle: {
+    //     whiteSpace: 'nowrap',
+    //     textOverflow: 'ellipsis',
+    //     overflow: 'hidden',
+    //   },
+    // },
     {
       key: 'name',
       cellStyle: {
@@ -159,7 +169,8 @@ const OrderItemInput = ({
           ...others
         } = cellKey;
         const key = typeof cellKey === 'string' ? cellKey : get(
-          cellKey, 'key',
+          cellKey,
+          'key',
         );
         const renderer = typeof cellKey.renderer === 'function' ? cellKey.renderer : defaultRenderer(key);
 
