@@ -1,7 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
-import moment from 'moment';
+import moment from 'moment-timezone';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone' // dependent on utc plugin
 import { PersistGate } from 'redux-persist/integration/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
@@ -16,6 +19,7 @@ import { getMainDefinition } from '@apollo/client/utilities';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 
+
 import GlobalStyled from './globalStyles';
 
 import App from './App';
@@ -25,6 +29,11 @@ import apiService from './services/api';
 
 import theme from './theme';
 import store, { persistor } from './store';
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
+dayjs.tz.setDefault('Asia/Seoul');
+moment.tz.setDefault('Asia/Seoul');
 
 const httpLinkUri = process.env.REACT_APP_HTTPLINK_URI;
 
