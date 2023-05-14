@@ -1,7 +1,13 @@
-import React, { useState } from 'react';
+import React, {
+  useState,
+} from 'react';
 import PropTypes from 'prop-types';
-import styled, { css } from 'styled-components';
-import { font } from 'styled-theme';
+import styled, {
+  css,
+} from 'styled-components';
+import {
+  font,
+} from 'styled-theme';
 import {
   palette, ifProp,
 } from 'styled-tools';
@@ -103,7 +109,7 @@ const styles = css`
     'disabled',
     palette(
       'grayscale',
-      6,
+      4,
     ),
     palette(
       'grayscale',
@@ -170,6 +176,7 @@ const styles = css`
 
 const Wrapper = styled.label`
   display: flex;
+  max-width: 100%;
   flex-direction: column;
   align-items: flex-start;
   vertical-align: middle;
@@ -301,6 +308,7 @@ const Input = ({ ...props }) => {
     type,
     label,
     required,
+    disabled,
     inputStyle,
     palette,
   } = props;
@@ -371,4 +379,4 @@ Input.propTypes = {
 Input.defaultProps = { type: 'text' };
 
 export default Input;
-export { styles };
+export { styles, LabelWrapper, Wrapper as Label, RequiredText };
