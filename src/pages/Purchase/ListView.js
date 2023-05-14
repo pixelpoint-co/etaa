@@ -21,8 +21,6 @@ import PurchaseRow from '../../components/organisms/PurchaseRow';
 import AntDList from '../../components/organisms/AntDList';
 import PageAction from '../../components/organisms/PageAction';
 
-// import useButtonCollapse from '../../hooks/useButtonCollapse';
-
 const { RangePicker } = DatePicker;
 
 const Wrapper = styled(Flex)`
@@ -37,6 +35,7 @@ const FilterSection = styled(Flex)`
 
 const StyledList = styled(AntDList)`
   flex: 1;
+  margin-top: 20px;
 `;
 
 const ADD_INVETORY_LIST = gql`
@@ -115,7 +114,9 @@ const Inventory = () => {
 
   if (purchaseListData == null) return null;
   if (loading) return null;
-  const listSource = purchaseListData.map((d) => ({ data: d }));
+  const listSource = purchaseListData
+    .filter((d) => d.detail?.length > 0)
+    .map((d) => ({ data: d }));
   return (
     <Wrapper>
       <FilterSection>
@@ -136,6 +137,7 @@ const Inventory = () => {
       <StyledList
         dataSource={listSource}
         RowComponent={PurchaseRowLink}
+        hideDivider
       />
       {/* </Collapse> */}
       <PageAction

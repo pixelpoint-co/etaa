@@ -31,6 +31,7 @@ const FETCH_PURCHASE = gql`
       created
       detail
       account
+      company
       inventory {
         id
         productId
@@ -59,6 +60,7 @@ const FETCH_PURCHASE_LIST = gql`
         created
         detail
         account
+        company
         inventory {
           id
           productId

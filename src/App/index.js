@@ -27,12 +27,12 @@ const routes = [
     element: <Purchase />,
     rootRoute: true,
   },
-  {
-    label: '입고',
-    href: '/storage/*',
-    element: <Storage />,
-    rootRoute: true,
-  },
+  // {
+  //   label: '입고',
+  //   href: '/storage/*',
+  //   element: <Storage />,
+  //   rootRoute: true,
+  // },
   {
     label: '자재관리',
     href: '/inventory/*',
