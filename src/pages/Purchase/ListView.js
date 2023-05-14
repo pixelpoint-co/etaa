@@ -131,12 +131,9 @@ const Inventory = () => {
           ]}
         />
       </FilterSection>
-      {/* {buttonNode} */}
-      {/* hi */}
-      {/* <Collapse> */}
       <StyledList
         dataSource={listSource}
-        RowComponent={PurchaseRowLink}
+        RowComponent={PurchaseRow}
         hideDivider
       />
       {/* </Collapse> */}

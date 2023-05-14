@@ -1,8 +1,16 @@
-import { useState } from 'react';
+import {
+  useState,
+} from 'react';
 import PropTypes from 'prop-types';
-import styled, { css } from 'styled-components';
-import { Link } from 'react-router-dom';
-import { font } from 'styled-theme';
+import styled, {
+  css,
+} from 'styled-components';
+import {
+  Link,
+} from 'react-router-dom';
+import {
+  font,
+} from 'styled-theme';
 import {
   palette,
   ifProp, switchProp, prop,
@@ -10,7 +18,9 @@ import {
 import Spinner from '../Spinner';
 import Text from '../P';
 import Flex from '../Flex';
-import defaultStyle, { unsetStyle } from './style';
+import defaultStyle, {
+  unsetStyle,
+} from './style';
 
 const backgroundColor = ({
   transparent,
@@ -19,12 +29,14 @@ const backgroundColor = ({
 }) => {
   if (disabled) {
     return palette(
-      'grayscale', 0,
+      'grayscale',
+      0,
     );
   }
   if (transparent) return 'transparent';
   return palette(
-    { primary: 0 }, 0,
+    { primary: 0 },
+    0,
   );
 };
 
@@ -34,11 +46,13 @@ const foregroundColor = ({
 }) => {
   if (transparent) {
     return palette(
-      'primary', 0,
+      'primary',
+      0,
     );
   }
   return palette(
-    'white', 0,
+    'white',
+    0,
   );
 };
 
@@ -52,7 +66,8 @@ const hoverBackgroundColor = ({
   disabled,
   transparent,
 }) => !disabled && (transparent ? palette(
-  'white', 1,
+  'white',
+  1,
 ) : palette(0));
 const hoverForegroundColor = ({
   disabled,
@@ -65,11 +80,12 @@ const styles = css`
   text-align: center;
   font-family: ${font('secondary')};
   box-sizing: border-box;
-  font-size: 14px;
+  font-size: 20px;
   font-weight: 500;
-  line-height: 14px;
+  line-height: 20px;
   ${ifProp(
-    'borderColor', css`
+    'borderColor',
+    css`
     border-color: ${({ borderColor }) => borderColor};
   `,
   )}
@@ -79,10 +95,14 @@ const styles = css`
   white-space: nowrap;
   justify-content: center;
   cursor: ${ifProp(
-    'disabled', 'no-drop', 'pointer',
+    'disabled',
+    'no-drop',
+    'pointer',
   )};
   pointer-events: ${ifProp(
-    'disabled', 'none', 'auto',
+    'disabled',
+    'none',
+    'auto',
   )};
   transition: all 0.15s ease;
 
@@ -111,7 +131,9 @@ const styles = css`
 const StyledText = styled(Text)`
   color: ${foregroundColor};
   opacity: ${ifProp(
-    'loading', 0, 1,
+    'loading',
+    0,
+    1,
   )};
 `;
 
@@ -131,7 +153,8 @@ const StyledLink = styled(
     reverse,
     theme,
     ...props
-  }) => <Link {...props} />)`
+  }) => <Link {...props} />,
+)`
   ${styles};
 `;
 const Anchor = styled.a`
@@ -170,7 +193,8 @@ const Button = ({
     if (loading) return null;
     return new Promise((resolve) => {
       setTimeout(
-        () => resolve(), 100,
+        () => resolve(),
+        100,
       );
     })
       .then(() => Promise.resolve(onClick(...args)))
@@ -178,7 +202,8 @@ const Button = ({
         setTimeout(
           () => {
             setLoading(false);
-          }, 100,
+          },
+          100,
         );
         return result;
       })

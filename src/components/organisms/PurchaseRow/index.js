@@ -14,17 +14,12 @@ import Icon from '../../atoms/Icon';
 import Image from '../../atoms/Image';
 import Card from '../../atoms/Card';
 import LabelValue from '../../molecules/LabelValue';
-import AntDList from '../AntDList';
+import Button from '../../atoms/Button';
 
 import {
-  unformat,
-  roundTo,
   convertUnit,
 } from '../../../services/number';
 
-const StyledText = styled(Text)`
-
-`;
 const Container = styled(Card)`
   padding: 20px;
   margin-bottom: 15px;
@@ -52,7 +47,6 @@ const PurchaseItem = styled(Flex)`
     5,
   )};
 `;
-
 const HeaderSection = styled(Flex)`
   flex-direction: row;
   justify-content: space-between;
@@ -83,7 +77,10 @@ const ProductName = styled(ItemName)`
     4,
   )};
 `;
-
+const ButtonContainer = styled(Flex)`
+  justify-content: flex-end;
+  margin-top: 15px;
+`;
 const PurchaseRow = (props) => {
   const {
     data,
@@ -95,6 +92,7 @@ const PurchaseRow = (props) => {
     created,
     company,
     account,
+    id,
   } = data;
   const createdAt = moment(Number(created));
 
@@ -166,7 +164,14 @@ const PurchaseRow = (props) => {
           })}
         </ExpandContainer>
       ) : null}
-
+      <ButtonContainer>
+        <Button
+          palette="grayscale"
+          style={{ minWidth: 200 }}
+          to={`/inventory/edit/${id}`}
+          label="입고"
+        />
+      </ButtonContainer>
     </Container>
   );
 };
