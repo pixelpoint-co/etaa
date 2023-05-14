@@ -14,9 +14,12 @@ import defaultData from './default-data.json';
 
 const waitMs = async (ms = 0) => {
   return new Promise((resolve /* reject */) => {
-    setTimeout(() => {
-      resolve();
-    }, ms);
+    setTimeout(
+      () => {
+        resolve();
+      },
+      ms,
+    );
   });
 };
 
@@ -71,7 +74,6 @@ const FETCH_PURCHASE_LIST = gql`
 `;
 
 // startDate: String, endDate:String, limit:Int = 25, offset:Int = 0
-
 export default (options = {}) => {
   const {
     type = 'many',
@@ -79,6 +81,7 @@ export default (options = {}) => {
     created,
     startDate,
     endDate,
+    limit,
   } = options;
   const [
     loading,
@@ -92,8 +95,6 @@ export default (options = {}) => {
     error,
     setError,
   ] = useState(null);
-  console.log(id);
-  console.log(id != null);
   const query = (type === 'many')
     ? [
       FETCH_PURCHASE_LIST,
@@ -105,6 +106,7 @@ export default (options = {}) => {
               : {
                 startDate,
                 endDate,
+                limit,
               }
           ),
         },
@@ -129,13 +131,20 @@ export default (options = {}) => {
     error: qError,
     data: qData,
   } = useQuery(...query);
-  console.log('qData: ', qData);
-  const purchaseData = _.get(qData, ['purchase'], []);
+  const purchaseData = _.get(
+    qData,
+    ['purchase'],
+    [],
+  );
   const purchaseListData = _.orderBy(
-    _.get(qData, [
-      'purchaseList',
-      'list',
-    ], []),
+    _.get(
+      qData,
+      [
+        'purchaseList',
+        'list',
+      ],
+      [],
+    ),
     'created',
     'desc',
   );
@@ -143,17 +152,25 @@ export default (options = {}) => {
   // const id = rawId === 'latest' ? moment().format('YYYY-MM-DDD') : rawId;
 
   return {
-    pId: _.get(qData, [
-      'fetchPurchase',
-      'purchase',
-      'id',
-    ], null),
+    pId: _.get(
+      qData,
+      [
+        'fetchPurchase',
+        'purchase',
+        'id',
+      ],
+      null,
+    ),
     purchaseData,
     purchaseListData,
-    purchaseListCount: _.get(qData, [
-      'purchaseList',
-      'count',
-    ], 0),
+    purchaseListCount: _.get(
+      qData,
+      [
+        'purchaseList',
+        'count',
+      ],
+      0,
+    ),
     loading: qLoading,
     error: qError,
   };
