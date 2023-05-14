@@ -1,13 +1,23 @@
 import PropTypes from 'prop-types';
+import {
+  useEffect, useRef, useState,
+} from 'react';
 import styled from 'styled-components';
 import startCase from 'lodash/startCase';
-import { ifProp } from 'styled-tools';
+
+import {
+  ifProp,
+} from 'styled-tools';
 import {
   palette, size,
 } from 'styled-theme';
 
+import {
+  Space,
+} from 'antd';
 import Button from '../../atoms/Button';
 import Flex from '../../atoms/Flex';
+import Divider from '../../atoms/Divider';
 
 const Wrapper = styled(Flex)`
   position: fixed;
@@ -40,23 +50,41 @@ const PageAction = ({
   actions,
   children,
   ...others
-}) => (
-  <Wrapper>
-    {actions.map(({
-      action,
-      label,
-      ...otherActionProps
-    }) => (
-      <ActionButton
-        key={label}
-        label={label}
-        onClick={action}
-        {...otherActionProps}
-      />
-    ))}
-    {children}
-  </Wrapper>
-);
+}) => {
+  const [
+    height,
+    setHeight,
+  ] = useState(0);
+  const ref = useRef(null);
+
+  useEffect(
+    () => {
+      setHeight(ref.current.clientHeight);
+    },
+    [],
+  );
+
+  return (
+    <>
+      <Divider verticalMargin={((height + 20) / 2)} />
+      <Wrapper ref={ref}>
+        {actions.map(({
+          action,
+          label,
+          ...otherActionProps
+        }) => (
+          <ActionButton
+            key={label}
+            label={label}
+            onClick={action}
+            {...otherActionProps}
+          />
+        ))}
+        {children}
+      </Wrapper>
+    </>
+  );
+};
 
 PageAction.defaultProps = {
   actions: [{
