@@ -146,7 +146,7 @@ const Wrapper = styled.span`
     height: 100%;
     fill: ${(props) => (props.fill ? props.fill : '')};
     stroke: ${(props) => (props.stroke ? props.stroke : '')};
-    transform: rotate(${({ rotateDeg }) => `${rotateDeg}deg`};
+    transform: rotate(${({ rotateDeg }) => `${rotateDeg}deg`});
   }
 
   ${ifProp(
