@@ -7,8 +7,12 @@ import styled from 'styled-components';
 import {
   size, palette,
 } from 'styled-theme';
-import { ifProp } from 'styled-tools';
-import { List } from 'antd';
+import {
+  ifProp,
+} from 'styled-tools';
+import {
+  List,
+} from 'antd';
 
 import Link from '../../atoms/Link';
 import Flex from '../../atoms/Flex';
@@ -37,6 +41,7 @@ const AntDList = (props) => {
     RowComponent,
     verticalMargin,
     horizontalMargin,
+    hideDivider,
     ...others
   } = props;
   return (
@@ -49,7 +54,7 @@ const AntDList = (props) => {
         ...otherProps
       }, i) => (
         <>
-          {i > 0 ? (
+          {(i > 0 && !hideDivider) ? (
             <Divider />
           ) : null}
           <RowContainer
@@ -70,12 +75,13 @@ const AntDList = (props) => {
 AntDList.defaultProps = {
   verticalMargin: 0,
   horizontalMargin: 0,
+  hideDivider: false,
 };
 
 AntDList.propTypes = {
   verticalMargin: PropTypes.number,
   horizontalMargin: PropTypes.number,
-
+  hideDivider: PropTypes.bool,
 };
 
 export default AntDList;
