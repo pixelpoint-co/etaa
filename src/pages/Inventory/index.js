@@ -6,11 +6,10 @@ import {
 import styled from 'styled-components';
 
 import Flex from '../../components/atoms/Flex';
-import Header from '../../containers/Header';
 
 import EditView from './EditView';
 import ListView from './ListView';
-import Dashboard from './Dashboard.js';
+import Dashboard from './Dashboard';
 
 const PageWrapper = styled(Flex)`
   flex-direction: column;
