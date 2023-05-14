@@ -7,7 +7,10 @@ import {
 } from 'styled-theme';
 import styled from 'styled-components';
 
-import { useParams } from 'react-router-dom';
+import {
+  useNavigate,
+  useParams,
+} from 'react-router-dom';
 
 import moment from 'moment';
 import _, {
@@ -19,6 +22,9 @@ import _, {
 import {
   gql, useMutation,
 } from '@apollo/client';
+import {
+  useState,
+} from 'react';
 import Input from '../../components/molecules/Input';
 import Flex from '../../components/atoms/Flex';
 import Text from '../../components/atoms/P';
@@ -33,6 +39,8 @@ import {
 } from '../../services/number';
 import AntDList from '../../components/organisms/AntDList';
 import Card from '../../components/atoms/Card';
+import Select from '../../components/molecules/Select';
+import ModelSelect from '../../containers/ModelSelect';
 
 const Wrapper = styled(Flex)`
   flex: 1;
@@ -64,11 +72,27 @@ const StyledForm = styled(Form)`
 `;
 const StyledInput = styled(Input)`
 `;
-const ADD_INVETORY_LIST = gql`
-  mutation AddPurchaseList($inventoryList: [PurchaseInput]) {
-    addPurchaseList(inventoryList: $inventoryList) {
-      id,
-      name,
+// addInventoryList(inventoryList: [InventoryInput])       : [Inventory]
+// const ADD_INVETORY_LIST = gql`
+//   mutation AddInventoryList($inventoryList: [InventoryInput]) {
+//     addInventoryList(inventoryList: $inventoryList) {
+//       id,
+//       name,
+//     }
+//   }
+// `;
+
+// addPurchase(detail:JSON, account:String, company:String): Purchase
+const ADD_PURCHASE = gql`
+  mutation AddPurchase(
+    $detail: JSON,
+    $account: String,
+    $company: String,
+  ) {
+    addPurchase(account: $account, detail: $detail, company: $company) {
+      account,
+      detail,
+      company,
     }
   }
 `;
@@ -93,8 +117,26 @@ const InputField = (props) => {
     />
   );
 };
+const SelectField = (props) => {
+  const [
+    field,
+    meta,
+    helpers,
+  ] = useField(props);
+  const { value } = meta;
+  const { setValue } = helpers;
+  return (
+    <Select
+      style={{ marginBottom: 20 }}
+      {...props}
+      value={value}
+      onChange={(v) => setValue(v)}
+    />
+  );
+};
+
 const keyToLabel = {
-  name: '상품명',
+  productId: '재료명',
   unitAmount: '용량',
   unit: '단위',
   unitQuantity: '구매 수량',
@@ -107,6 +149,7 @@ const PurchaseListField = (props) => {
     meta,
     helpers,
   ] = useField(props);
+
   const { value: purchaseList } = meta;
   const onChange = helpers.setValue;
   const labels = Object.keys(keyToLabel);
@@ -163,98 +206,32 @@ const PurchaseListField = (props) => {
   );
 };
 
-const today = moment().toISOString(); // TODO waiter db.Timestamp에 따라 수동으로 UTC기준으로 전환
-
 const Purchase = () => {
   const { id } = useParams();
   const isCreate = !id;
-  const {
-    purchaseData: data,
-    purchaseListData: listData,
-    loading,
-    error,
-  } = usePurchaseData({
-    id,
-    created: today,
-    startDate: moment(today).subtract(
-      1,
-      'day',
-    ),
-    endDate: today,
-    type: 'many',
-  });
-  // const {
-  //   id,
-  //   detail: purchaseItemList,
-  //   inventory: inventoryList,
-  // } = data;
-  const addPurchaseListCompleted = () => {
-    console.log('add inventory db');
-    alert('기록되었습니다');
+  const navigate = useNavigate();
+
+  const onAddPurchaseCompleted = () => {
+    alert('성공');
+
+    navigate('/purchase');
   };
 
   const [
-    addPurchaseList,
+    addPurchase,
     {
-      loading: addPurchaseListLoading,
-      error: addPurchaseListError,
+      loading: addPurchaseLoading,
+      error: addPurchaseError,
     },
   ] = useMutation(
-    ADD_INVETORY_LIST,
-    { onCompleted: addPurchaseListCompleted },
+    ADD_PURCHASE,
+    { onCompleted: onAddPurchaseCompleted },
   );
-  if (data == null) return null;
-  if (loading) return null;
-  const parsedPurchaseItemList = reduce(
-    listData,
-    (ac, cu) => {
-      return [
-        ...ac,
-        ...cu.detail.map((purchaseItem) => ({
-          ...purchaseItem,
-          // unit_quantity: 0,
-          purchase_id: cu.id,
-          account: cu.account,
-          created: cu.created,
-        })),
-      ];
-    },
-    [],
-  );
-  const inventoryList = reduce(
-    listData,
-    (ac, cu) => {
-      const { inventory } = cu;
-      return [
-        ...ac,
-        ...cu.inventory,
-        // ...snakePurchase,
-      ];
-    },
-    [],
-  );
-  const formattedPurchaseItemList = parsedPurchaseItemList.map((item) => {
-    return { ...item };
-  });
-  const totalCountByName = parsedPurchaseItemList
-    .map((item) => {
-      return item.name;
-    })
-    .reduce(
-      (ac, cu) => {
-        return {
-          ...ac,
-          [cu]: (ac[cu] || 0) + 1,
-        };
-      },
-      {},
-    );
-  const currentCountByName = _.mapValues(
-    totalCountByName,
-    (val) => {
-      return 0;
-    },
-  );
+
+  const [
+    customSellers,
+    setCustomSellers,
+  ] = useState([]);
 
   return (
     <Wrapper>
@@ -262,36 +239,51 @@ const Purchase = () => {
         initialValues={{
           createdBy: '',
           seller: '',
-          store: '',
-          purchaseDate: moment().format('MM-DD-YYYY HH:mm:ss'),
+          store: 'RN',
+          orderDate: moment().format('YYYY-MM-DD'),
           purchaseList: [{
-            name: '',
-            unit: '',
-            unitPrice: 0, // 개당 가격
-            unitAmount: 0, // 개당 용량
-            unitQuantity: 0, // 수량
+            productId: null,
+            unit: 'g',
+            unitPrice: null, // 개당 가격
+            unitAmount: null, // 개당 용량
+            unitQuantity: null, // 수량
           }],
         }}
         onSubmit={(values) => {
           console.log(values);
-          // const { inventoryList } = values;
-          // const formattedPurchaseList = inventoryList.map((v) => {
-          //   const gramAmount = convertUnit(
-          //     v.unit_amount, v.unit, v.unit_quantity,
-          //   );
-          //   return {
-          //     purchaseId: v.purchase_id,
-          //     id: v.id,
-          //     name: v.name,
-          //     unitQuantity: gramAmount,
-          //     // unitWeight: 'g',
-          //     unitPrice: roundTo(
-          //       unformat(v.unit_price) / gramAmount,
-          //       4,
-          //     ),
-          //   };
-          // });
-          // addPurchaseList({ variables: { inventoryList: formattedPurchaseList } });
+          const purchaseList = values.purchaseList || [];
+
+          const parsedValues = purchaseList.map((purchase) => {
+            const {
+              account,
+              company,
+              ...others
+            } = purchase;
+            return {
+              ...others,
+              productId: purchase.productId?.value,
+              name: purchase.productId?.label,
+              createdBy: values.createdBy,
+              orderDate: values.orderDate,
+              unitWeight: `${purchase.unitAmount}${purchase.unit}`,
+            };
+          });
+          const filteredValues = parsedValues.filter((v) => {
+            return v.productId && v.unitQuantity && v.unitPrice && v.unitAmount;
+          });
+          const snakeValues = filteredValues
+            .map((value) => _.mapKeys(
+              value,
+              (v, k) => _.snakeCase(k),
+            ));
+
+          addPurchase({
+            variables: {
+              detail: snakeValues,
+              account: null,
+              company: values.seller,
+            },
+          });
         }}
       >
         <StyledForm>
@@ -300,16 +292,42 @@ const Purchase = () => {
               name="createdBy"
               placeholder="작성자"
               label="작성자"
+              required
             />
-            <InputField name="seller" placeholder="구매처" label="구매처" />
-            <InputField name="store" placeholder="매장" label="매장" />
+            <SelectField
+              name="seller"
+              label="구매처"
+              placeholder="구매처"
+              allowAddItem
+              items={[
+                '오더히어로',
+                '크레오코리아',
+                '코스트코',
+                ...customSellers,
+              ]}
+              onAddItem={(item) => {
+                setCustomSellers([
+                  ...customSellers,
+                  item,
+                ]);
+              }}
+              required
+            />
+            <InputField
+              name="store"
+              placeholder="매장"
+              label="매장"
+              disabled
+              required
+            />
             <InputField
               name="orderDate"
+              type="date"
               placeholder="구매날짜"
               label="구매날짜"
+              required
               inputStyle={{ marginBottom: 0 }}
             />
-
           </StyledCard>
           <PurchaseListField
             name="purchaseList"
@@ -321,11 +339,10 @@ const Purchase = () => {
               label: '저장',
               loaderStroke: 'white',
               loaderSize: 32,
-              loading: addPurchaseListLoading,
+              loading: addPurchaseLoading,
               palette: 'primary',
             }]}
           />
-          <div style={{ padding: `${(50 + 30 + 30) / 2}px 0px` }} />
         </StyledForm>
       </Formik>
     </Wrapper>
