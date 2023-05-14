@@ -142,10 +142,6 @@ const PurchaseRow = (props) => {
               inventoryQuantity,
               true,
             );
-            console.log(`inventoryAmount: ${inventoryAmount}`);
-            console.log(`inventoryUnit: ${inventoryUnit}`);
-            console.log(`inventoryQuantity: ${inventoryQuantity}`);
-            console.log(`convertedInventoryQuantity: ${convertedInventoryQuantity}`);
             return (
               <PurchaseItemContainer key={name}>
                 <PurchaseItem>
@@ -156,7 +152,7 @@ const PurchaseRow = (props) => {
                       lineHeight: '22px',
                     }}
                     label={name}
-                    value={`(${convertedInventoryQuantity || 0} / ${purchaseQuantity})${inventoryUnit}`}
+                    value={`(${convertedInventoryQuantity || 0} / ${purchaseQuantity}) * ${inventoryAmount}${inventoryUnit}`}
                   />
                 </PurchaseItem>
               </PurchaseItemContainer>
