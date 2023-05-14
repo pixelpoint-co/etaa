@@ -1,13 +1,29 @@
 import PropTypes from 'prop-types';
-import styled, { css } from 'styled-components';
-import { palette } from 'styled-theme';
-import { ifProp } from 'styled-tools';
+import styled, {
+  css,
+} from 'styled-components';
+import {
+  palette,
+} from 'styled-theme';
+import {
+  ifProp,
+} from 'styled-tools';
 
-import { ReactComponent as LoaderIcon } from './icons-o/loader.svg';
-import { ReactComponent as LogoIcon } from './icons-o/logo.svg';
-import { ReactComponent as CaretIcon } from './icons-o/caret.svg';
-import { ReactComponent as XIcon } from './icons-o/x.svg';
-import { ReactComponent as CheckIcon } from './icons-o/check.svg';
+import {
+  ReactComponent as LoaderIcon,
+} from './icons-o/loader.svg';
+import {
+  ReactComponent as LogoIcon,
+} from './icons-o/logo.svg';
+import {
+  ReactComponent as CaretIcon,
+} from './icons-o/caret.svg';
+import {
+  ReactComponent as XIcon,
+} from './icons-o/x.svg';
+import {
+  ReactComponent as CheckIcon,
+} from './icons-o/check.svg';
 
 const ReactIcons = {
   loader: LoaderIcon,
@@ -28,8 +44,14 @@ const fillHover = css`
       null,
       css`
         .filled {
-          fill: ${({ hoverPalette }) => palette(hoverPalette, 0)};
-          stroke: ${({ hoverPalette }) => palette(hoverPalette, 0)};
+          fill: ${({ hoverPalette }) => palette(
+    hoverPalette,
+    0,
+  )};
+          stroke: ${({ hoverPalette }) => palette(
+    hoverPalette,
+    0,
+  )};
         }
       `,
     ),
@@ -41,8 +63,14 @@ const fillOnHover = css`
     'fillOnHover',
     css`
       .filled {
-        fill: ${({ hoverPalette }) => palette(hoverPalette, hoverPalette === 'gray' ? 0 : 3)};
-        stroke: ${({ hoverPalette }) => palette(hoverPalette, hoverPalette === 'gray' ? 0 : 3)};
+        fill: ${({ hoverPalette }) => palette(
+    hoverPalette,
+    hoverPalette === 'gray' ? 0 : 3,
+  )};
+        stroke: ${({ hoverPalette }) => palette(
+    hoverPalette,
+    hoverPalette === 'gray' ? 0 : 3,
+  )};
       }
       .unfilled {
         fill: none;
@@ -61,8 +89,14 @@ const unfillOnHover = css`
         stroke: none;
       }
       .unfilled {
-        fill: ${({ hoverPalette }) => palette(hoverPalette, hoverPalette === 'gray' ? 0 : 3)};
-        stroke: ${({ hoverPalette }) => palette(hoverPalette, hoverPalette === 'gray' ? 0 : 3)};
+        fill: ${({ hoverPalette }) => palette(
+    hoverPalette,
+    hoverPalette === 'gray' ? 0 : 3,
+  )};
+        stroke: ${({ hoverPalette }) => palette(
+    hoverPalette,
+    hoverPalette === 'gray' ? 0 : 3,
+  )};
       }
     `,
   )};
@@ -73,7 +107,17 @@ const Wrapper = styled.span`
   display: inline-block;
   color: ${ifProp(
     'palette',
-    ifProp({ palette: 'white' }, palette({ gray: 0 }, 0), palette({ blue: 0 }, 0)),
+    ifProp(
+      { palette: 'white' },
+      palette(
+        { gray: 0 },
+        0,
+      ),
+      palette(
+        { blue: 0 },
+        0,
+      ),
+    ),
     'currentcolor',
     'white',
   )};
@@ -102,14 +146,21 @@ const Wrapper = styled.span`
     height: 100%;
     fill: ${(props) => (props.fill ? props.fill : '')};
     stroke: ${(props) => (props.stroke ? props.stroke : '')};
+    transform: rotate(${({ rotateDeg }) => `${rotateDeg}deg`};
   }
 
   ${ifProp(
     'hoverPalette',
     css`
       &:hover > svg {
-        fill: ${({ hoverPalette }) => palette(hoverPalette, hoverPalette === 'gray' ? 0 : 3)};
-        stroke: ${({ hoverPalette }) => palette(hoverPalette, hoverPalette === 'gray' ? 0 : 3)};
+        fill: ${({ hoverPalette }) => palette(
+    hoverPalette,
+    hoverPalette === 'gray' ? 0 : 3,
+  )};
+        stroke: ${({ hoverPalette }) => palette(
+    hoverPalette,
+    hoverPalette === 'gray' ? 0 : 3,
+  )};
         ${unfillOnHover};
         ${fillOnHover};
         ${fillHover};
@@ -133,6 +184,7 @@ Icon.propTypes = {
   size: PropTypes.number,
   hoverPalette: PropTypes.string,
   palette: PropTypes.string,
+  rotateDeg: PropTypes.number,
 };
 
 Icon.defaultProps = {
@@ -141,6 +193,7 @@ Icon.defaultProps = {
   size: null,
   hoverPalette: 'gray',
   palette: 'gray',
+  rotateDeg: 0,
 };
 
 export default Icon;
