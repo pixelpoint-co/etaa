@@ -25,6 +25,7 @@
     "no-continue": 0,
     "no-unused-vars": 1,
     // "no-noninteractive-element-interactions": 0,
+
     "no-underscore-dangle": 0,
     "object-property-newline": ["error", { "allowAllPropertiesOnSameLine": false }],
     "object-curly-newline": ["error", {
@@ -38,7 +39,8 @@
       },
       "ImportDeclaration": {
         "multiline": true,
-        "minProperties": 2
+        "minProperties": 1,
+        "consistent": true
       }
     }],
     "quotes": [2, "single"],
@@ -51,7 +53,11 @@
       "namedComponents": "arrow-function",
       "unnamedComponents": "arrow-function"
     }],
-    "semi": 1,
+    "react/no-unstable-nested-components": [
+      "error",
+      { "allowAsProps": true }
+    ],
+    "semi": 1
   },
   "parserOptions": {
     "ecmaVersion": 2021,
