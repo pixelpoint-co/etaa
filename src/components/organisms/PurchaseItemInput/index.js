@@ -4,13 +4,13 @@ import {
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import _, {
+  get,
+} from 'lodash';
 import {
   palette, size,
 } from 'styled-theme';
 
-import {
-  get,
-} from 'lodash';
 import {
   useField,
 } from 'formik';
@@ -51,6 +51,7 @@ const StyledInput = styled(Input)`
   line-height: 40px;
   text-align: left;
   margin-right: 0px;
+  text-transform: uppercase;
 `;
 
 const keyToLabel = {
@@ -158,7 +159,7 @@ const PurchaseItemInput = (props) => {
             'ea',
             'l',
             'ml',
-          ]}
+          ].map(_.capitalize)}
           onChange={(v) => onChangeKey('unit')(v)}
           value={data.unit}
         />
