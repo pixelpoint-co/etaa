@@ -33,6 +33,9 @@ import {
 import {
   ReactComponent as DrawerToggle,
 } from './icons-o/drawer-toggle.svg';
+import {
+  ReactComponent as ArrowTaleIcon,
+} from './icons-o/arrow-tail.svg';
 
 const ReactIcons = {
   loader: LoaderIcon,
@@ -43,6 +46,7 @@ const ReactIcons = {
   x: XIcon,
   check: CheckIcon,
   drawer: DrawerToggle,
+  arrowTail: ArrowTaleIcon,
 };
 
 const fillStyle = css`
