@@ -4,6 +4,8 @@ import {
   Provider,
 } from 'react-redux';
 import moment from 'moment-timezone';
+import 'moment/locale/ko';
+
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone'; // dependent on utc plugin
@@ -44,6 +46,7 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault('Asia/Seoul');
 moment.tz.setDefault('Asia/Seoul');
+moment.locale('ko');
 
 const httpLinkUri = process.env.REACT_APP_HTTPLINK_URI;
 
@@ -70,7 +73,6 @@ const client = new ApolloClient({
 });
 
 global.api = apiService.create({ defaultUrl: apiUrl });
-moment.locale('ko');
 
 console.log(
   'basename is : ',
