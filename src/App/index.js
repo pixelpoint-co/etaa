@@ -6,7 +6,15 @@ import {
 import {
   palette, size,
 } from 'styled-theme';
-import styled from 'styled-components';
+import {
+  useSelector,
+} from 'react-redux';
+import {
+  ifProp,
+} from 'styled-tools';
+import styled, {
+  css,
+} from 'styled-components';
 
 import NotFound from '../pages/NotFound';
 import Home from '../pages/Home';
@@ -58,7 +66,8 @@ const Wrapper = styled(Flex)`
   flex-direction: row;
   flex-grow: 1;
   background: ${palette(
-    'grayscale', 5,
+    'grayscale',
+    5,
   )};
   box-shadow: rgba(50, 50, 93, 0.1) 0px 2px 4px;
   height: 100%;
@@ -66,25 +75,48 @@ const Wrapper = styled(Flex)`
 `;
 
 const PageWrapper = styled(Flex)`
-  padding-left: calc(250px);
-  max-width: 100vw;
-  padding-right: ${size('padding.default')};
+  transition: padding 250ms ease-in-out;
   flex-grow: 1;
-  height: calc(100% - 40px);
+  max-width: 100vw;
 
+  padding-left: calc(80px);
+  height: calc(100% - 60px);
+
+  ${ifProp(
+    'leftMenuOpen',
+    css`
+      padding-left: calc(250px);
+      height: calc(100% - 40px);
+    `,
+  )}
+  /* padding-top: 50px; */
   @media (max-width: ${size('mobileBreakpoint')}){
-    padding-left: 0px;
-    padding-right: 0px;
-    padding-top: 50px;
-    height: calc(100% - 60px);
   }
 `;
+// const PageWrapper = styled(Flex)`
+//   padding-left: calc(250px);
+//   max-width: 100vw;
+//   padding-right: ${size('padding.default')};
+//   flex-grow: 1;
+//   height: calc(100% - 40px);
+
+//   @media (max-width: ${size('mobileBreakpoint')}){
+//     padding-left: 0px;
+//     padding-right: 0px;
+//     padding-top: 50px;
+//     height: calc(100% - 60px);
+//   }
+// `;
 
 const Layout = () => {
+  const leftMenuOpen = useSelector((state) => state.leftMenu.open);
+  console.log(leftMenuOpen);
   return (
     <Wrapper>
-      <LeftMenu links={routes.filter((v) => v.rootRoute)} />
-      <PageWrapper>
+      <LeftMenu links={routes.filter((v) => v.rootRoute)} open={leftMenuOpen} />
+      <PageWrapper
+        leftMenuOpen={leftMenuOpen}
+      >
 
         <Outlet />
 

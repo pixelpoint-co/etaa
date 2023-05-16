@@ -1,6 +1,8 @@
 // import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import {
+  useSelector,
+} from 'react-redux';
 import LeftMenu from '../components/molecules/LeftMenu';
 // import { signOut as signOutAction } from '../store/authentication/actions';
 import LeftMenuContainerComp from '../components/molecules/LeftMenuContainer';
@@ -11,8 +13,13 @@ const LeftMenuContainer = (props) => {
   const leftMenuOpen = useSelector((state) => state.leftMenu.open);
 
   return (
-    <LeftMenuContainerComp onClose={leftMenuAction.close} open={leftMenuOpen}>
-      <LeftMenu {...props} />
+    <LeftMenuContainerComp open={leftMenuOpen}>
+      <LeftMenu
+        {...props}
+        open={leftMenuOpen}
+        onClose={leftMenuAction.close}
+        onOpen={leftMenuAction.open}
+      />
     </LeftMenuContainerComp>
   );
 };

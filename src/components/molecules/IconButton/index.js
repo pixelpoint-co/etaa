@@ -24,7 +24,7 @@ const Wrapper = styled(Flex)`
 const IconButton = (props) => {
   const {
     icon,
-    iconSize = 16,
+    iconSize = 20,
     style,
     ...others
   } = props;

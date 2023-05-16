@@ -1,10 +1,16 @@
 import PropTypes from 'prop-types';
-import styled, { css } from 'styled-components';
+import styled, {
+  css,
+} from 'styled-components';
 import {
   font, palette,
 } from 'styled-theme';
-import { ifProp } from 'styled-tools';
-import { NavLink } from 'react-router-dom';
+import {
+  ifProp,
+} from 'styled-tools';
+import {
+  NavLink,
+} from 'react-router-dom';
 
 const styles = css`
   ${ifProp(
@@ -17,10 +23,23 @@ const styles = css`
   )}
   font-family: ${font('primary')};
   text-decoration: none;
-  color: ${ifProp({ disabled: true }, palette('grayscale', 4), palette(3))};
+  color: ${ifProp(
+    { disabled: true },
+    palette(
+      'grayscale',
+      4,
+    ),
+    palette(3),
+  )};
   transition: all 0.1s ease;
-  cursor: ${ifProp({ disabled: true }, 'no-drop')};
-  pointer-events: ${ifProp({ disabled: true }, 'none')};
+  cursor: ${ifProp(
+    { disabled: true },
+    'no-drop',
+  )};
+  pointer-events: ${ifProp(
+    { disabled: true },
+    'none',
+  )};
 
   &:hover,
   &:focus {
@@ -71,7 +90,7 @@ Link.propTypes = {
 };
 
 Link.defaultProps = {
-  palette: 'primary',
+  palette: 'white',
   disabled: false,
   disableStyle: true,
   reverse: false,

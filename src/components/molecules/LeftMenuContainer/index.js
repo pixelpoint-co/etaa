@@ -1,8 +1,12 @@
-import { Component } from 'react';
+import {
+  Component,
+} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import styled from 'styled-components';
-import { size } from 'styled-theme';
+import {
+  size,
+} from 'styled-theme';
 
 // import { IndexLink, Link } from 'react-router-dom';
 import './style.scss';
@@ -11,12 +15,13 @@ import './style.scss';
 
 const MyMenuContainer = styled.div`
   height: 100% !important;
-  @media (min-width: calc(${size('mobileBreakpoint')} + 1px)){
-    &&.menu-container{
-      left: 250px;
-      position: relative;
-    }
+
+  &&.menu-container{
+    left: 0px;
+    position: relative;
   }
+
+
 `;
 
 class LeftMenu extends Component {
@@ -35,7 +40,13 @@ class LeftMenu extends Component {
 
     // TODO may be able to optimize height calc like flipkart on touchmove
     return (
-      <div className={classNames('left-menu', { open })} style={{ height: '100%' }}>
+      <div
+        className={classNames(
+          'left-menu',
+          { open },
+        )}
+        style={{ height: '100%' }}
+      >
         <div
           role="button"
           tabIndex={0}
@@ -43,7 +54,7 @@ class LeftMenu extends Component {
           onKeyPress={onClose}
           onClick={onClose}
         />
-        <MyMenuContainer className="menu-container">
+        <MyMenuContainer className="menu-container" open={open}>
           {children}
         </MyMenuContainer>
       </div>
