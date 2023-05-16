@@ -103,7 +103,7 @@ const MenuLink = styled(Link)`
     'white',
     0,
   )};
-  margin: 5px 10px;
+  margin: 5px;
   padding: 14px;
   border-radius: 10px;
   &.active,
@@ -130,7 +130,7 @@ const MenuLink = styled(Link)`
   ${ifNotProp(
     'open',
     css`
-      padding: 5px;
+      padding: 8px 6px;
       font-size: 16px;
       > span {
         width: 100%;
