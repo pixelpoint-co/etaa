@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="121" height="24" viewBox="0 0 121 24">
+  <defs>
+    <clipPath id="logo-white_svg__clip-path">
+      <rect id="logo-white_svg__Rectangle_268" data-name="Rectangle 268" width="121" height="20.329" fill="#fff"/>
+    </clipPath>
+  </defs>
+  <g id="logo-white_svg__Group_1327" data-name="Group 1327" transform="translate(-38 -53)">
+    <rect id="logo-white_svg__Rectangle_1211" data-name="Rectangle 1211" width="121" height="24" transform="translate(38 53)" fill="none"/>
+    <g id="logo-white_svg__Group_225" data-name="Group 225" transform="translate(38 54.835)">
+      <g id="logo-white_svg__Group_224" data-name="Group 224" transform="translate(0 0)" clip-path="url(#logo-white_svg__clip-path)">
+        <path id="logo-white_svg__Path_260" data-name="Path 260" d="M9.692,15.864a4.062,4.062,0,0,0,3.8-2.5.386.386,0,0,1,.559-.2l3.5,2.07a.468.468,0,0,1,.149.625,9,9,0,0,1-7.828,4.492A9.994,9.994,0,0,1,0,10.2,10.019,10.019,0,0,1,9.878.045a8.878,8.878,0,0,1,7.828,4.53.454.454,0,0,1-.149.586l-3.5,2.07a.481.481,0,0,1-.559-.195,4.022,4.022,0,0,0-3.8-2.461c-2.609,0-4.659,2.5-4.659,5.625s2.05,5.664,4.659,5.664" transform="translate(0 -0.026)" fill="#fff"/>
+        <path id="logo-white_svg__Path_261" data-name="Path 261" d="M64.893,4.9a.352.352,0,0,1-.447.273c-3.616-1.289-6.71.82-6.71,4.062v10.35a.411.411,0,0,1-.41.352H52.668a.342.342,0,0,1-.336-.352V.8a.392.392,0,0,1,.336-.43h4.659a.451.451,0,0,1,.41.43V2.089C58.743.8,61.315-.529,64.893.214a.377.377,0,0,1,.3.39Z" transform="translate(-30.642 0)" fill="#fff"/>
+        <path id="logo-white_svg__Path_262" data-name="Path 262" d="M107.7,12.231H94.206a4.845,4.845,0,0,0,4.548,3.789,4.432,4.432,0,0,0,3.914-2.266.415.415,0,0,1,.6-.117l3.28,2.031a.636.636,0,0,1,.075.625,9.794,9.794,0,0,1-7.865,4.062A9.994,9.994,0,0,1,88.876,10.2,10.019,10.019,0,0,1,98.754.045c5.889,0,10.064,5.429,9.431,11.718a.5.5,0,0,1-.485.468m-4.883-4.3A4.112,4.112,0,0,0,98.754,4.42a4.856,4.856,0,0,0-4.51,3.515Z" transform="translate(-52.04 -0.026)" fill="#fff"/>
+        <path id="logo-white_svg__Path_263" data-name="Path 263" d="M188.155,20.329H154.982a9.824,9.824,0,0,1-9.881-9.744v-.84A9.824,9.824,0,0,1,154.982,0h33.173a9.824,9.824,0,0,1,9.881,9.744v.84a9.824,9.824,0,0,1-9.881,9.744M154.982,4.088a5.7,5.7,0,0,0-5.737,5.657v.84a5.7,5.7,0,0,0,5.737,5.656h33.173a5.7,5.7,0,0,0,5.737-5.656v-.84a5.7,5.7,0,0,0-5.737-5.657Z" transform="translate(-84.962 0)" fill="#fff"/>
+        <path id="logo-white_svg__Path_264" data-name="Path 264" d="M284.975,37.975a2.467,2.467,0,1,1-2.482-2.491,2.484,2.484,0,0,1,2.482,2.491" transform="translate(-163.975 -20.98)" fill="#fff"/>
+      </g>
+    </g>
+  </g>
+</svg>

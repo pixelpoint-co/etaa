@@ -16,6 +16,12 @@ import {
   ReactComponent as LogoIcon,
 } from './icons-o/logo.svg';
 import {
+  ReactComponent as LogoCreIcon,
+} from './icons-o/logo-cre.svg';
+import {
+  ReactComponent as LogoOIcon,
+} from './icons-o/logo-o.svg';
+import {
   ReactComponent as CaretIcon,
 } from './icons-o/caret.svg';
 import {
@@ -24,13 +30,19 @@ import {
 import {
   ReactComponent as CheckIcon,
 } from './icons-o/check.svg';
+import {
+  ReactComponent as DrawerToggle,
+} from './icons-o/drawer-toggle.svg';
 
 const ReactIcons = {
   loader: LoaderIcon,
   logo: LogoIcon,
+  logoCre: LogoCreIcon,
+  logoO: LogoOIcon,
   caret: CaretIcon,
   x: XIcon,
   check: CheckIcon,
+  drawer: DrawerToggle,
 };
 
 const fillStyle = css`
@@ -130,16 +142,11 @@ const Wrapper = styled.span`
     size,
     width,
   }) => `${size || width}px`};
-  ${ifProp(
-    'fill',
-    css`
-      width: 100%;
-      height: 100%;
-    `,
-  )}
 
   & > svg {
     position: absolute;
+    transition: transform 250ms ease-in-out;
+
     top: 0;
     left: 0;
     width: 100%;
