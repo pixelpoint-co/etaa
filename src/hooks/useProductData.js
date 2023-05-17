@@ -24,6 +24,18 @@ const FETCH_PRODUCT_LIST = gql`
         recipeId
         created
         updated
+        inventorySum
+        inventory {
+          id
+          productId
+          name
+          amount
+          unitPrice
+          parentId
+          created
+          unitWeight
+          unitQuantity
+        }
       }
     }
   }
@@ -98,22 +110,38 @@ export default (options = {}) => {
     data: edgeData,
   } = useQuery(...edgeQuery);
 
-  const productListData = _.get(nodeData, [
-    'productList',
-    'list',
-  ], []);
-  const productListCount = _.get(nodeData, [
-    'productList',
-    'count',
-  ], 0);
-  const ingredientListData = _.get(edgeData, [
-    'processIngredientList',
-    'list',
-  ], []);
-  const ingredientListCount = _.get(edgeData, [
-    'processIngredientList',
-    'count',
-  ], 0);
+  const productListData = _.get(
+    nodeData,
+    [
+      'productList',
+      'list',
+    ],
+    [],
+  );
+  const productListCount = _.get(
+    nodeData,
+    [
+      'productList',
+      'count',
+    ],
+    0,
+  );
+  const ingredientListData = _.get(
+    edgeData,
+    [
+      'processIngredientList',
+      'list',
+    ],
+    [],
+  );
+  const ingredientListCount = _.get(
+    edgeData,
+    [
+      'processIngredientList',
+      'count',
+    ],
+    0,
+  );
   // }, [])
   // const id = rawId === 'latest' ? moment().format('YYYY-MM-DDD') : rawId;
 

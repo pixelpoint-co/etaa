@@ -31,6 +31,7 @@ import {
   formatCurrency,
   formatNumber,
 } from '../services/number';
+import useProductData from '../hooks/useProductData';
 
 const Wrapper = styled(Flex)`
   flex: 1;
@@ -38,44 +39,46 @@ const Wrapper = styled(Flex)`
 `;
 
 const cellRenderers = [
-  {
-    title: 'Id',
-    dataIndex: 'id',
-    // key: 'id',
-    // render: (description) => description,
-    width: 60,
-  },
-  {
-    title: '등록날짜',
-    dataIndex: 'created',
-    width: 120,
-    render: (data) => <Cell>{moment(Number(data)).format('L LT')}</Cell>,
-  },
+  // {
+  //   title: 'Id',
+  //   dataIndex: 'id',
+  //   // key: 'id',
+  //   // render: (description) => description,
+  //   width: 60,
+  // },
+  // {
+  //   title: '등록날짜',
+  //   dataIndex: 'created',
+  //   width: 120,
+  //   render: (data) => <Cell>{moment(Number(data)).format('L LT')}</Cell>,
+  // },
   {
     title: '재료',
-    dataIndex: [
-      'product',
-      'name',
-    ],
-    width: 120,
-  },
-  {
-    title: '상품명',
     dataIndex: 'name',
     width: 120,
   },
+  // {
+  //   title: '레시피',
+  //   dataIndex: 'name',
+  //   width: 120,
+  // },
+  // {
+  //   title: '상품명',
+  //   dataIndex: 'name',
+  //   width: 120,
+  // },
   {
-    title: '용량',
-    dataIndex: 'unitQuantity',
+    title: '재고',
+    dataIndex: 'inventorySum',
     width: 120,
     render: (data, row) => {
       const unit = get(
         row,
-        'product.unit',
+        'unit',
       );
       const unitText = unit ? `(${get(
         row,
-        'product.unit',
+        'unit',
         '',
       )})` : '';
       return (
@@ -86,9 +89,26 @@ const cellRenderers = [
     },
   },
   {
-    title: '구매 수량',
-    dataIndex: 'amount',
+    title: '최근 입고 날짜',
+    dataIndex: 'inventory',
     width: 120,
+    render: (data, row, i) => {
+      const created = get(
+        data,
+        [
+          0,
+          'created',
+        ],
+      );
+      console.log(data);
+      console.log(created);
+      console.log(moment(created).format());
+      return (
+        <Cell>
+          {moment(created).format('LLL')}
+        </Cell>
+      );
+    },
   },
   {
     title: '구매 가격',
@@ -138,11 +158,15 @@ const Storage = () => {
   );
 
   const {
-    data,
-    count,
+    // data,
+    // count,
+    productListData: data,
+    productListCount: count,
+    ingredientListData,
+    ingredientListCount,
     loading,
     error,
-  } = useInventoryData({
+  } = useProductData({
     limit: Number(queryParams.pageSize),
     offset: (queryParams.pageSize * (queryParams.page - 1)) || 0,
   });
