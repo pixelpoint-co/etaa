@@ -19,6 +19,9 @@ import Button from '../../atoms/Button';
 import {
   convertUnit,
 } from '../../../services/number';
+import Divider from '../../atoms/Divider';
+import IconButton from '../../molecules/IconButton';
+import ProgressBar from '../../molecules/ProgressBar';
 
 const Container = styled(Card)`
   padding: 20px;
@@ -29,7 +32,7 @@ const Container = styled(Card)`
 `;
 const ExpandContainer = styled(Flex)`
   margin: -5px;
-  margin-top: 25px;
+  margin-top: 15px;
   flex-direction: row;
   flex-wrap: wrap;
   flex: 1;
@@ -51,16 +54,65 @@ const HeaderSection = styled(Flex)`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin-top: 7px;
+`;
+const OrderDestination = styled(Flex)`
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+`;
+const OrderProgress = styled(Flex)`
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: nowrap;
+  flex: 0;
+`;
+const OrderProgressStep = styled(Flex)`
+  flex-direction: column;
+  flex-basis: 120px;
+  max-width: 120px;
+  min-width: 120px;
+  margin: 0px 5px;
+`;
+const ToggleSection = styled(Flex)`
+  margin-left: 20px;
+  flex: 0;
+`;
+const ToggleButton = styled(IconButton)`
+  background-color: ${palette(
+    'grayscale',
+    5,
+  )};
+  border-color: ${palette(
+    'grayscale',
+    5,
+  )};
 `;
 const HeaderText = styled(Text)`
   font-size: 30px;
   line-height: 30px;
   font-weight: 500;
 `;
+const ArrowTailContainer = styled(IconButton)`
+  padding: 5px;
+  border-radius: 20px;
+  margin: 0px 10px;
+  align-self: center;
+  background-color: ${palette(
+    'grayscale',
+    5,
+  )};
+  border-color: ${palette(
+    'grayscale',
+    5,
+  )};
+`;
 const HeaderSubText = styled(Text)`
   font-size: 24px;
   line-height: 24px;
   font-weight: 500;
+  margin-left: 20px;
   color: ${palette(
     'grayscale',
     3,
@@ -101,18 +153,39 @@ const PurchaseRow = (props) => {
     'order_date',
   );
 
-  console.log(data);
-  console.log(groupedByDate);
   const companyText = (company && account) ? ` - ${company}` : '';
   return (
     <Container>
       <HeaderSection>
-        <HeaderText>
-          {`${company || ''}`}
-        </HeaderText>
-        <HeaderSubText>
-          {`${account || ''}`}
-        </HeaderSubText>
+        <OrderDestination>
+          <HeaderText>
+            {`${company || ''}`}
+          </HeaderText>
+          <ArrowTailContainer icon="arrowTail" />
+          <HeaderText>
+            RN
+          </HeaderText>
+          <HeaderSubText>
+            {`${account || ''}`}
+          </HeaderSubText>
+        </OrderDestination>
+        <OrderProgress>
+          <OrderProgressStep>
+            <Text>발주신청</Text>
+            <ProgressBar size={5} percentage={100} />
+          </OrderProgressStep>
+          <OrderProgressStep>
+            <Text>발주승인</Text>
+            <ProgressBar size={5} percentage={0} />
+          </OrderProgressStep>
+          <OrderProgressStep>
+            <Text>입고확정</Text>
+            <ProgressBar size={5} percentage={0} />
+          </OrderProgressStep>
+        </OrderProgress>
+        <ToggleSection>
+          <ToggleButton icon="arrow" rotateDeg={0} />
+        </ToggleSection>
       </HeaderSection>
       {detail.length > 0 ? (
         <ExpandContainer>
@@ -152,7 +225,23 @@ const PurchaseRow = (props) => {
                       lineHeight: '22px',
                     }}
                     label={name}
-                    value={`(${convertedInventoryQuantity || 0} / ${purchaseQuantity}) * ${inventoryAmount}${inventoryUnit}`}
+                    value={(
+                      <Flex>
+                        <Text palette="black">
+                          {`${inventoryAmount}${inventoryUnit}`}
+                        </Text>
+                        <Divider direction="vertical" size={16} width={2} horizontalMargin={10} />
+                        <Text>
+                          {`${convertedInventoryQuantity || 0}`}
+                        </Text>
+                        <Text>
+                          {' / '}
+                        </Text>
+                        <Text palette="grayscale">
+                          {`${purchaseQuantity}`}
+                        </Text>
+                      </Flex>
+                    )}
                   />
                 </PurchaseItem>
               </PurchaseItemContainer>
@@ -165,7 +254,16 @@ const PurchaseRow = (props) => {
           palette="grayscale"
           style={{ minWidth: 200 }}
           to={`/inventory/edit/${id}`}
-          label="입고"
+          label="발주취소"
+        />
+        <Button
+          palette="primary"
+          style={{
+            minWidth: 200,
+            marginLeft: 10,
+          }}
+          to={`/inventory/edit/${id}`}
+          label="입고확인"
         />
       </ButtonContainer>
     </Container>
