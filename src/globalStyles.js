@@ -13,7 +13,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     height: 100%;
     font-family: "Pretendard Std Variable", "Pretendard Std", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
-    font-size: 14px;
+    font-size: 22px;
     line-height: 1rem;
     letter-spacing: 0px;
     word-spacing: 0px;
