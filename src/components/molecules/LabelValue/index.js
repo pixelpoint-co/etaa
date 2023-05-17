@@ -10,15 +10,18 @@ import Flex from '../../atoms/Flex';
 import Text from '../../atoms/P';
 
 const Wrapper = styled(Flex)`
-  flexDirection: row;
+  flex-direction: row;
   flex: 1;
   padding: 10px;
 `;
 
 const Label = styled(Text)`
   flex: 1;
-  font-size: 14px;
+  font-size: 22px;
   align-self: flex-start;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: ${palette(
     'grayscale',
     0,
@@ -31,7 +34,7 @@ const Label = styled(Text)`
 `;
 
 const Value = styled(Text)`
-  font-size: 14px;
+  font-size: 22px;
   align-self: flex-end;
   color: ${palette(
     'black',
