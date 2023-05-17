@@ -1,4 +1,6 @@
-import { lowerCase } from 'lodash';
+import {
+  lowerCase,
+} from 'lodash';
 import {
   format as formatCurr,
   unformat as unformatCurr,
@@ -19,30 +21,43 @@ export const unformat = (str) => {
 };
 
 export const formatNumber = (v, opts = {}) => {
-  return formatCurr(v, {
-    spacing: false,
-    decimalsDigits: 0,
-    showDecimals: 'NEVER',
-    ...opts,
-  });
+  return formatCurr(
+    v,
+    {
+      spacing: false,
+      decimalsDigits: 0,
+      showDecimals: 'NEVER',
+      ...opts,
+    },
+  );
 };
 export const formatCurrency = (v, opts = {}) => {
-  return formatCurr(v, {
-    currency: '원',
-    currencyPosition: 'RIGHT',
-    spacing: false,
-    decimalsDigits: 0,
-    showDecimals: 'NEVER',
-    ...opts,
-  });
+  return formatCurr(
+    v,
+    {
+      currency: '원',
+      currencyPosition: 'RIGHT',
+      spacing: false,
+      decimalsDigits: 0,
+      showDecimals: 'NEVER',
+      ...opts,
+    },
+  );
 };
 
 export const roundCurrency = (v = 0, others = {}, roundType = 'up', precision = 2) => {
-  const rounded = roundTo(v, precision, roundType);
-  return unformat(formatCurr(rounded, {
-    decimalsDigits: 0,
-    ...others,
-  }));
+  const rounded = roundTo(
+    v,
+    precision,
+    roundType,
+  );
+  return unformat(formatCurr(
+    rounded,
+    {
+      decimalsDigits: 0,
+      ...others,
+    },
+  ));
 };
 
 export const convertUnit = (amount, unit, quantity, reverse = false) => {
@@ -57,7 +72,7 @@ export const convertUnit = (amount, unit, quantity, reverse = false) => {
       multiplier = 1;
       break;
     case 'l':
-      multiplier = 1;
+      multiplier = 1000;
       break;
     default:
       multiplier = 1;
