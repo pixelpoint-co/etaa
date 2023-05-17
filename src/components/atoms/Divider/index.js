@@ -5,6 +5,7 @@ import Flex from '../Flex';
 
 const StyledFlex = styled(Flex)`
   flex: 0;
+  align-self: center;
 `;
 
 const Divider = (props) => {
@@ -13,6 +14,7 @@ const Divider = (props) => {
     horizontalMargin,
     color,
     size,
+    width,
     direction,
   } = props;
   return (
@@ -23,12 +25,13 @@ const Divider = (props) => {
         backgroundColor: color,
         ...(direction === 'horizontal'
           ? {
-            height: size,
-            width: '100%',
+            height: width,
+            width: size,
           }
           : {
-            width: size,
-            height: '100%',
+            width,
+            minWidth: width,
+            height: size,
           }),
       }}
     />
@@ -39,7 +42,8 @@ Divider.defaultProps = {
   verticalMargin: 0,
   horizontalMargin: 0,
   color: '#D9D9D9',
-  size: 1,
+  size: '100%',
+  width: 1,
   direction: 'horizontal',
 };
 
@@ -48,6 +52,7 @@ Divider.propTypes = {
   horizontalMargin: PropTypes.number,
   color: PropTypes.string,
   size: PropTypes.number,
+  width: PropTypes.number,
   direction: PropTypes.oneOf([
     'horizontal',
     'vertical',
