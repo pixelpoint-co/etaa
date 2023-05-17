@@ -25,7 +25,7 @@ const IconButton = (props) => {
   const {
     icon,
     iconSize = 20,
-    style,
+    rotateDeg,
     ...others
   } = props;
   return (
@@ -34,6 +34,7 @@ const IconButton = (props) => {
     >
       <Wrapper>
         <Icon
+          rotateDeg={rotateDeg}
           icon={icon}
           size={iconSize}
         />

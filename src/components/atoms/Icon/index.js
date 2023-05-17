@@ -36,6 +36,9 @@ import {
 import {
   ReactComponent as ArrowTaleIcon,
 } from './icons-o/arrow-tail.svg';
+import {
+  ReactComponent as ArrowIcon,
+} from './icons-o/arrow.svg';
 
 const ReactIcons = {
   loader: LoaderIcon,
@@ -47,6 +50,7 @@ const ReactIcons = {
   check: CheckIcon,
   drawer: DrawerToggle,
   arrowTail: ArrowTaleIcon,
+  arrow: ArrowIcon,
 };
 
 const fillStyle = css`
