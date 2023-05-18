@@ -61,7 +61,6 @@ const HeaderSection = styled(Flex)`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-top: 7px;
 `;
 const OrderDestination = styled(Flex)`
   flex-direction: row;

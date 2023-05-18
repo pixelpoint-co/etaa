@@ -170,8 +170,8 @@ const LeftMenu = ({
   <Wrapper width={width} open={open}>
     <LogoSection open={open}>
       <LogoWrapper to="/" open={open}>
-        <LogoO icon="logoO" width={open ? 63 : 50} height={24} fill="white" open={open} />
         <Icon icon="logoCre" width={open ? 58 : 0} height={24} fill="white" />
+        <LogoO icon="logoO" width={open ? 63 : 50} height={24} fill="white" open={open} />
       </LogoWrapper>
       <DrawerContainer
         onClick={() => {

@@ -23,6 +23,7 @@ import Purchase from '../pages/Purchase';
 import SignIn from '../pages/SignIn';
 import Storage from '../pages/Storage';
 import Recipe from '../pages/Recipe';
+import Billy from '../pages/Billy';
 import LeftMenu from '../containers/LeftMenu';
 import Header from '../containers/Header';
 
@@ -53,6 +54,12 @@ const routes = [
     element: <Recipe />,
     rootRoute: true,
   },
+  {
+    label: '빌',
+    href: '/billy/*',
+    element: <Billy />,
+    rootRoute: true,
+  },
 
   // {
   //   label: '자재관리',
@@ -80,13 +87,11 @@ const PageWrapper = styled(Flex)`
   max-width: 100vw;
 
   padding-left: calc(80px);
-  height: calc(100% - 60px);
 
   ${ifProp(
     'leftMenuOpen',
     css`
       padding-left: calc(220px);
-      height: calc(100% - 40px);
     `,
   )}
   /* padding-top: 50px; */

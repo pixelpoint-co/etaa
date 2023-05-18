@@ -103,7 +103,7 @@ export default (options = {}) => {
         parsedBaseColorHSL[1],
         Math.min(
           parsedBaseColorHSL[2] + 40,
-          90,
+          95,
         ),
       ])}`,
     },
