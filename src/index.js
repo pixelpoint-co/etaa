@@ -9,6 +9,8 @@ import 'moment/locale/ko';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone'; // dependent on utc plugin
+import duration from 'dayjs/plugin/duration';
+
 import {
   PersistGate,
 } from 'redux-persist/integration/react';
@@ -44,6 +46,8 @@ import store, {
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
+dayjs.extend(duration);
+
 dayjs.tz.setDefault('Asia/Seoul');
 moment.tz.setDefault('Asia/Seoul');
 moment.locale('ko');
