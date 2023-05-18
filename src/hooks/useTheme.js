@@ -1,5 +1,7 @@
 import get from 'lodash/get';
 import convert from 'color-convert';
+import rgbHex from 'rgb-hex';
+
 import {
   useEffect, useCallback,
 } from 'react';
@@ -62,7 +64,6 @@ export default (options = {}) => {
       ],
     },
   };
-  console.log(solidThemeHSL);
   const solidTheme = {
     foreground: `#${convert.hsl.hex(solidThemeHSL.foregroundHSL)}`,
     background: `#${convert.hsl.hex(solidThemeHSL.backgroundHSL)}`,
@@ -80,6 +81,41 @@ export default (options = {}) => {
     },
     type,
   };
+  const outlineTheme = {
+    foreground: solidTheme.foreground,
+    background: solidTheme.background,
+    hover: {
+      foreground: solidTheme.foreground,
+      background: `#${convert.hsl.hex([
+        parsedBaseColorHSL[0],
+        parsedBaseColorHSL[1],
+        Math.min(
+          parsedBaseColorHSL[2] + 40,
+          90,
+        ),
+      ])}`,
+    },
+
+    focus: {
+      foreground: solidTheme.foreground,
+      background: `#${convert.hsl.hex([
+        parsedBaseColorHSL[0],
+        parsedBaseColorHSL[1],
+        Math.min(
+          parsedBaseColorHSL[2] + 40,
+          90,
+        ),
+      ])}`,
+    },
+    disabled: {
+      foreground: theme.palette.grayscale[3],
+      background: theme.palette.white[0],
+    },
+    type,
+
+  };
   console.log(solidTheme);
+  if (type === 'solid') return solidTheme;
+  if (type === 'outline') return outlineTheme;
   return solidTheme;
 };
