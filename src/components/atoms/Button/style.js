@@ -1,4 +1,6 @@
-import { css } from 'styled-components';
+import {
+  css,
+} from 'styled-components';
 
 export const unsetStyle = css`
   display: flex;
@@ -8,7 +10,6 @@ export const unsetStyle = css`
   cursor: pointer;
   border: none;
   background: none;
-
   &:focus {
     outline: none;
   }
@@ -16,6 +17,8 @@ export const unsetStyle = css`
 
 const defaultStyle = css`
   ${unsetStyle}
+  border-width: 2px;
+  border-style: solid;
 `;
 
 export default defaultStyle;
