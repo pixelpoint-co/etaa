@@ -11,10 +11,11 @@ import {
 } from '@apollo/client';
 
 const FETCH_PRODUCT_LIST = gql`
-  query FetchPurchaseList($offset:Int, $limit:Int) {
+  query FetchPurchaseList($offset:Int, $limit:Int, $keyword:String) {
     productList (
       offset: $offset,
       limit: $limit,
+      keyword: $keyword,
     ) {
       count
       list {
@@ -72,6 +73,10 @@ export default (options = {}) => {
     endDate,
   } = options;
   const [
+    keyword,
+    setKeyword,
+  ] = useState('');
+  const [
     loading,
     setLoading,
   ] = useState(true);
@@ -91,6 +96,7 @@ export default (options = {}) => {
       variables: {
         limit,
         offset,
+        keyword,
       },
     },
   ];
@@ -98,7 +104,6 @@ export default (options = {}) => {
     FETCH_INGREDIENT_LIST,
     {},
   ];
-
   const {
     loading: nodeLoading,
     error: nodeError,
@@ -152,5 +157,7 @@ export default (options = {}) => {
     ingredientListCount,
     loading: nodeLoading || edgeLoading,
     error: nodeError || edgeError,
+    keyword,
+    setKeyword,
   };
 };

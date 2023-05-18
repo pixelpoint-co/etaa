@@ -19,6 +19,7 @@ import {
 
 import Flex from '../components/atoms/Flex';
 import Button from '../components/atoms/Button';
+import Card from '../components/atoms/Card';
 import Link from '../components/atoms/Link';
 
 import PurchaseRow from '../components/organisms/PurchaseRow';
@@ -32,12 +33,17 @@ import {
   formatNumber,
 } from '../services/number';
 import useProductData from '../hooks/useProductData';
+import SearchBar from '../components/organisms/SearchBar';
 
 const Wrapper = styled(Flex)`
   flex: 1;
   flex-direction: column;
 `;
+const TableContainer = styled(Card)`
+  padding: 16px;
+  margin-top: 20px;
 
+`;
 const cellRenderers = [
   // {
   //   title: 'Id',
@@ -93,16 +99,16 @@ const cellRenderers = [
     dataIndex: 'inventory',
     width: 120,
     render: (data, row, i) => {
-      const created = get(
-        data,
-        [
-          0,
-          'created',
-        ],
+      const created = Number(
+        get(
+          data,
+          [
+            0,
+            'created',
+          ],
+        ),
       );
-      console.log(data);
-      console.log(created);
-      console.log(moment(created).format());
+      if (!created) return null;
       return (
         <Cell>
           {moment(created).format('LLL')}
@@ -165,6 +171,7 @@ const Storage = () => {
     ingredientListData,
     ingredientListCount,
     loading,
+    setKeyword,
     error,
   } = useProductData({
     limit: Number(queryParams.pageSize),
@@ -188,16 +195,26 @@ const Storage = () => {
 
   return (
     <Wrapper>
-      <AntDTable
-        modelName="model"
-        cellRenderers={cellRenderers}
-        data={data}
-        itemsPerPage={pageSize}
-        onPageChange={onPageChange}
-        currentPage={currentPage}
-        count={count}
-        rowKey="id"
+      <SearchBar
+        style={{ flex: 0 }}
+        label="검색"
+        icon="search"
+        onSubmit={(searchKey) => {
+          setKeyword(searchKey);
+        }}
       />
+      <TableContainer>
+        <AntDTable
+          modelName="model"
+          cellRenderers={cellRenderers}
+          data={data}
+          itemsPerPage={pageSize}
+          onPageChange={onPageChange}
+          currentPage={currentPage}
+          count={count}
+          rowKey="id"
+        />
+      </TableContainer>
     </Wrapper>
   );
 };

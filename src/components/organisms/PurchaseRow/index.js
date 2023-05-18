@@ -80,14 +80,6 @@ const ToggleSection = styled(Flex)`
   flex: 0;
 `;
 const ToggleButton = styled(IconButton)`
-  background-color: ${palette(
-    'grayscale',
-    5,
-  )};
-  border-color: ${palette(
-    'grayscale',
-    5,
-  )};
 `;
 const HeaderText = styled(Text)`
   font-size: 30px;
@@ -99,14 +91,6 @@ const ArrowTailContainer = styled(IconButton)`
   border-radius: 20px;
   margin: 0px 10px;
   align-self: center;
-  background-color: ${palette(
-    'grayscale',
-    5,
-  )};
-  border-color: ${palette(
-    'grayscale',
-    5,
-  )};
 `;
 const HeaderSubText = styled(Text)`
   font-size: 24px;
@@ -154,6 +138,7 @@ const PurchaseRow = (props) => {
   );
 
   const companyText = (company && account) ? ` - ${company}` : '';
+  const isComplete = inventoryList.length > 0;
   return (
     <Container>
       <HeaderSection>
@@ -161,7 +146,7 @@ const PurchaseRow = (props) => {
           <HeaderText>
             {`${company || ''}`}
           </HeaderText>
-          <ArrowTailContainer icon="arrowTail" />
+          <ArrowTailContainer icon="arrowTail" palette="grayscale" tone={5} />
           <HeaderText>
             RN
           </HeaderText>
@@ -176,15 +161,15 @@ const PurchaseRow = (props) => {
           </OrderProgressStep>
           <OrderProgressStep>
             <Text>발주승인</Text>
-            <ProgressBar size={5} percentage={0} />
+            <ProgressBar size={5} percentage={isComplete ? 100 : 0} />
           </OrderProgressStep>
           <OrderProgressStep>
             <Text>입고확정</Text>
-            <ProgressBar size={5} percentage={0} />
+            <ProgressBar size={5} percentage={isComplete ? 100 : 0} />
           </OrderProgressStep>
         </OrderProgress>
         <ToggleSection>
-          <ToggleButton icon="arrow" rotateDeg={0} />
+          <ToggleButton icon="arrow" rotateDeg={0} palette="grayscale" tone={5} />
         </ToggleSection>
       </HeaderSection>
       {detail.length > 0 ? (
@@ -255,6 +240,7 @@ const PurchaseRow = (props) => {
           style={{ minWidth: 200 }}
           to={`/inventory/edit/${id}`}
           label="발주취소"
+          disabled
         />
         <Button
           palette="primary"

@@ -8,6 +8,7 @@ import {
 import styled from 'styled-components';
 
 import {
+  useNavigate,
   useParams,
 } from 'react-router-dom';
 
@@ -110,6 +111,8 @@ const today = moment().toISOString(); // TODO waiter db.Timestamp에 따라 수�
 
 const StorageEdit = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const {
     purchaseData: data,
     purchaseListData: listData,
@@ -133,7 +136,7 @@ const StorageEdit = () => {
   const addInventoryListCompleted = () => {
     console.log('add inventory db');
     alert('기록되었습니다');
-    window.location.reload();
+    navigate('/purchase');
   };
 
   const [
@@ -279,7 +282,7 @@ const StorageEdit = () => {
           <PageAction
             actions={[{
               type: 'submit',
-              label: '저장',
+              label: '입고확정',
               loaderStroke: 'white',
               loaderSize: 32,
               loading: addInventoryListLoading,

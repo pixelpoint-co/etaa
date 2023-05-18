@@ -232,7 +232,7 @@ const Purchase = () => {
     customSellers,
     setCustomSellers,
   ] = useState([]);
-
+  console.log(`addPurchaseLoading: ${addPurchaseLoading}`);
   return (
     <Wrapper>
       <Formik
@@ -336,10 +336,8 @@ const Purchase = () => {
           <PageAction
             actions={[{
               type: 'submit',
-              label: '저장',
-              loaderStroke: 'white',
+              label: '입고확정',
               loaderSize: 32,
-              loading: addPurchaseLoading,
               palette: 'primary',
             }]}
           />

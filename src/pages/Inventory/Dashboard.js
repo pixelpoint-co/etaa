@@ -68,6 +68,7 @@ const OverViewHeader = styled(Flex)`
 `;
 const HeadingContainer = styled(Flex)`
   min-height: 90px;
+  flex: 0;
   align-items: center;
   justify-content: space-between;
 `;
@@ -79,6 +80,7 @@ const OverViewStatsContainer = styled(Flex)`
   flex-direction: row;
   justify-content: space-between;
   margin: 0px -10px 30px -10px;
+  flex: 0;
 `;
 const OverviewStatContainer = styled(Flex)`
   margin: 0px 10px;
@@ -277,9 +279,7 @@ const InventoryDashboard = () => {
         </StyledHeading>
 
       </HeadingContainer>
-      <Card style={{ padding: 16 }}>
-        <InventoryTable />
-      </Card>
+      <InventoryTable />
     </Wrapper>
   );
 };
