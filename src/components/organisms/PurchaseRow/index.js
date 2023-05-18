@@ -8,6 +8,13 @@ import {
 import {
   palette,
 } from 'styled-theme';
+import {
+  Collapse,
+} from 'react-collapse';
+
+import {
+  useState,
+} from 'react';
 import Text from '../../atoms/P';
 import Flex from '../../atoms/Flex';
 import Icon from '../../atoms/Icon';
@@ -130,6 +137,10 @@ const PurchaseRow = (props) => {
     account,
     id,
   } = data;
+  const [
+    open,
+    setOpen,
+  ] = useState(true);
   const createdAt = moment(Number(created));
 
   const groupedByDate = groupBy(
@@ -169,71 +180,80 @@ const PurchaseRow = (props) => {
           </OrderProgressStep>
         </OrderProgress>
         <ToggleSection>
-          <ToggleButton icon="arrow" rotateDeg={0} palette="grayscale" tone={5} />
+          <ToggleButton
+            icon="arrow"
+            rotateDeg={open ? 0 : 180}
+            palette="grayscale"
+            tone={5}
+            onClick={() => setOpen((v) => !v)}
+          />
         </ToggleSection>
       </HeaderSection>
-      {detail.length > 0 ? (
-        <ExpandContainer>
-          {detail.map((purchaseItem) => {
-            const { name } = purchaseItem;
-            const [foundInventory] = inventoryList
-              .filter((inventoryItem) => inventoryItem.name === name);
-            const inventoryQuantity = get(
-              foundInventory,
-              'unitQuantity',
-            );
-            const purchaseQuantity = get(
-              purchaseItem,
-              'unit_quantity',
-            );
-            const inventoryAmount = get(
-              purchaseItem,
-              'unit_amount',
-            );
-            const inventoryUnit = get(
-              purchaseItem,
-              'unit',
-            );
-            const convertedInventoryQuantity = convertUnit(
-              inventoryAmount,
-              inventoryUnit,
-              inventoryQuantity,
-              true,
-            );
-            return (
-              <PurchaseItemContainer key={name}>
-                <PurchaseItem>
-                  <LabelValue
-                    style={{
-                      padding: 0,
-                      fontSize: 22,
-                      lineHeight: '22px',
-                    }}
-                    label={name}
-                    value={(
-                      <Flex>
-                        <Text palette="black">
-                          {`${inventoryAmount}${inventoryUnit}`}
-                        </Text>
-                        <Divider direction="vertical" size={16} width={2} horizontalMargin={10} />
-                        <Text>
-                          {`${convertedInventoryQuantity || 0}`}
-                        </Text>
-                        <Text>
-                          {' / '}
-                        </Text>
-                        <Text palette="grayscale">
-                          {`${purchaseQuantity}`}
-                        </Text>
-                      </Flex>
-                    )}
-                  />
-                </PurchaseItem>
-              </PurchaseItemContainer>
-            );
-          })}
-        </ExpandContainer>
-      ) : null}
+      <Collapse isOpened={open}>
+        {detail.length > 0 ? (
+          <ExpandContainer>
+            {detail.map((purchaseItem) => {
+              const { name } = purchaseItem;
+              const [foundInventory] = inventoryList
+                .filter((inventoryItem) => inventoryItem.name === name);
+              const inventoryQuantity = get(
+                foundInventory,
+                'unitQuantity',
+              );
+              const purchaseQuantity = get(
+                purchaseItem,
+                'unit_quantity',
+              );
+              const inventoryAmount = get(
+                purchaseItem,
+                'unit_amount',
+              );
+              const inventoryUnit = get(
+                purchaseItem,
+                'unit',
+              );
+              const convertedInventoryQuantity = convertUnit(
+                inventoryAmount,
+                inventoryUnit,
+                inventoryQuantity,
+                true,
+              );
+              return (
+                <PurchaseItemContainer key={name}>
+                  <PurchaseItem>
+                    <LabelValue
+                      style={{
+                        padding: 0,
+                        fontSize: 22,
+                        lineHeight: '22px',
+                      }}
+                      label={name}
+                      value={(
+                        <Flex>
+                          <Text palette="black">
+                            {`${inventoryAmount}${inventoryUnit}`}
+                          </Text>
+                          <Divider direction="vertical" size={16} width={2} horizontalMargin={10} />
+                          <Text>
+                            {`${convertedInventoryQuantity || 0}`}
+                          </Text>
+                          <Text>
+                            {' / '}
+                          </Text>
+                          <Text palette="grayscale">
+                            {`${purchaseQuantity}`}
+                          </Text>
+                        </Flex>
+                      )}
+                    />
+                  </PurchaseItem>
+                </PurchaseItemContainer>
+              );
+            })}
+          </ExpandContainer>
+        ) : null}
+      </Collapse>
+
       <ButtonContainer>
         <Button
           palette="grayscale"

@@ -80,5 +80,10 @@ const GlobalStyle = createGlobalStyle`
     width: 100%;
   }
 
+
+  .ReactCollapse--collapse {
+    transition: height 250ms ease-in-out;
+  }
+
 `;
 export default GlobalStyle;

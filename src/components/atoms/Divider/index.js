@@ -26,11 +26,14 @@ const Divider = (props) => {
         ...(direction === 'horizontal'
           ? {
             height: width,
+            minHeight: width,
             width: size,
+            minWidth: size,
           }
           : {
             width,
             minWidth: width,
+            minHeight: size,
             height: size,
           }),
       }}
@@ -41,9 +44,9 @@ const Divider = (props) => {
 Divider.defaultProps = {
   verticalMargin: 0,
   horizontalMargin: 0,
-  color: '#D9D9D9',
+  color: '##D8D9DD',
   size: '100%',
-  width: 1,
+  width: 2,
   direction: 'horizontal',
 };
 
