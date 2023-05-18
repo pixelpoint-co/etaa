@@ -336,7 +336,7 @@ const Purchase = () => {
           <PageAction
             actions={[{
               type: 'submit',
-              label: '입고확정',
+              label: '저장',
               loaderSize: 32,
               palette: 'primary',
             }]}

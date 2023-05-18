@@ -85,7 +85,7 @@ const PageWrapper = styled(Flex)`
   ${ifProp(
     'leftMenuOpen',
     css`
-      padding-left: calc(250px);
+      padding-left: calc(220px);
       height: calc(100% - 40px);
     `,
   )}
