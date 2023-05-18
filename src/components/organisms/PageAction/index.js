@@ -41,7 +41,7 @@ const Wrapper = styled(Flex)`
 
 const ActionButton = styled(Button)`
   min-width: 320px;
-  padding: 15px;
+  padding: 20px;
   font-size: 30px;
   line-height: 36px;
 `;
