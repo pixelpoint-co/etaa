@@ -1,4 +1,5 @@
 import {
+  useRef,
   useState,
 } from 'react';
 import PropTypes from 'prop-types';
@@ -25,152 +26,25 @@ import Flex from '../Flex';
 
 import defaultStyle, {
   unsetStyle,
+  themeStyle,
+  themeSvg,
+  themeColor,
 } from './style';
 
 import useTheme from '../../../hooks/useTheme';
 
-const themeColor = css`
-  color: ${ifProp(
-    'disabled',
-    switchProp(
-      'theme.type',
-      {
-        solid: prop('theme.disabled.background'),
-        outline: prop('theme.disabled.foreground'),
-        text: prop('theme.disabled.foreground'),
-      },
-    ),
-    switchProp(
-      'theme.type',
-      {
-        solid: prop('theme.background'),
-        outline: prop('theme.foreground'),
-        text: prop('theme.foreground'),
-      },
-    ),
-  )};
-`;
-const themeColorHover = css`
-  color: ${switchProp(
-    'theme.type',
-    {
-      solid: prop('theme.hover.background'),
-      outline: prop('theme.hover.foreground'),
-      text: prop('theme.hover.foreground'),
-    },
-  )};
-`;
-const themeColorFocus = css`
-  color: ${switchProp(
-    'theme.type',
-    {
-      solid: prop('theme.focus.background'),
-      outline: prop('theme.focus.foreground'),
-      text: prop('theme.focus.foreground'),
-    },
-  )};
-`;
+const pointerEvents = ({
+  disabled,
+  loading,
+}) => {
+  if (disabled || loading) {
+    return css`
+      stroke-dashoffset: 0%;
 
-const themeBorder = css`
-  border-color: ${ifProp(
-    'disabled',
-    switchProp(
-      'theme.type',
-      {
-        solid: prop('theme.disabled.foreground'),
-        outline: prop('theme.disabled.foreground'),
-        text: prop('theme.disabled.background'),
-      },
-    ),
-    switchProp(
-      'theme.type',
-      {
-        solid: prop('theme.foreground'),
-        outline: prop('theme.foreground'),
-        text: prop('theme.background'),
-      },
-    ),
-  )};
-`;
-const themeBorderHover = css`
-  border-color: ${switchProp(
-    'theme.type',
-    {
-      solid: prop('theme.hover.foreground'),
-      outline: prop('theme.hover.foreground'),
-      text: prop('theme.hover.background'),
-    },
-  )};
-`;
-const themeBorderFocus = css`
-  border-color: ${switchProp(
-    'theme.type',
-    {
-      solid: prop('theme.focus.foreground'),
-      outline: prop('theme.focus.foreground'),
-      text: prop('theme.focus.background'),
-    },
-  )};
-`;
-const themeBackground = css`
-  background-color: ${ifProp(
-    'disabled',
-    switchProp(
-      'theme.type',
-      {
-        solid: prop('theme.disabled.foreground'),
-        outline: prop('theme.disabled.background'),
-        text: prop('theme.disabled.background'),
-      },
-    ),
-    switchProp(
-      'theme.type',
-      {
-        solid: prop('theme.foreground'),
-        outline: prop('theme.background'),
-        text: prop('theme.background'),
-      },
-    ),
-  )};
-`;
-const themeBackgroundHover = css`
-  background-color: ${switchProp(
-    'theme.type',
-    {
-      solid: prop('theme.hover.foreground'),
-      outline: prop('theme.hover.background'),
-      text: prop('theme.hover.background'),
-    },
-  )};
-`;
-const themeBackgroundFocus = css`
-  background-color: ${switchProp(
-    'theme.type',
-    {
-      solid: prop('theme.focus.foreground'),
-      outline: prop('theme.focus.background'),
-      text: prop('theme.focus.background'),
-    },
-  )};
-`;
-
-const themeStyle = css`
-  ${themeColor}
-  ${themeBorder}
-  ${themeBackground}
-
-  &:hover {
-    ${themeColorHover}
-    ${themeBorderHover}
-    ${themeBackgroundHover}
+    `;
   }
-  &:active,
-  &:focus {
-    ${themeColorFocus}
-    ${themeBorderFocus}
-    ${themeBackgroundFocus}
-  }
-`;
+  return 'auto';
+};
 
 const styles = css`
   ${defaultStyle}
@@ -198,11 +72,7 @@ const styles = css`
     'not-allowed',
     'pointer',
   )};
-  pointer-events: ${ifProp(
-    'disabled',
-    'none',
-    'auto',
-  )};
+  pointer-events: ${pointerEvents};
   transition: all 250ms ease;
 
   ${themeStyle}
@@ -215,37 +85,45 @@ const Content = styled(Flex)`
 const loadingTextStyle = css`
 
 `;
-const StyledText = styled(Text)`
+const labelStyle = css`
   ${themeColor}
   font-weight: 500;
   font-size: inherit;
   overflow: visible;
   text-align: center;
   white-space: nowrap;
+  font-size: 20px;
+  line-height: 20px;
   transition: width 300ms ease-in-out;
   ${({
-    loading,
+    $loading,
     hideLabelOnLoading,
   }) => {
-    if (loading && hideLabelOnLoading) {
+    if ($loading && hideLabelOnLoading) {
       return css`
         opacity: 0;
       `;
     }
-    if (loading) {
+    if ($loading) {
       return css`
         width: 0px;
       `;
     }
-    if (hideLabelOnLoading) {
-      return css`
-        width: auto;
-      `;
-    }
+    // if (hideLabelOnLoading) {
+    //   return css`
+    //     width: auto;
+    //   `;
+    // }
     return css`
       width: 100%;
     `;
   }};
+`;
+const StyledText = styled(Text)`
+  ${labelStyle}
+`;
+const StyledLabelNode = styled(Flex)`
+  ${labelStyle}
 `;
 
 const SpinnerContainer = styled(Flex)`
@@ -286,6 +164,7 @@ const Button = ({
   tone,
   themeType,
   type,
+  disableClick,
   isAsync,
   onClick,
   loaderStroke,
@@ -296,20 +175,25 @@ const Button = ({
   children,
   ...props
 }) => {
-  const theme = useTheme({
+  const componentTheme = useTheme({
     palette,
     tone,
     type: themeType, // [solid, outline, text]
   });
-
   const [
     loading,
     setLoading,
   ] = useState(propsLoading);
 
+  const button = useRef(null);
+
   if (props.to) {
     return (
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={(orig) => ({
+        ...orig,
+        componentTheme,
+      })}
+      >
         <StyledLink
           {...props}
         >
@@ -320,7 +204,11 @@ const Button = ({
   }
   if (props.href) {
     return (
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={(orig) => ({
+        ...orig,
+        componentTheme,
+      })}
+      >
         <Anchor
           {...props}
         >
@@ -358,35 +246,58 @@ const Button = ({
   const parsedOnClick = !isAsync ? onClick : asyncOnClick;
   const parsedLoading = propsLoading || loading;
 
+  const handleClick = (e) => {
+    if (parsedLoading || disableClick) {
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+    parsedOnClick(e);
+  };
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider
+      theme={(orig) => ({
+        ...orig,
+        componentTheme,
+      })}
+    >
       <StyledButton
         {...props}
-        onClick={parsedOnClick}
+        ref={button}
+        $loading={loading}
+        onClick={handleClick}
         type={type}
       >
         {label ? (
           <Content>
-            <StyledText
-              loading={parsedLoading}
-              hideLabelOnLoading={hideLabelOnLoading}
-            >
-              {label}
-            </StyledText>
+            {typeof label === 'string' ? (
+              <StyledText
+                $loading={parsedLoading}
+                hideLabelOnLoading={hideLabelOnLoading}
+              >
+                {label}
+              </StyledText>
+            ) : (
+              <StyledLabelNode
+                $loading={parsedLoading}
+                hideLabelOnLoading={hideLabelOnLoading}
+              >
+                {label}
+              </StyledLabelNode>
+            )}
             {(parsedLoading) ? (
               <SpinnerContainer
                 hideLabelOnLoading={hideLabelOnLoading}
               >
                 <Spinner
-                  {...(loaderStroke ? {
-                    fill: loaderStroke,
-                    size: loaderSize || 24,
-                  } : {})}
+                  {...(loaderStroke ? { fill: loaderStroke } : {})}
+                  size={loaderSize || 24}
                 />
               </SpinnerContainer>
             ) : null}
           </Content>
-        ) : children}
+        ) : null}
+        {children}
       </StyledButton>
     </ThemeProvider>
 
@@ -398,7 +309,11 @@ Button.propTypes = {
   type: PropTypes.string,
   to: PropTypes.string,
   href: PropTypes.string,
-  label: PropTypes.string,
+  label: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.node,
+    PropTypes.arrayOf(PropTypes.node),
+  ]),
   palette: PropTypes.string,
   tone: PropTypes.number,
   themeType: PropTypes.oneOf([
@@ -423,10 +338,14 @@ Button.defaultProps = {
   loading: false,
   loaderStroke: 'white',
   hideLabelOnLoading: false,
+  onClick: () => {},
 };
 
 export default Button;
 export {
   defaultStyle,
   unsetStyle,
+  themeStyle,
+  themeSvg,
+  themeColor,
 };

@@ -39,6 +39,15 @@ import {
 import {
   ReactComponent as ArrowIcon,
 } from './icons-o/arrow.svg';
+import {
+  ReactComponent as PotRotateIcon,
+} from './icons-o/pot-rotate.svg';
+import {
+  ReactComponent as PotRotateStraightIcon,
+} from './icons-o/pot-rotate-straight.svg';
+import {
+  ReactComponent as AlertIcon,
+} from './icons-o/alert.svg';
 
 const ReactIcons = {
   loader: LoaderIcon,
@@ -51,6 +60,9 @@ const ReactIcons = {
   drawer: DrawerToggle,
   arrowTail: ArrowTaleIcon,
   arrow: ArrowIcon,
+  potRotate: PotRotateIcon,
+  potRotateStraight: PotRotateStraightIcon,
+  alert: AlertIcon,
 };
 
 const fillStyle = css`
@@ -159,7 +171,7 @@ const Wrapper = styled.span`
     left: 0;
     width: 100%;
     height: 100%;
-    fill: ${(props) => (props.fill ? props.fill : '')};
+    fill: ${(props) => (props.fill ? props.fill : 'currentcolor')};
     stroke: ${(props) => (props.stroke ? props.stroke : '')};
     transform: rotate(${({ rotateDeg }) => `${rotateDeg}deg`});
   }
@@ -189,7 +201,7 @@ const Icon = ({
   ...props
 }) => {
   const ReactIcon = ReactIcons[icon];
-  return <Wrapper {...props} className="icon">{ReactIcon && <ReactIcon />}</Wrapper>;
+  return <Wrapper {...props}>{ReactIcon && <ReactIcon />}</Wrapper>;
 };
 
 Icon.propTypes = {

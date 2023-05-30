@@ -16,24 +16,25 @@ const errorTheme = getTheme({
   tone: 0,
   type: 'outline',
 });
-console.log(errorTheme);
+
 const errorStyle = css`
   border-color: ${errorTheme.foreground};
   background-color: ${errorTheme.hover.background};
 `;
 
 const Card = styled(Flex)`
+  padding: 20px;
   border-radius: 15px;
-  background-color: ${palette(
+  background-color: ${({ tone }) => palette(
     {
-      grayscale: 6,
+      grayscale: tone || 6,
       white: 0,
     },
     0,
   )};
-  border-color: ${palette(
+  border-color: ${({ tone }) => palette(
     {
-      grayscale: 6,
+      grayscale: tone || 6,
       white: 0,
     },
     0,

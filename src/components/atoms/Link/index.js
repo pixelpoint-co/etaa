@@ -75,7 +75,7 @@ const Link = (props) => {
     ...others
   } = props;
   if (props.to) {
-    return <StyledNavLink {...props} fill={fill} />;
+    return <StyledNavLink {...others} />;
   }
   return <Anchor {...others} />;
 };
