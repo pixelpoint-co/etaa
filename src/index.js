@@ -3,6 +3,25 @@ import ReactDOM from 'react-dom/client';
 import {
   Provider,
 } from 'react-redux';
+import Modal from 'react-modal';
+
+import {
+  HttpLink,
+  ApolloProvider,
+  ApolloClient,
+  InMemoryCache,
+  split,
+} from '@apollo/client';
+import {
+  WebSocketLink,
+} from '@apollo/client/link/ws';
+import {
+  getMainDefinition,
+} from '@apollo/client/utilities';
+import {
+  SubscriptionClient,
+} from 'subscriptions-transport-ws'; // <- import this
+
 import moment from 'moment-timezone';
 import 'moment/locale/ko';
 
@@ -20,12 +39,6 @@ import {
 import {
   ThemeProvider,
 } from 'styled-components';
-import {
-  HttpLink,
-  ApolloProvider,
-  ApolloClient,
-  InMemoryCache,
-} from '@apollo/client';
 
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
@@ -53,6 +66,7 @@ moment.tz.setDefault('Asia/Seoul');
 moment.locale('ko');
 
 const httpLinkUri = process.env.REACT_APP_HTTPLINK_URI;
+const wsLinkUri = process.env.REACT_APP_WSLINK_URI; /** */
 
 const httpLink = new HttpLink({
   uri: `${httpLinkUri}`,
@@ -61,19 +75,45 @@ const httpLink = new HttpLink({
   version: '0.0.1',
 });
 
-const client = new ApolloClient({
-  link: httpLink,
-  cache: new InMemoryCache(),
-  defaultOptions: {
-    watchQuery: {
-      fetchPolicy: 'no-cache',
-      errorPolicy: 'ignore',
-    },
-    query: {
-      fetchPolicy: 'no-cache',
-      errorPolicy: 'all',
-    },
+const wsClient = new SubscriptionClient(
+  wsLinkUri,
+  { reconnect: true },
+);
+
+const wsLink = new WebSocketLink(wsClient);
+wsClient.onConnected(() => console.log('websocket connected!!'));
+wsClient.onDisconnected(() => console.log('websocket disconnected!!'));
+wsClient.onReconnected(() => console.log('websocket reconnected!!'));
+// The split function takes three parameters:
+//
+// * A function that's called for each operation to execute
+// * The Link to use for an operation if the function returns a "truthy" value
+// * The Link to use for an operation if the function returns a "falsy" value
+const splitLink = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    return (
+      definition.kind === 'OperationDefinition'
+      && definition.operation === 'subscription'
+    );
   },
+  wsLink,
+  httpLink,
+);
+
+const client = new ApolloClient({
+  link: splitLink,
+  cache: new InMemoryCache(),
+  // defaultOptions: {
+  //   watchQuery: {
+  //     fetchPolicy: 'no-cache',
+  //     errorPolicy: 'ignore',
+  //   },
+  //   query: {
+  //     fetchPolicy: 'no-cache',
+  //     errorPolicy: 'all',
+  //   },
+  // },
 });
 
 global.api = apiService.create({ defaultUrl: apiUrl });
