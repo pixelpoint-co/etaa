@@ -1,5 +1,5 @@
 import {
-  Formik, useField, Form,
+  Formik, useField, Form, Field,
 } from 'formik';
 
 import {
@@ -35,6 +35,7 @@ import {
   unformat, roundTo, convertUnit,
 } from '../../services/number';
 import Card from '../../components/atoms/Card';
+import useProductData from '../../hooks/useProductData';
 
 const Wrapper = styled(Flex)`
   flex-direction: column;
@@ -237,15 +238,6 @@ const StorageEdit = () => {
   const createdAt = moment(Number(created));
   return (
     <Wrapper>
-      <LabelValue
-        style={{
-          padding: 15,
-          flex: 0,
-        }}
-        bold
-        label={`기록날짜 (${account})`}
-        value={`${createdAt.format('YYYY-MM-DD')}`}
-      />
       <Formik
         initialValues={{
           parsedPurchaseItemList: formattedPurchaseItemList,
@@ -271,6 +263,7 @@ const StorageEdit = () => {
               ),
             };
           });
+          console.log(JSON.stringify({ variables: { inventoryList: formattedInventoryList } }));
           addInventoryList({ variables: { inventoryList: formattedInventoryList } });
         }}
       >

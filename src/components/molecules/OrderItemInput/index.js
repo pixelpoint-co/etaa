@@ -126,19 +126,19 @@ const OrderItemInput = ({
         flexShrink: 1,
       },
     },
-    {
-      key: 'item_unit',
-      cellStyle: {
-        flexBasis: '80px',
-        minWidth: '80px',
-        justifyContent: 'flex-end',
-        flex: 0,
-      },
-      cellTextStyle: { whiteSpace: 'nowrap' },
-      renderer: (data) => {
-        return `${data.unit_amount}${unit}`; // 1.5kg
-      },
-    },
+    // {
+    //   key: 'item_unit',
+    //   cellStyle: {
+    //     flexBasis: '80px',
+    //     minWidth: '80px',
+    //     justifyContent: 'flex-end',
+    //     flex: 0,
+    //   },
+    //   cellTextStyle: { whiteSpace: 'nowrap' },
+    //   renderer: (data) => {
+    //     return `${data.unit_amount}${unit}`; // 1.5kg
+    //   },
+    // },
     {
       key: 'unit_quantity',
       cellStyle: {

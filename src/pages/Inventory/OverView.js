@@ -88,7 +88,7 @@ const cellRenderers = [
     render: (data) => <Cell>{moment(Number(data)).format('L LT')}</Cell>,
   },
   {
-    title: '재료',
+    title: '자재명',
     dataIndex: [
       'product',
       'name',

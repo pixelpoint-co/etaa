@@ -34,6 +34,7 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    -webkit-tap-highlight-color: transparent;
   }
 
   p, ul, ol, pre, table, blockquote {
@@ -84,6 +85,5 @@ const GlobalStyle = createGlobalStyle`
   .ReactCollapse--collapse {
     transition: height 250ms ease-in-out;
   }
-
 `;
 export default GlobalStyle;

@@ -59,9 +59,12 @@ const cellRenderers = [
   //   render: (data) => <Cell>{moment(Number(data)).format('L LT')}</Cell>,
   // },
   {
-    title: '재료',
+    title: '자재명',
     dataIndex: 'name',
-    width: 120,
+    width: 280,
+    render: (data, row) => (
+      <Link to={`/product/edit/${row.id}`} label={data}>{data}</Link>
+    ),
   },
   // {
   //   title: '레시피',
@@ -76,7 +79,7 @@ const cellRenderers = [
   {
     title: '재고',
     dataIndex: 'inventorySum',
-    width: 120,
+    width: 140,
     render: (data, row) => {
       const unit = get(
         row,
@@ -89,7 +92,7 @@ const cellRenderers = [
       )})` : '';
       return (
         <Cell>
-          {`${formatNumber(data)}${unitText}`}
+          {`${formatNumber(data)}`}
         </Cell>
       );
     },
@@ -97,7 +100,7 @@ const cellRenderers = [
   {
     title: '최근 입고 날짜',
     dataIndex: 'inventory',
-    width: 120,
+    width: 140,
     render: (data, row, i) => {
       const created = Number(
         get(
@@ -116,33 +119,34 @@ const cellRenderers = [
       );
     },
   },
-  {
-    title: '구매 가격',
-    dataIndex: 'amount',
-    render: (data, row) => {
-      const unit = get(
-        row,
-        'product.unit',
-        '',
-      );
-      const unitPrice = get(
-        row,
-        'unitPrice',
-        0,
-      );
-      const unitQuantity = get(
-        row,
-        'unitQuantity',
-        0,
-      );
-      return (
-        <Cell>
-          {`${formatCurrency(unitPrice * unitQuantity)}`}
-        </Cell>
-      );
-    },
-    width: 120,
-  },
+
+  // {
+  //   title: '구매 가격',
+  //   dataIndex: 'amount',
+  //   render: (data, row) => {
+  //     const unit = get(
+  //       row,
+  //       'product.unit',
+  //       '',
+  //     );
+  //     const unitPrice = get(
+  //       row,
+  //       'unitPrice',
+  //       0,
+  //     );
+  //     const unitQuantity = get(
+  //       row,
+  //       'unitQuantity',
+  //       0,
+  //     );
+  //     return (
+  //       <Cell>
+  //         {`${formatCurrency(unitPrice * unitQuantity)}`}
+  //       </Cell>
+  //     );
+  //   },
+  //   width: 120,
+  // },
   // {
   //   title: '단위별 가격',
   //   dataIndex: 'unitPrice',

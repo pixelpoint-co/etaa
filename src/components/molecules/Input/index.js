@@ -360,7 +360,7 @@ const Input = ({ ...props }) => {
       {label ? (
         <LabelWrapper>
           {label}
-          {!required && <RequiredText>(선택)</RequiredText>}
+          {(!required && !disabled) && <RequiredText>(선택)</RequiredText>}
         </LabelWrapper>
       ) : null}
       <StyledInput {...props} style={inputStyle} />

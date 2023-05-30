@@ -1,6 +1,5 @@
 import get from 'lodash/get';
 import convert from 'color-convert';
-import rgbHex from 'rgb-hex';
 
 import {
   useEffect, useCallback,
@@ -15,13 +14,8 @@ export default (options = {}) => {
     baseColor, // hex
     type = 'solid', // [solid, outline, text]
   } = options;
-
   const parsedBaseColor = baseColor || theme.palette[palette][tone];
   const parsedBaseColorHSL = convert.hex.hsl(parsedBaseColor);
-  console.log(
-    'parsedBaseColor: ',
-    parsedBaseColor,
-  );
   const solidThemeHSL = {
     foregroundHSL: [
       parsedBaseColorHSL[0],
@@ -80,6 +74,9 @@ export default (options = {}) => {
       background: theme.palette.white[0],
     },
     type,
+    palette,
+    tone,
+    baseColor,
   };
   const outlineTheme = {
     foreground: solidTheme.foreground,
@@ -95,7 +92,6 @@ export default (options = {}) => {
         ),
       ])}`,
     },
-
     focus: {
       foreground: solidTheme.foreground,
       background: `#${convert.hsl.hex([
@@ -112,10 +108,24 @@ export default (options = {}) => {
       background: theme.palette.white[0],
     },
     type,
-
+    palette,
+    tone,
+    baseColor,
   };
-  console.log(solidTheme);
+  const textTheme = {
+    foreground: solidTheme.foreground,
+    background: solidTheme.background,
+    focus: {
+      foreground: outlineTheme.hover.foreground,
+      background: outlineTheme.hover.background,
+    },
+    type,
+    palette,
+    tone,
+    baseColor,
+  };
   if (type === 'solid') return solidTheme;
   if (type === 'outline') return outlineTheme;
+  if (type === 'text') return textTheme;
   return solidTheme;
 };

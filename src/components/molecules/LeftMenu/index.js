@@ -211,10 +211,6 @@ const LeftMenu = ({
       </ul>
       <MenuLink
         to="/"
-        style={{
-          // height: 'auto',
-          // alignSelf: 'flex-end',
-        }}
         onClick={() => { onClose(); }}
       >Log Out
       </MenuLink>

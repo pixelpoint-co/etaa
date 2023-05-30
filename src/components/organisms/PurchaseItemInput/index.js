@@ -51,7 +51,6 @@ const StyledInput = styled(Input)`
   line-height: 40px;
   text-align: left;
   margin-right: 0px;
-  text-transform: uppercase;
 `;
 
 const keyToLabel = {
@@ -88,7 +87,7 @@ const PurchaseItemInput = (props) => {
       <CellContainer>
         <ModelSelect
           style={{ width: '100%' }}
-          placeholder="재료명"
+          placeholder="자재명"
           required
           query={gql`
             query FetchProductList($offset:Int, $limit:Int) {
@@ -135,8 +134,7 @@ const PurchaseItemInput = (props) => {
           }}
         />
       </CellContainer>
-
-      <CellContainer>
+      {/* <CellContainer>
         <StyledInput
           inputStyle={{ flex: 1 }}
           type="number"
@@ -144,8 +142,8 @@ const PurchaseItemInput = (props) => {
           onChange={(e) => onChangeKey('unitAmount')(e.target.value)}
           value={data.unitAmount}
         />
-      </CellContainer>
-      <CellContainer>
+      </CellContainer> */}
+      {/* <CellContainer>
         <Select
           style={{
             flex: 1,
@@ -163,7 +161,7 @@ const PurchaseItemInput = (props) => {
           onChange={(v) => onChangeKey('unit')(v)}
           value={data.unit}
         />
-      </CellContainer>
+      </CellContainer> */}
       <CellContainer>
         <StyledInput
           inputStyle={{ flex: 1 }}
@@ -173,7 +171,7 @@ const PurchaseItemInput = (props) => {
           value={data.unitQuantity}
         />
       </CellContainer>
-      <CellContainer>
+      {/* <CellContainer>
         <StyledInput
           inputStyle={{ flex: 1 }}
           type="number"
@@ -181,7 +179,7 @@ const PurchaseItemInput = (props) => {
           onChange={(e) => onChangeKey('unitPrice')(e.target.value)}
           value={data.unitPrice}
         />
-      </CellContainer>
+      </CellContainer> */}
 
     </Wrapper>
   );

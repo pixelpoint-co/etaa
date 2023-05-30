@@ -16,19 +16,22 @@ import theme from '../../../theme';
 
 const Container = styled(Flex)`
   flex: initial;
-  background-color: ${palette(
-    'grayscale',
-    5,
-  )};
   border-radius: ${prop('size')}px;
   width: 100%;
   height: 100%;
+  background-color: ${palette(
+    'grayscale',
+    3,
+  )};
 `;
 
 const Bar = styled(Flex)`
   flex: initial;
-  transition: width, height 200ms ease-in;
-  background-color: ${({ tone }) => palette(tone)};
+  transition: width 200ms ease-in-out, height 200ms ease-in-out;
+  background-color: ${({
+    color,
+    tone,
+  }) => color || palette(tone)};
   align-self: ${switchProp(
     'direction',
     {
@@ -54,7 +57,8 @@ const ProgressBar = ({
   useEffect(
     () => {
       requestAnimationFrame(() => {
-        setProgress(`${percentage}%`);
+        const parsedPercentage = percentage || 0;
+        setProgress(`${parsedPercentage}%`);
       });
     },
     [percentage],
@@ -62,11 +66,11 @@ const ProgressBar = ({
 
   const progressStyle = direction === 'horizontal'
     ? {
-      width: progress,
+      width: progress || 0,
       height: size,
     }
     : {
-      height: progress,
+      height: progress || 0,
       width: size,
     };
   const containerStyle = direction === 'horizontal'
@@ -83,6 +87,7 @@ const ProgressBar = ({
         direction={direction}
         size={size}
         {...others}
+        color={color}
       />
     </Container>
   );

@@ -19,11 +19,16 @@ import styled, {
 import NotFound from '../pages/NotFound';
 import Home from '../pages/Home';
 import Inventory from '../pages/Inventory';
+import Product from '../pages/Product';
 import Purchase from '../pages/Purchase';
 import SignIn from '../pages/SignIn';
 import Storage from '../pages/Storage';
 import Recipe from '../pages/Recipe';
 import Billy from '../pages/Billy';
+import Gates from '../pages/Gates';
+import Playground from '../pages/Playground';
+import PotControllerPage from '../pages/PotController';
+
 import LeftMenu from '../containers/LeftMenu';
 import Header from '../containers/Header';
 
@@ -42,10 +47,17 @@ const routes = [
   //   element: <Storage />,
   //   rootRoute: true,
   // },
+
   {
-    label: '자재관리',
+    label: '재고관리',
     href: '/inventory/*',
     element: <Inventory />,
+    rootRoute: true,
+  },
+  {
+    label: '자재',
+    href: '/product/*',
+    element: <Product />,
     rootRoute: true,
   },
   {
@@ -60,7 +72,24 @@ const routes = [
     element: <Billy />,
     rootRoute: true,
   },
-
+  {
+    label: '게이츠',
+    href: '/gates/*',
+    element: <Gates />,
+    rootRoute: true,
+  },
+  {
+    label: '놀이터',
+    href: '/playground/*',
+    element: <Playground />,
+    rootRoute: true,
+  },
+  {
+    label: '컨트롤러',
+    href: '/controller/*',
+    element: <PotControllerPage />,
+    rootRoute: true,
+  },
   // {
   //   label: '자재관리',
   //   href: '/inventory/:id',
@@ -115,7 +144,6 @@ const PageWrapper = styled(Flex)`
 
 const Layout = () => {
   const leftMenuOpen = useSelector((state) => state.leftMenu.open);
-  console.log(leftMenuOpen);
   return (
     <Wrapper>
       <LeftMenu links={routes.filter((v) => v.rootRoute)} open={leftMenuOpen} />

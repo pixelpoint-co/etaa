@@ -11,8 +11,9 @@ import {
 } from '@apollo/client';
 
 const FETCH_PRODUCT_LIST = gql`
-  query FetchPurchaseList($offset:Int, $limit:Int, $keyword:String) {
+  query FetchPurchaseList($id: Int, $offset:Int, $limit:Int, $keyword:String) {
     productList (
+      id: $id,
       offset: $offset,
       limit: $limit,
       keyword: $keyword,
@@ -22,6 +23,7 @@ const FETCH_PRODUCT_LIST = gql`
         id
         name
         unit
+        unitQuantity
         recipeId
         created
         updated
@@ -88,8 +90,6 @@ export default (options = {}) => {
     error,
     setError,
   ] = useState(null);
-  console.log(id);
-  console.log(id != null);
   const nodeQuery = [
     FETCH_PRODUCT_LIST,
     {
@@ -97,6 +97,7 @@ export default (options = {}) => {
         limit,
         offset,
         keyword,
+        id: Number(id),
       },
     },
   ];

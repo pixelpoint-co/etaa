@@ -1,8 +1,12 @@
-import React, { Component } from 'react';
+import React, {
+  Component,
+} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import styled from 'styled-components';
-import { size } from 'styled-theme';
+import {
+  size,
+} from 'styled-theme';
 
 // import { IndexLink, Link } from 'react-router-dom';
 import './style.scss';
@@ -38,7 +42,13 @@ class RightMenu extends Component {
 
     // TODO may be able to optimize height calc like flipkart on touchmove
     return (
-      <div className={classNames('right-menu', { open })} style={{ height: '100%' }}>
+      <div
+        className={classNames(
+          'right-menu',
+          { open: true },
+        )}
+        style={{ height: '100%' }}
+      >
         <div
           role="button"
           tabIndex={0}
@@ -54,9 +64,7 @@ class RightMenu extends Component {
   }
 }
 
-RightMenu.defaultProps = {
-  onClose: () => {},
-};
+RightMenu.defaultProps = { onClose: () => {} };
 
 RightMenu.propTypes = {
   children: PropTypes.oneOfType([

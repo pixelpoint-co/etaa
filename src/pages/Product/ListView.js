@@ -6,6 +6,7 @@ import AntDTable from '../../components/organisms/AntDTable';
 
 import useProductData from '../../hooks/useProductData';
 import useTableData from '../../hooks/useTableData';
+import Link from '../../components/atoms/Link';
 
 const Wrapper = styled(Flex)`
   flex: 1;
@@ -22,6 +23,14 @@ const cellRenderers = [
     title: '자재명',
     dataIndex: 'name',
     width: 120,
+    render: (data, row) => (
+      <Link to={`/product/edit/${row.id}`} label={data}>{data}</Link>
+    ),
+  },
+  {
+    title: '개당 용량',
+    dataIndex: 'unitQuantity',
+    width: 120,
   },
   {
     title: '계량 단위',
@@ -30,7 +39,7 @@ const cellRenderers = [
   },
 ];
 
-const Ingredient = () => {
+const Product = () => {
   const {
     onPageChange,
     currentPage,
@@ -68,4 +77,4 @@ const Ingredient = () => {
   );
 };
 
-export default Ingredient;
+export default Product;

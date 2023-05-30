@@ -136,11 +136,11 @@ const SelectField = (props) => {
 };
 
 const keyToLabel = {
-  productId: '재료명',
-  unitAmount: '용량',
-  unit: '단위',
+  productId: '자재명',
+  // unitAmount: '용량',
+  // unit: '단위',
   unitQuantity: '구매 수량',
-  unitPrice: '구매 가격',
+  // unitPrice: '구매 가격',
 };
 
 const PurchaseListField = (props) => {
@@ -243,9 +243,9 @@ const Purchase = () => {
           orderDate: moment().format('YYYY-MM-DD'),
           purchaseList: [{
             productId: null,
-            unit: 'g',
-            unitPrice: null, // 개당 가격
-            unitAmount: null, // 개당 용량
+            // unit: 'g',
+            // unitPrice: null, // 개당 가격
+            // unitAmount: null, // 개당 용량
             unitQuantity: null, // 수량
           }],
         }}
@@ -269,7 +269,7 @@ const Purchase = () => {
             };
           });
           const filteredValues = parsedValues.filter((v) => {
-            return v.productId && v.unitQuantity && v.unitPrice && v.unitAmount;
+            return v.productId && v.unitQuantity;
           });
           const snakeValues = filteredValues
             .map((value) => _.mapKeys(

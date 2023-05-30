@@ -21,6 +21,7 @@ import Card from '../../components/atoms/Card';
 import PageAction from '../../components/organisms/PageAction/index';
 import AntDList from '../../components/organisms/AntDList';
 import PotUnit from '../../components/organisms/PotUnit';
+import Link from '../../components/atoms/Link';
 
 const Wrapper = styled(Flex)`
   flex-direction: row;
@@ -36,11 +37,14 @@ const OrderListCard = styled(Card)`
 const PotGridContainer = styled(Flex)`
   margin: -10px 0px;
   flex-wrap: wrap;
-  flex: 0;
+  flex: 1;
   flex-basis: 640px;
 `;
-const PotCardContainer = styled(Flex)`
-  padding: 10px;
+const PotCardContainer = styled(Link)`
+  display: flex;
+  flex: 1;
+  margin: 10px;
+  flex-basis: 45%;
 `;
 
 const BillyMain = (props) => {
@@ -50,42 +54,20 @@ const BillyMain = (props) => {
 
   return (
     <Wrapper>
-      <OrderListCard>
+      {/* <OrderListCard>
         <AntDList
           RowComponent={() => <div>some-row</div>}
           dataSource={_.times(10)}
         />
-      </OrderListCard>
+      </OrderListCard> */}
       <PotGridContainer>
         {_.times(6).map((i) => (
           <PotCardContainer
-            style={{ flexBasis: '300px' }}
             key={i}
+            to={`/gates/${i + 1}`}
           >
             <PotUnit
-              error={(i % 2) > 0 ? 'some-error-text' : null}
-              stoves={[
-                {
-                  status: 'on',
-                  temperature: 60,
-                },
-                {
-                  status: 'on',
-                  temperature: 90,
-                },
-              ]}
-              order={{
-                id: 'i-am-some-order-id',
-                recipeList: [
-                  1,
-                  2,
-                ],
-              }}
-              recipe={{
-                id: 'some-recipe-id',
-                duration: 60,
-                name: '레시피이름',
-              }}
+              cookerId={i}
             />
           </PotCardContainer>
         ))}

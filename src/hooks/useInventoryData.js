@@ -10,8 +10,9 @@ import {
 } from '@apollo/client';
 
 const FETCH_INVENTORY_LIST = gql`
-  query FetchInventoryList($offset:Int, $limit:Int) {
+  query FetchInventoryList($offset:Int, $limit:Int, $id:Int) {
     inventoryList (
+      id: $id,
       offset: $offset,
       limit: $limit,
     ) {
@@ -42,6 +43,7 @@ export default (options = {}) => {
   const {
     limit,
     offset,
+    id,
   } = options;
   console.log(options);
   // const [
@@ -63,6 +65,7 @@ export default (options = {}) => {
       variables: {
         limit,
         offset,
+        id: Number(id),
       },
     },
   ];
@@ -78,14 +81,22 @@ export default (options = {}) => {
   // const id = rawId === 'latest' ? moment().format('YYYY-MM-DDD') : rawId;
   console.log(data);
   return {
-    data: _.get(data, [
-      'inventoryList',
-      'list',
-    ], []),
-    count: _.get(data, [
-      'inventoryList',
-      'count',
-    ], 0),
+    data: _.get(
+      data,
+      [
+        'inventoryList',
+        'list',
+      ],
+      [],
+    ),
+    count: _.get(
+      data,
+      [
+        'inventoryList',
+        'count',
+      ],
+      0,
+    ),
     loading,
     error,
   };

@@ -229,10 +229,10 @@ const PurchaseRow = (props) => {
                       label={name}
                       value={(
                         <Flex>
-                          <Text palette="black">
+                          {/* <Text palette="black">
                             {`${inventoryAmount}${inventoryUnit}`}
-                          </Text>
-                          <Divider direction="vertical" size={16} width={2} horizontalMargin={10} />
+                          </Text> */}
+                          {/* <Divider direction="vertical" size={16} width={2} horizontalMargin={10} color="gray" /> */}
                           <Text>
                             {`${convertedInventoryQuantity || 0}`}
                           </Text>
