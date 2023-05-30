@@ -5,50 +5,82 @@ import {
   useState,
 } from 'react';
 
-const useCountdown = (seconds, onComplete = () => {}) => {
+const useCountdown = (miliseconds, onComplete = () => {}) => {
   const [
     count,
     setCount,
-  ] = useState(seconds);
-
+  ] = useState(Math.ceil(miliseconds / 1000));
   const requestRef = useRef();
-  const previousTimeRef = useRef();
-
+  const startTimeRef = useRef();
   const animate = useCallback(
     (time) => {
-      const remainingSeconds = Math.ceil(seconds - (time / 1000));
-      if (remainingSeconds < 0) return;
+      if (!startTimeRef.current) {
+        startTimeRef.current = time;
+      }
 
-      const shouldUpdate = remainingSeconds !== previousTimeRef.current;
+      const elapsed = time - startTimeRef.current;
 
+      const timeLeft = Math.max(
+        0,
+        Math.ceil((miliseconds - elapsed) / 1000),
+      );
+      const shouldUpdate = timeLeft !== count;
       if (shouldUpdate) {
-        // to make sure we always have the latest state
-        setCount(remainingSeconds);
-        if (remainingSeconds === 0) {
+        setCount(timeLeft);
+        if (timeLeft === 0) {
           onComplete();
         }
-        previousTimeRef.current = remainingSeconds;
       }
+
+      if (elapsed <= miliseconds) {
+        requestRef.current = requestAnimationFrame(animate);
+      }
+    },
+    [
+      count,
+      miliseconds,
+      onComplete,
+    ],
+  );
+  const resetTimer = useCallback(
+    () => {
+      if (requestRef.current) {
+        cancelAnimationFrame(requestRef.current);
+      }
+      requestRef.current = null;
+      startTimeRef.current = null;
+      setCount(Math.ceil(miliseconds / 1000));
       requestRef.current = requestAnimationFrame(animate);
     },
     [
-      seconds,
-      onComplete,
+      animate,
+      miliseconds,
     ],
   );
 
   useEffect(
     () => {
+      if (requestRef.current) {
+        cancelAnimationFrame(requestRef.current);
+      }
+
+      startTimeRef.current = null;
+      setCount(Math.ceil(miliseconds / 1000));
+
       requestRef.current = requestAnimationFrame(animate);
-      return () => cancelAnimationFrame(requestRef.current);
+
+      return () => {
+        cancelAnimationFrame(requestRef.current);
+        startTimeRef.current = null;
+      };
     },
-    [animate],
+    [miliseconds],
   ); // Make sure the effect runs only once
 
-  return Math.max(
-    count,
-    0,
-  );
+  return {
+    countdown: count,
+    resetTimer,
+  };
 };
 
 export default useCountdown;
