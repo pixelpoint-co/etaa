@@ -4,7 +4,9 @@ import {
   Provider,
 } from 'react-redux';
 import Modal from 'react-modal';
-
+import {
+  toast,
+} from 'react-toastify';
 import {
   HttpLink,
   ApolloProvider,
@@ -39,6 +41,7 @@ import {
 import {
   ThemeProvider,
 } from 'styled-components';
+import 'react-toastify/dist/ReactToastify.css';
 
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
@@ -56,6 +59,7 @@ import theme from './theme';
 import store, {
   persistor,
 } from './store';
+import Button from './components/atoms/Button';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -81,8 +85,23 @@ const wsClient = new SubscriptionClient(
 );
 
 const wsLink = new WebSocketLink(wsClient);
+const WSReloadButton = () => <Button label="새로고침" palette="red" onClick={() => window.location.reload()} />;
 wsClient.onConnected(() => console.log('websocket connected!!'));
-wsClient.onDisconnected(() => console.log('websocket disconnected!!'));
+wsClient.onDisconnected((d) => {
+  console.log(
+    'onDisconnect!',
+    d,
+  );
+  toast(
+    '서버와의 연결이 끊어졌습니다.',
+    {
+      autoClose: false,
+      type: toast.TYPE.ERROR,
+      toastId: 'WS_DISCONNECT',
+      closeButton: WSReloadButton,
+    },
+  );
+});
 wsClient.onReconnected(() => console.log('websocket reconnected!!'));
 // The split function takes three parameters:
 //

@@ -85,5 +85,16 @@ const GlobalStyle = createGlobalStyle`
   .ReactCollapse--collapse {
     transition: height 250ms ease-in-out;
   }
+
+
+  // toastify
+
+  :root {
+    --toastify-toast-width: 480px;
+  }
+  .Toastify__toast {
+    border-radius: 15px;
+    box-shadow: rgba(30, 30, 30, 0.3) 5px 5px 20px;
+  }
 `;
 export default GlobalStyle;

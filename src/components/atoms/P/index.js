@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled, {
+  css,
+} from 'styled-components';
 import {
   font, palette,
 } from 'styled-theme';
@@ -7,12 +9,9 @@ import {
   ifProp, switchProp, prop,
 } from 'styled-tools';
 
-const P = styled.p`
+const defaultStyle = css`
   font-family: ${(props) => (props.fontFamily ? props.fontFamily : font('primary'))};
-  color: ${(props) => (props.color ? props.color : palette(
-    { grayscale: 0 },
-    0,
-  ))};
+  color: ${(props) => (props.color ? props.color : 'auto')};
   margin-top: 0px; /* 0rem */
   margin-bottom: 0px;
   white-space: pre-line;
@@ -31,6 +30,21 @@ const P = styled.p`
   )};
 `;
 
+const themeStyle = css`
+  color: ${({
+    color,
+    tone,
+  }) => (color || palette(
+    { grayscale: tone || 0 },
+    0,
+  ))};
+`;
+
+const P = styled.p`
+  ${defaultStyle};
+  ${themeStyle};
+`;
+
 P.propTypes = {
   reverse: PropTypes.bool,
   palette: PropTypes.string,
@@ -39,3 +53,4 @@ P.propTypes = {
 P.defaultProps = { palette: 'grayscale' };
 
 export default P;
+export { defaultStyle };

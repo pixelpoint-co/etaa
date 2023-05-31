@@ -16,6 +16,10 @@ import styled, {
   css,
 } from 'styled-components';
 
+import {
+  ToastContainer,
+} from 'react-toastify';
+
 import NotFound from '../pages/NotFound';
 import Home from '../pages/Home';
 import Inventory from '../pages/Inventory';
@@ -176,6 +180,7 @@ const App = () => {
           <Route path="*" component={NotFound} />
         </Route>
       </Routes>
+      <ToastContainer />
     </Wrapper>
   );
 };

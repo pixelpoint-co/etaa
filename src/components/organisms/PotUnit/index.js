@@ -24,21 +24,30 @@ import {
   ifProp,
 } from 'styled-tools';
 import moment from 'moment';
+import {
+  useSpring, animated,
+} from 'react-spring';
+
 import IconButton from '../../molecules/IconButton';
 import Input from '../../molecules/Input';
 import Flex from '../../atoms/Flex';
-import Text from '../../atoms/P';
+import Text, {
+  defaultStyle as textStyle,
+} from '../../atoms/P';
 import Image from '../../atoms/Image';
+import DegreeImage from '../../atoms/DegreeImage';
 import Card from '../../atoms/Card';
 
 import potImageSrc from '../../../assets/image/pot.png';
 import ProgressBar from '../../molecules/ProgressBar';
 import ProgressTimer from '../../molecules/ProgressTimer';
+import SpringNumber from '../../molecules/SpringNumber';
 import Icon from '../../atoms/Icon';
 import ErrorPulse from '../../molecules/ErrorPulse';
 import Button from '../../atoms/Button';
 import usePotController from '../../../hooks/usePotController';
 import PotWash from '../../atoms/PotWash';
+import theme from '../../../theme';
 
 const Wrapper = styled(Card)`
   padding: 20px;
@@ -52,6 +61,11 @@ const PotNumber = styled(Text)`
   line-height: 22px;
 
   font-weight: bold;
+  position: absolute;
+  top: 0;
+  left: 0;
+`;
+const PotDegree = styled(SpringNumber)`
   position: absolute;
   top: 0;
   left: 0;
@@ -82,10 +96,22 @@ const PotSection = styled(Flex)`
   width: 100%;
   justify-content: center;
 `;
+const DegreeContainer = styled(Flex)`
+  position: absolute;
+  left: 50%;
+  top: 0%;
+`;
+const StyledSpringNumber = styled(SpringNumber)`
+  font-size: 14px;
+  line-height: 14px;
+  margin-top: 6px;
+  font-weight: bold;
+`;
 const ImageContainer = styled(Flex)`
   margin: 0px 20px 0px 20px;
   flex: 0;
   flex-basis: 40%;
+  min-width: 90px;
   max-width: 120px;
 `;
 const StyledImage = styled(Image)`
@@ -109,9 +135,7 @@ const Rotate = styled(Flex)`
   position: absolute;
   left: 50%;
   top: 50%;
-  opacity: 0.7;
   transform: translate(-50%,-50%) rotateX(65deg);
-
 
   svg {
     opacity: 1;
@@ -176,6 +200,9 @@ const PotUnit = (props) => {
 
     lastActionType,
     lastActionId,
+
+    tiltDegree = 0,
+    valveOpen,
     // recordList,
     // parsedRecordList,
   } = potController;
@@ -219,7 +246,7 @@ const PotUnit = (props) => {
             palette="orange"
           />
           <ImageContainer>
-            {isWashing ? (
+            {valveOpen ? (
               <PotWash />
             ) : (
               <StyledImage
@@ -234,9 +261,19 @@ const PotUnit = (props) => {
             <Icon
               icon="potRotateStraight"
               size={44}
-              fill="white"
+              fill={theme.palette.grayscale[4]}
             />
           </Rotate>
+          <DegreeContainer>
+            <DegreeImage degree={tiltDegree} />
+            <StyledSpringNumber
+              number={tiltDegree}
+              palette="grayscale"
+              tone={4}
+            >
+              °
+            </StyledSpringNumber>
+          </DegreeContainer>
           <ProgressBar
             direction="vertical"
             size={8}

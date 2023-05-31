@@ -467,7 +467,7 @@ const usePotController = (cookerId, opts = {}) => {
       ],
     });
     setLastActionType('machine');
-    setLastActionId('면요리');
+    setLastActionId('조리준비');
   };
 
   const rotateStart = () => {
@@ -599,9 +599,30 @@ const usePotController = (cookerId, opts = {}) => {
         inductionIsOn,
       });
 
+      const getTilt = (params) => {
+        switch (params[3]) {
+          case 'F':
+            return 0;
+          case 'E':
+            return 45;
+          case 'C':
+            return 135;
+          case 'D':
+            return 180;
+          default:
+            return 0;
+        }
+      };
+      const isTilt = parameters[0] === 'TCPTILT';
+      const tilt = isTilt ? getTilt(parameters) : currentState.tilt;
+
+      const isValve = parameters[0] === 'SOLENOID';
+      const valveOpen = parameters[3] === 'OPEN';
       return {
         isRotating: isSpin ? spinDirection !== 0 : currentState.isRotating,
         stoves: stateStoves,
+        tilt,
+        valveOpen: isValve ? valveOpen : currentState.valveOpen,
       };
     },
     {
@@ -616,23 +637,11 @@ const usePotController = (cookerId, opts = {}) => {
           isOn: false,
         },
       ],
+      tilt: 0,
+      valveOpen: false,
     },
   );
-  console.log(
-    'machineState ',
-    cookerId,
-    machineState,
-    commandQueue,
-  );
-  console.log(
-    'commandQueue',
-  );
-  console.log(
-    'requestQueue: ',
-    requestQueue,
-    lastActionType,
-    lastActionId,
-  );
+
   const selectRecipe = (recipeId) => {
     setSelectedRecipeId(recipeId);
   };
@@ -669,6 +678,8 @@ const usePotController = (cookerId, opts = {}) => {
     // parsedRecordList,
     stoves: machineState.stoves,
     isRotating: machineState.isRotating,
+    tiltDegree: machineState.tilt,
+    valveOpen: machineState.valveOpen,
 
     prepAngle,
     prepIngredientAngle,

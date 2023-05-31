@@ -46,8 +46,8 @@ const StyledButton = styled(Button)`
     `,
   )}
   p {
-    font-size: 20px;
-    line-height: 20px;
+    font-size: 30px;
+    line-height: 30px;
   }
 `;
 const TimerContainer = styled(Flex)`

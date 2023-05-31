@@ -12,11 +12,10 @@ const Container = styled(Flex)`
 `;
 const DropImage = styled(Image)`
   position: absolute;
-  top: 50%;
-  left: 100%;
-  width: 35%;
-  max-width: 30px;
-  transform: translateX(-80%);
+  bottom: 0%;
+  right: 0%;
+  width: 27%;
+  max-width: 33px;
   height: auto;
 `;
 const PotWash = (props) => {

@@ -10,6 +10,9 @@ import {
   useState,
 } from 'react';
 import _ from 'lodash';
+import {
+  toast,
+} from 'react-toastify';
 import Modal from '../../atoms/Modal';
 import PotControlButton from '../PotControlButton';
 import Flex from '../../atoms/Flex';
@@ -334,7 +337,7 @@ const PotControllerExtension = ({
             </PotControlButtonContainer>
             <PotControlButtonContainer>
               <PotControlButton
-                label="면요리"
+                label="조리준비"
                 onClick={() => {
                   prepNoodle();
                   onClose();
@@ -351,9 +354,7 @@ const PotControllerExtension = ({
               <PotControlButton label="인덕션 끄기" />
             </PotControlButtonContainer>
           </PotControllerWrapper>
-
         )}
-
       </Container>
     </Modal>
   );
