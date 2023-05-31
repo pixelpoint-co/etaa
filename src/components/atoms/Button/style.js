@@ -22,50 +22,32 @@ const defaultStyle = css`
   ${unsetStyle}
   border-width: 2px;
   border-style: solid;
+  ${ifProp(
+    'disabled',
+    css`opacity: 0.4;`,
+  )}
 `;
 
 export const themeColor = css`
-  color: ${ifProp(
-    'disabled',
-    switchProp(
-      'theme.componentTheme.type',
-      {
-        solid: prop('theme.componentTheme.disabled.background'),
-        outline: prop('theme.componentTheme.disabled.foreground'),
-        text: prop('theme.componentTheme.disabled.foreground'),
-      },
-    ),
-    switchProp(
-      'theme.componentTheme.type',
-      {
-        solid: prop('theme.componentTheme.background'),
-        outline: prop('theme.componentTheme.foreground'),
-        text: prop('theme.componentTheme.foreground'),
-      },
-    ),
+  color: ${switchProp(
+    'theme.componentTheme.type',
+    {
+      solid: prop('theme.componentTheme.background'),
+      outline: prop('theme.componentTheme.foreground'),
+      text: prop('theme.componentTheme.foreground'),
+    },
   )};
 `;
 
 export const themeSvg = css`
   svg {
-    fill: ${ifProp(
-    'disabled',
-    switchProp(
-      'theme.componentTheme.type',
-      {
-        solid: prop('theme.componentTheme.disabled.background'),
-        outline: prop('theme.componentTheme.disabled.foreground'),
-        text: prop('theme.componentTheme.disabled.foreground'),
-      },
-    ),
-    switchProp(
-      'theme.componentTheme.type',
-      {
-        solid: prop('theme.componentTheme.background'),
-        outline: prop('theme.componentTheme.foreground'),
-        text: prop('theme.componentTheme.foreground'),
-      },
-    ),
+    fill: ${switchProp(
+    'theme.componentTheme.type',
+    {
+      solid: prop('theme.componentTheme.background'),
+      outline: prop('theme.componentTheme.foreground'),
+      text: prop('theme.componentTheme.foreground'),
+    },
   )};
   }
 `;
@@ -115,24 +97,13 @@ const themeSvgFocus = css`
 `;
 
 const themeBorder = css`
-  border-color: ${ifProp(
-    'disabled',
-    switchProp(
-      'theme.componentTheme.type',
-      {
-        solid: prop('theme.componentTheme.disabled.foreground'),
-        outline: prop('theme.componentTheme.disabled.foreground'),
-        text: prop('theme.componentTheme.disabled.background'),
-      },
-    ),
-    switchProp(
-      'theme.componentTheme.type',
-      {
-        solid: prop('theme.componentTheme.foreground'),
-        outline: prop('theme.componentTheme.foreground'),
-        text: prop('theme.componentTheme.background'),
-      },
-    ),
+  border-color: ${switchProp(
+    'theme.componentTheme.type',
+    {
+      solid: prop('theme.componentTheme.foreground'),
+      outline: prop('theme.componentTheme.foreground'),
+      text: prop('theme.componentTheme.background'),
+    },
   )};
 `;
 const themeBorderHover = css`
@@ -156,24 +127,13 @@ const themeBorderFocus = css`
   )};
 `;
 const themeBackground = css`
-  background-color: ${ifProp(
-    'disabled',
-    switchProp(
-      'theme.componentTheme.type',
-      {
-        solid: prop('theme.componentTheme.disabled.foreground'),
-        outline: prop('theme.componentTheme.disabled.background'),
-        text: prop('theme.componentTheme.disabled.background'),
-      },
-    ),
-    switchProp(
-      'theme.componentTheme.type',
-      {
-        solid: prop('theme.componentTheme.foreground'),
-        outline: prop('theme.componentTheme.background'),
-        text: prop('theme.componentTheme.background'),
-      },
-    ),
+  background-color: ${switchProp(
+    'theme.componentTheme.type',
+    {
+      solid: prop('theme.componentTheme.foreground'),
+      outline: prop('theme.componentTheme.background'),
+      text: prop('theme.componentTheme.background'),
+    },
   )};
 `;
 const themeBackgroundHover = css`

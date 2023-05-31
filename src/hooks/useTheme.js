@@ -69,10 +69,6 @@ export default (options = {}) => {
       foreground: `#${convert.hsl.hex(solidThemeHSL.focus.foregroundHSL)}`,
       background: `#${convert.hsl.hex(solidThemeHSL.focus.backgroundHSL)}`,
     },
-    disabled: {
-      foreground: theme.palette.grayscale[3],
-      background: theme.palette.white[0],
-    },
     type,
     palette,
     tone,
@@ -102,10 +98,6 @@ export default (options = {}) => {
           95,
         ),
       ])}`,
-    },
-    disabled: {
-      foreground: theme.palette.grayscale[3],
-      background: theme.palette.white[0],
     },
     type,
     palette,

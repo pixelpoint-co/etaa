@@ -175,6 +175,7 @@ const Button = ({
   children,
   ...props
 }) => {
+  const { disabled } = props;
   const componentTheme = useTheme({
     palette,
     tone,
@@ -272,6 +273,7 @@ const Button = ({
           <Content>
             {typeof label === 'string' ? (
               <StyledText
+                disabled={disabled}
                 $loading={parsedLoading}
                 hideLabelOnLoading={hideLabelOnLoading}
               >
