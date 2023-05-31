@@ -93,6 +93,10 @@ const usePotController = (cookerId, opts = {}) => {
     setCookStartRecipeId,
   ] = useState(null);
   const [
+    cookStartOrderId,
+    setCookStartOrderId,
+  ] = useState(null);
+  const [
     subscriptionTime,
     setSubscriptionTime,
   ] = useState(0);
@@ -114,6 +118,11 @@ const usePotController = (cookerId, opts = {}) => {
     lastActionId,
     setLastActionId,
   ] = useState(null); // recipeId - Int // machine // abort // wash
+
+  const {
+    selectedRecipeId,
+    setSelectedRecipeId,
+  } = useState(null);
 
   const {
     error: cookerMonitoringError,
@@ -256,8 +265,9 @@ const usePotController = (cookerId, opts = {}) => {
   );
 
   const startRecipe = useCallback(
-    (recipeId) => {
+    (recipeId, orderId) => {
       setCookStartRecipeId(recipeId);
+      setCookStartOrderId(orderId);
       setCookStartUUID(uuidv4());
       setLastActionType('recipe');
       setLastActionId(21);
@@ -311,40 +321,40 @@ const usePotController = (cookerId, opts = {}) => {
       100,
     );
   };
-  const parseRecipeRecord = (record) => {
-    if (record == null) return null;
-    const parameters = record.parameter.split('_');
-    const type = parameters[0];
-    const isSpin = type === 'TCPSPIN';
-    const isInduction = type === 'TCPINDT';
+  // const parseRecipeRecord = (record) => {
+  //   if (record == null) return null;
+  //   const parameters = record.parameter.split('_');
+  //   const type = parameters[0];
+  //   const isSpin = type === 'TCPSPIN';
+  //   const isInduction = type === 'TCPINDT';
 
-    const { cookingTime } = record;
-    // const type = record.parameter.split('_')[0];
+  //   const { cookingTime } = record;
+  //   // const type = record.parameter.split('_')[0];
 
-    // eslint-disable-next-line no-nested-ternary
-    const spinDirection = parameters[3] === 'HOMESTOP' ? 0
-    // eslint-disable-next-line no-nested-ternary
-      : parameters[3] === 'BACKWARD' ? -1
-        : parameters[3] === 'FORWARD' ? 1
-          : null;
+  //   // eslint-disable-next-line no-nested-ternary
+  //   const spinDirection = parameters[3] === 'HOMESTOP' ? 0
+  //   // eslint-disable-next-line no-nested-ternary
+  //     : parameters[3] === 'BACKWARD' ? -1
+  //       : parameters[3] === 'FORWARD' ? 1
+  //         : null;
 
-    const spinParse = { spinDirection };
-    // "TCPINDT_1B_7_ON"
-    const inductionParse = {
-      index: parameters[1][1] === 'A' ? 0 : 1,
-      power: parameters[2],
-      temperature: inductionPowerToTemp(parameters[2]),
-      isOn: parameters[3] === 'ON',
-    };
-    const result = {
-      type,
-      isSpin,
-      isInduction,
-      cookingTime,
-      ...(isSpin ? spinParse : inductionParse),
-    };
-    return result;
-  };
+  //   const spinParse = { spinDirection };
+  //   // "TCPINDT_1B_7_ON"
+  //   const inductionParse = {
+  //     index: parameters[1][1] === 'A' ? 0 : 1,
+  //     power: parameters[2],
+  //     temperature: inductionPowerToTemp(parameters[2]),
+  //     isOn: parameters[3] === 'ON',
+  //   };
+  //   const result = {
+  //     type,
+  //     isSpin,
+  //     isInduction,
+  //     cookingTime,
+  //     ...(isSpin ? spinParse : inductionParse),
+  //   };
+  //   return result;
+  // };
   const recipeStartedDateString = get(
     potMonitoringData,
     'started',
@@ -369,33 +379,34 @@ const usePotController = (cookerId, opts = {}) => {
       (recipeDurationMs) - recipeEllapsedTimeMs,
     );
 
-  const recordList = get(
-    potMonitoringData,
-    [
-      'recipe',
-      'detail',
-      'record',
-    ],
-    [],
-  );
-  const getCurrentRecord = (list) => {
-    return findLast(
-      list,
-      (record) => {
-        return record.cookingTime < recipeEllapsedTime;
-      },
-    );
-  };
+  // const recordList = get(
+  //   potMonitoringData,
+  //   [
+  //     'recipe',
+  //     'detail',
+  //     'record',
+  //   ],
+  //   [],
+  // );
+  // const getCurrentRecord = (list) => {
+  //   return findLast(
+  //     list,
+  //     (record) => {
+  //       return record.cookingTime < recipeEllapsedTime;
+  //     },
+  //   );
+  // };
 
-  const parsedRecordList = recordList.map(parseRecipeRecord);
+  // const parsedRecordList = recordList.map(parseRecipeRecord);
 
-  const currentStoveRecord = [
-    getCurrentRecord(parsedRecordList.filter((record) => record.isInduction && record.index === 0)),
-    getCurrentRecord(parsedRecordList.filter((record) => record.isInduction && record.index === 1)),
-  ];
-  const currentSpinRecord = getCurrentRecord(parsedRecordList.filter((record) => record.isSpin));
+  // const currentStoveRecord = [
+  //   getCurrentRecord(parsedRecordList.filter((record) => record.isInduction && record.index === 0)),
+  //   getCurrentRecord(parsedRecordList.filter((record) => record.isInduction && record.index === 1)),
+  // ];
+  // const currentSpinRecord = getCurrentRecord(parsedRecordList.filter((record) => record.isSpin));
   const stoveRecordToProp = (record) => {
     return {
+      ...record,
       temperature: get(
         record,
         'temperature',
@@ -407,12 +418,12 @@ const usePotController = (cookerId, opts = {}) => {
       ) ? 'on' : 'off',
     };
   };
-  const stoves = currentStoveRecord.map(stoveRecordToProp);
-  const isRotating = get(
-    currentSpinRecord,
-    'spinDirection',
-    0,
-  ) !== 0;
+  // const stoves = currentStoveRecord.map(stoveRecordToProp);
+  // const isRotating = get(
+  //   currentSpinRecord,
+  //   'spinDirection',
+  //   0,
+  // ) !== 0;
 
   const controlCoords = {
     controller: `0${Math.ceil((cookerId + 1) / 2)}`,
@@ -429,6 +440,34 @@ const usePotController = (cookerId, opts = {}) => {
         'C',
       ],
     });
+    setLastActionType('machine');
+    setLastActionId('음식담기');
+  };
+  const prepIngredientAngle = () => {
+    setControlUUID(uuidv4());
+    setControlOptions({
+      ...controlCoords,
+      type: 'TCPTILT',
+      value: [
+        '0',
+        'F',
+      ],
+    });
+    setLastActionType('machine');
+    setLastActionId('재료담기');
+  };
+  const prepNoodle = () => {
+    setControlUUID(uuidv4());
+    setControlOptions({
+      ...controlCoords,
+      type: 'TCPTILT',
+      value: [
+        '0',
+        'E',
+      ],
+    });
+    setLastActionType('machine');
+    setLastActionId('면요리');
   };
 
   const rotateStart = () => {
@@ -441,12 +480,12 @@ const usePotController = (cookerId, opts = {}) => {
         'BACKWARD',
       ],
     });
+    setLastActionType('machine');
+    setLastActionId('역회전');
   };
 
   const resetPosition = () => {
     setControlUUID(uuidv4());
-    setLastActionType('wash');
-
     setControlOptions({
       ...controlCoords,
       type: 'TCPSPIN',
@@ -455,12 +494,14 @@ const usePotController = (cookerId, opts = {}) => {
         'HOMESTOP',
       ],
     });
+    setLastActionType('machine');
+    setLastActionId('원점정지');
   };
 
   const prepWashing = () => {
     setControlUUID(uuidv4());
-    setLastActionType('wash');
-    setLastActionId('prep');
+    setLastActionType('machine');
+    setLastActionId('세척준비');
     setControlOptions({
       ...controlCoords,
       type: 'TCPTILT',
@@ -520,7 +561,9 @@ const usePotController = (cookerId, opts = {}) => {
     });
   const commandQueue = requestQueue.map((url) => url.split('command=')[1]);
   console.log(
-    'commentQueue',
+    'commandQueue',
+    requestQueueRaw,
+    requestQueue,
     commandQueue,
   );
   const machineState = commandQueue.reduce(
@@ -546,8 +589,15 @@ const usePotController = (cookerId, opts = {}) => {
         power: isInduction ? inductionPower : currentState.stoves[inductionIndex].power,
         isOn: isInduction ? inductionIsOn : currentState.stoves[inductionIndex].isOn,
       };
+      stove.temperature = inductionPowerToTemp(stove.power);
       const { stoves: stateStoves } = currentState;
-      stoves[inductionIndex] = stateStoves;
+      stateStoves[inductionIndex] = stoveRecordToProp(stove);
+      console.log({
+        isInduction,
+        inductionPower,
+        inductionIndex,
+        inductionIsOn,
+      });
 
       return {
         isRotating: isSpin ? spinDirection !== 0 : currentState.isRotating,
@@ -570,13 +620,22 @@ const usePotController = (cookerId, opts = {}) => {
   );
   console.log(
     'machineState ',
+    cookerId,
     machineState,
+    commandQueue,
+  );
+  console.log(
+    'commandQueue',
   );
   console.log(
     'requestQueue: ',
     requestQueue,
+    lastActionType,
+    lastActionId,
   );
-
+  const selectRecipe = (recipeId) => {
+    setSelectedRecipeId(recipeId);
+  };
   return {
     cookerMonitoringError,
     cookerMonitoringData,
@@ -596,19 +655,24 @@ const usePotController = (cookerId, opts = {}) => {
     lastActionId,
 
     potMonitoringData,
-    recipe,
+    recipe, // selected recipe for current cook
+    selectRecipe,
     recipeRemainingTimeMs,
     recipeDurationMs,
     recipeDuration,
     recipeEllapsedTimeMs,
     recipeEllapsedTime,
 
-    stoves,
-    isRotating,
-    recordList,
-    parsedRecordList,
+    // stoves,
+    // isRotating,
+    // recordList,
+    // parsedRecordList,
+    stoves: machineState.stoves,
+    isRotating: machineState.isRotating,
 
     prepAngle,
+    prepIngredientAngle,
+    prepNoodle,
     rotateStart,
     resetPosition,
     prepWashing,

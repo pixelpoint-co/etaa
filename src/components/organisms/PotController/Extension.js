@@ -93,6 +93,10 @@ const MenuOptionsContainer = styled(Column)`
 const PotControllerExtension = ({
   isOpen,
   onClose,
+  onSelect,
+  prepIngredientAngle,
+  prepNoodle,
+  selectRecipe,
 }) => {
   const [
     menuOptionsOpen,
@@ -299,31 +303,52 @@ const PotControllerExtension = ({
                 label="취소"
                 onClick={() => setMenuOptionsOpen(false)}
               />
-              <SelectButton label="선택" />
+              <SelectButton
+                label="선택"
+                onClick={() => {
+                  selectRecipe(selectedRecipeId);
+                  onClose();
+                  setMenuOptionsOpen(false);
+                }}
+              />
             </ButtonContainer>
           </MenuSelectContainer>
         ) : (
           <PotControllerWrapper>
             <PotControlButtonContainer>
-              <PotControlButton label="레시피 선택" onClick={() => setMenuOptionsOpen(true)} />
+              <PotControlButton
+                label="레시피 선택"
+                onClick={() => {
+                  setMenuOptionsOpen(true);
+                }}
+              />
             </PotControlButtonContainer>
             <PotControlButtonContainer>
-              <PotControlButton label="음식 담기" />
+              <PotControlButton
+                label="재료담기"
+                onClick={() => {
+                  prepIngredientAngle();
+                  onClose();
+                }}
+              />
             </PotControlButtonContainer>
             <PotControlButtonContainer>
-              <PotControlButton label="음식 담기" />
+              <PotControlButton
+                label="면요리"
+                onClick={() => {
+                  prepNoodle();
+                  onClose();
+                }}
+              />
             </PotControlButtonContainer>
             <PotControlButtonContainer>
-              <PotControlButton label="음식 담기" />
+              <PotControlButton label="팟 회전 센서" />
             </PotControlButtonContainer>
             <PotControlButtonContainer>
-              <PotControlButton label="음식 담기" />
+              <PotControlButton label="세척 위치 센서" />
             </PotControlButtonContainer>
             <PotControlButtonContainer>
-              <PotControlButton label="음식 담기" />
-            </PotControlButtonContainer>
-            <PotControlButtonContainer>
-              <PotControlButton label="음식 담기" />
+              <PotControlButton label="인덕션 끄기" />
             </PotControlButtonContainer>
           </PotControllerWrapper>
 

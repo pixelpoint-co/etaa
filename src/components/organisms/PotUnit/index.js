@@ -150,6 +150,11 @@ const PotUnit = (props) => {
     ...others
   } = props;
 
+  const potController = usePotController(
+    cookerId,
+    {},
+  );
+
   const {
     // cookerMonitoringError,
     // cookerMonitoringData,
@@ -168,14 +173,16 @@ const PotUnit = (props) => {
     isRotating,
     isWashing,
     isCooking,
+
     lastActionType,
+    lastActionId,
     // recordList,
     // parsedRecordList,
-  } = usePotController(
-    cookerId,
-    {},
+  } = potController;
+  console.log(
+    'potController ',
+    potController,
   );
-
   const orderName = null;
   const recipeId = get(
     recipe,
@@ -186,8 +193,13 @@ const PotUnit = (props) => {
   if (isWashing) recipeName = '세척 중';
   if (isCooking && recipeId === 21) recipeName = '추가 조리';
   if (lastActionType === 'abort') recipeName = '정지중';
-  const taskName = null;
+  if (lastActionType === 'machine') recipeName = lastActionId;
 
+  const taskName = null;
+  console.log(
+    lastActionType,
+    lastActionId,
+  );
   return (
     <Wrapper {...others} hasError={!!error}>
       <Content>
@@ -247,7 +259,7 @@ const PotUnit = (props) => {
             <ProgressTimer
               label={recipeName}
               duration={recipeRemainingTimeMs}
-              totalDuration={isWashing ? Infinity : recipeDurationMs}
+              totalDuration={(isWashing || lastActionType === 'machine') ? Infinity : recipeDurationMs}
             />
           </ProgressTimerContainer>
         </OrderRecipeSection>
