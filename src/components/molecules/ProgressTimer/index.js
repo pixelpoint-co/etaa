@@ -19,6 +19,7 @@ import Text from '../../atoms/P';
 import ProgressBar from '../ProgressBar';
 import useCountdown from '../../../hooks/useCountdown';
 import useTheme from '../../../hooks/useTheme';
+import Icon from '../../atoms/Icon';
 
 const Container = styled(Flex)`
   flex-direction: column;
@@ -35,6 +36,7 @@ const LabelText = styled(Text)`
   flex: 1;
   white-space: nowrap;
   max-width: calc(100% - 85px);
+  text-align: left;
   font-size: 24px;
   line-height: 24px;
 `;
@@ -42,10 +44,14 @@ const TimerText = styled(Text)`
   margin-left: auto;
   font-size: 24px;
   line-height: 24px;
+  align-items: center;
+  display: inline-flex;
 `;
 const ProgressTimer = ({
   duration = 0,
   totalDuration = 0,
+  totalDurationLabel,
+  containerBarColor,
   size,
   label,
   color,
@@ -68,7 +74,7 @@ const ProgressTimer = ({
       'en-US',
       { minimumIntegerDigits: 2 },
     );
-  const timeText = `${remainingMinutesText}:${remainingSecondsText}`;
+  const timeText = totalDurationLabel ? <Icon icon="play" size={16} color="white" /> : `${remainingMinutesText}:${remainingSecondsText}`;
   const infinityText = '∞';
   return (
     <Container>
@@ -93,6 +99,7 @@ const ProgressTimer = ({
           size={size}
           onClick={resetTimer}
           color={color}
+          containerColor={containerBarColor}
         />
       </BarSection>
     </Container>

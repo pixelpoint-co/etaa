@@ -136,11 +136,18 @@ const Rotate = styled(Flex)`
   left: 50%;
   top: 50%;
   transform: translate(-50%,-50%) rotateX(65deg);
-
+    ${ifProp(
+    '$reverse',
+    css`transform: rotateX(180deg);`,
+  )}
   svg {
     opacity: 1;
     transition: opacity 250ms ease-in-out;
     animation: spin 5000ms linear infinite;
+    ${ifProp(
+    '$reverse',
+    css`animation: reverse-spin 5000ms linear infinite;`,
+  )}
   }
   ${ifNotProp(
     '$rotate',
@@ -160,12 +167,21 @@ const Rotate = styled(Flex)`
       transform: rotateZ(360deg);
     }
   }
+  @keyframes reverse-spin {
+    0% {
+      transform: rotateZ(0deg);
+    }
+    100% {
+      transform: rotateZ(-360deg);
+    }
+  }
 `;
 
 const PotUnit = (props) => {
   const {
     maxTemperature,
     cookerId,
+    reverse,
     // stoves,
     order,
     // recipe,
@@ -195,6 +211,7 @@ const PotUnit = (props) => {
 
     stoves,
     isRotating,
+    rotateDirection,
     isWashing,
     isCooking,
 
@@ -219,13 +236,16 @@ const PotUnit = (props) => {
   let recipeName = '';
   if (isWashing) recipeName = '세척 중';
   if (isCooking && recipeId === 21) recipeName = '추가 조리';
+  if (isCooking && recipeId !== 21) recipeName = recipe.name;
   if (lastActionType === 'abort') recipeName = '정지중';
   if (lastActionType === 'machine') recipeName = lastActionId;
 
   const taskName = null;
   console.log(
+    'lastActionType',
     lastActionType,
     lastActionId,
+    rotateDirection,
   );
   return (
     <Wrapper {...others} hasError={!!error}>
@@ -257,6 +277,7 @@ const PotUnit = (props) => {
 
           <Rotate
             $rotate={isRotating}
+            // $reverse={rotateDirection === -1}
           >
             <Icon
               icon="potRotateStraight"
@@ -311,6 +332,7 @@ const PotUnit = (props) => {
 
 PotUnit.propTypes = {
   rotate: PropTypes.bool,
+  rotateReverse: PropTypes.bool,
   cookerId: PropTypes.number,
   maxTemperature: PropTypes.number,
   stoves: PropTypes.arrayOf(PropTypes.shape({
@@ -330,6 +352,7 @@ PotUnit.propTypes = {
 
 PotUnit.defaultProps = {
   rotate: false,
+  rotateReverse: false,
   maxTemperature: 350,
   cookerId: null,
   stoves: [

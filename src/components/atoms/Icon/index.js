@@ -48,6 +48,9 @@ import {
 import {
   ReactComponent as AlertIcon,
 } from './icons-o/alert.svg';
+import {
+  ReactComponent as PlayIcon,
+} from './icons-o/play.svg';
 
 const ReactIcons = {
   loader: LoaderIcon,
@@ -63,6 +66,7 @@ const ReactIcons = {
   potRotate: PotRotateIcon,
   potRotateStraight: PotRotateStraightIcon,
   alert: AlertIcon,
+  play: PlayIcon,
 };
 
 const fillStyle = css`

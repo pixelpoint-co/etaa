@@ -100,6 +100,7 @@ const PotControllerExtension = ({
   prepIngredientAngle,
   prepNoodle,
   selectRecipe,
+  isCooking,
 }) => {
   const [
     menuOptionsOpen,
@@ -237,6 +238,9 @@ const PotControllerExtension = ({
                   options={recipeIdsMapper}
                   onSelect={(value) => {
                     setSelectedCategoryId(value);
+                    if (value !== selectedCategoryId) {
+                      setSelectedRecipeId(null);
+                    }
                   }}
                   buttonOffTheme={{
                     tone: 3,
@@ -264,7 +268,7 @@ const PotControllerExtension = ({
                   }}
                 />
               </MenuListContainer>
-              <MenuOptionsContainer>
+              {/* <MenuOptionsContainer>
                 <TagSelect
                   label="some-label"
                   isMulti
@@ -295,7 +299,7 @@ const PotControllerExtension = ({
                       value: i,
                     }))}
                 />
-              </MenuOptionsContainer>
+              </MenuOptionsContainer> */}
             </MenuOptionsSelectContainer>
 
             <ButtonContainer>
@@ -304,14 +308,22 @@ const PotControllerExtension = ({
                 themeType="text"
                 tone={2}
                 label="취소"
-                onClick={() => setMenuOptionsOpen(false)}
+                onClick={() => {
+                  setMenuOptionsOpen(false);
+                  setSelectedRecipeId(null);
+                  setSelectedCategoryId(null);
+                }}
               />
               <SelectButton
                 label="선택"
+                disabled={selectedRecipeId == null}
                 onClick={() => {
+                  console.log(
+                    '선택!',
+                    selectedRecipeId,
+                  );
                   selectRecipe(selectedRecipeId);
                   onClose();
-                  setMenuOptionsOpen(false);
                 }}
               />
             </ButtonContainer>
@@ -320,6 +332,7 @@ const PotControllerExtension = ({
           <PotControllerWrapper>
             <PotControlButtonContainer>
               <PotControlButton
+                disabled={isCooking}
                 label="레시피 선택"
                 onClick={() => {
                   setMenuOptionsOpen(true);
@@ -345,10 +358,10 @@ const PotControllerExtension = ({
               />
             </PotControlButtonContainer>
             <PotControlButtonContainer>
-              <PotControlButton label="팟 회전 센서" />
+              <PotControlButton label="회전 센서" />
             </PotControlButtonContainer>
             <PotControlButtonContainer>
-              <PotControlButton label="세척 위치 센서" />
+              <PotControlButton label="세척 센서" />
             </PotControlButtonContainer>
             <PotControlButtonContainer>
               <PotControlButton label="인덕션 끄기" />

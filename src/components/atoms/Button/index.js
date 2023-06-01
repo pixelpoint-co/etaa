@@ -92,8 +92,6 @@ const labelStyle = css`
   overflow: visible;
   text-align: center;
   white-space: nowrap;
-  font-size: 20px;
-  line-height: 20px;
   transition: width 300ms ease-in-out;
   ${({
     $loading,

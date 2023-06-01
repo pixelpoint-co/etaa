@@ -28,6 +28,7 @@ import Label from '../../components/atoms/Label';
 import PotControlButton from '../../components/organisms/PotControlButton';
 import PotController from '../../components/organisms/PotController';
 import usePotController from '../../hooks/usePotController';
+import theme from '../../theme';
 
 const Wrapper = styled(Flex)`
   flex-direction: column;
@@ -96,6 +97,7 @@ const GatesMain = (props) => {
     recipeDurationMs,
     isCooking,
     isWashing,
+    lastActionId,
   } = usePotController(cookerId);
   const recipeId = get(
     recipe,
@@ -104,7 +106,9 @@ const GatesMain = (props) => {
   let recipeName = '';
   if (isWashing) recipeName = '세척 중';
   if (isCooking && recipeId === 21) recipeName = '추가 조리';
+  if (isCooking && recipeId !== 21) recipeName = recipe.name;
   if (lastActionType === 'abort') recipeName = '정지중';
+  if (lastActionType === 'machine') recipeName = lastActionId;
   return (
     <Wrapper>
       <HeaderSection>
@@ -120,6 +124,7 @@ const GatesMain = (props) => {
             label={recipeName}
             duration={recipeRemainingTimeMs}
             totalDuration={isWashing ? Infinity : recipeDurationMs}
+            containerBarColor={theme.palette.grayscale[3]}
           />
         </TimerSection>
         <ActivateButton>

@@ -17,6 +17,7 @@ import {
 import {
   gql, useQuery,
 } from '@apollo/client';
+import _ from 'lodash';
 import IconButton from '../../molecules/IconButton';
 import Input from '../../molecules/Input';
 import Flex from '../../atoms/Flex';
@@ -26,6 +27,7 @@ import Card from '../../atoms/Card';
 
 import ProgressBar from '../../molecules/ProgressBar';
 import ProgressTimer from '../../molecules/ProgressTimer';
+import TooltipMask from '../../molecules/TooltipMask';
 import Icon from '../../atoms/Icon';
 import Button from '../../atoms/Button';
 // const Wrapper = styled(Card)`
@@ -45,9 +47,10 @@ const StyledButton = styled(Button)`
       box-shadow: rgba(30, 30, 30, 0.3) 5px 5px 20px;
     `,
   )}
+  font-size: 35px;
+  line-height: 35px;
   p {
-    font-size: 30px;
-    line-height: 30px;
+    font-weight: 700;
   }
 `;
 const TimerContainer = styled(Flex)`
@@ -56,14 +59,14 @@ const TimerContainer = styled(Flex)`
   right: 0;
   left: 0;
   padding: 20px;
-  opacity: 0;
+  opacity: 1;
 
-  ${ifProp(
+  /* ${ifProp(
     'active',
     css`
       opacity: 1;
     `,
-  )}
+  )} */
 `;
 const PotControlButton = (props) => {
   const {
@@ -73,11 +76,14 @@ const PotControlButton = (props) => {
     duration = 0,
     durationLabel,
     totalDuration = 0,
+    totalDurationLabel,
     fakeLoadingTime = 2000,
     loading,
+    timerColor,
+    disabled,
+    disabledTooltip = [],
     ...others
   } = props;
-
   const [
     tempLoading,
     setTempLoading,
@@ -123,19 +129,25 @@ const PotControlButton = (props) => {
       } : {})}
       active={active}
       {...others}
+      disabled={disabled}
       onClick={handleClick}
       loading={tempLoading || loading}
     >
       {(totalDuration > 0) ? (
-        <TimerContainer active={active}>
+        <TimerContainer>
           <ProgressTimer
-            color={active ? 'white' : 'black'}
+            color={timerColor}
             label={durationLabel}
             totalDuration={totalDuration}
             duration={duration}
+            totalDurationLabel={totalDurationLabel}
           />
         </TimerContainer>
       ) : null}
+      <TooltipMask
+        visible={disabled && disabledTooltip}
+        content={disabledTooltip.filter((v) => !_.isNull(v)).join(', ')}
+      />
     </StyledButton>
   );
 };
@@ -186,6 +198,8 @@ PotControlButton.defaultProps = {
     '[PotControlButton] onClick() ',
     e,
   ),
+  timerColor: 'black',
+  disabledTooltip: [],
 };
 
 export default PotControlButton;

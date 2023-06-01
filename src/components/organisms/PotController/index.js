@@ -5,11 +5,14 @@ import styled, {
   css,
 } from 'styled-components';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
+import _, {
+  get,
+} from 'lodash';
 import {
   palette, size,
 } from 'styled-theme';
 import {
+  useCallback,
   useState,
 } from 'react';
 import {
@@ -19,6 +22,9 @@ import {
   v4 as uuidv4,
 } from 'uuid';
 
+import {
+  ToastContainer, toast,
+} from 'react-toastify';
 import Flex from '../../atoms/Flex';
 
 import PotControlButton from '../PotControlButton';
@@ -26,6 +32,7 @@ import Modal from '../../atoms/Modal';
 import usePotController from '../../../hooks/usePotController';
 import WashingMask from './WashingMask';
 import Extension from './Extension';
+import theme from '../../../theme';
 
 const PotControllerWrapper = styled(Flex)`
   position: relative;
@@ -65,7 +72,7 @@ const PotController = (props) => {
 
     startRecipe,
     recipe,
-
+    currentRecipeId,
     lastActionType,
     lastActionId,
     setLastActionType,
@@ -84,6 +91,7 @@ const PotController = (props) => {
     selectRecipe,
     selectedRecipe,
     setSelectedRecipeId, // 선택된 레시피.  startRecipe에 들어가는 id 의 기본값
+    isCooking,
 
     isWashing,
   } = usePotController(
@@ -91,11 +99,22 @@ const PotController = (props) => {
     {},
   );
   console.log(
+    'fff',
     lastActionType,
     lastActionId,
+    recipeRemainingTimeMs,
+    recipeDurationMs,
+  );
+  const closeExtension = useCallback(
+    () => {
+      console.log('선택 closing extension');
+      setExtensionOpen(false);
+    },
+    [setExtensionOpen],
   );
   return (
     <PotControllerWrapper>
+      <ToastContainer enableMultiContainer />
       <PotControlButtonContainer>
         <PotControlButton label="음식 담기" onClick={prepAngle} />
       </PotControlButtonContainer>
@@ -103,7 +122,7 @@ const PotController = (props) => {
         <PotControlButton
           duration={(potMonitoringData?.cooking && recipe.id === 21) ? recipeRemainingTimeMs : 0}
           totalDuration={(potMonitoringData?.cooking && recipe.id === 21) ? recipeDurationMs : 0}
-          active={lastActionType === 'recipe' && lastActionId === 21 && potMonitoringData?.cooking}
+          active={isCooking && recipe.id === 21}
           label="추가 조리"
           onClick={() => {
             startRecipe(21);
@@ -141,7 +160,7 @@ const PotController = (props) => {
           </PotControlButtonContainer>
           <PotControlButtonContainer>
             <PotControlButton
-              label="..."
+              label="···"
               onClick={() => setExtensionOpen(true)}
               hideLabelOnLoading
               fakeLoadingTime={300}
@@ -152,22 +171,54 @@ const PotController = (props) => {
       </PotControlButtonContainer>
       <PotControlButtonContainer>
         <PotControlButton
-          label="작동중지"
+          label="조리중지"
           fakeLoadingTime={10 * 1000}
           palette="orange"
           tone={0}
           themeType="solid"
-          onClick={stopCook}
+          onClick={() => {
+            stopCook();
+          }}
         />
       </PotControlButtonContainer>
       <PotControlButtonContainer>
-        <PotControlButton label="조리시작" palette="blue" tone={0} themeType="solid" />
+        <PotControlButton
+          disabled={
+            !(!isCooking && selectedRecipe)
+          }
+          disabledTooltip={[
+            isCooking ? '이미 조리중입니다' : null,
+            !selectedRecipe ? '레시피를 선택해야 합니다' : null,
+          ]}
+          label="조리시작"
+          palette="blue"
+          tone={0}
+          themeType="solid"
+          onClick={() => startRecipe(selectedRecipe.id)}
+          timerColor={theme.palette.white[0]}
+          {...(isCooking && currentRecipeId !== 21 ? (
+            {
+              durationLabel: recipe.name,
+              duration: recipeRemainingTimeMs,
+              totalDuration: recipeDurationMs,
+            }
+          ) : {})}
+          {...(!isCooking && selectedRecipe ? (
+            {
+              durationLabel: selectedRecipe.name,
+              duration: 0,
+              totalDuration: selectedRecipe.detail.duration,
+              totalDurationLabel: '||',
+            }
+          ) : {})}
+        />
       </PotControlButtonContainer>
 
       <WashingMask washing={isWashing} abort={abort} />
       <Extension
         isOpen={extensionOpen}
-        onClose={() => setExtensionOpen(false)}
+        isCooking={isCooking}
+        onClose={closeExtension}
         prepIngredientAngle={prepIngredientAngle}
         prepNoodle={prepNoodle}
         selectRecipe={selectRecipe}

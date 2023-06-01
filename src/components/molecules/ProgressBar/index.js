@@ -19,9 +19,12 @@ const Container = styled(Flex)`
   border-radius: ${prop('size')}px;
   width: 100%;
   height: 100%;
-  background-color: ${palette(
+  background-color: ${({
+    containerColor,
+    tone,
+  }) => containerColor || palette(
     'grayscale',
-    3,
+    4,
   )};
 `;
 
@@ -44,6 +47,7 @@ const Bar = styled(Flex)`
 
 const ProgressBar = ({
   color,
+  containerColor,
   percentage,
   size = 3,
   direction,
@@ -81,6 +85,7 @@ const ProgressBar = ({
     <Container
       style={containerStyle}
       size={size}
+      containerColor={containerColor}
     >
       <Bar
         style={{ ...progressStyle }}
@@ -88,6 +93,7 @@ const ProgressBar = ({
         size={size}
         {...others}
         color={color}
+        containerColor={containerColor}
       />
     </Container>
   );

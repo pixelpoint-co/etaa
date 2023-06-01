@@ -1,8 +1,9 @@
 import {
-  useState, useCallback,
+  useState, useCallback, useEffect,
 } from 'react';
 import {
   gql,
+  useLazyQuery,
   useMutation,
   useQuery, useSubscription,
 } from '@apollo/client';
@@ -14,9 +15,15 @@ import {
   v4 as uuidv4,
 } from 'uuid';
 import moment from 'moment';
+import useReceipeData from './useReceipeData';
 
 const SUBSCRIPTION = gql`
   subscription subscription {
+    waiterSubscription
+  }
+`;
+const SUBSCRIPTION_QUERY = gql`
+  query waiterSubscription {
     waiterSubscription
   }
 `;
@@ -119,11 +126,17 @@ const usePotController = (cookerId, opts = {}) => {
     setLastActionId,
   ] = useState(null); // recipeId - Int // machine // abort // wash
 
-  const {
+  const [
     selectedRecipeId,
     setSelectedRecipeId,
-  } = useState(null);
+  ] = useState(null);
 
+  const {
+    data: recipeData,
+    error: recipeError,
+    loading: recipeLoading,
+  } = useReceipeData();
+  console.log(recipeData);
   const {
     error: cookerMonitoringError,
     data: cookerMonitoringData,
@@ -138,6 +151,83 @@ const usePotController = (cookerId, opts = {}) => {
       fetchPolicy: 'no-cache',
     },
   );
+  const [
+    initialLoadWaiterSubscriptionData,
+    {
+      error: initialWaiterSubscriptionError,
+      data: initialWaiterSubscription,
+      loading: initialWaiterSubscriptionLoading,
+    },
+  ] = useLazyQuery(
+    SUBSCRIPTION_QUERY,
+  );
+  const handleSubscriptionData = (data) => {
+    const cookerMonitoringTime = get(
+      data,
+      [
+        'data',
+        'waiterSubscription',
+        'cookerMonitoring',
+        'timeStamp',
+      ],
+      0,
+    );
+    if ((cookerMonitoringTime - subscriptionTime) > 0) {
+      setSubscriptionTime(cookerMonitoringTime);
+      setCookerMonitoringUUID(uuidv4());
+    }
+
+    const requestQueueRawData = get(
+      data,
+      [
+        'data',
+        'waiterSubscription',
+        'requestQueueRaw',
+        'data',
+      ],
+      [],
+    );
+
+    const requestQueueRawTime = get(
+      data,
+      [
+        'data',
+        'waiterSubscription',
+        'requestQueueRaw',
+        'timeStamp',
+      ],
+      [],
+    );
+
+    if ((requestQueueRawTime - requestQueueTime) > 0) {
+      setRequestQueueTime(requestQueueRawTime);
+      setRequestQueueRaw(requestQueueRawData);
+    }
+  };
+  useEffect(
+    () => {
+      initialLoadWaiterSubscriptionData(
+        { fetchPolicy: 'no-cache' },
+      );
+    },
+    [],
+  );
+  useEffect(
+    () => {
+      console.log(
+        'initial waiter sub load: ',
+        initialWaiterSubscription,
+      );
+      if (initialWaiterSubscription) {
+        handleSubscriptionData({ data: initialWaiterSubscription });
+      }
+    },
+    [initialWaiterSubscription],
+  );
+  console.log(
+    'initial ',
+    initialWaiterSubscription,
+  );
 
   const {
     data: subscriptionData,
@@ -146,47 +236,7 @@ const usePotController = (cookerId, opts = {}) => {
     SUBSCRIPTION,
     {
       onData: ({ data }) => {
-        const cookerMonitoringTime = get(
-          data,
-          [
-            'data',
-            'waiterSubscription',
-            'cookerMonitoring',
-            'timeStamp',
-          ],
-          0,
-        );
-        if ((cookerMonitoringTime - subscriptionTime) > 0) {
-          setSubscriptionTime(cookerMonitoringTime);
-          setCookerMonitoringUUID(uuidv4());
-        }
-
-        const requestQueueRawData = get(
-          data,
-          [
-            'data',
-            'waiterSubscription',
-            'requestQueueRaw',
-            'data',
-          ],
-          [],
-        );
-
-        const requestQueueRawTime = get(
-          data,
-          [
-            'data',
-            'waiterSubscription',
-            'requestQueueRaw',
-            'timeStamp',
-          ],
-          [],
-        );
-
-        if ((requestQueueRawTime - requestQueueTime) > 0) {
-          setRequestQueueTime(requestQueueRawTime);
-          setRequestQueueRaw(requestQueueRawData);
-        }
+        handleSubscriptionData(data);
       },
     },
   );
@@ -580,7 +630,10 @@ const usePotController = (cookerId, opts = {}) => {
         : parameters[3] === 'BACKWARD' ? -1
           : parameters[3] === 'FORWARD' ? 1
             : null;
-
+      console.log(
+        'fff spinDirection',
+        spinDirection,
+      );
       const isInduction = parameters[0] === 'TCPINDT';
       const inductionPower = parameters[2];
       const inductionIndex = getInductionIndex(currentCommand);
@@ -592,12 +645,6 @@ const usePotController = (cookerId, opts = {}) => {
       stove.temperature = inductionPowerToTemp(stove.power);
       const { stoves: stateStoves } = currentState;
       stateStoves[inductionIndex] = stoveRecordToProp(stove);
-      console.log({
-        isInduction,
-        inductionPower,
-        inductionIndex,
-        inductionIsOn,
-      });
 
       const getTilt = (params) => {
         switch (params[3]) {
@@ -620,6 +667,7 @@ const usePotController = (cookerId, opts = {}) => {
       const valveOpen = parameters[3] === 'OPEN';
       return {
         isRotating: isSpin ? spinDirection !== 0 : currentState.isRotating,
+        rotateDirection: isSpin ? spinDirection : currentState.spinDirection,
         stoves: stateStoves,
         tilt,
         valveOpen: isValve ? valveOpen : currentState.valveOpen,
@@ -627,6 +675,7 @@ const usePotController = (cookerId, opts = {}) => {
     },
     {
       isRotating: false,
+      rotateDirection: 0,
       stoves: [
         {
           power: 0,
@@ -643,8 +692,33 @@ const usePotController = (cookerId, opts = {}) => {
   );
 
   const selectRecipe = (recipeId) => {
+    console.log(
+      '선택 selecting recipe',
+      recipeId,
+      setSelectedRecipeId,
+    );
     setSelectedRecipeId(recipeId);
   };
+  console.log(
+    'current recipe ',
+    recipe,
+  );
+  console.log(
+    'machineState ',
+    machineState,
+  );
+  console.log(
+    'potMonitoringData ',
+    potMonitoringData,
+  );
+  const selectedRecipe = _.find(
+    recipeData,
+    { id: selectedRecipeId },
+  );
+  console.log(
+    'selectedRecipe ',
+    selectedRecipe,
+  );
   return {
     cookerMonitoringError,
     cookerMonitoringData,
@@ -665,7 +739,12 @@ const usePotController = (cookerId, opts = {}) => {
 
     potMonitoringData,
     recipe, // selected recipe for current cook
+    currentRecipeId: get(
+      recipe,
+      'id',
+    ), // selected recipe for current cook
     selectRecipe,
+    selectedRecipe,
     recipeRemainingTimeMs,
     recipeDurationMs,
     recipeDuration,
@@ -678,9 +757,9 @@ const usePotController = (cookerId, opts = {}) => {
     // parsedRecordList,
     stoves: machineState.stoves,
     isRotating: machineState.isRotating,
+    rotateDirection: machineState.rotateDirection,
     tiltDegree: machineState.tilt,
     valveOpen: machineState.valveOpen,
-
     prepAngle,
     prepIngredientAngle,
     prepNoodle,
