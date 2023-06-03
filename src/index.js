@@ -92,15 +92,19 @@ wsClient.onDisconnected((d) => {
     'onDisconnect!',
     d,
   );
-  toast(
-    '서버와의 연결이 끊어졌습니다.',
-    {
-      autoClose: false,
-      type: toast.TYPE.ERROR,
-      toastId: 'WS_DISCONNECT',
-      closeButton: WSReloadButton,
-    },
-  );
+  requestAnimationFrame((s) => {
+    if (s > 1000) {
+      toast(
+        '서버와의 연결이 끊어졌습니다.',
+        {
+          autoClose: false,
+          type: toast.TYPE.ERROR,
+          toastId: 'WS_DISCONNECT',
+          closeButton: WSReloadButton,
+        },
+      );
+    }
+  });
 });
 wsClient.onReconnected(() => console.log('websocket reconnected!!'));
 // The split function takes three parameters:
