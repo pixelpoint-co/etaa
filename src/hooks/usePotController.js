@@ -141,12 +141,13 @@ const usePotController = (cookerId, opts = {}) => {
     error: cookerMonitoringError,
     data: cookerMonitoringData,
     loading: cookerMonitoringLoading,
+    refetch: cookerMonitoringRefetch,
   } = useQuery(
     GET_COOKER_MONITORING,
     {
       variables: {
         option: { cookerId },
-        clientUUID: cookerMonitoringUUID,
+        // clientUUID: cookerMonitoringUUID,
       },
       fetchPolicy: 'no-cache',
     },
@@ -174,9 +175,14 @@ const usePotController = (cookerId, opts = {}) => {
     );
     if ((cookerMonitoringTime - subscriptionTime) > 0) {
       setSubscriptionTime(cookerMonitoringTime);
-      setCookerMonitoringUUID(uuidv4());
+      console.log('duration cooker monitoring start');
+      // setCookerMonitoringUUID(uuidv4());
+      cookerMonitoringRefetch();
     }
-
+    console.log(
+      'subscriptionData',
+      data,
+    );
     const requestQueueRawData = get(
       data,
       [
@@ -184,6 +190,7 @@ const usePotController = (cookerId, opts = {}) => {
         'waiterSubscription',
         'requestQueueRaw',
         'data',
+        'taskArgsRaw',
       ],
       [],
     );
@@ -309,9 +316,11 @@ const usePotController = (cookerId, opts = {}) => {
 
   const fetchMonitoring = useCallback(
     () => {
-      setCookerMonitoringUUID(uuidv4());
+      console.log('duration cooker monitoring start');
+      // setCookerMonitoringUUID(uuidv4());
+      cookerMonitoringRefetch();
     },
-    [],
+    [cookerMonitoringRefetch],
   );
 
   const startRecipe = useCallback(
@@ -358,6 +367,12 @@ const usePotController = (cookerId, opts = {}) => {
     ],
     {},
   );
+  if (potMonitoringData.status == null) {
+    console.log(
+      'duration: ',
+      cookerMonitoringData,
+    );
+  }
   const isCooking = get(
     potMonitoringData,
     'cooking',
@@ -371,6 +386,22 @@ const usePotController = (cookerId, opts = {}) => {
       100,
     );
   };
+
+  const recipeMemo = useMemo(
+    () => {
+      return recipe;
+    },
+    [
+      get(
+        recipe,
+        'id',
+      ),
+      get(
+        recipe,
+        'updated',
+      ),
+    ],
+  );
   // const parseRecipeRecord = (record) => {
   //   if (record == null) return null;
   //   const parameters = record.parameter.split('_');
@@ -733,7 +764,7 @@ const usePotController = (cookerId, opts = {}) => {
     lastActionId,
 
     potMonitoringData,
-    recipe, // selected recipe for current cook
+    recipe: recipeMemo, // selected recipe for current cook
     currentRecipeId: get(
       recipe,
       'id',
