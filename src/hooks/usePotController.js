@@ -1,5 +1,5 @@
 import {
-  useState, useCallback, useEffect,
+  useState, useCallback, useEffect, useMemo,
 } from 'react';
 import {
   gql,
@@ -698,9 +698,17 @@ const usePotController = (cookerId, opts = {}) => {
     'potMonitoringData ',
     potMonitoringData,
   );
-  const selectedRecipe = _.find(
-    recipeData,
-    { id: selectedRecipeId },
+  const selectedRecipe = useMemo(
+    () => {
+      return _.find(
+        recipeData,
+        { id: selectedRecipeId },
+      );
+    },
+    [
+      recipeData,
+      selectedRecipeId,
+    ],
   );
   console.log(
     'selectedRecipe ',
