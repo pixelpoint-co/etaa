@@ -8,7 +8,7 @@ import {
 import {
   v4 as uuidv4,
 } from 'uuid';
-import {
+import _, {
   findLast,
   get,
 } from 'lodash';
@@ -322,7 +322,13 @@ const PotUnit = (props) => {
           </ProgressTimerContainer>
         </OrderRecipeSection>
       </Content>
-      <PotNumber>{cookerId + 1}</PotNumber>
+      <PotNumber>
+        {_.padStart(
+          cookerId + 1,
+          2,
+          '0',
+        )}
+      </PotNumber>
       <ErrorPulseSection hasError={!!error}>
         <ErrorPulse />
       </ErrorPulseSection>

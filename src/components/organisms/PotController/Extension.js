@@ -96,16 +96,20 @@ const MenuOptionsContainer = styled(Column)`
 const PotControllerExtension = ({
   isOpen,
   onClose,
+  menuOptionsOpen,
+  onMenuOptionsClose,
   onSelect,
   prepIngredientAngle,
   prepNoodle,
   selectRecipe,
   isCooking,
+  rotateStart,
+  lastActionType,
+  lastActionId,
+  resetPosition,
+  prepWashing,
+  onRecipeSelect,
 }) => {
-  const [
-    menuOptionsOpen,
-    setMenuOptionsOpen,
-  ] = useState(false);
   const {
     data,
     error,
@@ -131,7 +135,7 @@ const PotControllerExtension = ({
         value: uuidv4(),
         recipeIds: _.times(
           10,
-          (v) => v,
+          (v) => v + 25,
         ),
       },
       {
@@ -179,11 +183,6 @@ const PotControllerExtension = ({
   );
   const secondaryOptions = useMemo(
     () => {
-      console.log(recipeIdsMapper);
-      console.log(_.find(
-        recipeIdsMapper,
-        (v) => v.value === selectedCategoryId,
-      ));
       const selectedRecipeList = _.get(
         _.find(
           recipeIdsMapper,
@@ -191,11 +190,6 @@ const PotControllerExtension = ({
         ),
         'recipeIds',
         [],
-      );
-      console.log(selectedRecipeList);
-      console.log(
-        'data: ',
-        data,
       );
       const recipeList = selectedRecipeList
         .map((id) => {
@@ -210,10 +204,6 @@ const PotControllerExtension = ({
           label: v.name,
           value: v.id,
         }));
-      console.log(
-        'recipeList: ',
-        recipeList,
-      );
       return recipeList;
     },
     [
@@ -224,12 +214,79 @@ const PotControllerExtension = ({
   );
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-    >
-      <Container>
-        {menuOptionsOpen ? (
+    <>
+      <Modal
+        isOpen={isOpen}
+        onClose={() => {
+          onClose();
+        }}
+      >
+        <Container>
+          <PotControllerWrapper>
+            <PotControlButtonContainer>
+              <PotControlButton
+                disabled={isCooking}
+                label="레시피 선택"
+                onClick={() => {
+                  onRecipeSelect();
+                }}
+              />
+            </PotControlButtonContainer>
+            <PotControlButtonContainer>
+              <PotControlButton
+                label="재료담기"
+                onClick={() => {
+                  prepIngredientAngle();
+                  onClose();
+                }}
+              />
+            </PotControlButtonContainer>
+
+            <PotControlButtonContainer>
+              <PotControlButton label="회전 센서" />
+            </PotControlButtonContainer>
+            <PotControlButtonContainer>
+              <PotControlButton label="세척 센서" />
+            </PotControlButtonContainer>
+            <PotControlButtonContainer>
+              <PotControlButton label="인덕션 끄기" />
+            </PotControlButtonContainer>
+            <PotControlButtonContainer>
+              <PotControlButton
+                label="세척준비"
+                hideLabelOnLoading
+                onClick={prepWashing}
+                active={lastActionType === 'machine' && lastActionId === '세척준비'}
+              />
+            </PotControlButtonContainer>
+            <PotControlButtonContainer>
+              <PotControlButton
+                label="역회전"
+                hideLabelOnLoading
+                onClick={rotateStart}
+                active={lastActionType === 'machine' && lastActionId === '역회전'}
+              />
+            </PotControlButtonContainer>
+            <PotControlButtonContainer>
+              <PotControlButton
+                label="원점정지"
+                hideLabelOnLoading
+                onClick={resetPosition}
+                active={lastActionType === 'machine' && lastActionId === '원점정지'}
+              />
+            </PotControlButtonContainer>
+          </PotControllerWrapper>
+        </Container>
+      </Modal>
+      <Modal
+        isOpen={menuOptionsOpen}
+        onClose={() => {
+          setSelectedRecipeId(null);
+          setSelectedCategoryId(null);
+          onMenuOptionsClose();
+        }}
+      >
+        <Container>
           <MenuSelectContainer>
             <MenuOptionsSelectContainer>
               <MenuGroupContainer>
@@ -269,37 +326,37 @@ const PotControllerExtension = ({
                 />
               </MenuListContainer>
               {/* <MenuOptionsContainer>
-                <TagSelect
-                  label="some-label"
-                  isMulti
-                  onSelect={(v) => {
-                    console.log(v);
-                    setSelectedTagList(v);
-                  }}
-                  value={selectedTagList}
-                  options={_
-                    .times(5)
-                    .map((i) => ({
-                      label: i + 1,
-                      value: i,
-                    }))}
-                />
-                <TagSelect
-                  label="some-label"
-                  isMulti
-                  onSelect={(v) => {
-                    console.log(v);
-                    setSelectedTagList(v);
-                  }}
-                  value={selectedTagList}
-                  options={_
-                    .times(5)
-                    .map((i) => ({
-                      label: i + 1,
-                      value: i,
-                    }))}
-                />
-              </MenuOptionsContainer> */}
+              <TagSelect
+                label="some-label"
+                isMulti
+                onSelect={(v) => {
+                  console.log(v);
+                  setSelectedTagList(v);
+                }}
+                value={selectedTagList}
+                options={_
+                  .times(5)
+                  .map((i) => ({
+                    label: i + 1,
+                    value: i,
+                  }))}
+              />
+              <TagSelect
+                label="some-label"
+                isMulti
+                onSelect={(v) => {
+                  console.log(v);
+                  setSelectedTagList(v);
+                }}
+                value={selectedTagList}
+                options={_
+                  .times(5)
+                  .map((i) => ({
+                    label: i + 1,
+                    value: i,
+                  }))}
+              />
+            </MenuOptionsContainer> */}
             </MenuOptionsSelectContainer>
 
             <ButtonContainer>
@@ -309,7 +366,7 @@ const PotControllerExtension = ({
                 tone={2}
                 label="취소"
                 onClick={() => {
-                  setMenuOptionsOpen(false);
+                  onMenuOptionsClose();
                   setSelectedRecipeId(null);
                   setSelectedCategoryId(null);
                 }}
@@ -323,53 +380,14 @@ const PotControllerExtension = ({
                     selectedRecipeId,
                   );
                   selectRecipe(selectedRecipeId);
-                  onClose();
+                  onMenuOptionsClose();
                 }}
               />
             </ButtonContainer>
           </MenuSelectContainer>
-        ) : (
-          <PotControllerWrapper>
-            <PotControlButtonContainer>
-              <PotControlButton
-                disabled={isCooking}
-                label="레시피 선택"
-                onClick={() => {
-                  setMenuOptionsOpen(true);
-                }}
-              />
-            </PotControlButtonContainer>
-            <PotControlButtonContainer>
-              <PotControlButton
-                label="재료담기"
-                onClick={() => {
-                  prepIngredientAngle();
-                  onClose();
-                }}
-              />
-            </PotControlButtonContainer>
-            <PotControlButtonContainer>
-              <PotControlButton
-                label="조리준비"
-                onClick={() => {
-                  prepNoodle();
-                  onClose();
-                }}
-              />
-            </PotControlButtonContainer>
-            <PotControlButtonContainer>
-              <PotControlButton label="회전 센서" />
-            </PotControlButtonContainer>
-            <PotControlButtonContainer>
-              <PotControlButton label="세척 센서" />
-            </PotControlButtonContainer>
-            <PotControlButtonContainer>
-              <PotControlButton label="인덕션 끄기" />
-            </PotControlButtonContainer>
-          </PotControllerWrapper>
-        )}
-      </Container>
-    </Modal>
+        </Container>
+      </Modal>
+    </>
   );
 };
 

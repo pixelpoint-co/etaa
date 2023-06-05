@@ -593,6 +593,10 @@ const usePotController = (cookerId, opts = {}) => {
   };
 
   const getControllerNumber = (url) => {
+    console.log(
+      'url: ',
+      url,
+    );
     return Number(url.split('/')[3].slice(-1)[0]);
   };
   const getPotNumber = (url) => {

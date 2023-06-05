@@ -82,6 +82,7 @@ const PotControlButton = (props) => {
     timerColor,
     disabled,
     disabledTooltip = [],
+    onTimerComplete,
     ...others
   } = props;
   const [
@@ -141,11 +142,15 @@ const PotControlButton = (props) => {
             totalDuration={totalDuration}
             duration={duration}
             totalDurationLabel={totalDurationLabel}
+            onComplete={() => {
+              console.log('progress timer onTimerComplete');
+              onTimerComplete();
+            }}
           />
         </TimerContainer>
       ) : null}
       <TooltipMask
-        visible={disabled && disabledTooltip}
+        visible={!!(disabled && disabledTooltip)}
         content={disabledTooltip.filter((v) => !_.isNull(v)).join(', ')}
       />
     </StyledButton>

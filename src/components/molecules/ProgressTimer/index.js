@@ -52,6 +52,7 @@ const ProgressTimer = ({
   totalDuration = 0,
   totalDurationLabel,
   containerBarColor,
+  onComplete,
   size,
   label,
   color,
@@ -62,7 +63,10 @@ const ProgressTimer = ({
     resetTimer,
   } = useCountdown(
     duration,
-    // () => console.log('onComplete!'),
+    () => {
+      console.log('progress timer on complete ');
+      onComplete();
+    },
   );
   const remainingMinutesText = Math.floor(remainingSeconds / 60)
     .toLocaleString(

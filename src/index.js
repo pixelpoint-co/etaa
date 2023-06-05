@@ -93,6 +93,10 @@ wsClient.onDisconnected((d) => {
     d,
   );
   requestAnimationFrame((s) => {
+    console.log(
+      '로드 후 경과: ',
+      s,
+    );
     if (s > 1000) {
       toast(
         '서버와의 연결이 끊어졌습니다.',

@@ -27,7 +27,15 @@ const useCountdown = (miliseconds, onComplete = () => {}) => {
       const shouldUpdate = timeLeft !== count;
       if (shouldUpdate) {
         setCount(timeLeft);
+        console.log(
+          'useCountdown timeLeft',
+          timeLeft,
+        );
         if (timeLeft === 0) {
+          console.log(
+            'useCountdown onComplete',
+            timeLeft,
+          );
           onComplete();
         }
       }

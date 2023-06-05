@@ -46,6 +46,7 @@ const PotControlButtonContainer = styled(Flex)`
   flex: 1 0 50%;
   flex-wrap: wrap;
   flex-direction: row;
+  max-width: 50%;
 `;
 
 const PotController = (props) => {
@@ -53,6 +54,10 @@ const PotController = (props) => {
   const [
     extensionOpen,
     setExtensionOpen,
+  ] = useState(false);
+  const [
+    recipeModalOpen,
+    setRecipeModalOpen,
   ] = useState(false);
   const {
     // cookerMonitoringError,
@@ -90,7 +95,7 @@ const PotController = (props) => {
 
     selectRecipe,
     selectedRecipe,
-    setSelectedRecipeId, // 선택된 레시피.  startRecipe에 들어가는 id 의 기본값
+    // setSelectedRecipeId, // 선택된 레시피.  startRecipe에 들어가는 id 의 기본값
     isCooking,
 
     isWashing,
@@ -98,25 +103,33 @@ const PotController = (props) => {
     cookerId,
     {},
   );
-  console.log(
-    'fff',
-    lastActionType,
-    lastActionId,
-    recipeRemainingTimeMs,
-    recipeDurationMs,
-  );
   const closeExtension = useCallback(
     () => {
-      console.log('선택 closing extension');
       setExtensionOpen(false);
     },
     [setExtensionOpen],
   );
+  const closeRecipeModal = useCallback(
+    () => {
+      setRecipeModalOpen(false);
+    },
+    [setRecipeModalOpen],
+  );
+  const openRecipeModal = useCallback(
+    () => {
+      setRecipeModalOpen(true);
+    },
+    [setRecipeModalOpen],
+  );
   return (
     <PotControllerWrapper>
-      <ToastContainer enableMultiContainer />
       <PotControlButtonContainer>
-        <PotControlButton label="음식 담기" onClick={prepAngle} />
+        <PotControlButton
+          label="음식 담기"
+          onClick={prepAngle}
+          disabled={isCooking}
+          disabledTooltip={[isCooking ? '조리중입니다' : null]}
+        />
       </PotControlButtonContainer>
       <PotControlButtonContainer>
         <PotControlButton
@@ -133,41 +146,23 @@ const PotController = (props) => {
         <PotControlButton label="세척" onClick={startWashing} />
       </PotControlButtonContainer>
       <PotControlButtonContainer>
-        <PotControllerWrapper>
-          <PotControlButtonContainer>
-            <PotControlButton
-              label="역회전"
-              hideLabelOnLoading
-              onClick={rotateStart}
-              active={lastActionType === 'machine' && lastActionId === '역회전'}
-            />
-          </PotControlButtonContainer>
-          <PotControlButtonContainer>
-            <PotControlButton
-              label="원점정지"
-              hideLabelOnLoading
-              onClick={resetPosition}
-              active={lastActionType === 'machine' && lastActionId === '원점정지'}
-            />
-          </PotControlButtonContainer>
-          <PotControlButtonContainer>
-            <PotControlButton
-              label="세척준비"
-              hideLabelOnLoading
-              onClick={prepWashing}
-              active={lastActionType === 'machine' && lastActionId === '세척준비'}
-            />
-          </PotControlButtonContainer>
-          <PotControlButtonContainer>
-            <PotControlButton
-              label="···"
-              onClick={() => setExtensionOpen(true)}
-              hideLabelOnLoading
-              fakeLoadingTime={300}
-            />
-          </PotControlButtonContainer>
-        </PotControllerWrapper>
-
+        <PotControlButton label="레시피 선택" onClick={openRecipeModal} />
+      </PotControlButtonContainer>
+      <PotControlButtonContainer>
+        <PotControlButton
+          label="조리준비"
+          onClick={() => {
+            prepNoodle();
+          }}
+        />
+      </PotControlButtonContainer>
+      <PotControlButtonContainer>
+        <PotControlButton
+          label="···"
+          onClick={() => setExtensionOpen(true)}
+          hideLabelOnLoading
+          fakeLoadingTime={300}
+        />
       </PotControlButtonContainer>
       <PotControlButtonContainer>
         <PotControlButton
@@ -211,17 +206,30 @@ const PotController = (props) => {
               totalDurationLabel: '||',
             }
           ) : {})}
+          onTimerComplete={() => {
+            selectRecipe(null);
+          }}
         />
       </PotControlButtonContainer>
 
       <WashingMask washing={isWashing} abort={abort} />
       <Extension
         isOpen={extensionOpen}
+        menuOptionsOpen={recipeModalOpen}
+        onMenuOptionsClose={closeRecipeModal}
         isCooking={isCooking}
         onClose={closeExtension}
         prepIngredientAngle={prepIngredientAngle}
         prepNoodle={prepNoodle}
         selectRecipe={selectRecipe}
+        rotateStart={rotateStart}
+        lastActionType={lastActionType}
+        lastActionId={lastActionId}
+        resetPosition={resetPosition}
+        onRecipeSelect={() => {
+          setExtensionOpen(false);
+          setRecipeModalOpen(true);
+        }}
       />
     </PotControllerWrapper>
   );
