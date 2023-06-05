@@ -593,10 +593,6 @@ const usePotController = (cookerId, opts = {}) => {
   };
 
   const getControllerNumber = (url) => {
-    console.log(
-      'url: ',
-      url,
-    );
     return Number(url.split('/')[3].slice(-1)[0]);
   };
   const getPotNumber = (url) => {
@@ -634,10 +630,6 @@ const usePotController = (cookerId, opts = {}) => {
         : parameters[3] === 'BACKWARD' ? -1
           : parameters[3] === 'FORWARD' ? 1
             : null;
-      console.log(
-        'fff spinDirection',
-        spinDirection,
-      );
       const isInduction = parameters[0] === 'TCPINDT';
       const inductionPower = parameters[2];
       const inductionIndex = getInductionIndex(currentCommand);
@@ -696,17 +688,8 @@ const usePotController = (cookerId, opts = {}) => {
   );
 
   const selectRecipe = (recipeId) => {
-    console.log(
-      '선택 selecting recipe',
-      recipeId,
-      setSelectedRecipeId,
-    );
     setSelectedRecipeId(recipeId);
   };
-  console.log(
-    'current recipe ',
-    recipe,
-  );
   console.log(
     'machineState ',
     machineState,

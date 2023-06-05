@@ -52,7 +52,7 @@ const ProgressTimer = ({
   totalDuration = 0,
   totalDurationLabel,
   containerBarColor,
-  onComplete,
+  onComplete = () => {},
   size,
   label,
   color,
