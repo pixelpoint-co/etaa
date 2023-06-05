@@ -114,7 +114,7 @@ const WashingMask = (props) => {
           </LabelWrapper>
         )}
       />
-      <ButtonContainer>
+      {/* <ButtonContainer>
         <StopButton
           loading={aborted}
           palette="red"
@@ -126,7 +126,7 @@ const WashingMask = (props) => {
             abort();
           }}
         />
-      </ButtonContainer>
+      </ButtonContainer> */}
     </StyledMask>
   );
 };

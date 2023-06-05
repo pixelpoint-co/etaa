@@ -258,10 +258,10 @@ const usePotController = (cookerId, opts = {}) => {
     },
   );
 
-  const { data: allCanelData } = useQuery(
-    ALL_CANCEL,
-    { skip: allCancelUUID == null },
-  );
+  // const { data: allCanelData } = useQuery(
+  //   ALL_CANCEL,
+  //   { skip: allCancelUUID == null },
+  // );
 
   const {
     loading: controlLoading,
