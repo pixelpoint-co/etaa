@@ -146,7 +146,11 @@ const PotController = (props) => {
         <PotControlButton label="세척" onClick={startWashing} />
       </PotControlButtonContainer>
       <PotControlButtonContainer>
-        <PotControlButton label="레시피 선택" onClick={openRecipeModal} />
+        <PotControlButton
+          disabled={isCooking}
+          label="레시피 선택"
+          onClick={openRecipeModal}
+        />
       </PotControlButtonContainer>
       <PotControlButtonContainer>
         <PotControlButton
