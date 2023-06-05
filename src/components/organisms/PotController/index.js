@@ -140,6 +140,8 @@ const PotController = (props) => {
           onClick={() => {
             startRecipe(21);
           }}
+          disabled={isCooking}
+          disabledTooltip={[isCooking ? '조리중입니다' : null]}
         />
       </PotControlButtonContainer>
       <PotControlButtonContainer>

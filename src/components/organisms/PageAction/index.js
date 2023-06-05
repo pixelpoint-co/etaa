@@ -93,6 +93,11 @@ PageAction.defaultProps = {
   }],
 };
 
-PageAction.propTypes = {};
+PageAction.propTypes = {
+  actions: PropTypes.arrayOf(PropTypes.shape({
+    action: PropTypes.func,
+    label: PropTypes.string,
+  })),
+};
 
 export default PageAction;

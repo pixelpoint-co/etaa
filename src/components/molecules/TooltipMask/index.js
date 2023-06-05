@@ -29,11 +29,15 @@ const TooltipMask = (props) => {
     [],
   );
 
-  if (!visible) return null;
+  // if (!visible) return null;
 
   return (
-    <StyledMask data-tooltip-id={id} data-tooltip-content={content} visible={visible}>
-      <Tooltip id={id} />
+    <StyledMask
+      data-tooltip-id={id}
+      data-tooltip-content={content}
+      visible
+    >
+      <Tooltip id={id} openOnClick />
     </StyledMask>
   );
 };
