@@ -138,6 +138,7 @@ const PotControlButton = (props) => {
         <TimerContainer>
           <ProgressTimer
             color={timerColor}
+            {...(active ? { color: 'white' } : {})}
             label={durationLabel}
             totalDuration={totalDuration}
             duration={duration}

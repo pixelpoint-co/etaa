@@ -81,7 +81,7 @@ const httpLink = new HttpLink({
 
 const wsClient = new SubscriptionClient(
   wsLinkUri,
-  { reconnect: true },
+  // { reconnect: true },
 );
 
 const wsLink = new WebSocketLink(wsClient);

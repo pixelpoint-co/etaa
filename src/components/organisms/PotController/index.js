@@ -143,13 +143,19 @@ const PotController = (props) => {
         />
       </PotControlButtonContainer>
       <PotControlButtonContainer>
-        <PotControlButton label="세척" onClick={startWashing} />
+        <PotControlButton
+          label="세척"
+          onClick={startWashing}
+          disabled={isCooking}
+          disabledTooltip={[isCooking ? '조리중입니다' : null]}
+        />
       </PotControlButtonContainer>
       <PotControlButtonContainer>
         <PotControlButton
-          disabled={isCooking}
           label="레시피 선택"
           onClick={openRecipeModal}
+          disabled={isCooking}
+          disabledTooltip={[isCooking ? '조리중입니다' : null]}
         />
       </PotControlButtonContainer>
       <PotControlButtonContainer>
@@ -186,7 +192,7 @@ const PotController = (props) => {
             !(!isCooking && selectedRecipe)
           }
           disabledTooltip={[
-            isCooking ? '이미 조리중입니다' : null,
+            isCooking ? '조리중입니다' : null,
             !selectedRecipe ? '레시피를 선택해야 합니다' : null,
           ]}
           label="조리시작"

@@ -226,6 +226,7 @@ const PotControllerExtension = ({
             <PotControlButtonContainer>
               <PotControlButton
                 disabled={isCooking}
+                disabledTooltip={[isCooking ? '조리중입니다' : null]}
                 label="레시피 선택"
                 onClick={() => {
                   onRecipeSelect();
@@ -234,7 +235,7 @@ const PotControllerExtension = ({
             </PotControlButtonContainer>
             <PotControlButtonContainer>
               <PotControlButton
-                label="재료담기"
+                label="각도원점"
                 onClick={() => {
                   prepIngredientAngle();
                   onClose();
@@ -242,36 +243,48 @@ const PotControllerExtension = ({
               />
             </PotControlButtonContainer>
 
-            <PotControlButtonContainer>
-              <PotControlButton label="회전 센서" />
+            {/* <PotControlButtonContainer>
+              <PotControlButton
+                label="회전 센서"
+              />
             </PotControlButtonContainer>
             <PotControlButtonContainer>
-              <PotControlButton label="세척 센서" />
+              <PotControlButton
+                label="세척 센서"
+              />
             </PotControlButtonContainer>
             <PotControlButtonContainer>
-              <PotControlButton label="인덕션 끄기" />
-            </PotControlButtonContainer>
-            <PotControlButtonContainer>
+              <PotControlButton
+                label="인덕션 끄기"
+              />
+            </PotControlButtonContainer> */}
+            {/* <PotControlButtonContainer>
               <PotControlButton
                 label="세척준비"
                 hideLabelOnLoading
                 onClick={prepWashing}
                 active={lastActionType === 'machine' && lastActionId === '세척준비'}
               />
-            </PotControlButtonContainer>
+            </PotControlButtonContainer> */}
             <PotControlButtonContainer>
               <PotControlButton
                 label="역회전"
                 hideLabelOnLoading
-                onClick={rotateStart}
+                onClick={() => {
+                  rotateStart();
+                  onClose();
+                }}
                 active={lastActionType === 'machine' && lastActionId === '역회전'}
               />
             </PotControlButtonContainer>
             <PotControlButtonContainer>
               <PotControlButton
-                label="원점정지"
+                label="회전원점"
                 hideLabelOnLoading
-                onClick={resetPosition}
+                onClick={() => {
+                  resetPosition();
+                  onClose();
+                }}
                 active={lastActionType === 'machine' && lastActionId === '원점정지'}
               />
             </PotControlButtonContainer>
