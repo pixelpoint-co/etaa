@@ -64,7 +64,7 @@ const BillyMain = (props) => {
         {_.times(6).map((i) => (
           <PotCardContainer
             key={i}
-            to={`/gates/${i + 1}`}
+            href={`${window.origin}/gates/${i + 1}`}
           >
             <PotUnit
               cookerId={i}
