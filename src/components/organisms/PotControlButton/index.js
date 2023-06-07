@@ -30,6 +30,7 @@ import ProgressTimer from '../../molecules/ProgressTimer';
 import TooltipMask from '../../molecules/TooltipMask';
 import Icon from '../../atoms/Icon';
 import Button from '../../atoms/Button';
+import theme from '../../../theme';
 // const Wrapper = styled(Card)`
 //   padding: 20px;
 //   justify-content: flex-end;
@@ -80,6 +81,7 @@ const PotControlButton = (props) => {
     fakeLoadingTime = 2000,
     loading,
     timerColor,
+    containerBarColor,
     disabled,
     disabledTooltip = [],
     onTimerComplete,
@@ -138,7 +140,11 @@ const PotControlButton = (props) => {
         <TimerContainer>
           <ProgressTimer
             color={timerColor}
-            {...(active ? { color: 'white' } : {})}
+            containerBarColor={containerBarColor}
+            {...(active ? {
+              color: 'white',
+              containerBarColor: theme.palette.grayscale[2],
+            } : {})}
             label={durationLabel}
             totalDuration={totalDuration}
             duration={duration}
