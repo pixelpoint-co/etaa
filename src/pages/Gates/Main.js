@@ -57,7 +57,7 @@ const TimerSection = styled(Card)`
 `;
 const BodySection = styled(Flex)`
   flex-direction: row;
-  margin: 15px -8px;
+  margin: 15px -8px 0px -8px;
 `;
 const BodyColumn = styled(Flex)`
   margin: 0px 8px;

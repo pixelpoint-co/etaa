@@ -223,7 +223,8 @@ const PotControllerExtension = ({
       >
         <Container>
           <PotControllerWrapper>
-            <PotControlButtonContainer>
+            <PotControlButtonContainer />
+            {/* <PotControlButtonContainer>
               <PotControlButton
                 disabled={isCooking}
                 disabledTooltip={[isCooking ? '조리중입니다' : null]}
@@ -232,7 +233,7 @@ const PotControllerExtension = ({
                   onRecipeSelect();
                 }}
               />
-            </PotControlButtonContainer>
+            </PotControlButtonContainer> */}
             <PotControlButtonContainer>
               <PotControlButton
                 label="각도원점"
