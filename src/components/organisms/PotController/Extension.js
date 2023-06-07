@@ -240,6 +240,8 @@ const PotControllerExtension = ({
                   prepIngredientAngle();
                   onClose();
                 }}
+                disabledTooltip={[isCooking ? '조리중입니다' : null]}
+                disabled={isCooking}
               />
             </PotControlButtonContainer>
             <PotControlButtonContainer>

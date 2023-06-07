@@ -82,7 +82,7 @@ const PotController = (props) => {
     lastActionId,
     setLastActionType,
     setLastActionId,
-
+    machineState,
     prepAngle,
     prepIngredientAngle,
     prepNoodle,
@@ -121,6 +121,7 @@ const PotController = (props) => {
     },
     [setRecipeModalOpen],
   );
+
   return (
     <PotControllerWrapper>
       <PotControlButtonContainer>
@@ -147,7 +148,10 @@ const PotController = (props) => {
       <PotControlButtonContainer>
         <PotControlButton
           label="세척"
-          onClick={startWashing}
+          onClick={() => {
+            startWashing();
+            selectRecipe(null);
+          }}
           disabled={isCooking}
           disabledTooltip={[isCooking ? '조리중입니다' : null]}
         />
@@ -192,10 +196,12 @@ const PotController = (props) => {
         <PotControlButton
           disabled={
             !(!isCooking && selectedRecipe)
+            || machineState.tilt !== 45
           }
           disabledTooltip={[
             isCooking ? '조리중입니다' : null,
             !selectedRecipe ? '레시피를 선택해야 합니다' : null,
+            machineState.tilt !== 45 ? '조리준비가 되어있는지 확인해주세요' : null,
           ]}
           label="조리시작"
           palette="primary"
@@ -218,9 +224,9 @@ const PotController = (props) => {
               totalDurationLabel: '||',
             }
           ) : {})}
-          onTimerComplete={() => {
-            selectRecipe(null);
-          }}
+          // onTimerComplete={() => {
+          //   selectRecipe(null);
+          // }}
         />
       </PotControlButtonContainer>
 

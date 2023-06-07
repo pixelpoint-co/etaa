@@ -781,6 +781,7 @@ const usePotController = (cookerId, opts = {}) => {
     // isRotating,
     // recordList,
     // parsedRecordList,
+    machineState,
     stoves: machineState.stoves,
     isRotating: machineState.isRotating,
     rotateDirection: machineState.rotateDirection,
@@ -795,7 +796,6 @@ const usePotController = (cookerId, opts = {}) => {
     startWashing,
     stopCook,
     abort,
-
     isWashing: get(
       potMonitoringData,
       'status',
