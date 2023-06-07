@@ -242,30 +242,18 @@ const PotControllerExtension = ({
                 }}
               />
             </PotControlButtonContainer>
-
-            {/* <PotControlButtonContainer>
-              <PotControlButton
-                label="회전 센서"
-              />
-            </PotControlButtonContainer>
             <PotControlButtonContainer>
               <PotControlButton
-                label="세척 센서"
-              />
-            </PotControlButtonContainer>
-            <PotControlButtonContainer>
-              <PotControlButton
-                label="인덕션 끄기"
-              />
-            </PotControlButtonContainer> */}
-            {/* <PotControlButtonContainer>
-              <PotControlButton
-                label="세척준비"
+                label="회전원점"
                 hideLabelOnLoading
-                onClick={prepWashing}
-                active={lastActionType === 'machine' && lastActionId === '세척준비'}
+                onClick={() => {
+                  resetPosition();
+                  onClose();
+                }}
+                active={lastActionType === 'machine' && lastActionId === '원점정지'}
               />
-            </PotControlButtonContainer> */}
+            </PotControlButtonContainer>
+
             <PotControlButtonContainer>
               <PotControlButton
                 label="역회전"
@@ -279,13 +267,34 @@ const PotControllerExtension = ({
             </PotControlButtonContainer>
             <PotControlButtonContainer>
               <PotControlButton
-                label="회전원점"
+                label="세척준비"
                 hideLabelOnLoading
-                onClick={() => {
-                  resetPosition();
-                  onClose();
-                }}
-                active={lastActionType === 'machine' && lastActionId === '원점정지'}
+                onClick={prepWashing}
+                active={lastActionType === 'machine' && lastActionId === '세척준비'}
+                disabled
+                disabledTooltip={['준비중인 기능입니다']}
+              />
+            </PotControlButtonContainer>
+            <PotControlButtonContainer />
+            <PotControlButtonContainer>
+              <PotControlButton
+                label="인덕션 끄기"
+                disabled
+                disabledTooltip={['준비중인 기능입니다']}
+              />
+            </PotControlButtonContainer>
+            <PotControlButtonContainer>
+              <PotControlButton
+                disabled
+                disabledTooltip={['준비중인 기능입니다']}
+                label="회전 센서"
+              />
+            </PotControlButtonContainer>
+            <PotControlButtonContainer>
+              <PotControlButton
+                disabled
+                disabledTooltip={['준비중인 기능입니다']}
+                label="세척 센서"
               />
             </PotControlButtonContainer>
           </PotControllerWrapper>
