@@ -76,23 +76,18 @@ const routes = [
     element: <Billy />,
     rootRoute: true,
   },
-  {
-    label: '게이츠',
-    href: '/gates/*',
-    element: <Gates />,
-    rootRoute: true,
-  },
+
   {
     label: '놀이터',
     href: '/playground/*',
     element: <Playground />,
-    rootRoute: true,
+    // rootRoute: true,
   },
   {
     label: '컨트롤러',
     href: '/controller/*',
     element: <PotControllerPage />,
-    rootRoute: true,
+    // rootRoute: true,
   },
   // {
   //   label: '자재관리',
@@ -167,6 +162,7 @@ const App = () => {
     <Wrapper>
       <Routes>
         <Route path="/signin" element={<SignIn />} />
+        <Route path="/gates/*" element={<Gates />} />
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           {routes.map((route) => {
