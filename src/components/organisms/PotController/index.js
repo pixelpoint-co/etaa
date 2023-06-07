@@ -141,8 +141,11 @@ const PotController = (props) => {
           onClick={() => {
             startRecipe(21);
           }}
-          disabled={isCooking}
-          disabledTooltip={[isCooking ? '조리중입니다' : null]}
+          disabled={isCooking || machineState.tilt !== 45}
+          disabledTooltip={[
+            isCooking ? '조리중입니다' : null,
+            machineState.tilt !== 45 ? '조리준비가 되어있는지 확인해주세요' : null,
+          ]}
         />
       </PotControlButtonContainer>
       <PotControlButtonContainer>
@@ -244,6 +247,7 @@ const PotController = (props) => {
         lastActionType={lastActionType}
         lastActionId={lastActionId}
         resetPosition={resetPosition}
+        machineState={machineState}
         onRecipeSelect={() => {
           setExtensionOpen(false);
           setRecipeModalOpen(true);

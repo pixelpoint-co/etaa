@@ -120,7 +120,7 @@ const PotControlButton = (props) => {
     },
     [],
   );
-
+  const disabledTooltipList = disabledTooltip.filter((v) => !_.isNull(v)).join(', ');
   return (
     <StyledButton
       palette="grayscale"
@@ -133,7 +133,11 @@ const PotControlButton = (props) => {
       } : {})}
       active={active}
       {...others}
-      disabled={disabled}
+      // disabled={disabled}
+      {...((active)
+        ? { disableClick: disabled }
+        : { disabled }
+      )}
       onClick={handleClick}
       loading={tempLoading || loading}
     >
@@ -159,7 +163,7 @@ const PotControlButton = (props) => {
         </TimerContainer>
       ) : null}
       <TooltipMask
-        visible={!!(disabled && disabledTooltip)}
+        visible={!!(disabled && disabledTooltipList)}
         content={disabledTooltip.filter((v) => !_.isNull(v)).join(', ')}
       />
     </StyledButton>
