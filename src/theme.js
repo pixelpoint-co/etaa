@@ -27,6 +27,7 @@ theme.palette = {
   yellow: ['#a16600'],
   green: ['#0d200e'],
   blue: ['#0D35D5'],
+  purple: ['#9981F7'],
 };
 
 theme.fonts = { primary: 'Pretendard' };

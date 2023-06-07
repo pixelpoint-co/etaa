@@ -94,7 +94,7 @@ Link.defaultProps = {
   disabled: false,
   disableStyle: true,
   reverse: false,
-  to: '/',
+  to: null,
   fill: false,
 };
 

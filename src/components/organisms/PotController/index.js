@@ -198,7 +198,7 @@ const PotController = (props) => {
             !selectedRecipe ? '레시피를 선택해야 합니다' : null,
           ]}
           label="조리시작"
-          palette="blue"
+          palette="primary"
           tone={0}
           themeType="solid"
           onClick={() => startRecipe(selectedRecipe.id)}

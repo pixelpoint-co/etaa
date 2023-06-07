@@ -50,10 +50,11 @@ const StyledButton = styled(Button)`
   )}
   font-size: 35px;
   line-height: 35px;
-  p {
+  .button-label-container p {
     font-weight: 700;
   }
 `;
+
 const TimerContainer = styled(Flex)`
   position: absolute;
   bottom: 0;
@@ -61,7 +62,7 @@ const TimerContainer = styled(Flex)`
   left: 0;
   padding: 20px;
   opacity: 1;
-
+  font-weight: normal;
   /* ${ifProp(
     'active',
     css`
@@ -153,6 +154,7 @@ const PotControlButton = (props) => {
               console.log('progress timer onTimerComplete');
               onTimerComplete();
             }}
+            labelSize={18}
           />
         </TimerContainer>
       ) : null}

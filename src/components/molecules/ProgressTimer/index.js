@@ -37,13 +37,13 @@ const LabelText = styled(Text)`
   white-space: nowrap;
   max-width: calc(100% - 85px);
   text-align: left;
-  font-size: 24px;
-  line-height: 24px;
+  font-size: ${prop('$size')}px;
+  line-height: ${prop('$size')}px;
 `;
 const TimerText = styled(Text)`
   margin-left: auto;
-  font-size: 24px;
-  line-height: 24px;
+  font-size: ${prop('$size')}px;
+  line-height: ${prop('$size')}px;
   align-items: center;
   display: inline-flex;
 `;
@@ -53,7 +53,8 @@ const ProgressTimer = ({
   totalDurationLabel,
   containerBarColor,
   onComplete = () => {},
-  size,
+  labelSize = 24,
+  barSize,
   label,
   color,
   ...others
@@ -83,12 +84,13 @@ const ProgressTimer = ({
   return (
     <Container>
       <TimerSection>
-        <LabelText weight="bold" color={color}>
+        <LabelText weight="bold" color={color} $size={labelSize}>
           {label}
         </LabelText>
         <TimerText
           weight="regular"
           color={color}
+          $size={labelSize}
         >
           {duration === Infinity || totalDuration === Infinity ? (
             infinityText
@@ -100,7 +102,7 @@ const ProgressTimer = ({
       <BarSection>
         <ProgressBar
           percentage={(Math.ceil((remainingSeconds / (totalDuration / 1000)) * 100 * 100)) / 100}
-          size={size}
+          size={barSize}
           onClick={resetTimer}
           color={color}
           containerColor={containerBarColor}

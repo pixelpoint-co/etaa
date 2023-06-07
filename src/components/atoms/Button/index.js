@@ -268,7 +268,7 @@ const Button = ({
         type={type}
       >
         {label ? (
-          <Content>
+          <Content className="button-label-container">
             {typeof label === 'string' ? (
               <StyledText
                 disabled={disabled}

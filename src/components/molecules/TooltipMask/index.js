@@ -15,6 +15,7 @@ import Mask from '../../atoms/Mask';
 
 const StyledMask = styled(Mask)`
   background: none;
+  z-index: 3;
 `;
 
 const TooltipMask = (props) => {
@@ -29,15 +30,15 @@ const TooltipMask = (props) => {
     [],
   );
 
-  // if (!visible) return null;
+  if (!visible) return null;
 
   return (
     <StyledMask
       data-tooltip-id={id}
       data-tooltip-content={content}
-      visible
+      visible={visible}
     >
-      <Tooltip id={id} openOnClick />
+      <Tooltip id={id} />
     </StyledMask>
   );
 };
