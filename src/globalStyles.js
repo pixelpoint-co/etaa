@@ -96,5 +96,9 @@ const GlobalStyle = createGlobalStyle`
     border-radius: 15px;
     box-shadow: rgba(30, 30, 30, 0.3) 5px 5px 20px;
   }
+
+  .ReactModal__Body--open {
+    overscroll-behavior: none;
+  }
 `;
 export default GlobalStyle;
