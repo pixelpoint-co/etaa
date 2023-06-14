@@ -122,51 +122,53 @@ const PotControlButton = (props) => {
   );
   const disabledTooltipList = disabledTooltip.filter((v) => !_.isNull(v)).join(', ');
   return (
-    <StyledButton
-      palette="grayscale"
-      tone={0}
-      themeType="text"
-      {...(active ? {
-        palette: 'black',
-        tone: 0,
-        themeType: 'solid',
-      } : {})}
-      active={active}
-      {...others}
-      // disabled={disabled}
-      {...((active)
-        ? { disableClick: disabled }
-        : { disabled }
-      )}
-      onClick={handleClick}
-      loading={tempLoading || loading}
-    >
-      {(totalDuration > 0) ? (
-        <TimerContainer>
-          <ProgressTimer
-            color={timerColor}
-            containerBarColor={containerBarColor}
-            {...(active ? {
-              color: 'white',
-              containerBarColor: theme.palette.grayscale[2],
-            } : {})}
-            label={durationLabel}
-            totalDuration={totalDuration}
-            duration={duration}
-            totalDurationLabel={totalDurationLabel}
-            onComplete={() => {
-              console.log('progress timer onTimerComplete');
-              onTimerComplete();
-            }}
-            labelSize={18}
-          />
-        </TimerContainer>
-      ) : null}
+    <Flex style={{ position: 'relative' }}>
+      <StyledButton
+        palette="grayscale"
+        tone={0}
+        themeType="text"
+        {...(active ? {
+          palette: 'black',
+          tone: 0,
+          themeType: 'solid',
+        } : {})}
+        active={active}
+        {...others}
+        // disabled={disabled}
+        {...((active)
+          ? { disableClick: disabled }
+          : { disabled }
+        )}
+        onClick={handleClick}
+        loading={tempLoading || loading}
+      >
+        {(totalDuration > 0) ? (
+          <TimerContainer>
+            <ProgressTimer
+              color={timerColor}
+              containerBarColor={containerBarColor}
+              {...(active ? {
+                color: 'white',
+                containerBarColor: theme.palette.grayscale[2],
+              } : {})}
+              label={durationLabel}
+              totalDuration={totalDuration}
+              duration={duration}
+              totalDurationLabel={totalDurationLabel}
+              onComplete={() => {
+                console.log('progress timer onTimerComplete');
+                onTimerComplete();
+              }}
+              labelSize={18}
+            />
+          </TimerContainer>
+        ) : null}
+      </StyledButton>
       <TooltipMask
         visible={!!(disabled && disabledTooltipList)}
         content={disabledTooltip.filter((v) => !_.isNull(v)).join(', ')}
       />
-    </StyledButton>
+    </Flex>
   );
 };
 
