@@ -127,9 +127,9 @@ const GatesMain = (props) => {
             containerBarColor={theme.palette.grayscale[3]}
           />
         </TimerSection>
-        <ActivateButton>
+        {/* <ActivateButton>
           button
-        </ActivateButton>
+        </ActivateButton> */}
       </HeaderSection>
       <BodySection>
         <BodyColumn flex={1.1} direction="column">
