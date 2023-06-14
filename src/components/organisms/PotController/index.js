@@ -126,12 +126,41 @@ const PotController = (props) => {
     <PotControllerWrapper>
       <PotControlButtonContainer>
         <PotControlButton
+          label="조리준비"
+          onClick={() => {
+            prepNoodle();
+          }}
+        />
+      </PotControlButtonContainer>
+      <PotControlButtonContainer>
+        <PotControlButton
+          label="레시피 선택"
+          onClick={openRecipeModal}
+          disabled={isCooking}
+          disabledTooltip={[isCooking ? '조리중입니다' : null]}
+        />
+      </PotControlButtonContainer>
+
+      <PotControlButtonContainer>
+        <PotControlButton
           label="음식 담기"
           onClick={prepAngle}
           disabled={isCooking}
           disabledTooltip={[isCooking ? '조리중입니다' : null]}
         />
       </PotControlButtonContainer>
+      <PotControlButtonContainer>
+        <PotControlButton
+          label="세척"
+          onClick={() => {
+            startWashing();
+            selectRecipe(null);
+          }}
+          disabled={isCooking}
+          disabledTooltip={[isCooking ? '조리중입니다' : null]}
+        />
+      </PotControlButtonContainer>
+
       <PotControlButtonContainer>
         <PotControlButton
           duration={(potMonitoringData?.cooking && recipe.id === 21) ? recipeRemainingTimeMs : 0}
@@ -148,33 +177,7 @@ const PotController = (props) => {
           ]}
         />
       </PotControlButtonContainer>
-      <PotControlButtonContainer>
-        <PotControlButton
-          label="세척"
-          onClick={() => {
-            startWashing();
-            selectRecipe(null);
-          }}
-          disabled={isCooking}
-          disabledTooltip={[isCooking ? '조리중입니다' : null]}
-        />
-      </PotControlButtonContainer>
-      <PotControlButtonContainer>
-        <PotControlButton
-          label="레시피 선택"
-          onClick={openRecipeModal}
-          disabled={isCooking}
-          disabledTooltip={[isCooking ? '조리중입니다' : null]}
-        />
-      </PotControlButtonContainer>
-      <PotControlButtonContainer>
-        <PotControlButton
-          label="조리준비"
-          onClick={() => {
-            prepNoodle();
-          }}
-        />
-      </PotControlButtonContainer>
+
       <PotControlButtonContainer>
         <PotControlButton
           label="···"
