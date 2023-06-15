@@ -1,3 +1,8 @@
+import _ from 'lodash';
+import {
+  v4 as uuidv4,
+} from 'uuid';
+
 export const potNumber = [
   0,
   1,
@@ -298,50 +303,95 @@ export const dishMoverSet = [
   },
 ];
 
-export const foodTags = [
+export const recipeTags = [
   {
     id: 1,
-    value: '커피',
+    value: uuidv4(),
+    label: '커피',
     viewable: false,
+    recipeIds: _.times(
+      10,
+      (v) => v.tags?.includes([1]),
+    ),
   },
   {
     id: 2,
-    value: '분식',
-    viewable: false,
+    value: uuidv4(),
+    label: '스페셜',
+    viewable: true,
+    recipeIds: _.times(
+      10,
+      (v) => v.tags?.includes([2]),
+    ),
   },
   {
     id: 3,
-    value: '사이드',
+    value: uuidv4(),
+    label: '사이드',
     viewable: false,
+    recipeIds: _.times(
+      10,
+      (v) => v.tags?.includes([3]),
+    ),
   },
   {
     id: 110,
-    value: '스몰',
+    value: uuidv4(),
+    label: '스몰',
     viewable: false,
+    recipeIds: _.times(
+      10,
+      (v) => v.tags?.includes([110]),
+    ),
   },
   {
     id: 120,
-    value: '레귤러',
-    viewable: true,
+    value: uuidv4(),
+    label: '레귤러',
+    viewable: false,
+    recipeIds: _.times(
+      10,
+      (v) => v.tags?.includes([120]),
+    ),
   },
   {
     id: 130,
-    value: '라지',
-    viewable: true,
+    value: uuidv4(),
+    label: '라지',
+    viewable: false,
+    recipeIds: _.times(
+      10,
+      (v) => v.tags?.includes([130]),
+    ),
   },
   {
     id: 210,
-    value: '찜닭',
+    value: uuidv4(),
+    label: '찜닭',
     viewable: false,
+    recipeIds: _.times(
+      10,
+      (v) => v.tags?.includes([210]),
+    ),
   },
   {
     id: 310,
-    value: '파스타',
-    viewable: false,
+    value: uuidv4(),
+    label: '파스타',
+    viewable: true,
+    recipeIds: _.times(
+      10,
+      (v) => v.tags?.includes([310]),
+    ),
   },
   {
     id: 320,
-    value: '리조또',
-    viewable: false,
+    value: uuidv4(),
+    label: '리조또',
+    viewable: true,
+    recipeIds: _.times(
+      10,
+      (v) => v.tags?.includes([320]),
+    ),
   },
 ];
