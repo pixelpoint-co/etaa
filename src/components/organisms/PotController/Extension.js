@@ -21,6 +21,9 @@ import Card from '../../atoms/Card';
 import Button from '../../atoms/Button';
 import useReceipeData from '../../../hooks/useReceipeData';
 import TagSelect from '../../molecules/TagSelect';
+import {
+  recipeTags,
+} from '../../../constants/pot';
 
 const Container = styled(Flex)`
   flex-direction: row;
@@ -118,7 +121,7 @@ const PotControllerExtension = ({
   const [
     selectedCategoryId,
     setSelectedCategoryId,
-  ] = useState(null);
+  ] = useState(310);
   const [
     selectedRecipeId,
     setSelectedRecipeId,
@@ -128,88 +131,80 @@ const PotControllerExtension = ({
     setSelectedTagList,
   ] = useState([]);
 
-  const recipeIdsMapper = useMemo(
-    () => ([
-      {
-        label: '토마토 파스타',
-        value: uuidv4(),
-        recipeIds: _.times(
-          10,
-          (v) => v + 25,
-        ),
-      },
-      {
-        label: '크림 파스타',
-        value: uuidv4(),
-        recipeIds: _.times(
-          10,
-          (v) => v + 10,
-        ),
-      },
-      {
-        label: '오일 파스타',
-        value: uuidv4(),
-        recipeIds: _.times(
-          10,
-          (v) => v + 20,
-        ),
-      },
-      {
-        label: '토마토 리조또',
-        value: uuidv4(),
-        recipeIds: _.times(
-          10,
-          (v) => v,
-        ),
-      },
-      {
-        label: '크림 리조또',
-        value: uuidv4(),
-        recipeIds: _.times(
-          10,
-          (v) => v + 10,
-        ),
-      },
-      {
-        label: '스페셜',
-        value: uuidv4(),
-        recipeIds: _.times(
-          10,
-          (v) => v + 20,
-        ),
-      },
-    ]),
-    [],
-  );
+  // const recipeIdsMapper = useMemo(
+  //   () => ([
+  //     {
+  //       label: '토마토 파스타',
+  //       value: uuidv4(),
+  //       recipeIds: _.times(
+  //         10,
+  //         (v) => v + 25,
+  //       ),
+  //     },
+  //     {
+  //       label: '크림 파스타',
+  //       value: uuidv4(),
+  //       recipeIds: _.times(
+  //         10,
+  //         (v) => v + 10,
+  //       ),
+  //     },
+  //     {
+  //       label: '오일 파스타',
+  //       value: uuidv4(),
+  //       recipeIds: _.times(
+  //         10,
+  //         (v) => v + 20,
+  //       ),
+  //     },
+  //     {
+  //       label: '토마토 리조또',
+  //       value: uuidv4(),
+  //       recipeIds: _.times(
+  //         10,
+  //         (v) => v,
+  //       ),
+  //     },
+  //     {
+  //       label: '크림 리조또',
+  //       value: uuidv4(),
+  //       recipeIds: _.times(
+  //         10,
+  //         (v) => v + 10,
+  //       ),
+  //     },
+  //     {
+  //       label: '스페셜',
+  //       value: uuidv4(),
+  //       recipeIds: _.times(
+  //         10,
+  //         (v) => v + 20,
+  //       ),
+  //     },
+  //   ]),
+  //   [],
+  // );
+
   const secondaryOptions = useMemo(
     () => {
-      const selectedRecipeList = _.get(
-        _.find(
-          recipeIdsMapper,
-          (v) => v.value === selectedCategoryId,
-        ),
-        'recipeIds',
-        [],
+      const selectedRecipeList = _.filter(
+        data,
+        { tags: [selectedCategoryId] },
       );
+
       const recipeList = selectedRecipeList
-        .map((id) => {
-          return _.find(
-            data,
-            (d) => d.id === id,
-          );
-        })
         .filter((v) => v != null)
         .map((v) => ({
           ...v,
           label: v.name,
           value: v.id,
         }));
+
       return recipeList;
     },
     [
       data,
       selectedCategoryId,
-      recipeIdsMapper,
     ],
   );
 
@@ -305,7 +300,7 @@ const PotControllerExtension = ({
         isOpen={menuOptionsOpen}
         onClose={() => {
           setSelectedRecipeId(null);
-          setSelectedCategoryId(null);
+          setSelectedCategoryId(310);
           onMenuOptionsClose();
         }}
       >
@@ -315,7 +310,7 @@ const PotControllerExtension = ({
               <MenuGroupContainer>
                 <MenuSelect
                   value={selectedCategoryId}
-                  options={recipeIdsMapper}
+                  options={recipeTags.filter((tag) => tag.viewable === true)}
                   onSelect={(value) => {
                     setSelectedCategoryId(value);
                     if (value !== selectedCategoryId) {
@@ -391,7 +386,7 @@ const PotControllerExtension = ({
                 onClick={() => {
                   onMenuOptionsClose();
                   setSelectedRecipeId(null);
-                  setSelectedCategoryId(null);
+                  setSelectedCategoryId(310);
                 }}
               />
               <SelectButton

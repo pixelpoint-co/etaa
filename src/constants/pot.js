@@ -1,8 +1,3 @@
-import _ from 'lodash';
-import {
-  v4 as uuidv4,
-} from 'uuid';
-
 export const potNumber = [
   0,
   1,
@@ -305,93 +300,48 @@ export const dishMoverSet = [
 
 export const recipeTags = [
   {
-    id: 1,
-    value: uuidv4(),
+    value: 1,
     label: '커피',
     viewable: false,
-    recipeIds: _.times(
-      10,
-      (v) => v.tags?.includes([1]),
-    ),
   },
   {
-    id: 2,
-    value: uuidv4(),
+    value: 2,
     label: '스페셜',
     viewable: true,
-    recipeIds: _.times(
-      10,
-      (v) => v.tags?.includes([2]),
-    ),
   },
   {
-    id: 3,
-    value: uuidv4(),
+    value: 3,
     label: '사이드',
     viewable: false,
-    recipeIds: _.times(
-      10,
-      (v) => v.tags?.includes([3]),
-    ),
   },
   {
-    id: 110,
-    value: uuidv4(),
+    value: 110,
     label: '스몰',
     viewable: false,
-    recipeIds: _.times(
-      10,
-      (v) => v.tags?.includes([110]),
-    ),
   },
   {
-    id: 120,
-    value: uuidv4(),
+    value: 120,
     label: '레귤러',
     viewable: false,
-    recipeIds: _.times(
-      10,
-      (v) => v.tags?.includes([120]),
-    ),
   },
   {
-    id: 130,
-    value: uuidv4(),
+    value: 130,
     label: '라지',
     viewable: false,
-    recipeIds: _.times(
-      10,
-      (v) => v.tags?.includes([130]),
-    ),
   },
   {
-    id: 210,
-    value: uuidv4(),
+    value: 210,
     label: '찜닭',
     viewable: false,
-    recipeIds: _.times(
-      10,
-      (v) => v.tags?.includes([210]),
-    ),
   },
   {
-    id: 310,
-    value: uuidv4(),
+    value: 310,
     label: '파스타',
     viewable: true,
-    recipeIds: _.times(
-      10,
-      (v) => v.tags?.includes([310]),
-    ),
   },
   {
-    id: 320,
-    value: uuidv4(),
+    value: 320,
     label: '리조또',
     viewable: true,
-    recipeIds: _.times(
-      10,
-      (v) => v.tags?.includes([320]),
-    ),
   },
 ];
