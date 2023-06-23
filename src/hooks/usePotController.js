@@ -338,6 +338,16 @@ const usePotController = (cookerId, opts = {}) => {
       // );
     },
     [
+      // cookerId,
+      // kitchenPotRotationSwitch,
+    ],
+  );
+
+  const potRotationSwitch = useCallback(
+    () => {
+      kitchenPotRotationSwitch({ variables: { cookerId } });
+    },
+    [
       cookerId,
       kitchenPotRotationSwitch,
     ],
@@ -759,6 +769,7 @@ const usePotController = (cookerId, opts = {}) => {
     subscriptionTime,
 
     startRecipe,
+    potRotationSwitch,
 
     lastActionType,
     lastActionId,

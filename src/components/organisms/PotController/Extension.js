@@ -101,13 +101,13 @@ const PotControllerExtension = ({
   onSelect,
   prepIngredientAngle,
   prepNoodle,
+  prepWashing,
   selectRecipe,
   isCooking,
   rotateStart,
   lastActionType,
   lastActionId,
   resetPosition,
-  prepWashing,
   onRecipeSelect,
 }) => {
   const {
@@ -274,8 +274,6 @@ const PotControllerExtension = ({
                 hideLabelOnLoading
                 onClick={prepWashing}
                 active={lastActionType === 'machine' && lastActionId === '세척준비'}
-                disabled
-                disabledTooltip={['준비중인 기능입니다']}
               />
             </PotControlButtonContainer>
             <PotControlButtonContainer />

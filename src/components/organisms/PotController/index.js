@@ -250,6 +250,7 @@ const PotController = (props) => {
         lastActionType={lastActionType}
         lastActionId={lastActionId}
         resetPosition={resetPosition}
+        prepWashing={prepWashing}
         machineState={machineState}
         onRecipeSelect={() => {
           setExtensionOpen(false);
