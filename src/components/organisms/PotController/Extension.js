@@ -19,7 +19,7 @@ import Flex from '../../atoms/Flex';
 import MenuSelect from './MenuSelect';
 import Card from '../../atoms/Card';
 import Button from '../../atoms/Button';
-import useReceipeData from '../../../hooks/useReceipeData';
+import useRecipeData from '../../../hooks/useRecipeData';
 import TagSelect from '../../molecules/TagSelect';
 import {
   recipeTags,
@@ -117,7 +117,7 @@ const PotControllerExtension = ({
     data,
     error,
     loading,
-  } = useReceipeData();
+  } = useRecipeData();
   const [
     selectedCategoryId,
     setSelectedCategoryId,

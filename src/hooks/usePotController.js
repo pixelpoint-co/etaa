@@ -15,7 +15,7 @@ import {
   v4 as uuidv4,
 } from 'uuid';
 import moment from 'moment';
-import useReceipeData from './useReceipeData';
+import useRecipeData from './useRecipeData';
 
 const SUBSCRIPTION = gql`
   subscription subscription {
@@ -135,7 +135,7 @@ const usePotController = (cookerId, opts = {}) => {
     data: recipeData,
     error: recipeError,
     loading: recipeLoading,
-  } = useReceipeData();
+  } = useRecipeData();
   console.log(recipeData);
   const {
     error: cookerMonitoringError,
@@ -331,8 +331,8 @@ const usePotController = (cookerId, opts = {}) => {
       setLastActionType('recipe');
       setLastActionId(21);
       // setTimeout(
-      // () => {
-      // kitchenPotRotationSwitch({ variables: { cookerId } });
+      //   () => {
+      //     kitchenPotRotationSwitch({ variables: { cookerId } });
       //   },
       //   2000,
       // );
