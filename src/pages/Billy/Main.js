@@ -55,7 +55,11 @@ const BillyMain = (props) => {
   return (
     <Wrapper>
       <OrderMonitorContainer>
-        <OrderMonitor />
+        <OrderMonitor
+          pickCellRenderers={(cellRenderers) => {
+            return cellRenderers.filter((cr) => ['action'].indexOf(cr.dataIndex) < 0);
+          }}
+        />
       </OrderMonitorContainer>
       {/* <PotGridContainer>
         {_.times(6).map((i) => (

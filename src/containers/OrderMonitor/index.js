@@ -221,8 +221,10 @@ const OrderMonitor = (props) => {
           <Cell>
             <Button
               onClick={() => {
-                window.alert(row.orderKitchen.recipeId);
-                selectRecipe(row.orderKitchen.recipeId);
+                selectRecipe(
+                  row.orderKitchen.recipeId,
+                  row.orderKitchen.id,
+                );
               }}
             >
               레시피 선택

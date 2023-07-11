@@ -141,7 +141,7 @@ const GatesMain = (props) => {
               pickCellRenderers={(cellRenderers) => {
                 return cellRenderers.filter(({ dataIndex }) => {
                   return [
-                    'id',
+                    // 'id',
                     'orderNoUnique',
                     'item',
                     'requestCustomer',

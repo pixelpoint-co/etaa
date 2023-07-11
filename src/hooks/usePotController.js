@@ -103,6 +103,12 @@ const usePotController = (cookerId, opts = {}) => {
     cookStartOrderId,
     setCookStartOrderId,
   ] = useState(null);
+
+  const [
+    cookStartOrderKitchenId,
+    setCookStartOrderKitchenId,
+  ] = useState(null);
+
   const [
     subscriptionTime,
     setSubscriptionTime,
@@ -130,7 +136,10 @@ const usePotController = (cookerId, opts = {}) => {
     selectedRecipeId,
     setSelectedRecipeId,
   ] = useState(null);
-
+  const [
+    selectedOrderKitchenId,
+    setSelectedOrderKitchenId,
+  ] = useState(null);
   const {
     data: recipeData,
     error: recipeError,
@@ -258,7 +267,10 @@ const usePotController = (cookerId, opts = {}) => {
       skip: cookStartUUID == null,
       variables: {
         recipeId: cookStartRecipeId,
-        option: { cookerId },
+        option: {
+          cookerId,
+          orderKitchenId: cookStartOrderKitchenId,
+        },
         clientUUID: cookStartUUID,
       },
       fetchPolicy: 'no-cache',
@@ -324,8 +336,9 @@ const usePotController = (cookerId, opts = {}) => {
   );
 
   const startRecipe = useCallback(
-    (recipeId, orderId) => {
+    (recipeId, orderId, orderKitchenId) => {
       setCookStartRecipeId(recipeId);
+      setCookStartOrderKitchenId(orderKitchenId);
       setCookStartOrderId(orderId);
       setCookStartUUID(uuidv4());
       setLastActionType('recipe');
@@ -728,8 +741,9 @@ const usePotController = (cookerId, opts = {}) => {
     },
   );
 
-  const selectRecipe = (recipeId) => {
+  const selectRecipe = (recipeId, orderKitchenId) => {
     setSelectedRecipeId(recipeId);
+    setSelectedOrderKitchenId(orderKitchenId);
   };
   console.log(
     'machineState ',
