@@ -29,6 +29,7 @@ import PotControlButton from '../../components/organisms/PotControlButton';
 import PotController from '../../components/organisms/PotController';
 import usePotController from '../../hooks/usePotController';
 import theme from '../../theme';
+import OrderMonitor from '../../containers/OrderMonitor';
 
 const Wrapper = styled(Flex)`
   flex-direction: column;
@@ -90,6 +91,7 @@ const GatesMain = (props) => {
     ...others
   } = props;
 
+  const potController = usePotController(cookerId);
   const {
     recipe,
     lastActionType,
@@ -98,7 +100,8 @@ const GatesMain = (props) => {
     isCooking,
     isWashing,
     lastActionId,
-  } = usePotController(cookerId);
+    selectRecipe,
+  } = potController;
   const recipeId = get(
     recipe,
     'id',
@@ -134,7 +137,22 @@ const GatesMain = (props) => {
       <BodySection>
         <BodyColumn flex={1.1} direction="column">
           <Flex flex={0}>
-            <PotUnit cookerId={cookerId} />
+            <OrderMonitor
+              pickCellRenderers={(cellRenderers) => {
+                return cellRenderers.filter(({ dataIndex }) => {
+                  return [
+                    'id',
+                    'orderNoUnique',
+                    'item',
+                    'requestCustomer',
+                    'dateTime',
+                    'action',
+                  ].indexOf(dataIndex) > -1;
+                });
+              }}
+              pageSize={10}
+              selectRecipe={selectRecipe}
+            />
           </Flex>
           {/* <OrderListCard>
             <AntDList
@@ -149,6 +167,7 @@ const GatesMain = (props) => {
         </BodyColumn> */}
         <BodyColumn>
           <PotController
+            potController={potController}
             cookerId={cookerId}
           />
         </BodyColumn>

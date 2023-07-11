@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import {
   useCallback,
 } from 'react';
@@ -41,126 +42,25 @@ const Wrapper = styled(Flex)`
   flex: 1;
   flex-direction: column;
 `;
-const TableContainer = styled(Flex)`
-  margin-top: 20px;
+const SearchContainer = styled(Flex)`
+  margin-bottom: 20px;
+  flex: 0;
 `;
-const cellRenderers = [
-  {
-    title: '주문번호',
-    dataIndex: 'orderNoUnique',
-    width: 100,
-    render: (data, row) => {
-      if (row.isSubMenu) return null;
-      return <Cell>{data || row.orderNo}</Cell>;
-    },
-  },
-  {
-    title: '주문시간',
-    dataIndex: 'dateTimeISO',
-    width: 140,
-    render: (data, row) => {
-      return (
-        <Cell>
-          {moment(data).format('lll')}
-        </Cell>
-      );
-    },
-  },
-  {
-    title: '플랫폼',
-    dataIndex: 'orderPlatform',
-    width: 140,
-    render: (data) => {
-      return <Cell>{data}</Cell>;
-    },
-  },
-  {
-    title: '메뉴',
-    dataIndex: 'item',
-    width: 140,
-    render: (data, row) => {
-      if (row.isSubMenu) return null;
-      return <Cell>{data}</Cell>;
-    },
-  },
-  {
-    title: '수량',
-    dataIndex: 'qty',
-    width: 100,
-    flexBasis: 100,
-    render: (data, row) => {
-      if (row.isSubMenu) return null;
-      return <Cell>{data}</Cell>;
-    },
-  },
-  {
-    title: '추가옵션',
-    dataIndex: 'item',
-    width: 140,
-    render: (data, row) => {
-      if (!row.isSubMenu) return null;
-      return <Cell>{data}</Cell>;
-    },
-  },
-  {
-    title: '조리담당',
-    dataIndex: 'cookStation',
-    width: 140,
-    render: (data) => {
-      return <Cell>{data}</Cell>;
-    },
-  },
-  {
-    title: '조리상태',
-    dataIndex: null,
-    width: 140,
-  },
-  // {
-  //   title: '구매 가격',
-  //   dataIndex: 'amount',
-  //   render: (data, row) => {
-  //     const unit = get(
-  //       row,
-  //       'product.unit',
-  //       '',
-  //     );
-  //     const unitPrice = get(
-  //       row,
-  //       'unitPrice',
-  //       0,
-  //     );
-  //     const unitQuantity = get(
-  //       row,
-  //       'unitQuantity',
-  //       0,
-  //     );
-  //     return (
-  //       <Cell>
-  //         {`${formatCurrency(unitPrice * unitQuantity)}`}
-  //       </Cell>
-  //     );
-  //   },
-  //   width: 120,
-  // },
-  // {
-  //   title: '단위별 가격',
-  //   dataIndex: 'unitPrice',
-  //   width: 120,
-  // },
-];
+const TableContainer = styled(Flex)`
+`;
 
-const OrderMonitor = () => {
+const OrderMonitor = (props) => {
+  const {
+    filterCell,
+    pageSize = 20,
+    pickCellRenderers,
+    selectRecipe,
+    ...others
+  } = props;
   const {
     queryParams,
     setQueryParams,
-  } = useQueryParams(
-    {
-      initialQueryParams: {
-        page: 1,
-        pageSize: 20,
-      },
-    },
-  );
+  } = useQueryParams({ initialQueryParams: { page: 1 } });
   const { onAlert } = useOrderAlert();
 
   const {
@@ -173,14 +73,11 @@ const OrderMonitor = () => {
     error,
     refetch,
   } = useOrderData({
-    limit: Number(queryParams.pageSize),
+    limit: pageSize,
     offset: (queryParams.pageSize * (queryParams.page - 1)) || 0,
   });
   const count = data.length;
-  const {
-    pageSize,
-    page: currentPage,
-  } = queryParams;
+  const { page: currentPage } = queryParams;
 
   const onPageChange = useCallback(
     async ({ currentPage: newPage }) => {
@@ -191,24 +88,165 @@ const OrderMonitor = () => {
     },
     [setQueryParams],
   );
-  console.log(
-    'itemisedOrderList: ',
-    itemisedOrderList,
-  );
+
+  const cellRenderers = [
+    {
+      title: 'id',
+      dataIndex: 'id',
+      width: 100,
+      render: (data, row) => {
+        if (row.isSubMenu) return null;
+        return <Cell>{data || row.orderNo}</Cell>;
+      },
+    },
+    {
+      title: '주문번호',
+      dataIndex: 'orderNoUnique',
+      width: 100,
+      render: (data, row) => {
+        if (row.isSubMenu) return null;
+        return <Cell style={{ width: 150 }}>{data || row.orderNo}</Cell>;
+      },
+    },
+    // {
+    //   title: '주문시간',
+    //   dataIndex: 'dateTime',
+    //   width: 140,
+    //   render: (data, row) => {
+    //     return (
+    //       <Cell style={{ width: 165 }}>
+    //         {moment(data)
+    //           .add(
+    //             9,
+    //             'hours',
+    //           )
+    //           .format('lll')}
+    //       </Cell>
+    //     );
+    //   },
+    // },
+    {
+      title: '플랫폼',
+      dataIndex: 'orderPlatform',
+      width: 140,
+      render: (data) => {
+        return <Cell>{data}</Cell>;
+      },
+    },
+    {
+      title: '메뉴',
+      dataIndex: 'item',
+      width: 140,
+      render: (data, row) => {
+        if (row.isSubMenu) return null;
+        return <Cell style={{ width: 140 }}>{data}</Cell>;
+      },
+    },
+    {
+      title: '수량',
+      dataIndex: 'qty',
+      width: 100,
+      flexBasis: 100,
+      render: (data, row) => {
+        if (row.isSubMenu) return null;
+        return <Cell>{data}</Cell>;
+      },
+    },
+    {
+      title: '추가옵션',
+      dataIndex: 'item',
+      width: 140,
+      render: (data, row) => {
+        if (!row.isSubMenu) return null;
+        return <Cell style={{ width: 180 }}>{data}</Cell>;
+      },
+    },
+    {
+      title: '고객요청',
+      dataIndex: 'requestCustomer',
+      width: 140,
+      render: (data, row) => {
+        if (row.isSubMenu) return null;
+        return <Cell style={{ width: 130 }}>{data}</Cell>;
+      },
+    },
+    {
+      title: '조리담당',
+      dataIndex: 'cookStation',
+      width: 140,
+      render: (data) => {
+        return <Cell>{data}</Cell>;
+      },
+    },
+    {
+      title: '조리상태',
+      dataIndex: null,
+      width: 140,
+    },
+    // {
+    //   title: '구매 가격',
+    //   dataIndex: 'amount',
+    //   render: (data, row) => {
+    //     const unit = get(
+    //       row,
+    //       'product.unit',
+    //       '',
+    //     );
+    //     const unitPrice = get(
+    //       row,
+    //       'unitPrice',
+    //       0,
+    //     );
+    //     const unitQuantity = get(
+    //       row,
+    //       'unitQuantity',
+    //       0,
+    //     );
+    //     return (
+    //       <Cell>
+    //         {`${formatCurrency(unitPrice * unitQuantity)}`}
+    //       </Cell>
+    //     );
+    //   },
+    //   width: 120,
+    // },
+    {
+      title: '조리',
+      dataIndex: 'action',
+      width: 120,
+      render: (data, row) => {
+        if (!row.orderKitchen) return null;
+
+        return (
+          <Cell>
+            <Button
+              onClick={() => {
+                window.alert(row.orderKitchen.recipeId);
+                selectRecipe(row.orderKitchen.recipeId);
+              }}
+            >
+              레시피 선택
+            </Button>
+          </Cell>
+        );
+      },
+    },
+  ];
   return (
     <Wrapper>
-      <SearchBar
-        style={{ flex: 0 }}
-        label="검색"
-        icon="search"
+      {/* <SearchContainer>
+        <SearchBar
+          label="검색"
+          icon="search"
         // onSubmit={(searchKey) => {
         //   setKeyword(searchKey);
         // }}
-      />
+        />
+      </SearchContainer> */}
       <TableContainer>
         <AntDTable
           modelName="model"
-          cellRenderers={cellRenderers}
+          cellRenderers={pickCellRenderers(cellRenderers)}
           data={itemisedOrderList}
           itemsPerPage={pageSize}
           onPageChange={onPageChange}
@@ -221,4 +259,13 @@ const OrderMonitor = () => {
   );
 };
 
+OrderMonitor.defaultProps = {
+  pickCellRenderers: (v) => v,
+  pageSize: 20,
+};
+
+OrderMonitor.propTypes = {
+  pickCellRenderers: PropTypes.func,
+  pageSize: PropTypes.number,
+};
 export default OrderMonitor;

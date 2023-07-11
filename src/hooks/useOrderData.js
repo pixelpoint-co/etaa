@@ -15,11 +15,23 @@ import _, {
 import useRecipeData from './useRecipeData';
 
 const GET_ORDER = gql`
-  query orders($id: Int, $limit: Int, $createdGte: String) {
-    orders(id: $id, limit: $limit, createdGte: $createdGte) {
+  query orders($id: Int, $limit: Int) {
+    orders(id: $id, limit: $limit) {
       id
       created
       description
+      detail
+    }
+  }
+`;
+
+const GET_ORDER_KITCHEN = gql`
+  query orderKitchen($limit: Int) {
+    orderKitchen(limit: $limit) {
+      id
+      orderId
+      recipeId
+      status
       detail
     }
   }
@@ -47,21 +59,30 @@ export default (options = {}) => {
     GET_ORDER,
     {
       variables: {
-        createdGte: moment()
-          .startOf('day')
-          .subtract(
-            48,
-            'hours',
-          )
-          .add(
-            10,
-            'hours',
-          )
-          .toDate(),
-        limit: 999,
+        // createdGte: moment()
+        //   .startOf('day')
+        //   .subtract(
+        //     168,
+        //     'hours',
+        //   )
+        //   .add(
+        //     10,
+        //     'hours',
+        //   )
+        //   .toDate(),
+        limit: 100,
       },
     },
   );
+  const {
+    loading: orderKitchenLoading,
+    error: orderKitchenError,
+    data: orderKitchenData,
+  } = useQuery(
+    GET_ORDER_KITCHEN,
+    { variables: { limit: 100 } },
+  );
+
   const orders = get(
     data,
     'orders',
@@ -131,27 +152,29 @@ export default (options = {}) => {
 
       // const group
       const populatedOrderItems = orderItems.map((oi) => {
-        const selectedRecipe = _.find(
-          recipeList,
-          (recipe) => oi.item.split(' ').join('')
-            .includes(_.trim(
-              recipe.name,
-              [
-                'L',
-                'R',
-                'l',
-                'r',
-                ' ',
-              ],
-            )),
+        const orderKitchen = _.find(
+          get(
+            orderKitchenData,
+            'orderKitchen',
+            [],
+          ),
+          (ok) => {
+            const isOrderMatch = ok.orderId === withoutOrderList.id;
+            const isLineMatch = get(
+              ok,
+              'detail.menu.item',
+            ) === oi.item;
+
+            return isOrderMatch && isLineMatch;
+          },
         );
         return {
           ...oi,
           ...withoutOrderList,
           isSubMenu: checkIsSubMenu(oi),
           id: withoutOrderList.id + oi.item + (checkIsSubMenu(oi) ? 'sub' : 'main'), // psudo unqiue
-          recipe: selectedRecipe,
-          cookStation: selectedRecipe ? '에이트키친' : '-',
+          orderKitchen,
+          cookStation: orderKitchen ? '에이트키친' : '-',
         };
       });
       return [
@@ -161,6 +184,7 @@ export default (options = {}) => {
     },
     [],
   );
+
   return {
     data: orderList,
     itemisedOrderList,

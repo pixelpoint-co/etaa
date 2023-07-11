@@ -5,7 +5,7 @@ import {
 
 const GET_RECIPE = gql`
   query GetRecipes($tags: [Int]) {
-    recipes(tags: $tags, limit: 30) {
+    recipes(tags: $tags, limit: 100) {
       id
       name
       detail
@@ -14,9 +14,7 @@ const GET_RECIPE = gql`
   }
 `;
 
-export default (
-  options = { },
-) => {
+export default (options = { }) => {
   const nodeQuery = [
     GET_RECIPE,
     { variables: { ...options } },

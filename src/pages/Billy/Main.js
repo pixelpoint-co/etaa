@@ -57,7 +57,7 @@ const BillyMain = (props) => {
       <OrderMonitorContainer>
         <OrderMonitor />
       </OrderMonitorContainer>
-      <PotGridContainer>
+      {/* <PotGridContainer>
         {_.times(6).map((i) => (
           <PotCardContainer
             key={i}
@@ -68,7 +68,7 @@ const BillyMain = (props) => {
             />
           </PotCardContainer>
         ))}
-      </PotGridContainer>
+      </PotGridContainer> */}
     </Wrapper>
   );
 };

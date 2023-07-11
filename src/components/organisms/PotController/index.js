@@ -50,7 +50,7 @@ const PotControlButtonContainer = styled(Flex)`
 `;
 
 const PotController = (props) => {
-  const { cookerId } = props;
+  const { potController } = props;
   const [
     extensionOpen,
     setExtensionOpen,
@@ -99,10 +99,7 @@ const PotController = (props) => {
     isCooking,
 
     isWashing,
-  } = usePotController(
-    cookerId,
-    {},
-  );
+  } = potController;
   const closeExtension = useCallback(
     () => {
       setExtensionOpen(false);
