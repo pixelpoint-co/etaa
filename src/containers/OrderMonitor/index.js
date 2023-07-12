@@ -102,30 +102,26 @@ const OrderMonitor = (props) => {
     },
     {
       title: '주문번호',
-      dataIndex: 'orderNoUnique',
+      dataIndex: 'orderNo',
       width: 100,
       render: (data, row) => {
         if (row.isSubMenu) return null;
         return <Cell style={{ width: 150 }}>{data || row.orderNo}</Cell>;
       },
     },
-    // {
-    //   title: '주문시간',
-    //   dataIndex: 'dateTime',
-    //   width: 140,
-    //   render: (data, row) => {
-    //     return (
-    //       <Cell style={{ width: 165 }}>
-    //         {moment(data)
-    //           .add(
-    //             9,
-    //             'hours',
-    //           )
-    //           .format('lll')}
-    //       </Cell>
-    //     );
-    //   },
-    // },
+    {
+      title: '주문시간',
+      dataIndex: 'dateTime',
+      width: 140,
+      render: (data, row) => {
+        return (
+          <Cell style={{ width: 165 }}>
+            {moment(data)
+              .format('lll')}
+          </Cell>
+        );
+      },
+    },
     {
       title: '플랫폼',
       dataIndex: 'orderPlatform',
@@ -153,22 +149,21 @@ const OrderMonitor = (props) => {
         return <Cell>{data}</Cell>;
       },
     },
-    {
-      title: '추가옵션',
-      dataIndex: 'item',
-      width: 140,
-      render: (data, row) => {
-        if (!row.isSubMenu) return null;
-        return <Cell style={{ width: 180 }}>{data}</Cell>;
-      },
-    },
+    // {
+    //   title: '추가옵션',
+    //   dataIndex: 'item',
+    //   width: 140,
+    //   render: (data, row) => {
+    //     if (!row.isSubMenu) return null;
+    //     return <Cell style={{ width: 180 }}>{data}</Cell>;
+    //   },
+    // },
     {
       title: '고객요청',
       dataIndex: 'requestCustomer',
-      width: 140,
       render: (data, row) => {
         if (row.isSubMenu) return null;
-        return <Cell style={{ width: 130 }}>{data}</Cell>;
+        return <Cell style={{ width: 250 }}>{data}</Cell>;
       },
     },
     {
@@ -251,7 +246,12 @@ const OrderMonitor = (props) => {
         <AntDTable
           modelName="model"
           cellRenderers={pickCellRenderers(cellRenderers)}
-          data={itemisedOrderList}
+          data={
+            _.uniqBy(
+              itemisedOrderList.filter((io) => !io.isSubMenu && !!io.orderKitchen),
+              'orderNo',
+            )
+          }
           itemsPerPage={pageSize}
           onPageChange={onPageChange}
           currentPage={currentPage}
