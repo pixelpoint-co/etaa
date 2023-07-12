@@ -45,20 +45,13 @@ const PotGridContainer = styled(Flex)`
   `;
 
 const OrderSelection = (props) => {
-  const { id } = useParams();
-  const location = useLocation();
-  const cookerId = id - 1;
-
   const {
-    dataSoure,
-    dataSoureList,
+    order,
+    orderItems,
     onClickOrderChange,
     onClickOrderPrepare,
     ...others
   } = props;
-
-  const potController = usePotController(cookerId);
-
   return (
     <OrderListCard>
       <AntDList
@@ -70,10 +63,10 @@ const OrderSelection = (props) => {
             alignItems: 'center',
           }}
           >
-            <h1>{dataSoure[0] ? dataSoure[0].orderNoUnique : null}</h1>
+            <h1>{order ? order.orderNo : null}</h1>
             {/* <div>
               {
-                dataSoure[0] ? moment().format(dataSoure[0].dateTime) : null
+                order ? moment().format(order.dateTime) : null
               }
             </div> */}
             <div>
@@ -89,7 +82,7 @@ const OrderSelection = (props) => {
         )}
         footer={(
           <OrderListSection palette="grayscale" tone={4}>
-            {dataSoure[0] ? dataSoure[0].requestCustomer : null}
+            {order ? order.requestCustomer : null}
           </OrderListSection>
         )}
         RowComponent={(d) => (
@@ -148,7 +141,7 @@ const OrderSelection = (props) => {
             }
           </div>
         )}
-        dataSource={dataSoureList || null}
+        dataSource={orderItems || null}
       />
 
     </OrderListCard>

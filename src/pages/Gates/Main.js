@@ -148,7 +148,8 @@ const GatesMain = (props) => {
   if (isCooking && recipeId !== 21) recipeName = recipe.name;
   if (lastActionType === 'abort') recipeName = '정지중';
   if (lastActionType === 'machine') recipeName = lastActionId;
-
+  const selectedOrder = data[4];
+  const selectedItemisedOrder = itemisedOrderList.filter((io) => io.orderNo === selectedOrder.orderNo);
   return (
     <Wrapper>
       <HeaderSection>
@@ -193,8 +194,8 @@ const GatesMain = (props) => {
             />
           </Flex>
           <OrderSelection
-            dataSoure={data}
-            dataSoureList={itemisedOrderList}
+            order={selectedOrder}
+            orderItems={selectedItemisedOrder}
             onClickOrderChange={() => console.log('onClickOrderChange')}
             onClickOrderPrepare={() => console.log('onClickOrderPrepare')}
           />
