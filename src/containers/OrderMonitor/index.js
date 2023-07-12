@@ -55,6 +55,7 @@ const OrderMonitor = (props) => {
     pageSize = 20,
     pickCellRenderers,
     selectRecipe,
+    onClickOrder,
     ...others
   } = props;
   const {
@@ -211,23 +212,24 @@ const OrderMonitor = (props) => {
     //   width: 120,
     // },
     {
-      title: '조리',
+      title: '',
       dataIndex: 'action',
       width: 120,
       render: (data, row) => {
-        if (!row.orderKitchen) return null;
-
+        if (row.isSubMenu) return null;
+        const hasOrderKitchen = row;
         return (
           <Cell>
             <Button
               onClick={() => {
-                selectRecipe(
-                  row.orderKitchen.recipeId,
-                  row.orderKitchen.id,
-                );
+                onClickOrder(row.orderId);
+                // selectRecipe(
+                //   row.orderKitchen.recipeId,
+                //   row.orderKitchen.id,
+                // );
               }}
             >
-              레시피 선택
+              선택
             </Button>
           </Cell>
         );

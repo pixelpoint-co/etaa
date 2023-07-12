@@ -121,6 +121,14 @@ export default (options = {}) => {
           name,
           '[',
         ),
+        _.startsWith(
+          name,
+          '아이와',
+        ),
+        _.startsWith(
+          name,
+          '매운',
+        ),
         _.endsWith(
           name,
           ')',
@@ -172,6 +180,7 @@ export default (options = {}) => {
           ...oi,
           ...withoutOrderList,
           isSubMenu: checkIsSubMenu(oi),
+          orderId: withoutOrderList.id,
           id: withoutOrderList.id + oi.item + (checkIsSubMenu(oi) ? 'sub' : 'main'), // psudo unqiue
           orderKitchen,
           cookStation: orderKitchen ? '에이트키친' : '-',

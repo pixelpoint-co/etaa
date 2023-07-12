@@ -103,9 +103,9 @@ const OrderSelection = (props) => {
                       <Button
                         palette="grayscale"
                         tone={5}
-                        onClick={onClickOrderPrepare}
+                        onClick={() => onClickOrderPrepare(d)}
                       >
-                        조리준비
+                        레시피 선택
                       </Button>
                     </span>
                   )
@@ -129,9 +129,9 @@ const OrderSelection = (props) => {
                       <Button
                         palette="grayscale"
                         tone={5}
-                        onClick={onClickOrderPrepare}
+                        onClick={() => onClickOrderPrepare(d)}
                       >
-                        조리준비
+                        레시피 선택
                       </Button>
                     ) : null}
                   </span>

@@ -54,14 +54,14 @@ const BillyMain = (props) => {
 
   return (
     <Wrapper>
-      <OrderMonitorContainer>
+      {/* <OrderMonitorContainer>
         <OrderMonitor
           pickCellRenderers={(cellRenderers) => {
             return cellRenderers.filter((cr) => ['action'].indexOf(cr.dataIndex) < 0);
           }}
         />
-      </OrderMonitorContainer>
-      {/* <PotGridContainer>
+      </OrderMonitorContainer> */}
+      <PotGridContainer>
         {_.times(6).map((i) => (
           <PotCardContainer
             key={i}
@@ -72,7 +72,7 @@ const BillyMain = (props) => {
             />
           </PotCardContainer>
         ))}
-      </PotGridContainer> */}
+      </PotGridContainer>
     </Wrapper>
   );
 };
