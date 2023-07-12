@@ -211,30 +211,37 @@ const GatesMain = (props) => {
         placement="start"
         backdrop
         onHide={() => setOrderMonitorVisible(false)}
-        style={{ width: 'auto' }}
+        style={{
+          width: 'auto',
+          overflow: 'auto',
+          backgroundColor: '#EEF0F3',
+        }}
       >
         <Flex flex={0}>
-          <OrderMonitor
-            pickCellRenderers={(cellRenderers) => {
-              return cellRenderers.filter(({ dataIndex }) => {
-                return [
+          <Card padding={0}>
+            <OrderMonitor
+              pickCellRenderers={(cellRenderers) => {
+                return cellRenderers.filter(({ dataIndex }) => {
+                  return [
                   // 'id',
-                  'orderNoUnique',
-                  'item',
-                  'requestCustomer',
-                  'dateTime',
-                  'action',
-                ].indexOf(dataIndex) > -1;
-              });
-            }}
-            onClickOrderItem={() => setOrderMonitorVisible(true)}
-            onClickOrder={(oId) => {
-              setSelectedOrderId(oId);
-              setOrderMonitorVisible(false);
-            }}
-            pageSize={10}
-            selectRecipe={selectRecipe}
-          />
+                    'orderNoUnique',
+                    'orderNo',
+                    'item',
+                    'requestCustomer',
+                    'dateTime',
+                    'action',
+                  ].indexOf(dataIndex) > -1;
+                });
+              }}
+              onClickOrderItem={() => setOrderMonitorVisible(true)}
+              onClickOrder={(oId) => {
+                setSelectedOrderId(oId);
+                setOrderMonitorVisible(false);
+              }}
+              pageSize={8}
+              selectRecipe={selectRecipe}
+            />
+          </Card>
         </Flex>
       </COffcanvas>
     </Wrapper>
