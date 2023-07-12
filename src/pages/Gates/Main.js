@@ -15,6 +15,13 @@ import {
   palette,
 } from 'styled-tools';
 
+import {
+  COffcanvas,
+} from '@coreui/react';
+
+import {
+  useState,
+} from 'react';
 import Text from '../../components/atoms/P';
 import Flex from '../../components/atoms/Flex';
 import Button from '../../components/atoms/Button';
@@ -85,6 +92,10 @@ const GatesMain = (props) => {
   const { id } = useParams();
   const location = useLocation();
   const cookerId = id - 1;
+  const [
+    orderMonitorVisible,
+    setOrderMonitorVisible,
+  ] = useState(false);
 
   const {
     pot,
@@ -150,6 +161,7 @@ const GatesMain = (props) => {
                   ].indexOf(dataIndex) > -1;
                 });
               }}
+              onClickOrderItem={() => setOrderMonitorVisible(true)}
               pageSize={10}
               selectRecipe={selectRecipe}
             />
@@ -172,6 +184,17 @@ const GatesMain = (props) => {
           />
         </BodyColumn>
       </BodySection>
+      <COffcanvas
+        visible={orderMonitorVisible}
+        placement="start"
+        backdrop
+        onHide={() => setOrderMonitorVisible(false)}
+        style={{ width: 'auto' }}
+      >
+        <Flex>
+          sdflknsddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+        </Flex>
+      </COffcanvas>
     </Wrapper>
   );
 };
