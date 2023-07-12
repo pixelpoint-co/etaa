@@ -35,6 +35,8 @@ import Label from '../../components/atoms/Label';
 import PotControlButton from '../../components/organisms/PotControlButton';
 import PotController from '../../components/organisms/PotController';
 import usePotController from '../../hooks/usePotController';
+import useOrderData from '../../hooks/useOrderData';
+import OrderSelection from '../../components/organisms/OrderSelection';
 import theme from '../../theme';
 import OrderMonitor from '../../containers/OrderMonitor';
 
@@ -81,6 +83,14 @@ const ActivateButton = styled(Button)`
 
 const OrderListCard = styled(Card)`
 `;
+
+const OrderListSection = styled(Card)`
+  background-color: ${palette(
+    'grayscale',
+    4,
+  )};
+  padding: 10px 20px;
+`;
 const PotGridContainer = styled(Flex)`
   margin: -10px 0px;
   flex-wrap: wrap;
@@ -104,6 +114,20 @@ const GatesMain = (props) => {
 
   const potController = usePotController(cookerId);
   const {
+    // data,
+    // count,
+    data,
+    itemisedOrderList,
+    // orderListCount: count,
+    loading,
+    error,
+    refetch,
+  } = useOrderData({
+    // limit: pageSize,
+    // offset: (queryParams.pageSize * (queryParams.page - 1)) || 0,
+  });
+
+  const {
     recipe,
     lastActionType,
     recipeRemainingTimeMs,
@@ -112,6 +136,7 @@ const GatesMain = (props) => {
     isWashing,
     lastActionId,
     selectRecipe,
+    selectedRecipeId,
   } = potController;
   const recipeId = get(
     recipe,
@@ -123,6 +148,7 @@ const GatesMain = (props) => {
   if (isCooking && recipeId !== 21) recipeName = recipe.name;
   if (lastActionType === 'abort') recipeName = '정지중';
   if (lastActionType === 'machine') recipeName = lastActionId;
+
   return (
     <Wrapper>
       <HeaderSection>
@@ -166,13 +192,12 @@ const GatesMain = (props) => {
               selectRecipe={selectRecipe}
             />
           </Flex>
-          {/* <OrderListCard>
-            <AntDList
-              RowComponent={() => <div>some-row</div>}
-              dataSource={_.times(10)}
-            />
-
-          </OrderListCard> */}
+          <OrderSelection
+            dataSoure={data}
+            dataSoureList={itemisedOrderList}
+            onClickOrderChange={() => console.log('onClickOrderChange')}
+            onClickOrderPrepare={() => console.log('onClickOrderPrepare')}
+          />
         </BodyColumn>
         {/* <BodyColumn flex={1}>
           <Card>Receipt</Card>
