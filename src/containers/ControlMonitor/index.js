@@ -39,6 +39,7 @@ import useProductData from '../../hooks/useProductData';
 import useOrderData from '../../hooks/useOrderData';
 import SearchBar from '../../components/organisms/SearchBar';
 import useOrderAlert from '../../hooks/useOrderAlert';
+import usePotController from '../../hooks/usePotController';
 
 const Wrapper = styled(Flex)`
   flex: 1;
@@ -78,7 +79,11 @@ const OrderMonitor = (props) => {
     setQueryParams,
   } = useQueryParams({ initialQueryParams: { page: 1 } });
   const { onAlert } = useOrderAlert();
-
+  const potController = usePotController(1); // TODO 선택 안해야함
+  const {
+    orderRefetchTime,
+    orderKitchenRefetchTime,
+  } = potController;
   const {
     // data,
     // count,
@@ -89,6 +94,8 @@ const OrderMonitor = (props) => {
     error,
     refetch,
   } = useOrderData({
+    orderRefetchTime,
+    orderKitchenRefetchTime,
     limit: pageSize,
     offset: (queryParams.pageSize * (queryParams.page - 1)) || 0,
   });
