@@ -121,6 +121,14 @@ export default (options = {}) => {
           name,
           '[',
         ),
+        _.startsWith(
+          name,
+          '아이와',
+        ),
+        _.startsWith(
+          name,
+          '매운맛을',
+        ),
         _.endsWith(
           name,
           ')',

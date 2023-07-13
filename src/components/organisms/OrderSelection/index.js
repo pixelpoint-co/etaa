@@ -27,16 +27,44 @@ import Divider from '../../atoms/Divider';
 import usePotController from '../../../hooks/usePotController';
 import useOrderData from '../../../hooks/useOrderData';
 
+const List = styled(AntDList)`
+    .ant-list-header {
+        padding: 0;
+    }
+    .ant-list-footer {
+        padding: 0;
+    }
+    .ant-list-items {
+        margin : 20px 0px 20px 0px;
+    }
+`;
+
 const OrderListCard = styled(Card)`
+    padding : 14px;
   `;
 
 const OrderListSection = styled(Card)`
     background-color: ${palette(
     'grayscale',
-    4,
+    5,
+  )};
+    color: ${palette(
+    'grayscale',
+    2,
   )};
     padding: 10px 20px;
+    font-size : 20px;
   `;
+
+const CookPrepareButton = styled(Button)`
+    margin-top : 30px;
+    padding: 10px 40px;
+    color: ${palette(
+    'grayscale',
+    2,
+  )};
+  
+`;
 const PotGridContainer = styled(Flex)`
     margin: -10px 0px;
     flex-wrap: wrap;
@@ -52,15 +80,18 @@ const OrderSelection = (props) => {
     onClickOrderPrepare,
     ...others
   } = props;
+
   return (
     <OrderListCard>
-      <AntDList
-      // bordered
+      <List
+        // style={{ padding: 14 }}
+        // bordered
         header={(
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
+            marginBottom: 60,
           }}
           >
             <h1>{order ? order.orderNo : null}</h1>
@@ -71,6 +102,7 @@ const OrderSelection = (props) => {
             </div> */}
             <div>
               <Button
+                style={{ padding: '10px 40px' }}
                 palette="grayscale"
                 tone={2}
                 onClick={onClickOrderChange}
@@ -81,12 +113,10 @@ const OrderSelection = (props) => {
           </div>
         )}
         footer={(
-          <OrderListSection palette="grayscale" tone={4}>
-            {order ? order.requestCustomer : null}
-          </OrderListSection>
+          <>{order ? (order.requestCustomer !== '' ? <OrderListSection>{order.requestCustomer}</OrderListSection> : null) : null}</>
         )}
         RowComponent={(d) => (
-          <div>
+          <div style={{ fontSize: 20 }}>
 
             {
               d.isSubMenu ? (
@@ -99,14 +129,15 @@ const OrderSelection = (props) => {
                       alignItems: 'center',
                     }}
                     >
-                      <h2>{d.item}</h2>
-                      <Button
+                      <h3>{d.item}</h3>
+                      <CookPrepareButton
+                        themeType="outline"
                         palette="grayscale"
                         tone={5}
                         onClick={onClickOrderPrepare}
                       >
-                        조리준비
-                      </Button>
+                        레시피 선택
+                      </CookPrepareButton>
                     </span>
                   )
                     : (
@@ -115,8 +146,8 @@ const OrderSelection = (props) => {
                 </span>
 
               ) : (
-                <>
-                  <Divider />
+                <div>
+                  {/* <Divider /> */}
                   <span style={{
                     display: 'flex',
                     justifyContent: 'space-between',
@@ -124,19 +155,20 @@ const OrderSelection = (props) => {
                     marginTop: 20,
                   }}
                   >
-                    <h2>{d.item}</h2>
+                    <h3>{d.item}</h3>
                     {d.orderKitchen ? (
-                      <Button
+                      <CookPrepareButton
+                        themeType="outline"
                         palette="grayscale"
                         tone={5}
                         onClick={onClickOrderPrepare}
                       >
-                        조리준비
-                      </Button>
+                        레시피 선택
+                      </CookPrepareButton>
                     ) : null}
                   </span>
 
-                </>
+                </div>
               )
             }
           </div>
@@ -149,12 +181,12 @@ const OrderSelection = (props) => {
 };
 
 OrderSelection.propTypes = {
-  onClickOrderChange: (v) => v,
-  onClickOrderPrepare: (v) => v,
+//   onClickOrderChange: (v) => v,
+//   onClickOrderPrepare: (v) => v,
 };
 OrderSelection.defaultProps = {
-  onClickOrderChange: PropTypes.func,
-  onClickOrderPrepare: PropTypes.func,
+//   onClickOrderChange: PropTypes.func,
+//   onClickOrderPrepare: PropTypes.func,
 };
 
 export default OrderSelection;
