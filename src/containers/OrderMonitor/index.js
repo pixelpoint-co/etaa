@@ -37,6 +37,7 @@ import useProductData from '../../hooks/useProductData';
 import useOrderData from '../../hooks/useOrderData';
 import SearchBar from '../../components/organisms/SearchBar';
 import useOrderAlert from '../../hooks/useOrderAlert';
+import TooltipMask from '../../components/molecules/TooltipMask';
 
 const Wrapper = styled(Flex)`
   flex: 1;
@@ -60,6 +61,7 @@ const OrderMonitor = (props) => {
     pickCellRenderers,
     selectRecipe,
     onClickOrder,
+    selectedChannelNo,
     ...others
   } = props;
   const {
@@ -126,14 +128,7 @@ const OrderMonitor = (props) => {
       title: '채널번호',
       dataIndex: 'channelNo',
       render: (data, row) => {
-        return <Cell style={{ width: 140 }}>{data}</Cell>;
-      },
-    },
-    {
-      title: '플랫폼',
-      dataIndex: 'orderPlatform',
-      render: (data, row) => {
-        return <Cell style={{ width: 80 }}>{data}</Cell>;
+        return <Cell style={{ width: 120 }}>{data}</Cell>;
       },
     },
     {
@@ -143,6 +138,13 @@ const OrderMonitor = (props) => {
       render: (data, row) => {
         if (row.isSubMenu) return null;
         return <Cell style={{ width: 150 }}>{data || row.orderNo}</Cell>;
+      },
+    },
+    {
+      title: '플랫폼',
+      dataIndex: 'orderPlatform',
+      render: (data, row) => {
+        return <Cell style={{ width: 80 }}>{data}</Cell>;
       },
     },
     {
@@ -161,14 +163,6 @@ const OrderMonitor = (props) => {
               .format('HH:mm')}
           </Cell>
         );
-      },
-    },
-    {
-      title: '플랫폼',
-      dataIndex: 'orderPlatform',
-      width: 140,
-      render: (data) => {
-        return <Cell>{data}</Cell>;
       },
     },
     {
@@ -253,12 +247,14 @@ const OrderMonitor = (props) => {
       width: 120,
       render: (data, row) => {
         if (row.isSubMenu) return null;
+        const isSelected = row.channelNo === selectedChannelNo;
         const hasOrderKitchen = row.orderKitchen;
         return (
           <Cell>
             <StyledButton
               themeType="outline"
               palette="grayscale"
+              tone={isSelected ? 4 : 0}
               onClick={() => {
                 onClickOrder(row.orderId);
               }}

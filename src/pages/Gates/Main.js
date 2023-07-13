@@ -20,6 +20,7 @@ import {
 } from '@coreui/react';
 
 import {
+  useEffect,
   useState,
 } from 'react';
 import Text from '../../components/atoms/P';
@@ -133,8 +134,11 @@ const GatesMain = (props) => {
     selectRecipe,
     selectedRecipeId,
     orderRefetchTime,
+    updateOrderKitchenStatus,
     orderKitchenRefetchTime,
+    potMonitoringData,
   } = potController;
+
   const {
     // data,
     // count,
@@ -150,6 +154,38 @@ const GatesMain = (props) => {
     orderRefetchTime,
     orderKitchenRefetchTime,
   });
+
+  useEffect(
+    () => {
+      if (
+        potMonitoringData.status === 'COOKER_COOKED'
+      && potMonitoringData.orderKitchenId > 0
+      ) {
+        updateOrderKitchenStatus({
+          variables: {
+            id: potMonitoringData.orderKitchenId,
+            status: 'ORDER_COOKED',
+          },
+        });
+      }
+      if (
+        potMonitoringData.status === 'COOKER_COOKING'
+      && potMonitoringData.orderKitchenId > 0
+      ) {
+        updateOrderKitchenStatus({
+          variables: {
+            id: potMonitoringData.orderKitchenId,
+            status: 'ORDER_COOKING',
+          },
+        });
+      }
+    },
+    [
+      updateOrderKitchenStatus,
+      potMonitoringData.status,
+      potMonitoringData.orderKitchenId,
+    ],
+  );
 
   const recipeId = get(
     recipe,
@@ -254,6 +290,7 @@ const GatesMain = (props) => {
                 setSelectedOrderId(oId);
                 setOrderMonitorVisible(false);
               }}
+              selectedChannelNo={selectedOrder.channelNo}
               pageSize={8}
               selectRecipe={selectRecipe}
             />

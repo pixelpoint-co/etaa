@@ -438,6 +438,10 @@ const usePotController = (cookerId, opts = {}) => {
       cookerMonitoringData,
     );
   }
+  console.log(
+    'cookerMonitoringData: ',
+    cookerMonitoringData,
+  );
   const isCooking = get(
     potMonitoringData,
     'cooking',
@@ -858,6 +862,7 @@ const usePotController = (cookerId, opts = {}) => {
     recipeEllapsedTime,
     orderKitchenRefetchTime,
     orderRefetchTime,
+    updateOrderKitchenStatus,
     // stoves,
     // isRotating,
     // recordList,
