@@ -48,6 +48,10 @@ const SearchContainer = styled(Flex)`
 `;
 const TableContainer = styled(Flex)`
 `;
+const StyledButton = styled(Button)`
+  min-width: 120px;
+  padding: 12px;
+`;
 
 const OrderMonitor = (props) => {
   const {
@@ -109,20 +113,27 @@ const OrderMonitor = (props) => {
         return <Cell>{data || row.orderId}</Cell>;
       },
     },
-    {
-      title: 'outsideId',
-      dataIndex: 'outsideId',
-      width: 100,
-      render: (data, row) => {
-        console.log(row);
-        return <Cell>{data}</Cell>;
-      },
-    },
+    // {
+    //   title: 'outsideId',
+    //   dataIndex: 'outsideId',
+    //   width: 100,
+    //   render: (data, row) => {
+    //     console.log(row);
+    //     return <Cell>{data}</Cell>;
+    //   },
+    // },
     {
       title: '채널번호',
       dataIndex: 'channelNo',
       render: (data, row) => {
         return <Cell style={{ width: 140 }}>{data}</Cell>;
+      },
+    },
+    {
+      title: '플랫폼',
+      dataIndex: 'orderPlatform',
+      render: (data, row) => {
+        return <Cell style={{ width: 80 }}>{data}</Cell>;
       },
     },
     {
@@ -136,17 +147,17 @@ const OrderMonitor = (props) => {
     },
     {
       title: '주문시간',
-      dataIndex: 'dateTime',
+      dataIndex: 'dateTimeISO',
       width: 50,
       render: (data, row) => {
         // console.log(new Date(data).toLocaleString());
         return (
           <Cell style={{ width: 50 }}>
             {moment(data)
-              .subtract(
-                row.orderPlatform === '타키' ? 0 : 9,
-                'hours',
-              )
+              // .subtract(
+              //   row.orderPlatform === '타키' ? 0 : 9,
+              //   'hours',
+              // )
               .format('HH:mm')}
           </Cell>
         );
@@ -242,20 +253,18 @@ const OrderMonitor = (props) => {
       width: 120,
       render: (data, row) => {
         if (row.isSubMenu) return null;
-        const hasOrderKitchen = row;
+        const hasOrderKitchen = row.orderKitchen;
         return (
           <Cell>
-            <Button
+            <StyledButton
+              themeType="outline"
+              palette="grayscale"
               onClick={() => {
                 onClickOrder(row.orderId);
-                // selectRecipe(
-                //   row.orderKitchen.recipeId,
-                //   row.orderKitchen.id,
-                // );
               }}
             >
               선택
-            </Button>
+            </StyledButton>
           </Cell>
         );
       },
