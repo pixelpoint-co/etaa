@@ -18,6 +18,7 @@ const GET_ORDER = gql`
   query orders($id: Int, $limit: Int) {
     orders(id: $id, limit: $limit) {
       id
+      outsideId
       created
       description
       detail
@@ -49,6 +50,10 @@ const waitMs = async (ms = 0) => {
 };
 
 export default (options = {}) => {
+  const {
+    orderKitchenRefetchTime = 0,
+    orderRefetchTime = 0,
+  } = options;
   const { data: recipeList } = useRecipeData();
   const {
     loading,
@@ -78,9 +83,28 @@ export default (options = {}) => {
     loading: orderKitchenLoading,
     error: orderKitchenError,
     data: orderKitchenData,
+    refetch: fetchOrderKitchen,
   } = useQuery(
     GET_ORDER_KITCHEN,
     { variables: { limit: 100 } },
+  );
+  useEffect(
+    () => {
+      refetch();
+    },
+    [
+      refetch,
+      orderRefetchTime,
+    ],
+  );
+  useEffect(
+    () => {
+      fetchOrderKitchen();
+    },
+    [
+      fetchOrderKitchen,
+      orderKitchenRefetchTime,
+    ],
   );
 
   const orders = get(
@@ -90,7 +114,7 @@ export default (options = {}) => {
   );
   const orderList = orders.map((order) => {
     return {
-      id: order.id,
+      ...order,
       ...get(
         order,
         [
@@ -123,6 +147,14 @@ export default (options = {}) => {
           '[',
         ),
         _.startsWith(
+          name,
+          '아이와',
+        ),
+        _.startsWith(
+          name,
+          '매운',
+        ),
+        _.endsWith(
           name,
           '아이와',
         ),
@@ -168,7 +200,11 @@ export default (options = {}) => {
   //     [],
   //   )
   // })
-
+  console.log(
+    'orderKitchenData: ',
+    orderKitchenData,
+    orderList,
+  );
   const itemisedOrderList = orderList.reduce(
     (ac, order) => {
       const {
@@ -198,6 +234,7 @@ export default (options = {}) => {
           ...oi,
           ...withoutOrderList,
           isSubMenu: checkIsSubMenu(oi),
+          orderId: withoutOrderList.id,
           id: withoutOrderList.id + oi.item + (checkIsSubMenu(oi) ? 'sub' : 'main'), // psudo unqiue
           orderKitchen,
           cookStation: orderKitchen ? '에이트키친' : '-',

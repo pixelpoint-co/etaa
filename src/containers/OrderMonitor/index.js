@@ -55,6 +55,7 @@ const OrderMonitor = (props) => {
     pageSize = 20,
     pickCellRenderers,
     selectRecipe,
+    onClickOrder,
     ...others
   } = props;
   const {
@@ -90,41 +91,67 @@ const OrderMonitor = (props) => {
   );
 
   const cellRenderers = [
+    // {
+    //   title: 'ids',
+    //   dataIndex: 'id',
+    //   width: 100,
+    //   render: (data, row) => {
+    //     if (row.isSubMenu) return null;
+    //     return <Cell>{data || row.id}</Cell>;
+    //   },
+    // },
     {
       title: 'id',
       dataIndex: 'id',
       width: 100,
       render: (data, row) => {
         if (row.isSubMenu) return null;
-        return <Cell>{data || row.orderNo}</Cell>;
+        return <Cell>{data || row.orderId}</Cell>;
+      },
+    },
+    {
+      title: 'outsideId',
+      dataIndex: 'outsideId',
+      width: 100,
+      render: (data, row) => {
+        console.log(row);
+        return <Cell>{data}</Cell>;
+      },
+    },
+    {
+      title: '채널번호',
+      dataIndex: 'channelNo',
+      render: (data, row) => {
+        return <Cell style={{ width: 140 }}>{data}</Cell>;
       },
     },
     {
       title: '주문번호',
-      dataIndex: 'orderNoUnique',
+      dataIndex: 'orderNo',
       width: 100,
       render: (data, row) => {
         if (row.isSubMenu) return null;
         return <Cell style={{ width: 150 }}>{data || row.orderNo}</Cell>;
       },
     },
-    // {
-    //   title: '주문시간',
-    //   dataIndex: 'dateTime',
-    //   width: 140,
-    //   render: (data, row) => {
-    //     return (
-    //       <Cell style={{ width: 165 }}>
-    //         {moment(data)
-    //           .add(
-    //             9,
-    //             'hours',
-    //           )
-    //           .format('lll')}
-    //       </Cell>
-    //     );
-    //   },
-    // },
+    {
+      title: '주문시간',
+      dataIndex: 'dateTime',
+      width: 50,
+      render: (data, row) => {
+        // console.log(new Date(data).toLocaleString());
+        return (
+          <Cell style={{ width: 50 }}>
+            {moment(data)
+              .subtract(
+                row.orderPlatform === '타키' ? 0 : 9,
+                'hours',
+              )
+              .format('HH:mm')}
+          </Cell>
+        );
+      },
+    },
     {
       title: '플랫폼',
       dataIndex: 'orderPlatform',
@@ -138,7 +165,7 @@ const OrderMonitor = (props) => {
       dataIndex: 'item',
       width: 140,
       render: (data, row) => {
-        if (row.isSubMenu) return null;
+        // if (row.isSubMenu) return null;
         return <Cell style={{ width: 140 }}>{data}</Cell>;
       },
     },
@@ -152,22 +179,21 @@ const OrderMonitor = (props) => {
         return <Cell>{data}</Cell>;
       },
     },
-    {
-      title: '추가옵션',
-      dataIndex: 'item',
-      width: 140,
-      render: (data, row) => {
-        if (!row.isSubMenu) return null;
-        return <Cell style={{ width: 180 }}>{data}</Cell>;
-      },
-    },
+    // {
+    //   title: '추가옵션',
+    //   dataIndex: 'item',
+    //   width: 140,
+    //   render: (data, row) => {
+    //     if (!row.isSubMenu) return null;
+    //     return <Cell style={{ width: 180 }}>{data}</Cell>;
+    //   },
+    // },
     {
       title: '고객요청',
       dataIndex: 'requestCustomer',
-      width: 140,
       render: (data, row) => {
         if (row.isSubMenu) return null;
-        return <Cell style={{ width: 130 }}>{data}</Cell>;
+        return <Cell style={{ width: 250 }}>{data}</Cell>;
       },
     },
     {
@@ -211,23 +237,24 @@ const OrderMonitor = (props) => {
     //   width: 120,
     // },
     {
-      title: '조리',
+      title: '',
       dataIndex: 'action',
       width: 120,
       render: (data, row) => {
-        if (!row.orderKitchen) return null;
-
+        if (row.isSubMenu) return null;
+        const hasOrderKitchen = row;
         return (
           <Cell>
             <Button
               onClick={() => {
-                selectRecipe(
-                  row.orderKitchen.recipeId,
-                  row.orderKitchen.id,
-                );
+                onClickOrder(row.orderId);
+                // selectRecipe(
+                //   row.orderKitchen.recipeId,
+                //   row.orderKitchen.id,
+                // );
               }}
             >
-              레시피 선택
+              선택
             </Button>
           </Cell>
         );
@@ -249,7 +276,13 @@ const OrderMonitor = (props) => {
         <AntDTable
           modelName="model"
           cellRenderers={pickCellRenderers(cellRenderers)}
-          data={itemisedOrderList}
+          data={
+            itemisedOrderList
+            // _.uniqBy(
+            //     .filter((io) => !io.isSubMenu && !!io.orderKitchen),
+            //   'orderNo',
+            // )
+          }
           itemsPerPage={pageSize}
           onPageChange={onPageChange}
           currentPage={currentPage}

@@ -15,6 +15,13 @@ import {
   palette,
 } from 'styled-tools';
 
+import {
+  COffcanvas,
+} from '@coreui/react';
+
+import {
+  useState,
+} from 'react';
 import Text from '../../components/atoms/P';
 import Flex from '../../components/atoms/Flex';
 import Button from '../../components/atoms/Button';
@@ -95,13 +102,33 @@ const GatesMain = (props) => {
   const { id } = useParams();
   const location = useLocation();
   const cookerId = id - 1;
-
+  const [
+    orderMonitorVisible,
+    setOrderMonitorVisible,
+  ] = useState(false);
+  const [
+    selectedOrderId,
+    setSelectedOrderId,
+  ] = useState(null);
   const {
     pot,
     ...others
   } = props;
 
   const potController = usePotController(cookerId);
+  const {
+    recipe,
+    lastActionType,
+    recipeRemainingTimeMs,
+    recipeDurationMs,
+    isCooking,
+    isWashing,
+    lastActionId,
+    selectRecipe,
+    selectedRecipeId,
+    orderRefetchTime,
+    orderKitchenRefetchTime,
+  } = potController;
   const {
     // data,
     // count,
@@ -114,19 +141,10 @@ const GatesMain = (props) => {
   } = useOrderData({
     // limit: pageSize,
     // offset: (queryParams.pageSize * (queryParams.page - 1)) || 0,
+    orderRefetchTime,
+    orderKitchenRefetchTime,
   });
 
-  const {
-    recipe,
-    lastActionType,
-    recipeRemainingTimeMs,
-    recipeDurationMs,
-    isCooking,
-    isWashing,
-    lastActionId,
-    selectRecipe,
-    selectedRecipeId,
-  } = potController;
   const recipeId = get(
     recipe,
     'id',
@@ -137,8 +155,17 @@ const GatesMain = (props) => {
   if (isCooking && recipeId !== 21) recipeName = recipe.name;
   if (lastActionType === 'abort') recipeName = '정지중';
   if (lastActionType === 'machine') recipeName = lastActionId;
-  const selectedOrder = data[4];
-  const selectedItemisedOrder = itemisedOrderList.filter((io) => io.orderNo === selectedOrder.orderNo);
+  const selectedOrder = data.find((o) => Number(o.id) === Number(selectedOrderId)) || {};
+  const selectedItemisedOrder = itemisedOrderList
+    .filter((io) => io.orderNo === selectedOrder.orderNo);
+  console.log(
+    'selectedOrder: ',
+    selectedOrderId,
+    data,
+    itemisedOrderList,
+    selectedOrder,
+    selectedItemisedOrder,
+  );
   return (
     <Wrapper>
       <HeaderSection>
@@ -163,29 +190,17 @@ const GatesMain = (props) => {
       </HeaderSection>
       <BodySection>
         <BodyColumn flex={1.1} direction="column">
-          <Flex flex={0}>
-            <OrderMonitor
-              pickCellRenderers={(cellRenderers) => {
-                return cellRenderers.filter(({ dataIndex }) => {
-                  return [
-                    // 'id',
-                    'orderNoUnique',
-                    'item',
-                    'requestCustomer',
-                    'dateTime',
-                    'action',
-                  ].indexOf(dataIndex) > -1;
-                });
-              }}
-              pageSize={10}
-              selectRecipe={selectRecipe}
-            />
-          </Flex>
           <OrderSelection
             order={selectedOrder}
             orderItems={selectedItemisedOrder}
-            onClickOrderChange={() => console.log('onClickOrderChange')}
-            onClickOrderPrepare={() => console.log('onClickOrderPrepare')}
+            onClickOrderChange={() => setOrderMonitorVisible(true)}
+            onClickOrderPrepare={(orderItem) => {
+              selectRecipe(
+                orderItem.orderKitchen.recipeId,
+                orderItem.orderKitchen.id,
+              );
+              // potController.prepAngle();
+            }}
           />
         </BodyColumn>
         {/* <BodyColumn flex={1}>
@@ -198,6 +213,46 @@ const GatesMain = (props) => {
           />
         </BodyColumn>
       </BodySection>
+      <COffcanvas
+        visible={orderMonitorVisible}
+        placement="start"
+        backdrop
+        onHide={() => setOrderMonitorVisible(false)}
+        style={{
+          width: 'auto',
+          overflow: 'auto',
+          backgroundColor: '#EEF0F3',
+        }}
+      >
+        <Flex flex={0}>
+          <Card padding={0}>
+            <OrderMonitor
+              pickCellRenderers={(cellRenderers) => {
+                return cellRenderers.filter(({ dataIndex }) => {
+                  return [
+                    // 'id',
+                    'channelNo',
+                    'outsideId',
+                    // 'orderNoUnique',
+                    // 'orderNo',
+                    'item',
+                    'requestCustomer',
+                    'dateTime',
+                    'action',
+                  ].indexOf(dataIndex) > -1;
+                });
+              }}
+              onClickOrderItem={() => setOrderMonitorVisible(true)}
+              onClickOrder={(oId) => {
+                setSelectedOrderId(oId);
+                setOrderMonitorVisible(false);
+              }}
+              pageSize={8}
+              selectRecipe={selectRecipe}
+            />
+          </Card>
+        </Flex>
+      </COffcanvas>
     </Wrapper>
   );
 };

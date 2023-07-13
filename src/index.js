@@ -41,7 +41,9 @@ import {
 import {
   ThemeProvider,
 } from 'styled-components';
+
 import 'react-toastify/dist/ReactToastify.css';
+import '@coreui/coreui/dist/css/coreui.min.css';
 
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
