@@ -57,13 +57,12 @@ const OrderListSection = styled(Card)`
   `;
 
 const CookPrepareButton = styled(Button)`
-    margin-top : 30px;
     padding: 10px 40px;
     color: ${palette(
     'grayscale',
     2,
   )};
-  
+
 `;
 const PotGridContainer = styled(Flex)`
     margin: -10px 0px;
@@ -129,7 +128,7 @@ const OrderSelection = (props) => {
             marginBottom: 60,
           }}
           >
-            <h1>{order ? order.orderNo : null}</h1>
+            <h1>{order ? order.channelNo : null}</h1>
             {/* <div>
               {
                 order ? moment().format(order.dateTime) : null
@@ -142,7 +141,7 @@ const OrderSelection = (props) => {
                 tone={2}
                 onClick={onClickOrderChange}
               >
-                주문 변경
+                주문 선택
               </Button>
             </div>
           </div>
@@ -163,7 +162,7 @@ const OrderSelection = (props) => {
                       alignItems: 'center',
                     }}
                     >
-                      <h3>{d.item}</h3>
+                      <Heading style={{ marginBottom: 0 }}>{d.item}</Heading>
                       <CookPrepareButton
                         palette="grayscale"
                         themeType="outline"
@@ -192,7 +191,7 @@ const OrderSelection = (props) => {
                       marginTop: 20,
                     }}
                   >
-                    <h3>{d.item}</h3>
+                    <Heading style={{ marginBottom: 0 }}>{d.item}</Heading>
                     {d.orderKitchen ? (
                       <CookPrepareButton
                         palette="grayscale"
