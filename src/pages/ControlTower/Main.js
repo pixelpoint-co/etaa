@@ -61,18 +61,6 @@ const ControlTowerMain = (props) => {
           }}
         />
       </ControlMonitorContainer>
-      {/* <PotGridContainer>
-        {_.times(6).map((i) => (
-          <PotCardContainer
-            key={i}
-            href={`${window.origin}/gates/${i + 1}`}
-          >
-            <PotUnit
-              cookerId={i}
-            />
-          </PotCardContainer>
-        ))}
-      </PotGridContainer> */}
     </Wrapper>
   );
 };
