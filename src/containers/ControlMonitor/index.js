@@ -113,12 +113,10 @@ const OrderMonitor = (props) => {
   const cellRenderers = [
 
     {
-      title: '주문번호',
-      dataIndex: 'orderNoUnique',
-      // width: 100,
+      title: '채널번호',
+      dataIndex: 'channelNo',
       render: (data, row) => {
-        // if (row.isSubMenu) return null;
-        return <Cell>{data || row.orderNo}</Cell>;
+        return <Cell style={{ width: 140 }}>{data}</Cell>;
       },
     },
     {
@@ -126,14 +124,15 @@ const OrderMonitor = (props) => {
       dataIndex: 'dateTime',
       // width: 140,
       render: (data, row) => {
+        // console.log(new Date(data).toLocaleString());
         return (
-          <Cell style={{ width: 100 }}>
+          <Cell style={{ width: 50 }}>
             {moment(data)
-              .add(
-                9,
+              .subtract(
+                row.orderPlatform === '타키' ? 0 : 9,
                 'hours',
               )
-              .format('LT')}
+              .format('HH:mm')}
           </Cell>
         );
       },
@@ -197,12 +196,34 @@ const OrderMonitor = (props) => {
       // width: 140,
       render: (data, row) => {
         console.log(data);
+        const orderButtonProps = {
+          ORDER_IN: { // 주문 승인 대기
+            label: '승인 대기',
+            disabled: true,
+            palette: 'green',
+          },
+          ORDER_ACCEPTED: { // 주문 승인
+            label: '레시피 선택',
+            disabled: false,
+          },
+          ORDER_WAITING: { // 조리 대기
+            label: '조리 준비중',
+            disabled: false,
+            palette: 'yellow',
+          },
+          ORDER_COOKING: { // 조리중
+            label: '조리중',
+            disabled: true,
+            palette: 'red',
 
+          },
+          ORDER_COOKED: { // 조리끝
+            label: '조리완료',
+            disabled: true,
+          },
+        };
         if (!data) return null;
-        if (data.status === 'ORDER_ACCEPTED') { return <Cell>조리준비</Cell>; }
-        if (data.status === 'ORDER_WAITING') { return <Cell>주문접수</Cell>; }
-        if (data.status === 'ORDER_COOKING') { return <Cell>조리중</Cell>; }
-        if (data.status === 'ORDER_COOKED') { return <Cell>완료</Cell>; }
+        return <Cell>{orderButtonProps[data.status].label}</Cell>;
       },
     },
     {
