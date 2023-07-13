@@ -5,6 +5,9 @@ import {
 } from 'react';
 import moment from 'moment';
 import {
+  v4 as uuidv4,
+} from 'uuid';
+import {
   gql, useQuery,
 } from '@apollo/client';
 
@@ -235,9 +238,11 @@ export default (options = {}) => {
           ...withoutOrderList,
           isSubMenu: checkIsSubMenu(oi),
           orderId: withoutOrderList.id,
-          id: withoutOrderList.id + oi.item + (checkIsSubMenu(oi) ? 'sub' : 'main'), // psudo unqiue
+
           orderKitchen,
           cookStation: orderKitchen ? '에이트키친' : '-',
+          id: uuidv4(),
+          // id: withoutOrderList.id + oi.item + (checkIsSubMenu(oi) ? 'sub' : 'main'), // psudo unqiue
         };
       });
       return [
