@@ -117,6 +117,19 @@ const GatesMain = (props) => {
 
   const potController = usePotController(cookerId);
   const {
+    recipe,
+    lastActionType,
+    recipeRemainingTimeMs,
+    recipeDurationMs,
+    isCooking,
+    isWashing,
+    lastActionId,
+    selectRecipe,
+    selectedRecipeId,
+    orderRefetchTime,
+    orderKitchenRefetchTime,
+  } = potController;
+  const {
     // data,
     // count,
     data,
@@ -128,19 +141,10 @@ const GatesMain = (props) => {
   } = useOrderData({
     // limit: pageSize,
     // offset: (queryParams.pageSize * (queryParams.page - 1)) || 0,
+    orderRefetchTime,
+    orderKitchenRefetchTime,
   });
 
-  const {
-    recipe,
-    lastActionType,
-    recipeRemainingTimeMs,
-    recipeDurationMs,
-    isCooking,
-    isWashing,
-    lastActionId,
-    selectRecipe,
-    selectedRecipeId,
-  } = potController;
   const recipeId = get(
     recipe,
     'id',
@@ -191,7 +195,10 @@ const GatesMain = (props) => {
             orderItems={selectedItemisedOrder}
             onClickOrderChange={() => setOrderMonitorVisible(true)}
             onClickOrderPrepare={(orderItem) => {
-              selectRecipe(orderItem.orderKitchen.recipeId);
+              selectRecipe(
+                orderItem.orderKitchen.recipeId,
+                orderItem.orderKitchen.id,
+              );
               // potController.prepAngle();
             }}
           />
@@ -223,9 +230,11 @@ const GatesMain = (props) => {
               pickCellRenderers={(cellRenderers) => {
                 return cellRenderers.filter(({ dataIndex }) => {
                   return [
-                  // 'id',
-                    'orderNoUnique',
-                    'orderNo',
+                    // 'id',
+                    'channelNo',
+                    'outsideId',
+                    // 'orderNoUnique',
+                    // 'orderNo',
                     'item',
                     'requestCustomer',
                     'dateTime',

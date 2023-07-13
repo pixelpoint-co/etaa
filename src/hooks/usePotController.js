@@ -34,6 +34,14 @@ const GET_COOKER_MONITORING = gql`
   }
 `;
 
+const UPDATE_ORDER_KITCHEN_STATUS = gql`
+  mutation updateOrderKitchenStatus($id: Int!, $status: String!) {
+    updateOrderKitchenStatus(id: $id, status: $status) {
+      id
+    }
+  }
+`;
+
 const COOK_START = gql`
   query CookStart($recipeId: Int, $option: JSON) {
     startCooking(recipeId: $recipeId, option: $option)
@@ -122,6 +130,14 @@ const usePotController = (cookerId, opts = {}) => {
     requestQueueRaw,
     setRequestQueueRaw,
   ] = useState([]);
+  const [
+    orderKitchenRefetchTime,
+    setOrderKitchenRefetchTime,
+  ] = useState(0);
+  const [
+    orderRefetchTime,
+    setOrderRefetchTime,
+  ] = useState(0);
 
   const [
     lastActionType,
@@ -182,16 +198,31 @@ const usePotController = (cookerId, opts = {}) => {
       ],
       0,
     );
+    const orderMonitoringTime = get(
+      data,
+      [
+        'data',
+        'waiterSubscription',
+        'orders',
+        'timeStamp',
+      ],
+      0,
+    );
+    const orderKitchenMonitoringTime = get(
+      data,
+      [
+        'data',
+        'waiterSubscription',
+        'orderKitchen',
+        'timeStamp',
+      ],
+      0,
+    );
     if ((cookerMonitoringTime - subscriptionTime) > 0) {
       setSubscriptionTime(cookerMonitoringTime);
-      console.log('duration cooker monitoring start');
       // setCookerMonitoringUUID(uuidv4());
       cookerMonitoringRefetch();
     }
-    console.log(
-      'subscriptionData',
-      data,
-    );
     const requestQueueRawData = get(
       data,
       [
@@ -219,6 +250,12 @@ const usePotController = (cookerId, opts = {}) => {
       setRequestQueueTime(requestQueueRawTime);
       setRequestQueueRaw(requestQueueRawData);
     }
+    if (orderMonitoringTime !== orderRefetchTime) {
+      setOrderRefetchTime(orderMonitoringTime);
+    }
+    if (orderKitchenMonitoringTime !== orderKitchenRefetchTime) {
+      setOrderKitchenRefetchTime(orderKitchenMonitoringTime);
+    }
   };
   useEffect(
     () => {
@@ -230,19 +267,11 @@ const usePotController = (cookerId, opts = {}) => {
   );
   useEffect(
     () => {
-      console.log(
-        'initial waiter sub load: ',
-        initialWaiterSubscription,
-      );
       if (initialWaiterSubscription) {
         handleSubscriptionData({ data: initialWaiterSubscription });
       }
     },
     [initialWaiterSubscription],
-  );
-  console.log(
-    'initial ',
-    initialWaiterSubscription,
   );
 
   const {
@@ -256,7 +285,10 @@ const usePotController = (cookerId, opts = {}) => {
       },
     },
   );
-
+  console.log(
+    'cookStartOrderKitchenId: ',
+    cookStartOrderKitchenId,
+  );
   const {
     error: cookStartError,
     data: cookStartData,
@@ -267,6 +299,7 @@ const usePotController = (cookerId, opts = {}) => {
       skip: cookStartUUID == null,
       variables: {
         recipeId: cookStartRecipeId,
+        // orderKitchenId: cookStartOrderKitchenId,
         option: {
           cookerId,
           orderKitchenId: cookStartOrderKitchenId,
@@ -320,6 +353,16 @@ const usePotController = (cookerId, opts = {}) => {
       // },
     },
   );
+  const handleUpdateOrderKitchenStatus = (...args) => {
+    console.log(
+      'handleUpdateOrderKitchenStatus: ',
+      args,
+    );
+  };
+  const [updateOrderKitchenStatus] = useMutation(
+    UPDATE_ORDER_KITCHEN_STATUS,
+    { onCompleted: handleUpdateOrderKitchenStatus },
+  );
 
   const [kitchenPotRotationSwitch] = useMutation(
     KITCHEN_POT_SWITCH,
@@ -328,31 +371,31 @@ const usePotController = (cookerId, opts = {}) => {
 
   const fetchMonitoring = useCallback(
     () => {
-      console.log('duration cooker monitoring start');
-      // setCookerMonitoringUUID(uuidv4());
       cookerMonitoringRefetch();
     },
     [cookerMonitoringRefetch],
   );
 
   const startRecipe = useCallback(
-    (recipeId, orderId, orderKitchenId) => {
+    (recipeId, orderId) => {
       setCookStartRecipeId(recipeId);
-      setCookStartOrderKitchenId(orderKitchenId);
+      setCookStartOrderKitchenId(selectedOrderKitchenId);
       setCookStartOrderId(orderId);
       setCookStartUUID(uuidv4());
       setLastActionType('recipe');
       setLastActionId(21);
-      // setTimeout(
-      //   () => {
-      //     kitchenPotRotationSwitch({ variables: { cookerId } });
-      //   },
-      //   2000,
-      // );
+      setTimeout(
+        () => {
+          kitchenPotRotationSwitch({ variables: { cookerId } });
+        },
+        2000,
+      );
     },
     [
-      // cookerId,
-      // kitchenPotRotationSwitch,
+      cookerId,
+      kitchenPotRotationSwitch,
+
+      selectedOrderKitchenId,
     ],
   );
 
@@ -742,6 +785,17 @@ const usePotController = (cookerId, opts = {}) => {
   );
 
   const selectRecipe = (recipeId, orderKitchenId) => {
+    console.log(
+      'eftg: ',
+      recipeId,
+      orderKitchenId,
+    );
+    updateOrderKitchenStatus({
+      variables: {
+        id: orderKitchenId,
+        status: 'ORDER_WAITING',
+      },
+    });
     setSelectedRecipeId(recipeId);
     setSelectedOrderKitchenId(orderKitchenId);
   };
@@ -768,6 +822,8 @@ const usePotController = (cookerId, opts = {}) => {
   console.log(
     'selectedRecipe ',
     selectedRecipe,
+    orderKitchenRefetchTime,
+    orderRefetchTime,
   );
   return {
     cookerMonitoringError,
@@ -801,7 +857,8 @@ const usePotController = (cookerId, opts = {}) => {
     recipeDuration,
     recipeEllapsedTimeMs,
     recipeEllapsedTime,
-
+    orderKitchenRefetchTime,
+    orderRefetchTime,
     // stoves,
     // isRotating,
     // recordList,

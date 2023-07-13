@@ -91,13 +91,38 @@ const OrderMonitor = (props) => {
   );
 
   const cellRenderers = [
+    // {
+    //   title: 'ids',
+    //   dataIndex: 'id',
+    //   width: 100,
+    //   render: (data, row) => {
+    //     if (row.isSubMenu) return null;
+    //     return <Cell>{data || row.id}</Cell>;
+    //   },
+    // },
     {
       title: 'id',
       dataIndex: 'id',
       width: 100,
       render: (data, row) => {
         if (row.isSubMenu) return null;
-        return <Cell>{data || row.orderNo}</Cell>;
+        return <Cell>{data || row.orderId}</Cell>;
+      },
+    },
+    {
+      title: 'outsideId',
+      dataIndex: 'outsideId',
+      width: 100,
+      render: (data, row) => {
+        console.log(row);
+        return <Cell>{data}</Cell>;
+      },
+    },
+    {
+      title: '채널번호',
+      dataIndex: 'channelNo',
+      render: (data, row) => {
+        return <Cell style={{ width: 140 }}>{data}</Cell>;
       },
     },
     {
@@ -112,12 +137,17 @@ const OrderMonitor = (props) => {
     {
       title: '주문시간',
       dataIndex: 'dateTime',
-      width: 140,
+      width: 50,
       render: (data, row) => {
+        // console.log(new Date(data).toLocaleString());
         return (
-          <Cell style={{ width: 165 }}>
+          <Cell style={{ width: 50 }}>
             {moment(data)
-              .format('lll')}
+              .subtract(
+                row.orderPlatform === '타키' ? 0 : 9,
+                'hours',
+              )
+              .format('HH:mm')}
           </Cell>
         );
       },
@@ -135,7 +165,7 @@ const OrderMonitor = (props) => {
       dataIndex: 'item',
       width: 140,
       render: (data, row) => {
-        if (row.isSubMenu) return null;
+        // if (row.isSubMenu) return null;
         return <Cell style={{ width: 140 }}>{data}</Cell>;
       },
     },
@@ -247,10 +277,11 @@ const OrderMonitor = (props) => {
           modelName="model"
           cellRenderers={pickCellRenderers(cellRenderers)}
           data={
-            _.uniqBy(
-              itemisedOrderList.filter((io) => !io.isSubMenu && !!io.orderKitchen),
-              'orderNo',
-            )
+            itemisedOrderList
+            // _.uniqBy(
+            //     .filter((io) => !io.isSubMenu && !!io.orderKitchen),
+            //   'orderNo',
+            // )
           }
           itemsPerPage={pageSize}
           onPageChange={onPageChange}

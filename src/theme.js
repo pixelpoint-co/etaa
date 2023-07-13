@@ -24,7 +24,7 @@ theme.palette = {
   ],
   red: ['#EF6262'],
   orange: ['#FC7B42'],
-  yellow: ['#a16600'],
+  yellow: ['#F1AD3C'],
   green: ['#0d200e'],
   blue: ['#0D35D5'],
   purple: ['#9981F7'],

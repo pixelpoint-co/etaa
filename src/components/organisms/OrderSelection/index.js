@@ -44,6 +44,42 @@ const PotGridContainer = styled(Flex)`
     flex-basis: 640px;
   `;
 
+const orderButtonProps = {
+  ORDER_IN: { // 주문 승인 대기
+    label: '승인 대기',
+    disabled: true,
+    palette: 'green',
+  },
+  ORDER_ACCEPTED: { // 주문 승인
+    label: '레시피 선택',
+    disabled: false,
+  },
+  ORDER_WAITING: { // 조리 대기
+    label: '조리 준비중',
+    disabled: false,
+    palette: 'yellow',
+  },
+  ORDER_COOKING: { // 조리중
+    label: '조리중',
+    disabled: true,
+    palette: 'red',
+
+  },
+  ORDER_COOKED: { // 조리끝
+    label: '조리완료',
+    disabled: true,
+  },
+};
+
+// ORDER_IN            : 1,    // 1  주문이 들어온 상태
+// ORDER_ACCEPTED      : 10,   // 10 주문 승인
+// ORDER_WAITING       : 20,   // 20 쉐프가 진행해야 할 주문 상태 (조리 가능한 팟 수 이상 웨이팅이 되지 않음, 순서 변경 불가)
+// ORDER_COOKING       : 31,   // 31 조리 진행중 (순서 변경 불가)
+// ORDER_COOKED        : 91,   // 91 조리 완료
+// ORDER_PICKUP        : 92,   // 92 픽업 완료
+// ORDER_CAFE          : 93,   // 93 카페 메뉴만 들어왔을때
+// ORDER_CANCEL        : 41,   // 41 취소
+
 const OrderSelection = (props) => {
   const {
     order,
@@ -102,11 +138,14 @@ const OrderSelection = (props) => {
                       <h2>{d.item}</h2>
                       <Button
                         palette="grayscale"
-                        tone={5}
+                        themeType="outline"
+                        tone={2}
                         onClick={() => onClickOrderPrepare(d)}
-                      >
-                        레시피 선택
-                      </Button>
+                        {...orderButtonProps[get(
+                          d,
+                          'orderKitchen.status',
+                        )]}
+                      />
                     </span>
                   )
                     : (
@@ -128,11 +167,14 @@ const OrderSelection = (props) => {
                     {d.orderKitchen ? (
                       <Button
                         palette="grayscale"
-                        tone={5}
+                        themeType="outline"
+                        tone={0}
                         onClick={() => onClickOrderPrepare(d)}
-                      >
-                        레시피 선택
-                      </Button>
+                        {...orderButtonProps[get(
+                          d,
+                          'orderKitchen.status',
+                        )]}
+                      />
                     ) : null}
                   </span>
 
