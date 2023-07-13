@@ -384,19 +384,18 @@ const usePotController = (cookerId, opts = {}) => {
       setCookStartUUID(uuidv4());
       setLastActionType('recipe');
       setLastActionId(21);
-      setTimeout(
-        () => {
-          kitchenPotRotationSwitch({ variables: { cookerId } });
-        },
-        2000,
-      );
+      // setTimeout(
+      //   () => {
+      //     kitchenPotRotationSwitch({ variables: { cookerId } });
+      //   },
+      //   2000,
+      // );
     },
     [
-      cookerId,
-      kitchenPotRotationSwitch,
+      // cookerId,
+      // kitchenPotRotationSwitch,
 
-      selectedOrderKitchenId,
-    ],
+      selectedOrderKitchenId],
   );
 
   const potRotationSwitch = useCallback(
