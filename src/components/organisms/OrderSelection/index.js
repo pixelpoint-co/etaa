@@ -40,8 +40,11 @@ const List = styled(AntDList)`
 `;
 
 const OrderListCard = styled(Card)`
-    padding : 14px;
-  `;
+  padding : 14px;
+  flex-basis: 100%;
+  flex-grow: 0;
+  overflow: auto;
+`;
 
 const OrderListSection = styled(Card)`
     background-color: ${palette(

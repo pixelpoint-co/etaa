@@ -42,6 +42,9 @@ import OrderMonitor from '../../containers/OrderMonitor';
 
 const Wrapper = styled(Flex)`
   flex-direction: column;
+  flex-grow: 0;
+  flex-basis: 100%;
+  overflow: auto;
   align-items: stretch;
   padding: 15px;
 `;
@@ -68,6 +71,9 @@ const TimerSection = styled(Card)`
 const BodySection = styled(Flex)`
   flex-direction: row;
   margin: 15px -8px 0px -8px;
+  flex-basis: 100%;
+  flex-grow: 0;
+  overflow: auto;
 `;
 const BodyColumn = styled(Flex)`
   margin: 0px 8px;
@@ -206,7 +212,7 @@ const GatesMain = (props) => {
         {/* <BodyColumn flex={1}>
           <Card>Receipt</Card>
         </BodyColumn> */}
-        <BodyColumn>
+        <BodyColumn style={{ overflow: 'hidden' }}>
           <PotController
             potController={potController}
             cookerId={cookerId}
@@ -232,12 +238,13 @@ const GatesMain = (props) => {
                   return [
                     // 'id',
                     'channelNo',
+                    'orderPlatform',
                     'outsideId',
                     // 'orderNoUnique',
                     // 'orderNo',
                     'item',
                     'requestCustomer',
-                    'dateTime',
+                    'dateTimeISO',
                     'action',
                   ].indexOf(dataIndex) > -1;
                 });
