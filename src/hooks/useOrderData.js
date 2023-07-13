@@ -107,6 +107,7 @@ export default (options = {}) => {
   };
   const checkIsSubMenu = (orderItem) => {
     const name = orderItem.item;
+
     const isSubMenu = _.some(
       [
         _.startsWith(
@@ -127,12 +128,29 @@ export default (options = {}) => {
         ),
         _.startsWith(
           name,
-          '매운맛을',
+          '한국',
         ),
-        _.endsWith(
+
+        _.startsWith(
           name,
-          ')',
+          '맵기',
         ),
+        _.startsWith(
+          name,
+          '사이드',
+        ),
+        _.startsWith(
+          name,
+          '사이즈',
+        ),
+        _.startsWith(
+          name,
+          '음료',
+        ),
+        // _.endsWith(
+        //   name,
+        //   ')',
+        // ),
       ],
       (v) => v === true,
     );

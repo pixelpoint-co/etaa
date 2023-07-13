@@ -7,8 +7,12 @@ import styled from 'styled-components';
 import {
   size, palette,
 } from 'styled-theme';
-import { ifProp } from 'styled-tools';
-import { Table } from 'antd';
+import {
+  ifProp,
+} from 'styled-tools';
+import {
+  Table,
+} from 'antd';
 
 import Link from '../../atoms/Link';
 import Flex from '../../atoms/Flex';
@@ -21,11 +25,40 @@ const StyledLink = styled(Link)`
 `;
 
 const StyledTable = styled(Table)`
+
   thead {
+    tr:first-child >*:first-child{
+      border-start-start-radius: 8px;
+      border-end-start-radius: 8px;
+    }
+    tr:first-child >*:last-child{
+      border-start-end-radius: 8px;
+      border-end-end-radius: 8px;
+    }
     tr {
       th {
-        background-color: ${ifProp({ isExpanded: false }, palette('primary', 0), palette('white', 0))};
-        color: ${ifProp({ isExpanded: false }, palette('white', 0), palette('black', 0))};
+        background-color: ${ifProp(
+    { isExpanded: false },
+    palette(
+      'primary',
+      0,
+    ),
+    palette(
+      'white',
+      0,
+    ),
+  )};
+        color: ${ifProp(
+    { isExpanded: false },
+    palette(
+      'white',
+      0,
+    ),
+    palette(
+      'black',
+      0,
+    ),
+  )};
       }
     }
   }
@@ -66,6 +99,8 @@ const AntDTable = (props) => {
     rowSelection,
     pageSize,
     onItemsPerPageChange,
+    bordered = 'true',
+    size = 'large',
   } = props;
   const [
     isMobile,
@@ -81,7 +116,10 @@ const AntDTable = (props) => {
   };
 
   useEffect(() => {
-    window.addEventListener('resize', handleResize);
+    window.addEventListener(
+      'resize',
+      handleResize,
+    );
   });
 
   const handleChange = (page, filter, sort) => {
@@ -106,7 +144,8 @@ const AntDTable = (props) => {
         columns={cellRenderers}
         dataSource={data}
         rowKey={rowKey}
-        bordered
+        bordered={bordered}
+        size={size}
         expandable={expandable}
         pagination={itemsPerPage > 0 ? {
           ...pagination,
@@ -136,7 +175,10 @@ AntDTable.defaultProps = {
   expandable: false,
   isExpanded: false,
   rowSelection: false,
-  onItemsPerPageChange: (v) => console.log('[AntDTable] onItemsPerPage(): ', v),
+  onItemsPerPageChange: (v) => console.log(
+    '[AntDTable] onItemsPerPage(): ',
+    v,
+  ),
 };
 
 AntDTable.propTypes = {

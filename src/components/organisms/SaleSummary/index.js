@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled, { css } from 'styled-components';
+import styled, {
+  css,
+} from 'styled-components';
 import {
   palette, size,
 } from 'styled-theme';
@@ -12,7 +14,9 @@ import Divider from '../../atoms/Divider';
 import Flex from '../../atoms/Flex';
 
 import DiffText from '../../molecules/DiffText';
-import { formatCurrency } from '../../../services/number';
+import {
+  formatCurrency,
+} from '../../../services/number';
 
 const Wrapper = styled(Card)`
   padding: 20px 20px 10px 20px;
@@ -23,7 +27,8 @@ const Title = styled(Text)`
   font-size: 22px;
   line-height: 22px;
   color: ${palette(
-    'grayscale', 2,
+    'grayscale',
+    2,
   )};
 `;
 const Value = styled(Text)`
@@ -50,7 +55,8 @@ const DiffTitle = styled(Text)`
   white-space: nowrap;
   font-size: 14px;
   color: ${palette(
-    'grayscale', 2,
+    'grayscale',
+    2,
   )};
 `;
 

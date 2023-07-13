@@ -29,6 +29,7 @@ import SignIn from '../pages/SignIn';
 import Storage from '../pages/Storage';
 import Recipe from '../pages/Recipe';
 import Billy from '../pages/Billy';
+import ControlTower from '../pages/ControlTower';
 import Gates from '../pages/Gates';
 import Playground from '../pages/Playground';
 import PotControllerPage from '../pages/PotController';
@@ -74,6 +75,12 @@ const routes = [
     label: '빌',
     href: '/billy/*',
     element: <Billy />,
+    rootRoute: true,
+  },
+  {
+    label: '관제',
+    href: '/controlTower/*',
+    element: <ControlTower />,
     rootRoute: true,
   },
 
