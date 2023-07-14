@@ -160,14 +160,6 @@ export default (options = {}) => {
         ),
         _.startsWith(
           name,
-          '매운',
-        ),
-        _.endsWith(
-          name,
-          '아이와',
-        ),
-        _.startsWith(
-          name,
           '한국',
         ),
 
