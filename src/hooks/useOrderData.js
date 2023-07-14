@@ -131,7 +131,7 @@ export default (options = {}) => {
         ),
       };
     }).filter((order) => order.isCancel === false),
-    'orderNoUnique',
+    'channelNo',
   );
 
   const checkIsEKMenu = (orderItem) => {
