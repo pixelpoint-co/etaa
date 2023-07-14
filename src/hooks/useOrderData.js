@@ -13,6 +13,7 @@ import {
 
 import _, {
   get,
+  uniqBy,
 } from 'lodash';
 
 import useRecipeData from './useRecipeData';
@@ -115,19 +116,23 @@ export default (options = {}) => {
     'orders',
     [],
   );
-  const orderList = orders.map((order) => {
-    return {
-      ...order,
-      ...get(
-        order,
-        [
-          'detail',
-          'receipt',
-        ],
-        {},
-      ),
-    };
-  });
+
+  const orderList = uniqBy(
+    orders.map((order) => {
+      return {
+        ...order,
+        ...get(
+          order,
+          [
+            'detail',
+            'receipt',
+          ],
+          {},
+        ),
+      };
+    }).filter((order) => order.isCancel === false),
+    'orderNoUnique',
+  );
 
   const checkIsEKMenu = (orderItem) => {
     return false;
@@ -203,11 +208,12 @@ export default (options = {}) => {
   //     [],
   //   )
   // })
-  console.log(
-    'orderKitchenData: ',
-    orderKitchenData,
-    orderList,
-  );
+  // console.log(
+  //   'orderKitchenData: ',
+  //   orderKitchenData,
+  //   orderList,
+  // );
+  console.log(orderList);
   const itemisedOrderList = orderList.reduce(
     (ac, order) => {
       const {
@@ -238,11 +244,11 @@ export default (options = {}) => {
           ...withoutOrderList,
           isSubMenu: checkIsSubMenu(oi),
           orderId: withoutOrderList.id,
-
           orderKitchen,
           cookStation: orderKitchen ? '에이트키친' : '-',
           id: uuidv4(),
           // id: withoutOrderList.id + oi.item + (checkIsSubMenu(oi) ? 'sub' : 'main'), // psudo unqiue
+
         };
       });
       return [
