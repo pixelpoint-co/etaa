@@ -40,6 +40,7 @@ import useOrderData from '../../hooks/useOrderData';
 import OrderSelection from '../../components/organisms/OrderSelection';
 import theme from '../../theme';
 import OrderMonitor from '../../containers/OrderMonitor';
+import useQueryParams from '../../hooks/useQueryParams';
 
 const Wrapper = styled(Flex)`
   flex-direction: column;
@@ -113,10 +114,15 @@ const GatesMain = (props) => {
     orderMonitorVisible,
     setOrderMonitorVisible,
   ] = useState(false);
-  const [
-    selectedOrderId,
-    setSelectedOrderId,
-  ] = useState(null);
+  const {
+    queryParams,
+    setQueryParams,
+  } = useQueryParams();
+  const { orderId: selectedOrderId } = queryParams;
+  // const [
+  //   selectedOrderId,
+  //   setSelectedOrderId,
+  // ] = useState(null);
   const {
     pot,
     ...others
@@ -287,7 +293,10 @@ const GatesMain = (props) => {
               }}
               onClickOrderItem={() => setOrderMonitorVisible(true)}
               onClickOrder={(oId) => {
-                setSelectedOrderId(oId);
+                setQueryParams((old) => ({
+                  ...old,
+                  orderId: oId,
+                }));
                 setOrderMonitorVisible(false);
               }}
               selectedChannelNo={selectedOrder.channelNo}
