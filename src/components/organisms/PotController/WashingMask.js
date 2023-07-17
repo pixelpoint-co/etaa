@@ -53,6 +53,7 @@ const StyledPotButton = styled(PotControlButton)`
   width: 60%;
   flex-basis: 60%;
   flex: 0;
+  align-self: center;
 `;
 const StopButton = styled(Button)`
   min-width: 340px;

@@ -248,7 +248,7 @@ const PotControllerExtension = ({
                   resetPosition();
                   onClose();
                 }}
-                active={lastActionType === 'machine' && lastActionId === '원점정지'}
+                active={lastActionType === 'machine' && lastActionId === '회전원점'}
               />
             </PotControlButtonContainer>
 
