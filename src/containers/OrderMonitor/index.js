@@ -127,9 +127,7 @@ const OrderMonitor = (props) => {
     {
       title: '채널번호',
       dataIndex: 'channelNo',
-      render: (data, row) => {
-        return <Cell style={{ width: 120 }}>{data}</Cell>;
-      },
+      render: (data, row) => <Cell style={{ width: 120 }}>{data}</Cell>,
     },
     {
       title: '주문번호',
@@ -143,36 +141,27 @@ const OrderMonitor = (props) => {
     {
       title: '플랫폼',
       dataIndex: 'orderPlatform',
-      render: (data, row) => {
-        return <Cell style={{ width: 80 }}>{data}</Cell>;
-      },
+      render: (data, row) => <Cell style={{ width: 80 }}>{data}</Cell>,
     },
     {
       title: '주문시간',
       dataIndex: 'dateTimeISO',
       width: 50,
-      render: (data, row) => {
-        // console.log(new Date(data).toLocaleString());
-        return (
-          <Cell style={{ width: 50 }}>
-            {moment(data)
-              // .subtract(
-              //   row.orderPlatform === '타키' ? 0 : 9,
-              //   'hours',
-              // )
-              .format('HH:mm')}
-          </Cell>
-        );
-      },
+      render: (data, row) => (
+        <Cell style={{ width: 50 }}>
+          {moment(data)
+            .format('HH:mm')}
+        </Cell>
+      ),
     },
     {
       title: '메뉴',
       dataIndex: 'item',
       width: 140,
-      render: (data, row) => {
+      render: (data, row) =>
         // if (row.isSubMenu) return null;
-        return <Cell style={{ width: 140 }}>{data}</Cell>;
-      },
+        <Cell style={{ width: 140 }}>{data}</Cell>
+      ,
     },
     {
       title: '수량',
@@ -205,9 +194,7 @@ const OrderMonitor = (props) => {
       title: '조리담당',
       dataIndex: 'cookStation',
       width: 140,
-      render: (data) => {
-        return <Cell>{data}</Cell>;
-      },
+      render: (data) => <Cell>{data}</Cell>,
     },
     {
       title: '조리상태',

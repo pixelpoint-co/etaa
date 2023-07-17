@@ -46,7 +46,7 @@ const Wrapper = styled(Flex)`
   flex-direction: column;
 `;
 const CookedPrepare = styled(Card)`
-  
+
     color: ${palette(
     'orange',
     0,
@@ -55,7 +55,7 @@ const CookedPrepare = styled(Card)`
   `;
 
 const Cooking = styled(Card)`
-   
+
     color: ${palette(
     'orange',
     0,
@@ -122,27 +122,21 @@ const OrderMonitor = (props) => {
     {
       title: '채널번호',
       dataIndex: 'channelNo',
-      render: (data, row) => {
-        return <Cell style={{ width: 140 }}>{data}</Cell>;
-      },
+      render: (data, row) => <Cell style={{ width: 140 }}>{data}</Cell>,
     },
     {
       title: '주문시간',
-      dataIndex: 'dateTime',
+      dataIndex: 'dateTimeISO',
       // width: 140,
-      render: (data, row) => {
+      render: (data, row) =>
         // console.log(new Date(data).toLocaleString());
-        return (
+        (
           <Cell style={{ width: 50 }}>
             {moment(data)
-              .subtract(
-                row.orderPlatform === '타키' ? 0 : 9,
-                'hours',
-              )
               .format('HH:mm')}
           </Cell>
-        );
-      },
+        )
+      ,
     },
     // {
     //   title: '플랫폼',
@@ -193,9 +187,7 @@ const OrderMonitor = (props) => {
       title: '조리담당',
       dataIndex: 'cookStation',
       // width: 140,
-      render: (data) => {
-        return <Cell>{data}</Cell>;
-      },
+      render: (data) => <Cell>{data}</Cell>,
     },
     {
       title: '조리상태',
@@ -237,10 +229,10 @@ const OrderMonitor = (props) => {
       title: '상세내역',
       dataIndex: 'action',
       // width: 120,
-      render: (data, row) => {
-        // if (!row.orderKitchen) return null;
+      render: (data, row) =>
+      // if (!row.orderKitchen) return null;
 
-        return (
+        (
           <Cell>
             <Button
               onClick={() => {
@@ -253,8 +245,8 @@ const OrderMonitor = (props) => {
               레시피 선택
             </Button>
           </Cell>
-        );
-      },
+        )
+      ,
     },
   ];
   return (
