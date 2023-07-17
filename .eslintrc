@@ -16,18 +16,17 @@
   "rules": {
     "array-bracket-newline": ["error", { "minItems": 2 }],
     "array-element-newline": ["error", { "minItems": 2 }],
-    "arrow-body-style": 0,
+    "arrow-body-style": ["error", "as-needed"],
     "comma-dangle": [1, "always-multiline"],
     "destructuring-newline/object-property-newline": 2,
     "function-paren-newline": ["error", "multiline-arguments"],
     "function-call-argument-newline": ["error", "always"],
     "indent": [1, 2, { "SwitchCase": 1 }],
-    "no-continue": 0,
     "no-unused-vars": 1,
-    // "no-noninteractive-element-interactions": 0,
-
-    "no-underscore-dangle": 0,
-    "object-property-newline": ["error", { "allowAllPropertiesOnSameLine": false }],
+    "object-property-newline": [
+      "error",
+      { "allowAllPropertiesOnSameLine": false }
+    ],
     "object-curly-newline": ["error", {
       "ObjectExpression": {
         "multiline": true,
@@ -35,11 +34,11 @@
       },
       "ObjectPattern": {
         "multiline": true,
-        "minProperties": 2,
+        "minProperties": 2
       },
       "ImportDeclaration": {
         "multiline": true,
-        "minProperties": 1,
+        "minProperties": 2,
         "consistent": true
       }
     }],
