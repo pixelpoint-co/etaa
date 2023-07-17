@@ -237,19 +237,29 @@ const GatesMain = (props) => {
         </ActivateButton> */}
       </HeaderSection>
       <BodySection>
-        <BodyColumn flex={1.1} direction="column">
-          <OrderSelection
-            order={selectedOrder}
-            orderItems={selectedItemisedOrder}
-            onClickOrderChange={() => setOrderMonitorVisible(true)}
-            onClickOrderPrepare={(orderItem) => {
-              selectRecipe(
-                orderItem.orderKitchen.recipeId,
-                orderItem.orderKitchen.id,
-              );
-              // potController.prepAngle();
+        <BodyColumn flex={0} shrink={0} grow={0} basis={750} direction="column">
+          <OrderMonitor
+            pickCellRenderers={(cellRenderers) => cellRenderers.filter(({ dataIndex }) => [
+              'dateTimeISO',
+              'channelNo',
+              'orderPlatform',
+              'outsideId',
+              'item',
+              'action',
+            ].indexOf(dataIndex) > -1)}
+            onClickOrderItem={() => setOrderMonitorVisible(true)}
+            onClickOrder={(orderKitchen) => {
+              setQueryParams((old) => ({
+                ...old,
+                orderId: orderKitchen.orderId,
+              }));
+              setOrderMonitorVisible(true);
             }}
+            selectedChannelNo={selectedOrder.channelNo}
+            pageSize={8}
+            selectRecipe={selectRecipe}
           />
+
         </BodyColumn>
         {/* <BodyColumn flex={1}>
           <Card>Receipt</Card>
@@ -264,44 +274,29 @@ const GatesMain = (props) => {
       <COffcanvas
         visible={orderMonitorVisible}
         placement="start"
-        backdrop
+        backdrop={false}
         onHide={() => setOrderMonitorVisible(false)}
         style={{
-          width: 'auto',
+          width: '765px',
+          marginTop: '94px',
+          marginBottom: '14px',
           overflow: 'auto',
           backgroundColor: '#EEF0F3',
+          border: 'none',
         }}
       >
         <Flex flex={0}>
           <Card padding={0}>
-            <OrderMonitor
-              pickCellRenderers={(cellRenderers) => {
-                return cellRenderers.filter(({ dataIndex }) => {
-                  return [
-                    // 'id',
-                    'channelNo',
-                    'orderPlatform',
-                    'outsideId',
-                    // 'orderNoUnique',
-                    // 'orderNo',
-                    'item',
-                    'requestCustomer',
-                    'dateTimeISO',
-                    'action',
-                  ].indexOf(dataIndex) > -1;
-                });
+            <OrderSelection
+              order={selectedOrder}
+              orderItems={selectedItemisedOrder}
+              onClickOrderChange={() => setOrderMonitorVisible(false)}
+              onClickOrderPrepare={({ orderKitchen }) => {
+                selectRecipe(
+                  orderKitchen.recipeId,
+                  orderKitchen.id,
+                );
               }}
-              onClickOrderItem={() => setOrderMonitorVisible(true)}
-              onClickOrder={(oId) => {
-                setQueryParams((old) => ({
-                  ...old,
-                  orderId: oId,
-                }));
-                setOrderMonitorVisible(false);
-              }}
-              selectedChannelNo={selectedOrder.channelNo}
-              pageSize={8}
-              selectRecipe={selectRecipe}
             />
           </Card>
         </Flex>

@@ -12,22 +12,18 @@ const PageWrapper = styled(Flex)`
   flex-direction: column;
 `;
 
-const Layout = () => {
-  return (
-    <PageWrapper>
-      <Outlet />
-    </PageWrapper>
-  );
-};
+const Layout = () => (
+  <PageWrapper>
+    <Outlet />
+  </PageWrapper>
+);
 
-const GatesPage = () => {
-  return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route path="/:id" index element={<Main />} />
-      </Route>
-    </Routes>
-  );
-};
+const GatesPage = () => (
+  <Routes>
+    <Route path="/" element={<Layout />}>
+      <Route path="/:id" index element={<Main />} />
+    </Route>
+  </Routes>
+);
 
 export default GatesPage;

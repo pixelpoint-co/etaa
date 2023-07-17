@@ -42,6 +42,9 @@ import TooltipMask from '../../components/molecules/TooltipMask';
 const Wrapper = styled(Flex)`
   flex: 1;
   flex-direction: column;
+  flex-basis: 100%;
+  flex-grow: 0;
+  overflow: auto;
 `;
 const SearchContainer = styled(Flex)`
   margin-bottom: 20px;
@@ -51,7 +54,7 @@ const TableContainer = styled(Flex)`
 `;
 const StyledButton = styled(Button)`
   min-width: 120px;
-  padding: 12px;
+  padding: 10px;
 `;
 
 const OrderMonitor = (props) => {
@@ -127,28 +130,30 @@ const OrderMonitor = (props) => {
     {
       title: '채널번호',
       dataIndex: 'channelNo',
-      render: (data, row) => <Cell style={{ width: 120 }}>{data}</Cell>,
+      width: 130,
+      render: (data, row) => <Cell>{data}</Cell>,
     },
     {
       title: '주문번호',
       dataIndex: 'orderNo',
-      width: 100,
+      width: 150,
       render: (data, row) => {
         if (row.isSubMenu) return null;
-        return <Cell style={{ width: 150 }}>{data || row.orderNo}</Cell>;
+        return <Cell>{data || row.orderNo}</Cell>;
       },
     },
     {
       title: '플랫폼',
       dataIndex: 'orderPlatform',
-      render: (data, row) => <Cell style={{ width: 80 }}>{data}</Cell>,
+      width: 80,
+      render: (data, row) => <Cell>{data}</Cell>,
     },
     {
       title: '주문시간',
       dataIndex: 'dateTimeISO',
-      width: 50,
+      width: 100,
       render: (data, row) => (
-        <Cell style={{ width: 50 }}>
+        <Cell>
           {moment(data)
             .format('HH:mm')}
         </Cell>
@@ -157,37 +162,24 @@ const OrderMonitor = (props) => {
     {
       title: '메뉴',
       dataIndex: 'item',
-      width: 140,
-      render: (data, row) =>
-        // if (row.isSubMenu) return null;
-        <Cell style={{ width: 140 }}>{data}</Cell>
+      render: (data, row) => <Cell>{data}</Cell>
       ,
     },
     {
       title: '수량',
       dataIndex: 'qty',
-      width: 100,
-      flexBasis: 100,
+      width: 60,
       render: (data, row) => {
         if (row.isSubMenu) return null;
         return <Cell>{data}</Cell>;
       },
     },
-    // {
-    //   title: '추가옵션',
-    //   dataIndex: 'item',
-    //   width: 140,
-    //   render: (data, row) => {
-    //     if (!row.isSubMenu) return null;
-    //     return <Cell style={{ width: 180 }}>{data}</Cell>;
-    //   },
-    // },
     {
       title: '고객요청',
       dataIndex: 'requestCustomer',
       render: (data, row) => {
         if (row.isSubMenu) return null;
-        return <Cell style={{ width: 250 }}>{data}</Cell>;
+        return <Cell>{data}</Cell>;
       },
     },
     {
@@ -201,53 +193,31 @@ const OrderMonitor = (props) => {
       dataIndex: null,
       width: 140,
     },
-    // {
-    //   title: '구매 가격',
-    //   dataIndex: 'amount',
-    //   render: (data, row) => {
-    //     const unit = get(
-    //       row,
-    //       'product.unit',
-    //       '',
-    //     );
-    //     const unitPrice = get(
-    //       row,
-    //       'unitPrice',
-    //       0,
-    //     );
-    //     const unitQuantity = get(
-    //       row,
-    //       'unitQuantity',
-    //       0,
-    //     );
-    //     return (
-    //       <Cell>
-    //         {`${formatCurrency(unitPrice * unitQuantity)}`}
-    //       </Cell>
-    //     );
-    //   },
-    //   width: 120,
-    // },
     {
       title: '',
       dataIndex: 'action',
       width: 120,
       render: (data, row) => {
-        if (row.isSubMenu) return null;
-        const isSelected = row.channelNo === selectedChannelNo;
         const hasOrderKitchen = row.orderKitchen;
+        const isSelected = row.channelNo === selectedChannelNo;
         return (
-          <Cell>
-            <StyledButton
-              themeType="outline"
-              palette="grayscale"
-              tone={isSelected ? 4 : 0}
-              onClick={() => {
-                onClickOrder(row.orderId);
-              }}
-            >
-              선택
-            </StyledButton>
+          <Cell style={{
+            marginTop: -12,
+            marginBottom: -12,
+          }}
+          >
+            {hasOrderKitchen ? (
+              <StyledButton
+                themeType="outline"
+                palette="grayscale"
+                tone={isSelected ? 4 : 0}
+                onClick={() => {
+                  onClickOrder(row.orderKitchen);
+                }}
+              >
+                선택
+              </StyledButton>
+            ) : null}
           </Cell>
         );
       },

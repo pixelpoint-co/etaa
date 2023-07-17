@@ -457,9 +457,7 @@ const usePotController = (cookerId, opts = {}) => {
   };
 
   const recipeMemo = useMemo(
-    () => {
-      return recipe;
-    },
+    () => recipe,
     [
       get(
         recipe,
@@ -554,20 +552,18 @@ const usePotController = (cookerId, opts = {}) => {
   //   getCurrentRecord(parsedRecordList.filter((record) => record.isInduction && record.index === 1)),
   // ];
   // const currentSpinRecord = getCurrentRecord(parsedRecordList.filter((record) => record.isSpin));
-  const stoveRecordToProp = (record) => {
-    return {
-      ...record,
-      temperature: get(
-        record,
-        'temperature',
-        0,
-      ) || 0,
-      status: get(
-        record,
-        'isOn',
-      ) ? 'on' : 'off',
-    };
-  };
+  const stoveRecordToProp = (record) => ({
+    ...record,
+    temperature: get(
+      record,
+      'temperature',
+      0,
+    ) || 0,
+    status: get(
+      record,
+      'isOn',
+    ) ? 'on' : 'off',
+  });
   // const stoves = currentStoveRecord.map(stoveRecordToProp);
   // const isRotating = get(
   //   currentSpinRecord,
@@ -645,7 +641,7 @@ const usePotController = (cookerId, opts = {}) => {
       ],
     });
     setLastActionType('machine');
-    setLastActionId('원점정지');
+    setLastActionId('회전원점');
   };
 
   const prepWashing = () => {
@@ -692,23 +688,13 @@ const usePotController = (cookerId, opts = {}) => {
     setLastActionId(null);
   };
 
-  const getControllerNumber = (url) => {
-    return Number(url.split('/')[3].slice(-1)[0]);
-  };
-  const getPotNumber = (url) => {
-    return Number(url.split('/')[4].split('_')[1][0]);
-  };
-  const getInductionIndex = (command) => {
-    return command.split('_')[1][1] === 'A' ? 0 : 1;
-  };
-  const getCookerId = (url) => {
-    return ((getControllerNumber(url) - 1) * 2) + (getPotNumber(url) - 1);
-  };
+  const getControllerNumber = (url) => Number(url.split('/')[3].slice(-1)[0]);
+  const getPotNumber = (url) => Number(url.split('/')[4].split('_')[1][0]);
+  const getInductionIndex = (command) => (command.split('_')[1][1] === 'A' ? 0 : 1);
+  const getCookerId = (url) => ((getControllerNumber(url) - 1) * 2) + (getPotNumber(url) - 1);
   const requestQueue = requestQueueRaw
     .map((r) => r.arguments[0])
-    .filter((url) => {
-      return getCookerId(url) === cookerId;
-    });
+    .filter((url) => getCookerId(url) === cookerId);
   const commandQueue = requestQueue.map((url) => url.split('command=')[1]);
   console.log(
     'commandQueue',
@@ -811,12 +797,10 @@ const usePotController = (cookerId, opts = {}) => {
     potMonitoringData,
   );
   const selectedRecipe = useMemo(
-    () => {
-      return _.find(
-        recipeData,
-        { id: selectedRecipeId },
-      );
-    },
+    () => _.find(
+      recipeData,
+      { id: selectedRecipeId },
+    ),
     [
       recipeData,
       selectedRecipeId,
