@@ -205,15 +205,7 @@ const GatesMain = (props) => {
   if (lastActionType === 'machine') recipeName = lastActionId;
   const selectedOrder = data.find((o) => Number(o.id) === Number(selectedOrderId)) || {};
   const selectedItemisedOrder = itemisedOrderList
-    .filter((io) => io.orderNo === selectedOrder.orderNo);
-  console.log(
-    'selectedOrder: ',
-    selectedOrderId,
-    data,
-    itemisedOrderList,
-    selectedOrder,
-    selectedItemisedOrder,
-  );
+    .filter((io) => io.channelNo === selectedOrder.channelNo);
   return (
     <Wrapper>
       <HeaderSection>

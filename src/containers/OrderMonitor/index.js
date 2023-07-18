@@ -100,15 +100,6 @@ const OrderMonitor = (props) => {
   );
 
   const cellRenderers = [
-    // {
-    //   title: 'ids',
-    //   dataIndex: 'id',
-    //   width: 100,
-    //   render: (data, row) => {
-    //     if (row.isSubMenu) return null;
-    //     return <Cell>{data || row.id}</Cell>;
-    //   },
-    // },
     {
       title: 'id',
       dataIndex: 'id',
@@ -118,15 +109,6 @@ const OrderMonitor = (props) => {
         return <Cell>{data || row.orderId}</Cell>;
       },
     },
-    // {
-    //   title: 'outsideId',
-    //   dataIndex: 'outsideId',
-    //   width: 100,
-    //   render: (data, row) => {
-    //     console.log(row);
-    //     return <Cell>{data}</Cell>;
-    //   },
-    // },
     {
       title: '채널번호',
       dataIndex: 'channelNo',
