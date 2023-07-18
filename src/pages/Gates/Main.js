@@ -269,7 +269,7 @@ const GatesMain = (props) => {
         backdrop={false}
         onHide={() => setOrderMonitorVisible(false)}
         style={{
-          width: '765px',
+          width: '781px',
           marginTop: '94px',
           marginBottom: '14px',
           overflow: 'auto',
