@@ -190,7 +190,8 @@ const OrderMonitor = (props) => {
 
   const filteringItemisedOrderList = itemisedOrderList
     // .filter((io) => (io.item !== '배달비'));
-    .filter((io) => (io.isSubMenu === false) && io.item !== '배달비');
+    // .filter((io) => (io.isSubMenu === false))
+    .filter((io) => io.item !== '배달비');
   // .sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime))
   // .reverse();
 
@@ -200,7 +201,7 @@ const OrderMonitor = (props) => {
       title: '채널번호',
       dataIndex: 'channelNo',
 
-      render: (data, row) => <Cell style={{ width: 140 }}>{data}</Cell>,
+      render: (data, row) => <StyledCell style={{ width: 140 }}>{data}</StyledCell>,
     },
     {
       title: '주문시간',
@@ -209,11 +210,11 @@ const OrderMonitor = (props) => {
       render: (data, row) =>
         // console.log(new Date(data).toLocaleString());
         (
-          <Cell style={{ width: 50 }}>
+          <StyledCell style={{ width: 70 }}>
 
             {moment(data)
               .format('HH:mm')}
-          </Cell>
+          </StyledCell>
         ),
     },
     {
@@ -221,13 +222,14 @@ const OrderMonitor = (props) => {
       dataIndex: 'orderPlatform',
       width: 50,
       render: (data) => (
-        <StyledCell><PlatformImage
-          platform={data}
-          style={{
-            marginTop: -8,
-            marginBottom: -8,
-          }}
-        />
+        <StyledCell>
+          <PlatformImage
+            platform={data}
+            style={{
+              marginTop: -8,
+              marginBottom: -8,
+            }}
+          />
         </StyledCell>
       ),
     },
@@ -235,10 +237,7 @@ const OrderMonitor = (props) => {
       title: '메뉴',
       dataIndex: 'item',
       width: 140,
-      render: (data, row) => {
-        if (row.isSubMenu) return null;
-        return <StyledCell>{data}</StyledCell>;
-      },
+      render: (data, row) => <StyledCell>{data}</StyledCell>,
     },
     // {
     //   title: '수량',
@@ -265,7 +264,7 @@ const OrderMonitor = (props) => {
       width: 140,
       render: (data, row) => {
         if (row.isSubMenu) return null;
-        return <StyledCell>{data}</StyledCell>;
+        return <StyledCell style={{ maxWidth: 400 }}>{data}</StyledCell>;
       },
     },
     {

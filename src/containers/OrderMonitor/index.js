@@ -18,6 +18,7 @@ import {
   gql, useMutation,
 } from '@apollo/client';
 
+import { ifProp } from 'styled-tools';
 import Flex from '../../components/atoms/Flex';
 import Button from '../../components/atoms/Button';
 import Card from '../../components/atoms/Card';
@@ -38,6 +39,7 @@ import useOrderData from '../../hooks/useOrderData';
 import SearchBar from '../../components/organisms/SearchBar';
 import useOrderAlert from '../../hooks/useOrderAlert';
 import TooltipMask from '../../components/molecules/TooltipMask';
+import PlatformImage from '../../components/atoms/PlatformImage';
 
 const Wrapper = styled(Flex)`
   flex: 1;
@@ -55,6 +57,12 @@ const TableContainer = styled(Flex)`
 const StyledButton = styled(Button)`
   min-width: 120px;
   padding: 10px;
+`;
+const StyledCell = styled(Cell)`
+  text-decoration: ${ifProp(
+    'isCancel',
+    'line-through',
+  )};
 `;
 
 const OrderMonitor = (props) => {
@@ -104,47 +112,88 @@ const OrderMonitor = (props) => {
       title: 'id',
       dataIndex: 'id',
       width: 100,
-      render: (data, row) => {
-        if (row.isSubMenu) return null;
-        return <Cell>{data || row.orderId}</Cell>;
+      render: (
+        data,
+        {
+          orderId,
+          isCancel,
+          isSubMenu,
+        },
+      ) => {
+        if (isSubMenu) return null;
+        return <StyledCell isCancel={isCancel}>{data || orderId}</StyledCell>;
       },
     },
     {
       title: '채널번호',
       dataIndex: 'channelNo',
-      width: 130,
-      render: (data, row) => <Cell>{data}</Cell>,
+      width: 140,
+      render: (data, { isCancel }) => <StyledCell isCancel={isCancel} style={{ width: 140 }}>{data}</StyledCell>,
     },
     {
       title: '주문번호',
       dataIndex: 'orderNo',
       width: 150,
       render: (data, row) => {
+        const { isCancel } = row;
         if (row.isSubMenu) return null;
-        return <Cell>{data || row.orderNo}</Cell>;
+        return <StyledCell isCancel={isCancel}>{data || row.orderNo}</StyledCell>;
       },
     },
+    // {
+    //   title: '플랫폼',
+    //   dataIndex: 'orderPlatform',
+    //   width: 80,
+    //   render: (data, row) => <StyledCell isCancel={isCancel}>{data}</StyledCell>,
+    // },
     {
       title: '플랫폼',
       dataIndex: 'orderPlatform',
-      width: 80,
-      render: (data, row) => <Cell>{data}</Cell>,
+      render: (data, { isCancel }) => (
+        <StyledCell isCancel={isCancel} style={{ width: 40 }}>
+          <Flex
+            style={{
+              position: 'absolute',
+              right: 0,
+              left: 0,
+              bottom: 0,
+              top: 0,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <PlatformImage
+              platform={data}
+              style={{
+                marginTop: -18,
+                marginBottom: -18,
+              }}
+            />
+          </Flex>
+        </StyledCell>
+      ),
     },
     {
       title: '주문시간',
       dataIndex: 'dateTimeISO',
-      width: 100,
-      render: (data, row) => (
-        <Cell>
+      render: (data, { isCancel }) => (
+        <StyledCell isCancel={isCancel} style={{ width: 50 }}>
           {moment(data)
             .format('HH:mm')}
-        </Cell>
+        </StyledCell>
       ),
     },
     {
       title: '메뉴',
       dataIndex: 'item',
-      render: (data, row) => <Cell>{data}</Cell>
+      render: (data, { isCancel }) => (
+        <StyledCell
+          isCancel={isCancel}
+          style={{ width: 250 }}
+        >
+          {data}
+        </StyledCell>
+      )
       ,
     },
     {
@@ -152,23 +201,25 @@ const OrderMonitor = (props) => {
       dataIndex: 'qty',
       width: 60,
       render: (data, row) => {
+        const { isCancel } = row;
         if (row.isSubMenu) return null;
-        return <Cell>{data}</Cell>;
+        return <StyledCell isCancel={isCancel}>{data}</StyledCell>;
       },
     },
     {
       title: '고객요청',
       dataIndex: 'requestCustomer',
       render: (data, row) => {
+        const { isCancel } = row;
         if (row.isSubMenu) return null;
-        return <Cell>{data}</Cell>;
+        return <StyledCell isCancel={isCancel}>{data}</StyledCell>;
       },
     },
     {
       title: '조리담당',
       dataIndex: 'cookStation',
       width: 140,
-      render: (data) => <Cell>{data}</Cell>,
+      render: (data, { isCancel }) => <StyledCell isCancel={isCancel}>{data}</StyledCell>,
     },
     {
       title: '조리상태',
@@ -180,19 +231,24 @@ const OrderMonitor = (props) => {
       dataIndex: 'action',
       width: 120,
       render: (data, row) => {
+        const { isCancel } = row;
         const hasOrderKitchen = row.orderKitchen;
         const isSelected = row.channelNo === selectedChannelNo;
         return (
-          <Cell style={{
-            marginTop: -12,
-            marginBottom: -12,
-          }}
+          <StyledCell
+            isCancel={isCancel}
+            style={{
+              marginTop: -12,
+              marginBottom: -12,
+            }}
           >
             {hasOrderKitchen ? (
               <StyledButton
                 themeType="outline"
                 palette="grayscale"
                 tone={isSelected ? 4 : 0}
+                disabled={isCancel}
+                disable
                 onClick={() => {
                   onClickOrder(row.orderKitchen);
                 }}
@@ -200,7 +256,7 @@ const OrderMonitor = (props) => {
                 선택
               </StyledButton>
             ) : null}
-          </Cell>
+          </StyledCell>
         );
       },
     },

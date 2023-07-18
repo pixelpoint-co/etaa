@@ -26,6 +26,7 @@ const GET_ORDER = gql`
       created
       description
       detail
+      status
     }
   }
 `;
@@ -42,16 +43,14 @@ const GET_ORDER_KITCHEN = gql`
   }
 `;
 
-const waitMs = async (ms = 0) => {
-  return new Promise((resolve /* reject */) => {
-    setTimeout(
-      () => {
-        resolve();
-      },
-      ms,
-    );
-  });
-};
+const waitMs = async (ms = 0) => new Promise((resolve /* reject */) => {
+  setTimeout(
+    () => {
+      resolve();
+    },
+    ms,
+  );
+});
 
 export default (options = {}) => {
   const {
@@ -118,25 +117,21 @@ export default (options = {}) => {
   );
 
   const orderList = uniqBy(
-    orders.map((order) => {
-      return {
-        ...order,
-        ...get(
-          order,
-          [
-            'detail',
-            'receipt',
-          ],
-          {},
-        ),
-      };
-    }).filter((order) => order.isCancel === false),
+    orders.map((order) => ({
+      ...order,
+      ...get(
+        order,
+        [
+          'detail',
+          'receipt',
+        ],
+        {},
+      ),
+    })),
     'channelNo',
   );
 
-  const checkIsEKMenu = (orderItem) => {
-    return false;
-  };
+  const checkIsEKMenu = (orderItem) => false;
   const checkIsSubMenu = (orderItem) => {
     const name = orderItem.item;
 
