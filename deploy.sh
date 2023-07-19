@@ -7,7 +7,7 @@ now="$(date +'%d/%m/%Y/%r')"
 echo $now
 
 # build
-npm run build
+npm run build:staging
 
 # set up new git remote, add, commit to today's datetime
 cd build
