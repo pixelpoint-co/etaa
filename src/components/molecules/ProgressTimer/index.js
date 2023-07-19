@@ -47,18 +47,24 @@ const TimerText = styled(Text)`
   align-items: center;
   display: inline-flex;
 `;
-const ProgressTimer = ({
-  duration = 0,
-  totalDuration = 0,
-  totalDurationLabel,
-  containerBarColor,
-  onComplete = () => {},
-  labelSize = 24,
-  barSize,
-  label,
-  color,
-  ...others
-}) => {
+const ProgressTimer = (props) => {
+  const {
+    duration = 0,
+    totalDuration = 0,
+    totalDurationLabel,
+    containerBarColor,
+    onComplete = () => {},
+    mapCountToProps = () => {},
+    labelColor,
+    timeColor,
+    timerBarColor,
+    labelSize = 24,
+    onCount,
+    barSize,
+    label,
+    color,
+    ...others
+  } = props;
   const {
     countdown: remainingSeconds,
     resetTimer,
@@ -68,6 +74,7 @@ const ProgressTimer = ({
       console.log('progress timer on complete ');
       onComplete();
     },
+    onCount,
   );
   const remainingMinutesText = Math.floor(remainingSeconds / 60)
     .toLocaleString(
@@ -81,15 +88,16 @@ const ProgressTimer = ({
     );
   const timeText = totalDurationLabel ? <Icon icon="play" size={16} color="white" /> : `${remainingMinutesText}:${remainingSecondsText}`;
   const infinityText = '∞';
+
   return (
     <Container>
       <TimerSection>
-        <LabelText weight="bold" color={color} $size={labelSize}>
+        <LabelText weight="bold" color={labelColor || color} $size={labelSize}>
           {label}
         </LabelText>
         <TimerText
-          weight="regular"
-          color={color}
+          weight="bold"
+          color={timeColor || color}
           $size={labelSize}
         >
           {duration === Infinity || totalDuration === Infinity ? (
@@ -104,7 +112,7 @@ const ProgressTimer = ({
           percentage={(Math.ceil((remainingSeconds / (totalDuration / 1000)) * 100 * 100)) / 100}
           size={barSize}
           onClick={resetTimer}
-          color={color}
+          color={timerBarColor || color}
           containerColor={containerBarColor}
         />
       </BarSection>

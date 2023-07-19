@@ -384,18 +384,20 @@ const usePotController = (cookerId, opts = {}) => {
       setCookStartUUID(uuidv4());
       setLastActionType('recipe');
       setLastActionId(21);
-      // setTimeout(
-      //   () => {
-      //     kitchenPotRotationSwitch({ variables: { cookerId } });
-      //   },
-      //   2000,
-      // );
+      if (process.env.REACT_APP_ENV === 'staging' || process.env.REACT_APP_ENV === 'development') {
+        setTimeout(
+          () => {
+            kitchenPotRotationSwitch({ variables: { cookerId } });
+          },
+          2000,
+        );
+      }
     },
     [
-      // cookerId,
-      // kitchenPotRotationSwitch,
-
-      selectedOrderKitchenId],
+      cookerId,
+      kitchenPotRotationSwitch,
+      selectedOrderKitchenId,
+    ],
   );
 
   const potRotationSwitch = useCallback(

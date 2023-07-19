@@ -113,10 +113,8 @@ const PotControlButton = (props) => {
   );
 
   useEffect(
-    () => {
-      return () => {
-        clearTimeout(loadingRef.current);
-      };
+    () => () => {
+      clearTimeout(loadingRef.current);
     },
     [],
   );
@@ -156,7 +154,6 @@ const PotControlButton = (props) => {
               duration={duration}
               totalDurationLabel={totalDurationLabel}
               onComplete={() => {
-                console.log('progress timer onTimerComplete');
                 onTimerComplete();
               }}
               labelSize={18}

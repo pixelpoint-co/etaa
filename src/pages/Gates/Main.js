@@ -12,6 +12,7 @@ import {
   size,
 } from 'styled-theme';
 import {
+  ifProp,
   palette,
 } from 'styled-tools';
 
@@ -64,9 +65,27 @@ const PotNumber = styled(Heading)`
 
 const TimerSection = styled(Card)`
   margin-left: 55px;
-  background-color: ${palette(
-    'grayscale',
-    4,
+  background-color: ${ifProp(
+    '$needTaste',
+    palette(
+      'grayscale',
+      0,
+    ),
+    palette(
+      'grayscale',
+      4,
+    ),
+  )};
+  border-color: ${ifProp(
+    '$needTaste',
+    palette(
+      'grayscale',
+      0,
+    ),
+    palette(
+      'grayscale',
+      4,
+    ),
   )};
   padding: 10px 20px;
 `;
@@ -105,7 +124,6 @@ const PotGridContainer = styled(Flex)`
   flex: 0;
   flex-basis: 640px;
 `;
-
 const GatesMain = (props) => {
   const { id } = useParams();
   const location = useLocation();
@@ -138,7 +156,6 @@ const GatesMain = (props) => {
     isWashing,
     lastActionId,
     selectRecipe,
-    selectedRecipeId,
     orderRefetchTime,
     updateOrderKitchenStatus,
     orderKitchenRefetchTime,
@@ -146,20 +163,23 @@ const GatesMain = (props) => {
   } = potController;
 
   const {
-    // data,
-    // count,
     data,
     itemisedOrderList,
-    // orderListCount: count,
-    loading,
-    error,
-    refetch,
   } = useOrderData({
-    // limit: pageSize,
-    // offset: (queryParams.pageSize * (queryParams.page - 1)) || 0,
     orderRefetchTime,
     orderKitchenRefetchTime,
   });
+  const [
+    needTaste,
+    setNeedTaste,
+  ] = useState(false);
+  const timerColorProps = { containerBarColor: theme.palette.grayscale[3] };
+  const timerColorAlertProps = {
+    timerBarColor: theme.palette.red[0],
+    containerBarColor: theme.palette.grayscale[3],
+    timeColor: theme.palette.red[0],
+    labelColor: theme.palette.white[0],
+  };
 
   useEffect(
     () => {
@@ -206,6 +226,13 @@ const GatesMain = (props) => {
   const selectedOrder = data.find((o) => Number(o.id) === Number(selectedOrderId)) || {};
   const selectedItemisedOrder = itemisedOrderList
     .filter((io) => io.channelNo === selectedOrder.channelNo);
+
+  const handleCountUpdate = (count) => {
+    if (count && count < 90 && isCooking) {
+      return setNeedTaste(true);
+    }
+    return setNeedTaste(false);
+  };
   return (
     <Wrapper>
       <HeaderSection>
@@ -216,12 +243,18 @@ const GatesMain = (props) => {
             '0',
           )}
         </PotNumber>
-        <TimerSection palette="grayscale" tone={4}>
+        <TimerSection
+          palette="grayscale"
+          tone={4}
+          $needTaste={needTaste}
+        >
           <ProgressTimer
             label={recipeName}
             duration={recipeRemainingTimeMs}
             totalDuration={isWashing ? Infinity : recipeDurationMs}
-            containerBarColor={theme.palette.grayscale[3]}
+            onComplete={() => handleCountUpdate(0)}
+            onCount={(v) => handleCountUpdate(v)}
+            {...(needTaste ? timerColorAlertProps : timerColorProps)}
           />
         </TimerSection>
         {/* <ActivateButton>

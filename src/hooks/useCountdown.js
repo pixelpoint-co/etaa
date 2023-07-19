@@ -5,7 +5,7 @@ import {
   useState,
 } from 'react';
 
-const useCountdown = (miliseconds, onComplete = () => {}) => {
+const useCountdown = (miliseconds, onComplete = () => {}, onCount = () => {}) => {
   const [
     count,
     setCount,
@@ -26,6 +26,7 @@ const useCountdown = (miliseconds, onComplete = () => {}) => {
       );
       const shouldUpdate = timeLeft !== count;
       if (shouldUpdate) {
+        onCount(timeLeft);
         setCount(timeLeft);
         if (timeLeft === 0) {
           onComplete();
