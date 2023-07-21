@@ -78,7 +78,7 @@ export default (options = {}) => {
         //     'hours',
         //   )
         //   .toDate(),
-        limit: 100,
+        limit: 200,
       },
     },
   );
@@ -89,7 +89,7 @@ export default (options = {}) => {
     refetch: fetchOrderKitchen,
   } = useQuery(
     GET_ORDER_KITCHEN,
-    { variables: { limit: 100 } },
+    { variables: { limit: 200 } },
   );
   useEffect(
     () => {
@@ -245,7 +245,7 @@ export default (options = {}) => {
     },
     [],
   );
-
+  console.log(itemisedOrderList);
   return {
     data: orderList,
     itemisedOrderList,

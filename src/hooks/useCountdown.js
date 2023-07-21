@@ -12,6 +12,7 @@ const useCountdown = (miliseconds, onComplete = () => {}, onCount = () => {}) =>
   ] = useState(Math.ceil(miliseconds / 1000));
   const requestRef = useRef();
   const startTimeRef = useRef();
+  const countRef = useRef();
   const animate = useCallback(
     (time) => {
       if (!startTimeRef.current) {
@@ -24,10 +25,11 @@ const useCountdown = (miliseconds, onComplete = () => {}, onCount = () => {}) =>
         0,
         Math.ceil((miliseconds - elapsed) / 1000),
       );
-      const shouldUpdate = timeLeft !== count;
+      const shouldUpdate = timeLeft !== countRef.current;
       if (shouldUpdate) {
         onCount(timeLeft);
         setCount(timeLeft);
+        countRef.current = timeLeft;
         if (timeLeft === 0) {
           onComplete();
         }
@@ -38,9 +40,9 @@ const useCountdown = (miliseconds, onComplete = () => {}, onCount = () => {}) =>
       }
     },
     [
-      count,
       miliseconds,
       onComplete,
+      onCount,
     ],
   );
   const resetTimer = useCallback(
@@ -50,6 +52,7 @@ const useCountdown = (miliseconds, onComplete = () => {}, onCount = () => {}) =>
       }
       requestRef.current = null;
       startTimeRef.current = null;
+      countRef.current = Math.ceil(miliseconds / 1000);
       setCount(Math.ceil(miliseconds / 1000));
       requestRef.current = requestAnimationFrame(animate);
     },
@@ -66,8 +69,8 @@ const useCountdown = (miliseconds, onComplete = () => {}, onCount = () => {}) =>
       }
 
       startTimeRef.current = null;
+      countRef.current = Math.ceil(miliseconds / 1000);
       setCount(Math.ceil(miliseconds / 1000));
-
       requestRef.current = requestAnimationFrame(animate);
 
       return () => {
