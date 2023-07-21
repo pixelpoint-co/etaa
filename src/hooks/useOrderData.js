@@ -200,7 +200,6 @@ export default (options = {}) => {
   //   orderKitchenData,
   //   orderList,
   // );
-  console.log(orderList);
   const itemisedOrderList = orderList.reduce(
     (ac, order) => {
       const {
@@ -245,7 +244,6 @@ export default (options = {}) => {
     },
     [],
   );
-  console.log(itemisedOrderList);
   return {
     data: orderList,
     itemisedOrderList,

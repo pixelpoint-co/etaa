@@ -194,7 +194,7 @@ const OrderSelection = (props) => {
                       marginTop: 20,
                     }}
                   >
-                    <Heading style={{ marginBottom: 0 }}>{d.item}</Heading>
+                    <Heading style={{ marginBottom: 0 }}>{`${d.item} * ${d.qty}`}</Heading>
                     {d.orderKitchen ? (
                       <CookPrepareButton
                         palette="grayscale"

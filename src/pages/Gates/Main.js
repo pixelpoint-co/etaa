@@ -226,7 +226,12 @@ const GatesMain = (props) => {
   const selectedOrder = data.find((o) => Number(o.id) === Number(selectedOrderId)) || {};
   const selectedItemisedOrder = itemisedOrderList
     .filter((io) => io.channelNo === selectedOrder.channelNo);
-
+  console.log({
+    selectedOrder,
+    data,
+    itemisedOrderList,
+    selectedItemisedOrder,
+  });
   const handleCountUpdate = (count) => {
     if (count && count < 90 && isCooking) {
       return setNeedTaste(true);
@@ -270,6 +275,7 @@ const GatesMain = (props) => {
               'orderPlatform',
               'outsideId',
               'item',
+              'qty',
               'action',
             ].indexOf(dataIndex) > -1)}
             onClickOrderItem={() => setOrderMonitorVisible(true)}
@@ -302,7 +308,7 @@ const GatesMain = (props) => {
         backdrop={false}
         onHide={() => setOrderMonitorVisible(false)}
         style={{
-          width: '781px',
+          width: '844px',
           marginTop: '94px',
           marginBottom: '14px',
           overflow: 'auto',

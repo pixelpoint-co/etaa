@@ -56,9 +56,7 @@ const ControlTowerMain = (props) => {
     <Wrapper>
       <ControlMonitorContainer>
         <ControlMonitor
-          pickCellRenderers={(cellRenderers) => {
-            return cellRenderers.filter((cr) => ['action'].indexOf(cr.dataIndex) < 0);
-          }}
+          pickCellRenderers={(cellRenderers) => cellRenderers.filter((cr) => ['action'].indexOf(cr.dataIndex) < 0)}
         />
       </ControlMonitorContainer>
     </Wrapper>

@@ -71,7 +71,6 @@ const ProgressTimer = (props) => {
   } = useCountdown(
     duration,
     () => {
-      console.log('progress timer on complete ');
       onComplete();
     },
     onCount,

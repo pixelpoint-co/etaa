@@ -186,7 +186,6 @@ const OrderMonitor = (props) => {
     },
     [setQueryParams],
   );
-  console.log(itemisedOrderList);
 
   const filteringItemisedOrderList = itemisedOrderList
     // .filter((io) => (io.item !== '배달비'));
@@ -239,16 +238,14 @@ const OrderMonitor = (props) => {
       width: 140,
       render: (data, row) => <StyledCell>{data}</StyledCell>,
     },
-    // {
-    //   title: '수량',
-    //   dataIndex: 'qty',
-    //   width: 100,
-    //   flexBasis: 100,
-    //   render: (data, row) => {
-    //     if (row.isSubMenu) return null;
-    //     return <StyledCell>{data}</StyledCell>;
-    //   },
-    // },
+    {
+      title: '수량',
+      dataIndex: 'qty',
+      render: (data, row) => {
+        if (row.isSubMenu) return null;
+        return <StyledCell style={{ width: 30 }}>{data}</StyledCell>;
+      },
+    },
     // {
     //   title: '추가옵션',
     //   dataIndex: 'item',

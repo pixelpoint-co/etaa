@@ -72,10 +72,7 @@ const Select = ({
   disabled,
   ...others
 }) => {
-  console.log(options);
   const selectedOption = options.filter((option) => option.value === value);
-  console.log(selectedOption);
-  console.log(value);
   const initialOption = options.filter((option) => option.value === initialValue);
   // .map((v) => pick(v, ['label', 'value']));
   const defaultValue = (selectedOption.length > 0 ? selectedOption : initialOption);
@@ -88,7 +85,6 @@ const Select = ({
         filterOption={createFilter({ ignoreAccents: false })}
         options={options}
         onChange={(sValue) => {
-          console.log(sValue);
           onChange(get(
             sValue,
             'value',

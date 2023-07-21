@@ -38,9 +38,7 @@ const TagContainer = styled(Flex)`
   margin: 5px 10px;
   flex: 0;
 `;
-const ignoreIndex = (list, index) => {
-  return list.filter((v, i) => i !== index);
-};
+const ignoreIndex = (list, index) => list.filter((v, i) => i !== index);
 const TagSelect = (props) => {
   const {
     options, // { label, value }
@@ -54,12 +52,8 @@ const TagSelect = (props) => {
   } = props;
   const valueList = isMulti ? (value || []) : [value];
   const handleSelect = (v) => {
-    console.log(valueList);
-    console.log(v);
     const selectedIndex = valueList.indexOf(v);
     const isSelected = selectedIndex > -1;
-    console.log(selectedIndex);
-    console.log(isSelected);
 
     const newValueList = isSelected ? ignoreIndex(
       valueList,
@@ -81,10 +75,6 @@ const TagSelect = (props) => {
           const selectedIndex = valueList.indexOf(v.value);
           const isSelected = selectedIndex > -1;
           const tagThemeProps = isSelected ? themeProps : offThemeProps;
-          console.log(
-            tagThemeProps,
-            v.label,
-          );
           return (
             <TagContainer
               key={v.value}

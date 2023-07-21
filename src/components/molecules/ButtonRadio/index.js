@@ -21,32 +21,68 @@ const Container = styled(Flex)`
   `;
 
 const StyledButton = styled(Button)`
-  background-color: ${palette('grayscale', 6)};
+  background-color: ${palette(
+    'grayscale',
+    6,
+  )};
   background-color: ${ifProp(
     {
       selected: true,
       highlight: true,
     },
-    palette('black', 0),
+    palette(
+      'black',
+      0,
+    ),
     'null',
   )};
-  border-color: ${ifProp({ selected: true }, palette('primary', 0), palette('grayscale', 6))};
+  border-color: ${ifProp(
+    { selected: true },
+    palette(
+      'primary',
+      0,
+    ),
+    palette(
+      'grayscale',
+      6,
+    ),
+  )};
   border-color: ${ifProp(
     {
       selected: true,
       highlight: true,
     },
-    palette('black', 0),
+    palette(
+      'black',
+      0,
+    ),
     'null',
   )};
-  font-weight: ${ifProp({ selected: true }, 800, 400)};
-  color: ${ifProp({ selected: true }, palette('black', 0), palette('grayscale', 0))};
+  font-weight: ${ifProp(
+    { selected: true },
+    800,
+    400,
+  )};
+  color: ${ifProp(
+    { selected: true },
+    palette(
+      'black',
+      0,
+    ),
+    palette(
+      'grayscale',
+      0,
+    ),
+  )};
   color: ${ifProp(
     {
       selected: true,
       highlight: true,
     },
-    palette('primary', 0),
+    palette(
+      'primary',
+      0,
+    ),
     'null',
   )};
   padding: 18px;
@@ -61,27 +97,24 @@ const ButtonRadio = ({
   buttonStyle,
   selected,
   ...props
-}) => {
-  console.log(options);
-  return (
-    <Container
-      {...props}
-    >
-      {options.map((option) => (
-        <StyledButton
-          key={option.value}
-          highlight={highlight}
-          onClick={() => {
-            onSelect(option.value);
-          }}
-          label={option.label}
-          selected={option.value === selected}
-          style={buttonStyle}
-        />
-      ))}
-    </Container>
-  );
-};
+}) => (
+  <Container
+    {...props}
+  >
+    {options.map((option) => (
+      <StyledButton
+        key={option.value}
+        highlight={highlight}
+        onClick={() => {
+          onSelect(option.value);
+        }}
+        label={option.label}
+        selected={option.value === selected}
+        style={buttonStyle}
+      />
+    ))}
+  </Container>
+);
 
 ButtonRadio.propTypes = {
   highlight: PropTypes.bool,
@@ -106,7 +139,10 @@ ButtonRadio.defaultProps = {
     },
   ],
   selected: 1,
-  onSelect: (val) => console.log('[ButtonRadio] onSelect() ', val),
+  onSelect: (val) => console.log(
+    '[ButtonRadio] onSelect() ',
+    val,
+  ),
 };
 
 export default ButtonRadio;

@@ -45,7 +45,6 @@ const Select = (props) => {
     required,
     ...others
   } = props;
-  console.log(props);
   const [
     newItem,
     setNewItem,
@@ -77,7 +76,6 @@ const Select = (props) => {
     }
     return item;
   });
-  console.log(others);
   return (
     <Label style={{ flex: 1 }}>
       {label ? (

@@ -186,12 +186,15 @@ const OrderMonitor = (props) => {
     {
       title: '메뉴',
       dataIndex: 'item',
-      render: (data, { isCancel }) => (
+      render: (data, {
+        isCancel,
+        qty,
+      }) => (
         <StyledCell
           isCancel={isCancel}
           style={{ width: 250 }}
         >
-          {data}
+          {`${data}`}
         </StyledCell>
       )
       ,
@@ -199,11 +202,9 @@ const OrderMonitor = (props) => {
     {
       title: '수량',
       dataIndex: 'qty',
-      width: 60,
       render: (data, row) => {
         const { isCancel } = row;
-        if (row.isSubMenu) return null;
-        return <StyledCell isCancel={isCancel}>{data}</StyledCell>;
+        return <StyledCell isCancel={isCancel} style={{ width: 30 }}>{data}</StyledCell>;
       },
     },
     {
