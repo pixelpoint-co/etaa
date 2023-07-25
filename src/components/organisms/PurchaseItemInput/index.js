@@ -68,11 +68,7 @@ const PurchaseItemInput = (props) => {
     data,
     ...others
   } = props;
-  console.log(props);
-
-  const defaultRenderer = (key) => {
-    return (d) => String(d[key]);
-  };
+  const defaultRenderer = (key) => (d) => String(d[key]);
 
   return (
     <Wrapper>
@@ -111,15 +107,10 @@ const PurchaseItemInput = (props) => {
             }
           `}
           onChange={(v, a) => {
-            console.log(
-              v,
-              a,
-            );
             onChangeKey('productId')(a);
           }}
           value={data.productId?.value}
           mapDataToItems={(data) => {
-            console.log(data);
             const dataList = get(
               data,
               [

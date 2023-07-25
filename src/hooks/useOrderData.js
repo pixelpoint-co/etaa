@@ -174,10 +174,6 @@ export default (options = {}) => {
           name,
           '음료',
         ),
-        // _.endsWith(
-        //   name,
-        //   ')',
-        // ),
       ],
       (v) => v === true,
     );
@@ -208,7 +204,7 @@ export default (options = {}) => {
       } = order;
 
       // const group
-      const populatedOrderItems = orderItems.map((oi) => {
+      const populatedOrderItems = orderItems.map((oi, lineIndex) => {
         const orderKitchen = _.find(
           get(
             orderKitchenData,
@@ -233,6 +229,7 @@ export default (options = {}) => {
           orderKitchen,
           cookStation: orderKitchen ? '에이트키친' : '-',
           id: uuidv4(),
+          lineIndex,
           // id: withoutOrderList.id + oi.item + (checkIsSubMenu(oi) ? 'sub' : 'main'), // psudo unqiue
 
         };

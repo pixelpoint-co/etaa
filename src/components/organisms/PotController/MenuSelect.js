@@ -34,38 +34,32 @@ const MenuSelect = ({
   buttonOffTheme,
   buttonStyle,
   ...others
-}) => {
-  console.log(
-    options,
-    value,
-  );
-  return (
-    <Container {...others}>
-      {options.map((option) => {
-        const selected = option.value === value;
-        const optionTheme = selected
-          ? buttonTheme
-          : {
-            ...buttonTheme,
-            ...buttonOffTheme,
-          };
-        return (
-          <OptionContainer key={option.value}>
-            <MenuButton
-              label={option.label}
-              palette="grayscale"
-              tone={0}
-              themeType="solid"
-              {...optionTheme}
-              onClick={() => onSelect(option.value)}
-              style={buttonStyle}
-            />
-          </OptionContainer>
-        );
-      })}
-    </Container>
-  );
-};
+}) => (
+  <Container {...others}>
+    {options.map((option) => {
+      const selected = option.value === value;
+      const optionTheme = selected
+        ? buttonTheme
+        : {
+          ...buttonTheme,
+          ...buttonOffTheme,
+        };
+      return (
+        <OptionContainer key={option.value}>
+          <MenuButton
+            label={option.label}
+            palette="grayscale"
+            tone={0}
+            themeType="solid"
+            {...optionTheme}
+            onClick={() => onSelect(option.value)}
+            style={buttonStyle}
+          />
+        </OptionContainer>
+      );
+    })}
+  </Container>
+);
 
 MenuSelect.propTypes = {
   buttonTheme: PropTypes.shape({

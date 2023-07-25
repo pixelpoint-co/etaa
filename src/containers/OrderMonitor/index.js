@@ -94,7 +94,7 @@ const OrderMonitor = (props) => {
     limit: pageSize,
     offset: (queryParams.pageSize * (queryParams.page - 1)) || 0,
   });
-  const count = data.length;
+  const count = itemisedOrderList.length;
   const { page: currentPage } = queryParams;
 
   const onPageChange = useCallback(
@@ -128,7 +128,19 @@ const OrderMonitor = (props) => {
       title: '채널번호',
       dataIndex: 'channelNo',
       width: 140,
-      render: (data, { isCancel }) => <StyledCell isCancel={isCancel} style={{ width: 140 }}>{data}</StyledCell>,
+      render: (
+        data,
+        {
+          isCancel,
+          lineIndex,
+        },
+        rowIndex,
+      ) => {
+        if (rowIndex !== 0 && lineIndex !== 0) return null;
+        return (
+          <StyledCell isCancel={isCancel} style={{ width: 140 }}>{data}</StyledCell>
+        );
+      },
     },
     {
       title: '주문번호',
@@ -149,39 +161,59 @@ const OrderMonitor = (props) => {
     {
       title: '플랫폼',
       dataIndex: 'orderPlatform',
-      render: (data, { isCancel }) => (
-        <StyledCell isCancel={isCancel} style={{ width: 40 }}>
-          <Flex
-            style={{
-              position: 'absolute',
-              right: 0,
-              left: 0,
-              bottom: 0,
-              top: 0,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <PlatformImage
-              platform={data}
+      render: (
+        data,
+        {
+          isCancel,
+          lineIndex,
+        },
+        rowIndex,
+      ) => {
+        if (rowIndex !== 0 && lineIndex !== 0) return null;
+        return (
+          <StyledCell isCancel={isCancel} style={{ width: 40 }}>
+            <Flex
               style={{
-                marginTop: -18,
-                marginBottom: -18,
+                position: 'absolute',
+                right: 0,
+                left: 0,
+                bottom: 0,
+                top: 0,
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
-            />
-          </Flex>
-        </StyledCell>
-      ),
+            >
+              <PlatformImage
+                platform={data}
+                style={{
+                  marginTop: -18,
+                  marginBottom: -18,
+                }}
+              />
+            </Flex>
+          </StyledCell>
+        );
+      },
     },
     {
       title: '주문시간',
       dataIndex: 'dateTimeISO',
-      render: (data, { isCancel }) => (
-        <StyledCell isCancel={isCancel} style={{ width: 50 }}>
-          {moment(data)
-            .format('HH:mm')}
-        </StyledCell>
-      ),
+      render: (
+        data,
+        {
+          isCancel,
+          lineIndex,
+        },
+        rowIndex,
+      ) => {
+        if (rowIndex !== 0 && lineIndex !== 0) return null;
+        return (
+          <StyledCell isCancel={isCancel} style={{ width: 50 }}>
+            {moment(data)
+              .format('HH:mm')}
+          </StyledCell>
+        );
+      },
     },
     {
       title: '메뉴',
@@ -231,10 +263,18 @@ const OrderMonitor = (props) => {
       title: '',
       dataIndex: 'action',
       width: 120,
-      render: (data, row) => {
-        const { isCancel } = row;
+      render: (
+        data,
+        row,
+        rowIndex,
+      ) => {
+        const {
+          isCancel,
+          lineIndex,
+        } = row;
         const hasOrderKitchen = row.orderKitchen;
         const isSelected = row.channelNo === selectedChannelNo;
+        const firstLineOrFirstRow = rowIndex !== 0 && lineIndex !== 0;
         return (
           <StyledCell
             isCancel={isCancel}
@@ -243,7 +283,7 @@ const OrderMonitor = (props) => {
               marginBottom: -12,
             }}
           >
-            {hasOrderKitchen ? (
+            {!firstLineOrFirstRow ? (
               <StyledButton
                 themeType="outline"
                 palette="grayscale"
@@ -251,7 +291,7 @@ const OrderMonitor = (props) => {
                 disabled={isCancel}
                 disable
                 onClick={() => {
-                  onClickOrder(row.orderKitchen);
+                  onClickOrder(row);
                 }}
               >
                 선택

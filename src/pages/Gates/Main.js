@@ -279,10 +279,14 @@ const GatesMain = (props) => {
               'action',
             ].indexOf(dataIndex) > -1)}
             onClickOrderItem={() => setOrderMonitorVisible(true)}
-            onClickOrder={(orderKitchen) => {
+            onClickOrder={(order) => {
+              console.log(
+                '###',
+                order,
+              );
               setQueryParams((old) => ({
                 ...old,
-                orderId: orderKitchen.orderId,
+                orderId: order.orderId,
               }));
               setOrderMonitorVisible(true);
             }}
