@@ -26,9 +26,10 @@ import PotUnit from '../../components/organisms/PotUnit';
 import ProgressTimer from '../../components/molecules/ProgressTimer';
 import Label from '../../components/atoms/Label';
 
-import PotController from '../../components/organisms/PotController';
+import PotController from '../../components/organisms/PotControllerV2';
 import PotGroup from '../../components/organisms/PotGroup';
 import Select from '../../components/atoms/Select';
+import usePotController from '../../hooks/usePotControllerV2';
 
 const Wrapper = styled(Flex)`
   /* flex-direction: row; */
@@ -98,7 +99,7 @@ const PlaygroundMain = (props) => {
   } = props;
 
   const { id } = useParams();
-
+  const potController = usePotController(0);
   const [
     controllerPotIndex,
     setControllerPotIndex,
@@ -113,7 +114,7 @@ const PlaygroundMain = (props) => {
   return (
     <Wrapper>
       <Flex direction="column">
-        <PotController cookerId={controllerPotIndex} />
+        <PotController potController={potController} />
       </Flex>
     </Wrapper>
   );

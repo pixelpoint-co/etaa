@@ -94,7 +94,7 @@ const routes = [
     label: '컨트롤러',
     href: '/controller/*',
     element: <PotControllerPage />,
-    // rootRoute: true,
+    rootRoute: true,
   },
   // {
   //   label: '자재관리',

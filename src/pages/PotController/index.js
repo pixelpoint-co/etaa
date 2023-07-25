@@ -14,26 +14,22 @@ const PageWrapper = styled(Flex)`
   flex-direction: column;
 `;
 
-const Layout = () => {
-  return (
-    <PageWrapper>
-      <Outlet />
-    </PageWrapper>
-  );
-};
+const Layout = () => (
+  <PageWrapper>
+    <Outlet />
+  </PageWrapper>
+);
 
-const PotControllerPage = () => {
-  return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route path=":id" index element={<Main />} />
-        {/* <Route
+const PotControllerPage = () => (
+  <Routes>
+    <Route path="/" element={<Layout />}>
+      <Route path=":id" index element={<Main />} />
+      {/* <Route
           path="*"
           element={() => <Navigate to="/1" replace />}
         /> */}
-      </Route>
-    </Routes>
-  );
-};
+    </Route>
+  </Routes>
+);
 
 export default PotControllerPage;

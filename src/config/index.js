@@ -7,9 +7,12 @@ const config = {
     isServer: typeof window === 'undefined',
   },
   test: {},
-  development: { apiUrl: 'http://localhost:3000/api' },
+  development: { apiUrl: 'http://localhost:4000/api/v1' },
   staging: {},
   production: {},
 };
 
-module.exports = merge(config.all, config[config.all.env]);
+module.exports = merge(
+  config.all,
+  config[config.all.env],
+);
