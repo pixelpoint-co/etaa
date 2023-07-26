@@ -267,7 +267,7 @@ const GatesMain = (props) => {
         </ActivateButton> */}
       </HeaderSection>
       <BodySection>
-        <BodyColumn flex={0} shrink={0} grow={0} basis={750} direction="column">
+        <BodyColumn flex={0} shrink={0} grow={0} basis={710} direction="column">
           <OrderMonitor
             pickCellRenderers={(cellRenderers) => cellRenderers.filter(({ dataIndex }) => [
               'dateTimeISO',
@@ -312,7 +312,7 @@ const GatesMain = (props) => {
         backdrop={false}
         onHide={() => setOrderMonitorVisible(false)}
         style={{
-          width: '844px',
+          width: '805px',
           marginTop: '94px',
           marginBottom: '14px',
           overflow: 'auto',

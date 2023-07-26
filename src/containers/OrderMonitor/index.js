@@ -59,7 +59,7 @@ const TableContainer = styled(Flex)`
   margin-top: 20px;
 `;
 const StyledButton = styled(Button)`
-  min-width: 120px;
+  min-width: 80px;
   padding: 10px;
 `;
 const StyledCell = styled(Cell)`
