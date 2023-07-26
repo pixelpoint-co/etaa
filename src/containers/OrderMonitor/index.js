@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import {
   useCallback,
+  useState,
 } from 'react';
 import {
   Formik, useField, Form,
@@ -19,6 +20,7 @@ import {
 } from '@apollo/client';
 
 import { ifProp } from 'styled-tools';
+import { findAllByDisplayValue } from '@testing-library/react';
 import Flex from '../../components/atoms/Flex';
 import Button from '../../components/atoms/Button';
 import Card from '../../components/atoms/Card';
@@ -40,6 +42,7 @@ import SearchBar from '../../components/organisms/SearchBar';
 import useOrderAlert from '../../hooks/useOrderAlert';
 import TooltipMask from '../../components/molecules/TooltipMask';
 import PlatformImage from '../../components/atoms/PlatformImage';
+import Tab from '../../components/molecules/Tab';
 
 const Wrapper = styled(Flex)`
   flex: 1;
@@ -53,6 +56,7 @@ const SearchContainer = styled(Flex)`
   flex: 0;
 `;
 const TableContainer = styled(Flex)`
+  margin-top: 20px;
 `;
 const StyledButton = styled(Button)`
   min-width: 120px;
@@ -79,8 +83,10 @@ const OrderMonitor = (props) => {
     queryParams,
     setQueryParams,
   } = useQueryParams({ initialQueryParams: { page: 1 } });
-  const { onAlert } = useOrderAlert();
-
+  const [
+    selectedTab,
+    setSelectedTab,
+  ] = useState('all');
   const {
     // data,
     // count,
@@ -94,7 +100,42 @@ const OrderMonitor = (props) => {
     limit: pageSize,
     offset: (queryParams.pageSize * (queryParams.page - 1)) || 0,
   });
-  const count = itemisedOrderList.length;
+  const orderPlatformToTab = {
+    배민: [
+      'delivery',
+      'baeMin',
+      'baeMin1',
+    ],
+    쿠팡이츠: [
+      'delivery',
+      'coupangEats',
+    ],
+    요기요: [
+      'delivery',
+      'yogiyo',
+      'yogiyoExpress',
+    ],
+    '요기요 익스프레스': [
+      'delivery',
+      'yogiyoExpress',
+    ],
+    배민1: [
+      'delivery',
+      'baeMin1',
+    ],
+    타키: [
+      'hall',
+      'taky',
+    ],
+  };
+  const filteredItemisedOrderList = itemisedOrderList.filter((io) => {
+    if (selectedTab === 'all') return true;
+    const tabList = orderPlatformToTab[io.orderPlatform];
+    if (tabList == null) { console.log(io.orderPlatform); }
+    if (orderPlatformToTab[io.orderPlatform].indexOf(selectedTab) >= 0) return true;
+    return false;
+  });
+  const count = filteredItemisedOrderList.length;
   const { page: currentPage } = queryParams;
 
   const onPageChange = useCallback(
@@ -313,12 +354,52 @@ const OrderMonitor = (props) => {
         // }}
         />
       </SearchContainer> */}
+      <Tab
+        themeProps={{ palette: 'primary' }}
+        offThemeProps={{
+          palette: 'grayscale',
+          tone: 3,
+          type: 'text',
+        }}
+        options={[
+          {
+            label: '전체',
+            value: 'all',
+          },
+          {
+            label: '배달',
+            value: 'delivery',
+          },
+          {
+            label: '홀',
+            value: 'hall',
+          },
+          // {
+          //   label: '포장',
+          //   value: 'pickup',
+          // },
+          // {
+          //   label: '배민',
+          //   value: 'baeMin',
+          // },
+          // {
+          //   label: '요기요',
+          //   value: 'yogiyo',
+          // },
+          // {
+          //   label: '쿠팡',
+          //   value: 'coupangEats',
+          // },
+        ]}
+        value={selectedTab}
+        onSelect={setSelectedTab}
+      />
       <TableContainer>
         <AntDTable
           modelName="model"
           cellRenderers={pickCellRenderers(cellRenderers)}
           data={
-            itemisedOrderList
+            filteredItemisedOrderList
             // _.uniqBy(
             //     .filter((io) => !io.isSubMenu && !!io.orderKitchen),
             //   'orderNo',
