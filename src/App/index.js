@@ -79,7 +79,7 @@ const routes = [
   },
   {
     label: '관제',
-    href: '/controlTower/*',
+    href: '/order-monitor/*',
     element: <ControlTower />,
     rootRoute: true,
   },
@@ -164,28 +164,26 @@ const Layout = () => {
   );
 };
 
-const App = () => {
-  return (
-    <Wrapper>
-      <Routes>
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/gates/*" element={<Gates />} />
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          {routes.map((route) => {
-            const isInternal = route.href[0] === '/';
-            if (!isInternal) return null;
-            return (
-              <Route key={route.href} path={route.href} element={route.element} />
-            );
-          })}
-          {/* 404 */}
-          <Route path="*" component={NotFound} />
-        </Route>
-      </Routes>
-      <ToastContainer />
-    </Wrapper>
-  );
-};
+const App = () => (
+  <Wrapper>
+    <Routes>
+      <Route path="/signin" element={<SignIn />} />
+      <Route path="/gates/*" element={<Gates />} />
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Home />} />
+        {routes.map((route) => {
+          const isInternal = route.href[0] === '/';
+          if (!isInternal) return null;
+          return (
+            <Route key={route.href} path={route.href} element={route.element} />
+          );
+        })}
+        {/* 404 */}
+        <Route path="*" component={NotFound} />
+      </Route>
+    </Routes>
+    <ToastContainer />
+  </Wrapper>
+);
 
 export default App;
