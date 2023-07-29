@@ -160,13 +160,15 @@ const GatesMain = (props) => {
     updateOrderKitchenStatus,
     orderKitchenRefetchTime,
     potMonitoringData,
+    chefMonitoringData,
+    cherMonitorPot,
   } = potController;
-
   const {
     data,
     itemisedOrderList,
   } = useOrderData({
     orderRefetchTime,
+    chefMonitoringData,
     orderKitchenRefetchTime,
   });
   const [
@@ -181,37 +183,37 @@ const GatesMain = (props) => {
     labelColor: theme.palette.white[0],
   };
 
-  useEffect(
-    () => {
-      if (
-        potMonitoringData.status === 'COOKER_COOKED'
-      && potMonitoringData.orderKitchenId > 0
-      ) {
-        updateOrderKitchenStatus({
-          variables: {
-            id: potMonitoringData.orderKitchenId,
-            status: 'ORDER_COOKED',
-          },
-        });
-      }
-      if (
-        potMonitoringData.status === 'COOKER_COOKING'
-      && potMonitoringData.orderKitchenId > 0
-      ) {
-        updateOrderKitchenStatus({
-          variables: {
-            id: potMonitoringData.orderKitchenId,
-            status: 'ORDER_COOKING',
-          },
-        });
-      }
-    },
-    [
-      updateOrderKitchenStatus,
-      potMonitoringData.status,
-      potMonitoringData.orderKitchenId,
-    ],
-  );
+  // useEffect(
+  //   () => {
+  //     if (
+  //       potMonitoringData.status === 'COOKER_COOKED'
+  //     && potMonitoringData.orderKitchenId > 0
+  //     ) {
+  //       updateOrderKitchenStatus({
+  //         variables: {
+  //           id: potMonitoringData.orderKitchenId,
+  //           status: 'ORDER_COOKED',
+  //         },
+  //       });
+  //     }
+  //     if (
+  //       potMonitoringData.status === 'COOKER_COOKING'
+  //     && potMonitoringData.orderKitchenId > 0
+  //     ) {
+  //       updateOrderKitchenStatus({
+  //         variables: {
+  //           id: potMonitoringData.orderKitchenId,
+  //           status: 'ORDER_COOKING',
+  //         },
+  //       });
+  //     }
+  //   },
+  //   [
+  //     updateOrderKitchenStatus,
+  //     potMonitoringData.status,
+  //     potMonitoringData.orderKitchenId,
+  //   ],
+  // );
 
   const recipeId = get(
     recipe,
@@ -226,12 +228,7 @@ const GatesMain = (props) => {
   const selectedOrder = data.find((o) => Number(o.id) === Number(selectedOrderId)) || {};
   const selectedItemisedOrder = itemisedOrderList
     .filter((io) => io.channelNo === selectedOrder.channelNo);
-  console.log({
-    selectedOrder,
-    data,
-    itemisedOrderList,
-    selectedItemisedOrder,
-  });
+
   const handleCountUpdate = (count) => {
     if (count && count < 90 && isCooking) {
       return setNeedTaste(true);
@@ -276,6 +273,9 @@ const GatesMain = (props) => {
               'outsideId',
               'item',
               'qty',
+              'status',
+              'orderKitchen',
+              'cookStation',
               'action',
             ].indexOf(dataIndex) > -1)}
             onClickOrderItem={() => setOrderMonitorVisible(true)}
@@ -325,6 +325,7 @@ const GatesMain = (props) => {
             <OrderSelection
               order={selectedOrder}
               orderItems={selectedItemisedOrder}
+              chefMonitoringData={chefMonitoringData}
               onClickOrderChange={() => setOrderMonitorVisible(false)}
               onClickOrderPrepare={({ orderKitchen }) => {
                 selectRecipe(

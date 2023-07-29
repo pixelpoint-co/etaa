@@ -25,18 +25,6 @@ ReactModal.defaultStyles.content = {
   background: 'none',
 };
 
-// const GlobalStyle = createGlobalStyle`  // all important since it is override default styles
-//   .ReactModal__Overlay {
-//     z-index: 2 !important;
-//     display: flex !important;
-//     justify-content: center !important;
-//     align-items: center !important;
-//   }
-//   .ReactModal__Content {
-//     inset: unset !important;
-//   }
-// `;
-
 const Modal = (props) => {
   const {
     isOpen,

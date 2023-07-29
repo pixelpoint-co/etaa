@@ -23,6 +23,7 @@ import AntDList from '../../components/organisms/AntDList';
 import PotUnit from '../../components/organisms/PotUnit';
 import ControlMonitor from '../../containers/ControlMonitor';
 import Link from '../../components/atoms/Link';
+import OrderMonitor from '../../containers/OrderMonitor';
 
 const Wrapper = styled(Flex)`
   flex-direction: row;
@@ -55,7 +56,7 @@ const ControlTowerMain = (props) => {
   return (
     <Wrapper>
       <ControlMonitorContainer>
-        <ControlMonitor
+        <OrderMonitor
           pickCellRenderers={(cellRenderers) => cellRenderers.filter((cr) => ['action'].indexOf(cr.dataIndex) < 0)}
         />
       </ControlMonitorContainer>

@@ -56,6 +56,7 @@ export default (options = {}) => {
   const {
     orderKitchenRefetchTime = 0,
     orderRefetchTime = 0,
+    chefMonitoringData,
   } = options;
   const { data: recipeList } = useRecipeData();
   const {
@@ -179,30 +180,13 @@ export default (options = {}) => {
     );
     return isSubMenu;
   };
-  // const itemisedOrderList = orderList.map((order) => {
-  //   const {
-  //     orderList: orderItems,
-  //     ...withoutOrderList
-  //   } = order;
-  //   const groupedOrderItems = orderItems.reduce(
-  //     (ac, orderItem) => {
 
-  //     },
-  //     [],
-  //   )
-  // })
-  // console.log(
-  //   'orderKitchenData: ',
-  //   orderKitchenData,
-  //   orderList,
-  // );
   const itemisedOrderList = orderList.reduce(
     (ac, order) => {
       const {
         orderList: orderItems,
         ...withoutOrderList
       } = order;
-
       // const group
       const populatedOrderItems = orderItems.map((oi, lineIndex) => {
         const orderKitchen = _.find(
@@ -221,17 +205,32 @@ export default (options = {}) => {
             return isOrderMatch && isLineMatch;
           },
         );
+        const matchingPot = _.find(
+          chefMonitoringData,
+          { orderKitchenId: orderKitchen?.id },
+        );
+        const recipe = _.find(
+          recipeList,
+          { id: orderKitchen?.recipeId },
+        );
+        const okStatus = orderKitchen?.status === 'ORDER_WAITING' && !matchingPot
+          ? 'ORDER_ACCEPTED'
+          : orderKitchen?.status;
+        console.log(matchingPot);
         return {
           ...oi,
           ...withoutOrderList,
           isSubMenu: checkIsSubMenu(oi),
           orderId: withoutOrderList.id,
-          orderKitchen,
-          cookStation: orderKitchen ? '에이트키친' : '-',
+          orderKitchen: orderKitchen ? {
+            ...orderKitchen,
+            status: okStatus,
+          } : null,
+          cookStation: orderKitchen ? 'EK' : '-',
           id: uuidv4(),
           lineIndex,
-          // id: withoutOrderList.id + oi.item + (checkIsSubMenu(oi) ? 'sub' : 'main'), // psudo unqiue
-
+          pot: matchingPot,
+          recipe,
         };
       });
       return [
@@ -247,5 +246,6 @@ export default (options = {}) => {
     loading,
     error,
     refetch,
+    recipeList,
   };
 };

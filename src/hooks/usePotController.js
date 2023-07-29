@@ -16,6 +16,7 @@ import {
 } from 'uuid';
 import moment from 'moment';
 import useRecipeData from './useRecipeData';
+import useChefMonitor from './useChefMonitor';
 
 const SUBSCRIPTION = gql`
   subscription subscription {
@@ -187,6 +188,9 @@ const usePotController = (cookerId, opts = {}) => {
   ] = useLazyQuery(
     SUBSCRIPTION_QUERY,
   );
+  const { eKQueue } = useChefMonitor();
+  console.log(eKQueue);
+  // const chefPotMonitoring
   const handleSubscriptionData = (data) => {
     const cookerMonitoringTime = get(
       data,
@@ -285,10 +289,10 @@ const usePotController = (cookerId, opts = {}) => {
       },
     },
   );
-  console.log(
-    'cookStartOrderKitchenId: ',
-    cookStartOrderKitchenId,
-  );
+  // console.log(
+  //   'cookStartOrderKitchenId: ',
+  //   cookStartOrderKitchenId,
+  // );
   const {
     error: cookStartError,
     data: cookStartData,
@@ -781,12 +785,19 @@ const usePotController = (cookerId, opts = {}) => {
       recipeId,
       orderKitchenId,
     );
-    updateOrderKitchenStatus({
-      variables: {
-        id: orderKitchenId,
-        status: 'ORDER_WAITING',
+    // updateOrderKitchenStatus({
+    //   variables: {
+    //     id: orderKitchenId,
+    //     status: 'ORDER_WAITING',
+    //   },
+    // });
+    global.api.post(
+      `/cooker/${cookerId}/prep-cook`,
+      {
+        recipeId,
+        orderKitchenId,
       },
-    });
+    );
     setSelectedRecipeId(recipeId);
     setSelectedOrderKitchenId(orderKitchenId);
   };
@@ -814,6 +825,10 @@ const usePotController = (cookerId, opts = {}) => {
     orderKitchenRefetchTime,
     orderRefetchTime,
   );
+  const chefMonitorPot = _.find(
+    eKQueue.completedJobList,
+    { cookerId },
+  );
   return {
     cookerMonitoringError,
     cookerMonitoringData,
@@ -822,7 +837,7 @@ const usePotController = (cookerId, opts = {}) => {
     subscriptionData,
     subscriptionLoading,
 
-    cookStartError,
+    // cookStartError,
 
     fetchMonitoring,
     subscriptionTime,
@@ -834,6 +849,8 @@ const usePotController = (cookerId, opts = {}) => {
     lastActionId,
 
     potMonitoringData,
+    chefMonitoringData: eKQueue.completedJobList,
+    chefMonitorPot,
     recipe: recipeMemo, // selected recipe for current cook
     currentRecipeId: get(
       recipe,

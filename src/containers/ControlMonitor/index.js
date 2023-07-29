@@ -116,27 +116,27 @@ const DiffCell = styled(StyledCell)`
 
 const orderButtonProps = {
   ORDER_IN: { // 주문 승인 대기
-    label: '승인 대기',
+    label: '대기',
     disabled: true,
     palette: 'green',
   },
   ORDER_ACCEPTED: { // 주문 승인
-    label: '레시피 선택',
+    label: '접수',
+    palette: 'green',
     disabled: false,
-    palette: 'blue',
   },
   ORDER_WAITING: { // 조리 대기
-    label: '조리 준비중',
+    label: '준비',
     disabled: false,
     palette: 'yellow',
   },
   ORDER_COOKING: { // 조리중
-    label: '조리중',
+    label: '조리',
     disabled: true,
     palette: 'red',
   },
   ORDER_COOKED: { // 조리끝
-    label: '조리완료',
+    label: '완료',
     disabled: true,
   },
 };

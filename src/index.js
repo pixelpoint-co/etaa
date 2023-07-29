@@ -145,12 +145,8 @@ const client = new ApolloClient({
   // },
 });
 
-global.api = apiService.create({ defaultUrl: apiUrl });
+global.api = apiService.create({ defaultUrl: `${process.env.REACT_APP_CHEF_URL}/api/v1` });
 
-console.log(
-  'basename is : ',
-  process.env.REACT_APP_BASE_URL,
-);
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

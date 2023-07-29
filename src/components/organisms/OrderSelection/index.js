@@ -76,27 +76,27 @@ const PotGridContainer = styled(Flex)`
 
 const orderButtonProps = {
   ORDER_IN: { // 주문 승인 대기
-    label: '승인 대기',
+    label: '승인대기',
     disabled: true,
     palette: 'green',
   },
   ORDER_ACCEPTED: { // 주문 승인
-    label: '레시피 선택',
+    label: '주문접수',
+    palette: 'green',
     disabled: false,
   },
   ORDER_WAITING: { // 조리 대기
-    label: '조리 준비중',
+    label: '조리준비',
     disabled: false,
     palette: 'yellow',
   },
   ORDER_COOKING: { // 조리중
-    label: '조리중',
+    label: '조리',
     disabled: true,
     palette: 'red',
-
   },
   ORDER_COOKED: { // 조리끝
-    label: '조리완료',
+    label: '완료',
     disabled: true,
   },
 };
@@ -115,6 +115,7 @@ const OrderSelection = (props) => {
     order,
     orderItems,
     onClickOrderChange,
+    chefMonitoringData,
     onClickOrderPrepare,
     ...others
   } = props;
@@ -152,67 +153,78 @@ const OrderSelection = (props) => {
         footer={(
           <>{order ? (order.requestCustomer !== '' ? <OrderListSection>{order.requestCustomer}</OrderListSection> : null) : null}</>
         )}
-        RowComponent={(d) => (
-          <div style={{ fontSize: 20 }}>
-            {
-              d.isSubMenu ? (
-                <span>
-                  {d.orderKitchen ? (
-
-                    <span style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                    }}
-                    >
-                      <Heading style={{ marginBottom: 0 }}>{d.item}</Heading>
-                      <CookPrepareButton
-                        palette="grayscale"
-                        themeType="outline"
-                        tone={0}
-                        onClick={() => onClickOrderPrepare(d)}
-                        {...orderButtonProps[get(
-                          d,
-                          'orderKitchen.status',
-                        )]}
-                      />
-                    </span>
-                  )
-                    : (
-                      d.item
-                    )}
-                </span>
-
-              ) : (
-                <div>
-                  {/* <Divider /> */}
-                  <span
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      marginTop: 20,
-                    }}
-                  >
-                    <Heading style={{ marginBottom: 0 }}>{`${d.item} * ${d.qty}`}</Heading>
+        RowComponent={(d) => {
+          const matchingPot = d.pot;
+          return (
+            <div style={{ fontSize: 20 }}>
+              {
+                d.isSubMenu ? (
+                  <span>
                     {d.orderKitchen ? (
-                      <CookPrepareButton
-                        palette="grayscale"
-                        themeType="outline"
-                        tone={0}
-                        onClick={() => onClickOrderPrepare(d)}
-                        {...orderButtonProps[get(
-                          d,
-                          'orderKitchen.status',
-                        )]}
-                      />
-                    ) : null}
+
+                      <span style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                      }}
+                      >
+                        <Heading style={{ marginBottom: 0 }}>{d.item}</Heading>
+                        <CookPrepareButton
+                          palette="grayscale"
+                          themeType="outline"
+                          tone={0}
+                          onClick={() => onClickOrderPrepare(d)}
+                          {...(
+                            matchingPot
+                              ? orderButtonProps[get(
+                                d,
+                                'orderKitchen.status',
+                              )]
+                              : orderButtonProps.ORDER_ACCEPTED
+                          )}
+                        />
+                      </span>
+                    )
+                      : (
+                        d.item
+                      )}
                   </span>
-                </div>
-              )
-            }
-          </div>
-        )}
+
+                ) : (
+                  <div>
+                    {/* <Divider /> */}
+                    <span
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        marginTop: 20,
+                      }}
+                    >
+                      <Heading style={{ marginBottom: 0 }}>{`${d.item} * ${d.qty}`}</Heading>
+                      {d.orderKitchen ? (
+                        <CookPrepareButton
+                          palette="grayscale"
+                          themeType="outline"
+                          tone={0}
+                          onClick={() => onClickOrderPrepare(d)}
+                          {...(
+                            matchingPot
+                              ? orderButtonProps[get(
+                                d,
+                                'orderKitchen.status',
+                              )]
+                              : orderButtonProps.ORDER_ACCEPTED
+                          )}
+                        />
+                      ) : null}
+                    </span>
+                  </div>
+                )
+              }
+            </div>
+          );
+        }}
         dataSource={orderItems || null}
       />
 

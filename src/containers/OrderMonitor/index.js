@@ -25,11 +25,11 @@ import Flex from '../../components/atoms/Flex';
 import Button from '../../components/atoms/Button';
 import Card from '../../components/atoms/Card';
 import Link from '../../components/atoms/Link';
-
+import CountDown from '../../components/molecules/CountDown';
 import PurchaseRow from '../../components/organisms/PurchaseRow';
 import AntDTable from '../../components/organisms/AntDTable';
 import Cell from '../../components/atoms/AntDTableCell';
-
+import Text from '../../components/atoms/P';
 import useInventoryData from '../../hooks/useInventoryData';
 import useQueryParams from '../../hooks/useQueryParams';
 import {
@@ -43,6 +43,9 @@ import useOrderAlert from '../../hooks/useOrderAlert';
 import TooltipMask from '../../components/molecules/TooltipMask';
 import PlatformImage from '../../components/atoms/PlatformImage';
 import Tab from '../../components/molecules/Tab';
+import useChefMonitor from '../../hooks/useChefMonitor';
+import DiffText from '../../components/molecules/DiffText';
+import Tag from '../../components/atoms/Tag';
 
 const Wrapper = styled(Flex)`
   flex: 1;
@@ -59,15 +62,58 @@ const TableContainer = styled(Flex)`
   margin-top: 20px;
 `;
 const StyledButton = styled(Button)`
-  min-width: 80px;
   padding: 10px;
+  width: 48px;
+  height: 48px;
 `;
+
 const StyledCell = styled(Cell)`
   text-decoration: ${ifProp(
     'isCancel',
     'line-through',
   )};
 `;
+const ChannelCell = styled(StyledCell)`
+  white-space: nowrap;
+  text-align: left;
+  width: 50px;
+`;
+const StyledTag = styled(Tag)`
+  font-size: 18px;
+  line-height: 18px;
+  padding: 2px 6px;
+`;
+const nameToWaiterStatus = {
+  prepCook: 'ORDER_WAITING',
+  startCook: 'ORDER_COOKING',
+  finishCook: 'ORDER_COOKED',
+};
+const orderButtonProps = {
+  ORDER_IN: { // 주문 승인 대기
+    label: '승인대기',
+    disabled: true,
+    palette: 'green',
+  },
+  ORDER_ACCEPTED: { // 주문 승인
+    label: '주문접수',
+    palette: 'green',
+    disabled: false,
+  },
+  ORDER_WAITING: { // 조리 대기
+    label: '조리준비',
+    disabled: false,
+    palette: 'yellow',
+  },
+  ORDER_COOKING: { // 조리중
+    label: '조리',
+    disabled: true,
+    palette: 'red',
+  },
+  ORDER_COOKED: { // 조리끝
+    label: '완료',
+    disabled: true,
+  },
+};
 
 const OrderMonitor = (props) => {
   const {
@@ -79,6 +125,7 @@ const OrderMonitor = (props) => {
     selectedChannelNo,
     ...others
   } = props;
+  const { eKQueue } = useChefMonitor();
   const {
     queryParams,
     setQueryParams,
@@ -98,6 +145,7 @@ const OrderMonitor = (props) => {
     refetch,
   } = useOrderData({
     limit: pageSize,
+    chefMonitoringData: eKQueue?.completedJobList,
     offset: (queryParams.pageSize * (queryParams.page - 1)) || 0,
   });
   const orderPlatformToTab = {
@@ -137,7 +185,7 @@ const OrderMonitor = (props) => {
   });
   const count = filteredItemisedOrderList.length;
   const { page: currentPage } = queryParams;
-
+  console.log(filteredItemisedOrderList);
   const onPageChange = useCallback(
     async ({ currentPage: newPage }) => {
       setQueryParams((prev) => ({
@@ -150,25 +198,8 @@ const OrderMonitor = (props) => {
 
   const cellRenderers = [
     {
-      title: 'id',
-      dataIndex: 'id',
-      width: 100,
-      render: (
-        data,
-        {
-          orderId,
-          isCancel,
-          isSubMenu,
-        },
-      ) => {
-        if (isSubMenu) return null;
-        return <StyledCell isCancel={isCancel}>{data || orderId}</StyledCell>;
-      },
-    },
-    {
-      title: '채널번호',
+      title: '채널',
       dataIndex: 'channelNo',
-      width: 140,
       render: (
         data,
         {
@@ -178,8 +209,13 @@ const OrderMonitor = (props) => {
         rowIndex,
       ) => {
         if (rowIndex !== 0 && lineIndex !== 0) return null;
+        const lastFour = `...${data.slice(-4)}`;
         return (
-          <StyledCell isCancel={isCancel} style={{ width: 140 }}>{data}</StyledCell>
+          <ChannelCell
+            isCancel={isCancel}
+          >
+            {lastFour}
+          </ChannelCell>
         );
       },
     },
@@ -237,7 +273,7 @@ const OrderMonitor = (props) => {
       },
     },
     {
-      title: '주문시간',
+      title: '주문',
       dataIndex: 'dateTimeISO',
       render: (
         data,
@@ -249,7 +285,7 @@ const OrderMonitor = (props) => {
       ) => {
         if (rowIndex !== 0 && lineIndex !== 0) return null;
         return (
-          <StyledCell isCancel={isCancel} style={{ width: 50 }}>
+          <StyledCell isCancel={isCancel} style={{ width: 38 }}>
             {moment(data)
               .format('HH:mm')}
           </StyledCell>
@@ -265,7 +301,7 @@ const OrderMonitor = (props) => {
       }) => (
         <StyledCell
           isCancel={isCancel}
-          style={{ width: 250 }}
+          style={{ width: 230 }}
         >
           {`${data}`}
         </StyledCell>
@@ -273,11 +309,11 @@ const OrderMonitor = (props) => {
       ,
     },
     {
-      title: '수량',
+      title: '수',
       dataIndex: 'qty',
       render: (data, row) => {
         const { isCancel } = row;
-        return <StyledCell isCancel={isCancel} style={{ width: 30 }}>{data}</StyledCell>;
+        return <StyledCell isCancel={isCancel} style={{ width: 16 }}>{data}</StyledCell>;
       },
     },
     {
@@ -289,21 +325,113 @@ const OrderMonitor = (props) => {
         return <StyledCell isCancel={isCancel}>{data}</StyledCell>;
       },
     },
+    // {
+    //   title: '조리담당',
+    //   dataIndex: 'cookStation',
+    //   width: 140,
+    //   render: (data, { isCancel }) => <StyledCell isCancel={isCancel}>{data}</StyledCell>,
+    // },
+    {
+      title: '조리상태',
+      dataIndex: 'orderKitchen',
+      render: (data, row) => {
+        const { isCancel } = row;
+        const pot = get(
+          row,
+          'pot',
+          {},
+        );
+        const recipeDurationS = _.get(
+          row,
+          [
+            'recipe',
+            'detail',
+            'duration',
+          ],
+          0,
+        );
+        const {
+          name,
+          finishedOn,
+        } = pot;
+        const cookStartTime = name === 'startCook' ? finishedOn : null;
+        const completionTimeMs = cookStartTime + (recipeDurationS * 1000);
+        if (row.orderKitchen) {
+          console.log({
+            row,
+            name,
+            finishedOn,
+            now: Date.now(),
+            cookStartTime,
+            completionTimeMs,
+            diff: completionTimeMs - Date.now(),
+          });
+        }
+        const showTime = completionTimeMs > Date.now() && data.status === 'ORDER_COOKING';
+        console.log({
+          completionTimeMs,
+          data,
+        });
+        return (
+          <StyledCell isCancel={isCancel} style={{ width: 100 }}>
+            {data ? (
+              <StyledTag
+                icon={false}
+                themeProps={{
+                  palette: orderButtonProps[data.status].palette,
+                  themeType: 'light',
+                }}
+                label={(
+                  <Text
+                    color="white"
+                  >
+                    {orderButtonProps[data.status].label}
+                    {showTime ? (
+                      <>
+                        {' - '}
+                        <CountDown
+                          color="white"
+                          shorten
+                          completionTimeMs={completionTimeMs}
+                        />
+                      </>
+                    ) : null}
+                  </Text>
+                )}
+              />
+
+            ) : null}
+
+          </StyledCell>
+        );
+      },
+    },
     {
       title: '조리담당',
       dataIndex: 'cookStation',
-      width: 140,
-      render: (data, { isCancel }) => <StyledCell isCancel={isCancel}>{data}</StyledCell>,
-    },
-    {
-      title: '조리상태',
-      dataIndex: null,
-      width: 140,
+      render: (data, row) => {
+        const { isCancel } = row;
+        const cookerId = _.get(
+          row,
+          [
+            'pot',
+            'cookerId',
+          ],
+          null,
+        );
+        const potLabel = _.isNull(cookerId) ? null : ` P${cookerId + 1}`;
+        return (
+          <StyledCell isCancel={isCancel} style={{ width: 50 }}>
+            {data}
+            {potLabel}
+          </StyledCell>
+        );
+      },
     },
     {
       title: '',
       dataIndex: 'action',
-      width: 120,
+      width: 80,
       render: (
         data,
         row,
@@ -335,7 +463,7 @@ const OrderMonitor = (props) => {
                   onClickOrder(row);
                 }}
               >
-                선택
+                +
               </StyledButton>
             ) : null}
           </StyledCell>

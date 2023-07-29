@@ -43,6 +43,7 @@
     "redux": "4.2.0",
     "redux-persist": "6.0.0",
     "redux-saga": "1.2.1",
+    "socket.io-client": "4.7.1",
     "styled-components": "5.3.5",
     "styled-theme": "0.3.3",
     "styled-tools": "1.7.2",

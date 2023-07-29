@@ -43,6 +43,7 @@ const Tag = (props) => {
     label,
     value,
     themeProps,
+    icon = 'check',
     ...others
   } = props;
   const componentTheme = useTheme(themeProps);
@@ -54,10 +55,12 @@ const Tag = (props) => {
       })}
     >
       <Container {...others}>
-        <StyledIcon
-          icon="check"
-          size={13}
-        />
+        {icon ? (
+          <StyledIcon
+            icon="check"
+            size={13}
+          />
+        ) : null}
         <Label {...others}>
           {label}
         </Label>

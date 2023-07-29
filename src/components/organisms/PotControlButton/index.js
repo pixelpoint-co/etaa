@@ -48,8 +48,8 @@ const StyledButton = styled(Button)`
       box-shadow: rgba(30, 30, 30, 0.3) 5px 5px 20px;
     `,
   )}
-  font-size: 35px;
-  line-height: 35px;
+  font-size: 32px;
+  line-height: 32px;
   .button-label-container p {
     font-weight: 700;
   }
