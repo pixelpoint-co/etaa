@@ -91,6 +91,11 @@ const GlobalStyle = createGlobalStyle`
 
   :root {
     --toastify-toast-width: 480px;
+
+    .offcanvas {
+      --cui-offcanvas-zindex: 1;
+
+    }
   }
   .Toastify__toast {
     border-radius: 15px;
