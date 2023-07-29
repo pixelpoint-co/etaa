@@ -219,16 +219,16 @@ const OrderMonitor = (props) => {
         );
       },
     },
-    {
-      title: '주문번호',
-      dataIndex: 'orderNo',
-      width: 150,
-      render: (data, row) => {
-        const { isCancel } = row;
-        if (row.isSubMenu) return null;
-        return <StyledCell isCancel={isCancel}>{data || row.orderNo}</StyledCell>;
-      },
-    },
+    // {
+    //   title: '주문번호',
+    //   dataIndex: 'orderNo',
+    //   width: 150,
+    //   render: (data, row) => {
+    //     const { isCancel } = row;
+    //     if (row.isSubMenu) return null;
+    //     return <StyledCell isCancel={isCancel}>{data || row.orderNo}</StyledCell>;
+    //   },
+    // },
     // {
     //   title: '플랫폼',
     //   dataIndex: 'orderPlatform',
