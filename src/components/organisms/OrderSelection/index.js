@@ -81,7 +81,7 @@ const orderButtonProps = {
     palette: 'green',
   },
   ORDER_ACCEPTED: { // 주문 승인
-    label: '주문접수',
+    label: '레시피선택',
     palette: 'green',
     disabled: false,
   },
