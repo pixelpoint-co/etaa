@@ -125,7 +125,10 @@ const OrderMonitor = (props) => {
     selectedChannelNo,
     ...others
   } = props;
-  const { eKQueue } = useChefMonitor();
+  const {
+    eKQueue,
+    chefMonitorPotList,
+  } = useChefMonitor();
   const {
     queryParams,
     setQueryParams,
@@ -145,6 +148,7 @@ const OrderMonitor = (props) => {
     refetch,
   } = useOrderData({
     limit: pageSize,
+    chefMonitorPotList,
     chefMonitoringData: eKQueue?.completedJobList,
     offset: (queryParams.pageSize * (queryParams.page - 1)) || 0,
   });
@@ -219,22 +223,33 @@ const OrderMonitor = (props) => {
         );
       },
     },
-    // {
-    //   title: '주문번호',
-    //   dataIndex: 'orderNo',
-    //   width: 150,
-    //   render: (data, row) => {
-    //     const { isCancel } = row;
-    //     if (row.isSubMenu) return null;
-    //     return <StyledCell isCancel={isCancel}>{data || row.orderNo}</StyledCell>;
-    //   },
-    // },
-    // {
-    //   title: '플랫폼',
-    //   dataIndex: 'orderPlatform',
-    //   width: 80,
-    //   render: (data, row) => <StyledCell isCancel={isCancel}>{data}</StyledCell>,
-    // },
+    {
+      title: 'orderId',
+      dataIndex: 'orderId',
+      width: 60,
+      render: (data, row) => {
+        const { isCancel } = row;
+        return <StyledCell isCancel={isCancel}>{data}</StyledCell>;
+      },
+    },
+    {
+      title: 'id',
+      dataIndex: 'id',
+      width: 60,
+      render: (data, row) => {
+        const { isCancel } = row;
+        return <StyledCell isCancel={isCancel}>{data}</StyledCell>;
+      },
+    },
+    {
+      title: 'okId',
+      dataIndex: 'okId',
+      width: 60,
+      render: (data, row) => {
+        const { isCancel } = row;
+        return <StyledCell isCancel={isCancel}>{data}</StyledCell>;
+      },
+    },
     {
       title: '플랫폼',
       dataIndex: 'orderPlatform',
@@ -419,6 +434,7 @@ const OrderMonitor = (props) => {
           ],
           null,
         );
+
         const potLabel = _.isNull(cookerId) ? null : ` P${cookerId + 1}`;
         return (
           <StyledCell isCancel={isCancel} style={{ width: 50 }}>

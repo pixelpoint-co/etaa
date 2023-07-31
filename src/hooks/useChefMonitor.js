@@ -61,7 +61,13 @@ const useChefMonitor = () => {
     },
     [],
   );
-  console.log(messageEvents);
-  return { eKQueue: messageEvents };
+  const chefMonitorPotList = _.groupBy(
+    messageEvents.completedJobList,
+    (jb) => jb.cookerId,
+  );
+  return {
+    eKQueue: messageEvents,
+    chefMonitorPotList,
+  };
 };
 export default useChefMonitor;

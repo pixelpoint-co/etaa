@@ -162,6 +162,7 @@ const GatesMain = (props) => {
     potMonitoringData,
     chefMonitoringData,
     cherMonitorPot,
+    chefMonitorPotList,
   } = potController;
   const {
     data,
@@ -169,6 +170,8 @@ const GatesMain = (props) => {
   } = useOrderData({
     orderRefetchTime,
     chefMonitoringData,
+    cherMonitorPot,
+    chefMonitorPotList,
     orderKitchenRefetchTime,
   });
   const [
@@ -267,6 +270,9 @@ const GatesMain = (props) => {
         <BodyColumn flex={0} shrink={0} grow={0} basis={710} direction="column">
           <OrderMonitor
             pickCellRenderers={(cellRenderers) => cellRenderers.filter(({ dataIndex }) => [
+              // 'id',
+              // 'okId',
+              // 'orderId',
               'dateTimeISO',
               'channelNo',
               'orderPlatform',
@@ -312,7 +318,7 @@ const GatesMain = (props) => {
         backdrop={false}
         onHide={() => setOrderMonitorVisible(false)}
         style={{
-          width: '805px',
+          width: '852px',
           marginTop: '94px',
           marginBottom: '14px',
           overflow: 'auto',

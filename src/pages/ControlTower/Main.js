@@ -24,6 +24,7 @@ import PotUnit from '../../components/organisms/PotUnit';
 import ControlMonitor from '../../containers/ControlMonitor';
 import Link from '../../components/atoms/Link';
 import OrderMonitor from '../../containers/OrderMonitor';
+import useChefMonitor from '../../hooks/useChefMonitor';
 
 const Wrapper = styled(Flex)`
   flex-direction: row;
@@ -50,6 +51,7 @@ const PotCardContainer = styled(Link)`
 
 const ControlTowerMain = (props) => {
   const location = useLocation();
+  const { eKQueue } = useChefMonitor();
 
   const { ...others } = props;
 

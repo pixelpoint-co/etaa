@@ -116,17 +116,17 @@ const DiffCell = styled(StyledCell)`
 
 const orderButtonProps = {
   ORDER_IN: { // 주문 승인 대기
-    label: '대기',
+    label: '승인대기',
     disabled: true,
     palette: 'green',
   },
   ORDER_ACCEPTED: { // 주문 승인
-    label: '접수',
+    label: '주문접수',
     palette: 'green',
     disabled: false,
   },
   ORDER_WAITING: { // 조리 대기
-    label: '준비',
+    label: '조리준비',
     disabled: false,
     palette: 'yellow',
   },

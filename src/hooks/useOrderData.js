@@ -57,7 +57,12 @@ export default (options = {}) => {
     orderKitchenRefetchTime = 0,
     orderRefetchTime = 0,
     chefMonitoringData,
+    chefMonitorPotList,
   } = options;
+  console.log(
+    'chefMonitorPotList',
+    chefMonitorPotList,
+  );
   const { data: recipeList } = useRecipeData();
   const {
     loading,
@@ -213,10 +218,27 @@ export default (options = {}) => {
           recipeList,
           { id: orderKitchen?.recipeId },
         );
-        const okStatus = orderKitchen?.status === 'ORDER_WAITING' && !matchingPot
+        const matchingPotIsFirst = matchingPot?.id === _.get(
+          chefMonitorPotList,
+          [
+            matchingPot?.cookerId,
+            0,
+            'id',
+          ],
+        );
+        const okStatus = (orderKitchen?.status === 'ORDER_WAITING' && !matchingPotIsFirst)
           ? 'ORDER_ACCEPTED'
           : orderKitchen?.status;
-        console.log(matchingPot);
+        if (orderKitchen?.id === 8862) {
+          console.log({
+            orderKitchen,
+            matchingPot,
+            okStatus,
+            chefMonitoringData,
+            matchingPotIsFirst,
+            chefMonitorPotList,
+          });
+        }
         return {
           ...oi,
           ...withoutOrderList,
@@ -227,6 +249,7 @@ export default (options = {}) => {
             status: okStatus,
           } : null,
           cookStation: orderKitchen ? 'EK' : '-',
+          okId: orderKitchen?.id,
           id: uuidv4(),
           lineIndex,
           pot: matchingPot,

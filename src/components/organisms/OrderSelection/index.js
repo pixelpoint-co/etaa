@@ -92,7 +92,7 @@ const orderButtonProps = {
   },
   ORDER_COOKING: { // 조리중
     label: '조리',
-    disabled: true,
+    disabled: false,
     palette: 'red',
   },
   ORDER_COOKED: { // 조리끝

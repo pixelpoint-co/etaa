@@ -188,7 +188,10 @@ const usePotController = (cookerId, opts = {}) => {
   ] = useLazyQuery(
     SUBSCRIPTION_QUERY,
   );
-  const { eKQueue } = useChefMonitor();
+  const {
+    eKQueue,
+    chefMonitorPotList,
+  } = useChefMonitor();
   console.log(eKQueue);
   // const chefPotMonitoring
   const handleSubscriptionData = (data) => {
@@ -819,16 +822,19 @@ const usePotController = (cookerId, opts = {}) => {
       selectedRecipeId,
     ],
   );
+
   console.log(
     'selectedRecipe ',
-    selectedRecipe,
-    orderKitchenRefetchTime,
-    orderRefetchTime,
+    {
+
+      selectedRecipe,
+      orderKitchenRefetchTime,
+      orderRefetchTime,
+      completedJobList: eKQueue.completedJobList,
+      chefMonitorPotList,
+    },
   );
-  const chefMonitorPot = _.find(
-    eKQueue.completedJobList,
-    { cookerId },
-  );
+  const chefMonitorPot = chefMonitorPotList[cookerId];
   return {
     cookerMonitoringError,
     cookerMonitoringData,
@@ -851,6 +857,7 @@ const usePotController = (cookerId, opts = {}) => {
     potMonitoringData,
     chefMonitoringData: eKQueue.completedJobList,
     chefMonitorPot,
+    chefMonitorPotList,
     recipe: recipeMemo, // selected recipe for current cook
     currentRecipeId: get(
       recipe,
