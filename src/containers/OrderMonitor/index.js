@@ -46,6 +46,7 @@ import Tab from '../../components/molecules/Tab';
 import useChefMonitor from '../../hooks/useChefMonitor';
 import DiffText from '../../components/molecules/DiffText';
 import Tag from '../../components/atoms/Tag';
+import usePotController from '../../hooks/usePotController';
 
 const Wrapper = styled(Flex)`
   flex: 1;
@@ -137,6 +138,9 @@ const OrderMonitor = (props) => {
     selectedTab,
     setSelectedTab,
   ] = useState('all');
+  const potController = usePotController(0);
+  const { orderKitchenRefetchTime } = potController;
+
   const {
     // data,
     // count,
@@ -147,11 +151,13 @@ const OrderMonitor = (props) => {
     error,
     refetch,
   } = useOrderData({
-    limit: pageSize,
+    orderKitchenRefetchTime,
     chefMonitorPotList,
     chefMonitoringData: eKQueue?.completedJobList,
+    limit: pageSize,
     offset: (queryParams.pageSize * (queryParams.page - 1)) || 0,
   });
+
   const orderPlatformToTab = {
     배민: [
       'delivery',

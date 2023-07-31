@@ -25,6 +25,7 @@ import ControlMonitor from '../../containers/ControlMonitor';
 import Link from '../../components/atoms/Link';
 import OrderMonitor from '../../containers/OrderMonitor';
 import useChefMonitor from '../../hooks/useChefMonitor';
+import usePotController from '../../hooks/usePotController';
 
 const Wrapper = styled(Flex)`
   flex-direction: row;
@@ -59,7 +60,17 @@ const ControlTowerMain = (props) => {
     <Wrapper>
       <ControlMonitorContainer>
         <OrderMonitor
-          pickCellRenderers={(cellRenderers) => cellRenderers.filter((cr) => ['action'].indexOf(cr.dataIndex) < 0)}
+          pickCellRenderers={(cellRenderers) => cellRenderers.filter(({ dataIndex }) => [
+            'dateTimeISO',
+            'channelNo',
+            'orderPlatform',
+            'outsideId',
+            'item',
+            'qty',
+            'status',
+            'orderKitchen',
+            'cookStation',
+          ].indexOf(dataIndex) > -1)}
         />
       </ControlMonitorContainer>
     </Wrapper>
