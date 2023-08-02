@@ -19,6 +19,7 @@ import _, {
 
 import {
   atom, useAtom,
+  setAtom,
 } from 'jotai';
 import {
   loadable, selectAtom,
@@ -28,22 +29,43 @@ import useRecipeData from './useRecipeData';
 const pageSizeAtom = atom(50);
 const currentPageAtom = atom(0);
 const orderDataLastCalledAtom = atom(0);
-const orderDataAtom = atom(async (getter) => {
-  const pageSize = getter(pageSizeAtom);
-  const currentPage = getter(currentPageAtom);
-  const lastCalled = getter(orderDataLastCalledAtom);
-  console.log('CALLING');
+const orderDataLastReceivedAtom = atom(0);
+const orderDataAtom = atom(
+  async (getter) => {
+    const pageSize = getter(pageSizeAtom);
+    const currentPage = getter(currentPageAtom);
+    const lastCalled = getter(orderDataLastCalledAtom);
+    console.log('CALLING KOPO');
+    const response = await global.api.get(
+      '/order',
+      {
+        params: {
+          limit: pageSize,
+          offset: pageSize * currentPage,
+        },
+      },
+    );
+    return response;
+  },
+);
+const callApi = async () => {
   const response = await global.api.get(
     '/order',
     {
       params: {
-        limit: pageSize,
-        offset: pageSize * currentPage,
+        limit: 50,
+        offset: 0,
       },
     },
   );
   return response;
-});
+};
+const orderLastUpdatedAtom = atom(
+  (getter) => {
+    const data = getter(orderDataAtom);
+    if (data) return Date.now();
+  },
+);
 const loadableOrderDataAtom = loadable(orderDataAtom);
 
 export default (options = {}) => {
@@ -53,55 +75,59 @@ export default (options = {}) => {
     chefMonitoringData,
     chefMonitorPotList,
   } = options;
-  const [value] = useAtom(loadableOrderDataAtom);
   const [
-    orderDataLastCalled,
-    setOrderDataLastCalled,
-  ] = useAtom(orderDataLastCalledAtom);
-  const { data: orderData } = value;
+    orderList,
+    setOrderList,
+  ] = useState([]);
 
   const { data: recipeList } = useRecipeData();
-  useEffect(
-    () => {
-      setOrderDataLastCalled(Date.now());
+  const fetchOrder = useCallback(
+    async () => {
+      const response = await global.api.get(
+        '/order',
+        {
+          params: {
+            limit: 50,
+            offset: 0,
+          },
+        },
+      );
+      const orderListRaw = get(
+        response,
+        ['data'],
+        [],
+      ).map((order) => ({
+        ...order,
+        ...get(
+          order,
+          [
+            'detail',
+            'receipt',
+          ],
+          {},
+        ),
+      }));
+      console.log({
+        response,
+        orderListRaw,
+      });
+      console.log(orderListRaw);
+
+      setOrderList(orderListRaw);
     },
-    [
-      setOrderDataLastCalled,
-      orderRefetchTime,
-    ],
+    [],
   );
   useEffect(
     () => {
-      setOrderDataLastCalled(Date.now());
+      fetchOrder();
     },
     [
-      setOrderDataLastCalled,
+      fetchOrder,
+      orderRefetchTime,
       orderKitchenRefetchTime,
     ],
   );
 
-  const orderList = get(
-    orderData,
-    ['data'],
-    [],
-  )
-    .map((order) => ({
-      ...order,
-      ...get(
-        order,
-        [
-          'detail',
-          'receipt',
-        ],
-        {},
-      ),
-    }));
-
-  console.log(
-    'KOPO',
-    orderData,
-  );
-  const checkIsEKMenu = (orderItem) => false;
   const checkIsSubMenu = (orderItem) => {
     const name = orderItem.item;
 
