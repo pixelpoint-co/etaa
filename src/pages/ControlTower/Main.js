@@ -34,7 +34,6 @@ const Wrapper = styled(Flex)`
 `;
 
 const ControlMonitorContainer = styled(Card)`
-  flex: 1;
   flex-basis: 640px;
 `;
 const PotGridContainer = styled(Flex)`
@@ -42,6 +41,7 @@ const PotGridContainer = styled(Flex)`
   flex-wrap: wrap;
   flex: 1;
   flex-basis: 640px;
+  align-self: flex-start;
 `;
 const PotCardContainer = styled(Link)`
   display: flex;
@@ -73,6 +73,18 @@ const ControlTowerMain = (props) => {
           ].indexOf(dataIndex) > -1)}
         />
       </ControlMonitorContainer>
+      <PotGridContainer>
+        {_.times(6).map((i) => (
+          <PotCardContainer
+            key={i}
+            href={`${window.origin}/gates/${i + 1}`}
+          >
+            <PotUnit
+              cookerId={i}
+            />
+          </PotCardContainer>
+        ))}
+      </PotGridContainer>
     </Wrapper>
   );
 };
