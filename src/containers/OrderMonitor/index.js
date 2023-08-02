@@ -185,6 +185,7 @@ const OrderMonitor = (props) => {
       'hall',
       'taky',
     ],
+    POS: ['hall'],
   };
   const filteredItemisedOrderList = itemisedOrderList.filter((io) => {
     if (selectedTab === 'all') return true;
