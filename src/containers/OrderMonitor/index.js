@@ -3,48 +3,27 @@ import {
   useCallback,
   useState,
 } from 'react';
-import {
-  Formik, useField, Form,
-} from 'formik';
 
-import {
-  palette, size,
-} from 'styled-theme';
 import styled from 'styled-components';
 import moment from 'moment';
 import _, {
   get,
 } from 'lodash';
-import {
-  gql, useMutation,
-} from '@apollo/client';
 
 import { ifProp } from 'styled-tools';
-import { findAllByDisplayValue } from '@testing-library/react';
 import Flex from '../../components/atoms/Flex';
 import Button from '../../components/atoms/Button';
-import Card from '../../components/atoms/Card';
-import Link from '../../components/atoms/Link';
 import CountDown from '../../components/molecules/CountDown';
-import PurchaseRow from '../../components/organisms/PurchaseRow';
 import AntDTable from '../../components/organisms/AntDTable';
 import Cell from '../../components/atoms/AntDTableCell';
 import Text from '../../components/atoms/P';
-import useInventoryData from '../../hooks/useInventoryData';
 import useQueryParams from '../../hooks/useQueryParams';
-import {
-  formatCurrency,
-  formatNumber,
-} from '../../services/number';
-import useProductData from '../../hooks/useProductData';
 import useOrderData from '../../hooks/useOrderData';
 import SearchBar from '../../components/organisms/SearchBar';
-import useOrderAlert from '../../hooks/useOrderAlert';
 import TooltipMask from '../../components/molecules/TooltipMask';
 import PlatformImage from '../../components/atoms/PlatformImage';
 import Tab from '../../components/molecules/Tab';
 import useChefMonitor from '../../hooks/useChefMonitor';
-import DiffText from '../../components/molecules/DiffText';
 import Tag from '../../components/atoms/Tag';
 import usePotController from '../../hooks/usePotController';
 
@@ -189,15 +168,11 @@ const OrderMonitor = (props) => {
   };
   const filteredItemisedOrderList = itemisedOrderList.filter((io) => {
     if (selectedTab === 'all') return true;
-    console.log(io.orderPlatform);
-    const tabList = orderPlatformToTab[io.orderPlatform];
-    if (tabList == null) { console.log(io.orderPlatform); }
     if (orderPlatformToTab[io.orderPlatform].indexOf(selectedTab) >= 0) return true;
     return false;
   });
   const count = filteredItemisedOrderList.length;
   const { page: currentPage } = queryParams;
-  console.log(filteredItemisedOrderList);
   const onPageChange = useCallback(
     async ({ currentPage: newPage }) => {
       setQueryParams((prev) => ({
@@ -221,10 +196,6 @@ const OrderMonitor = (props) => {
         },
         rowIndex,
       ) => {
-        console.log(
-          data,
-          rest,
-        );
         if (rowIndex !== 0 && lineIndex !== 0) return null;
         const lastFour = `...${data.slice(-4)}`;
         return (
@@ -353,12 +324,6 @@ const OrderMonitor = (props) => {
         return <StyledCell isCancel={isCancel}>{data}</StyledCell>;
       },
     },
-    // {
-    //   title: '조리담당',
-    //   dataIndex: 'cookStation',
-    //   width: 140,
-    //   render: (data, { isCancel }) => <StyledCell isCancel={isCancel}>{data}</StyledCell>,
-    // },
     {
       title: '조리상태',
       dataIndex: 'orderKitchen',
@@ -384,24 +349,7 @@ const OrderMonitor = (props) => {
         } = pot;
         const cookStartTime = name === 'startCook' ? finishedOn : null;
         const completionTimeMs = cookStartTime + (recipeDurationS * 1000);
-        if (row.orderKitchen) {
-          console.log({
-            row,
-            name,
-            finishedOn,
-            now: Date.now(),
-            cookStartTime,
-            completionTimeMs,
-            diff: completionTimeMs - Date.now(),
-          });
-        }
         const showTime = completionTimeMs > Date.now() && data?.status === 'ORDER_COOKING';
-        console.log({
-          completionTimeMs,
-          data,
-          row,
-          sdf: data ? 0 : 1,
-        });
         return (
           <StyledCell isCancel={isCancel} style={{ width: 100 }}>
             {data ? (

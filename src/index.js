@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import {
   Provider,
@@ -152,14 +152,16 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <PersistGate loading="loading" persistor={persistor}>
-        <Router basename={process.env.REACT_APP_BASE_URL || ''}>
-          <ApolloProvider client={client}>
-            <ThemeProvider theme={theme}>
-              <GlobalStyled />
-              <App />
-            </ThemeProvider>
-          </ApolloProvider>
-        </Router>
+        <Suspense fallback="loading">
+          <Router basename={process.env.REACT_APP_BASE_URL || ''}>
+            <ApolloProvider client={client}>
+              <ThemeProvider theme={theme}>
+                <GlobalStyled />
+                <App />
+              </ThemeProvider>
+            </ApolloProvider>
+          </Router>
+        </Suspense>
       </PersistGate>
     </Provider>
   </React.StrictMode>,

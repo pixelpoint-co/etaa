@@ -20,7 +20,9 @@ import _, {
 import {
   atom, useAtom,
 } from 'jotai';
-import { loadable } from 'jotai/utils';
+import {
+  loadable, selectAtom,
+} from 'jotai/utils';
 import useRecipeData from './useRecipeData';
 
 const pageSizeAtom = atom(50);
@@ -51,20 +53,11 @@ export default (options = {}) => {
     chefMonitoringData,
     chefMonitorPotList,
   } = options;
-  console.log(
-    'chefMonitorPotList',
-    chefMonitorPotList,
-  );
   const [value] = useAtom(loadableOrderDataAtom);
   const [
     orderDataLastCalled,
     setOrderDataLastCalled,
   ] = useAtom(orderDataLastCalledAtom);
-  console.log({
-    orderRefetchTime,
-    orderKitchenRefetchTime,
-  });
-  console.log(orderKitchenRefetchTime);
   const { data: orderData } = value;
 
   const { data: recipeList } = useRecipeData();
@@ -196,11 +189,6 @@ export default (options = {}) => {
               return isOrderMatch && isLineMatch;
             },
           );
-          console.log({
-            orderKitchen,
-            oi,
-            matchingOrderKitchen,
-          });
           const matchingPot = _.find(
             chefMonitoringData,
             { orderKitchenId: matchingOrderKitchen?.id },
@@ -256,6 +244,7 @@ export default (options = {}) => {
     orderList,
     itemisedOrderList,
   });
+  console.log('RENDERING');
   return {
     data: orderList,
     itemisedOrderList,
