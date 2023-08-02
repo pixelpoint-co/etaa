@@ -189,6 +189,7 @@ const OrderMonitor = (props) => {
   };
   const filteredItemisedOrderList = itemisedOrderList.filter((io) => {
     if (selectedTab === 'all') return true;
+    console.log(io.orderPlatform);
     const tabList = orderPlatformToTab[io.orderPlatform];
     if (tabList == null) { console.log(io.orderPlatform); }
     if (orderPlatformToTab[io.orderPlatform].indexOf(selectedTab) >= 0) return true;
@@ -216,9 +217,14 @@ const OrderMonitor = (props) => {
         {
           isCancel,
           lineIndex,
+          ...rest
         },
         rowIndex,
       ) => {
+        console.log(
+          data,
+          rest,
+        );
         if (rowIndex !== 0 && lineIndex !== 0) return null;
         const lastFour = `...${data.slice(-4)}`;
         return (
@@ -389,10 +395,12 @@ const OrderMonitor = (props) => {
             diff: completionTimeMs - Date.now(),
           });
         }
-        const showTime = completionTimeMs > Date.now() && data.status === 'ORDER_COOKING';
+        const showTime = completionTimeMs > Date.now() && data?.status === 'ORDER_COOKING';
         console.log({
           completionTimeMs,
           data,
+          row,
+          sdf: data ? 0 : 1,
         });
         return (
           <StyledCell isCancel={isCancel} style={{ width: 100 }}>
@@ -400,14 +408,14 @@ const OrderMonitor = (props) => {
               <StyledTag
                 icon={false}
                 themeProps={{
-                  palette: orderButtonProps[data.status].palette,
+                  palette: orderButtonProps[data.status]?.palette,
                   themeType: 'light',
                 }}
                 label={(
                   <Text
                     color="white"
                   >
-                    {orderButtonProps[data.status].label}
+                    {orderButtonProps[data.status]?.label}
                     {showTime ? (
                       <>
                         {' - '}

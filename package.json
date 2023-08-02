@@ -20,6 +20,7 @@
     "graphql": "16.6.0",
     "hex-to-rgba": "2.0.1",
     "isomorphic-fetch": "3.0.0",
+    "jotai": "2.2.3",
     "lodash": "4.17.21",
     "moment": "2.29.4",
     "moment-timezone": "0.5.43",

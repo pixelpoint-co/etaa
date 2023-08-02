@@ -15,17 +15,11 @@ import {
   palette,
 } from 'styled-tools';
 
-import moment from 'moment';
 import Flex from '../../atoms/Flex';
 import Button from '../../atoms/Button';
 import Heading from '../../atoms/Heading';
 import Card from '../../atoms/Card';
 import AntDList from '../AntDList';
-
-import Divider from '../../atoms/Divider';
-
-import usePotController from '../../../hooks/usePotController';
-import useOrderData from '../../../hooks/useOrderData';
 
 const List = styled(AntDList)`
     .ant-list-header {

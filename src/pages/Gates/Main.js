@@ -128,10 +128,10 @@ const GatesMain = (props) => {
   const { id } = useParams();
   const location = useLocation();
   const cookerId = id - 1;
-  const [
-    orderMonitorVisible,
-    setOrderMonitorVisible,
-  ] = useState(false);
+  // const [
+  //   orderMonitorVisible,
+  //   setOrderMonitorVisible,
+  // ] = useState(false);
   const {
     queryParams,
     setQueryParams,
@@ -174,6 +174,7 @@ const GatesMain = (props) => {
     chefMonitorPotList,
     orderKitchenRefetchTime,
   });
+
   const [
     needTaste,
     setNeedTaste,
@@ -229,9 +230,19 @@ const GatesMain = (props) => {
   if (lastActionType === 'abort') recipeName = '정지중';
   if (lastActionType === 'machine') recipeName = lastActionId;
   const selectedOrder = data.find((o) => Number(o.id) === Number(selectedOrderId)) || {};
+  console.log({
+    selectedOrderId,
+    data,
+    selectedOrder,
+  });
   const selectedItemisedOrder = itemisedOrderList
     .filter((io) => io.channelNo === selectedOrder.channelNo);
-
+  console.log({
+    itemisedOrderList,
+    selectedOrder,
+    selectedOrderId,
+    selectedItemisedOrder,
+  });
   const handleCountUpdate = (count) => {
     if (count && count < 90 && isCooking) {
       return setNeedTaste(true);
@@ -284,7 +295,7 @@ const GatesMain = (props) => {
               'cookStation',
               'action',
             ].indexOf(dataIndex) > -1)}
-            onClickOrderItem={() => setOrderMonitorVisible(true)}
+            // onClickOrderItem={() => setOrderMonitorVisible(true)}
             onClickOrder={(order) => {
               console.log(
                 '###',
@@ -294,7 +305,7 @@ const GatesMain = (props) => {
                 ...old,
                 orderId: order.orderId,
               }));
-              setOrderMonitorVisible(true);
+              // setOrderMonitorVisible(true);
             }}
             selectedChannelNo={selectedOrder.channelNo}
             pageSize={8}
@@ -313,10 +324,13 @@ const GatesMain = (props) => {
         </BodyColumn>
       </BodySection>
       <COffcanvas
-        visible={orderMonitorVisible}
+        visible={queryParams.orderId > 0}
         placement="start"
         backdrop={false}
-        onHide={() => setOrderMonitorVisible(false)}
+        onHide={() => setQueryParams(({
+          orderId,
+          ...rest
+        }) => rest)}
         style={{
           width: '852px',
           marginTop: '94px',
@@ -332,7 +346,10 @@ const GatesMain = (props) => {
               order={selectedOrder}
               orderItems={selectedItemisedOrder}
               chefMonitoringData={chefMonitoringData}
-              onClickOrderChange={() => setOrderMonitorVisible(false)}
+              onClickOrderChange={() => setQueryParams(({
+                orderId,
+                ...rest
+              }) => rest)}
               onClickOrderPrepare={({ orderKitchen }) => {
                 selectRecipe(
                   orderKitchen.recipeId,

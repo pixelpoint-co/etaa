@@ -2,6 +2,7 @@ import {
   useEffect,
   useCallback,
   useState,
+  useMemo,
 } from 'react';
 import moment from 'moment';
 import {
@@ -16,41 +17,32 @@ import _, {
   uniqBy,
 } from 'lodash';
 
+import {
+  atom, useAtom,
+} from 'jotai';
+import { loadable } from 'jotai/utils';
 import useRecipeData from './useRecipeData';
 
-const GET_ORDER = gql`
-  query orders($id: Int, $limit: Int) {
-    orders(id: $id, limit: $limit) {
-      id
-      outsideId
-      created
-      description
-      detail
-      status
-    }
-  }
-`;
-
-const GET_ORDER_KITCHEN = gql`
-  query orderKitchen($limit: Int) {
-    orderKitchen(limit: $limit) {
-      id
-      orderId
-      recipeId
-      status
-      detail
-    }
-  }
-`;
-
-const waitMs = async (ms = 0) => new Promise((resolve /* reject */) => {
-  setTimeout(
-    () => {
-      resolve();
+const pageSizeAtom = atom(50);
+const currentPageAtom = atom(0);
+const orderDataLastCalledAtom = atom(0);
+const orderDataAtom = atom(async (getter) => {
+  const pageSize = getter(pageSizeAtom);
+  const currentPage = getter(currentPageAtom);
+  const lastCalled = getter(orderDataLastCalledAtom);
+  console.log('CALLING');
+  const response = await global.api.get(
+    '/order',
+    {
+      params: {
+        limit: pageSize,
+        offset: pageSize * currentPage,
+      },
     },
-    ms,
   );
+  return response;
 });
+const loadableOrderDataAtom = loadable(orderDataAtom);
 
 export default (options = {}) => {
   const {
@@ -63,67 +55,44 @@ export default (options = {}) => {
     'chefMonitorPotList',
     chefMonitorPotList,
   );
+  const [value] = useAtom(loadableOrderDataAtom);
+  const [
+    orderDataLastCalled,
+    setOrderDataLastCalled,
+  ] = useAtom(orderDataLastCalledAtom);
+  console.log({
+    orderRefetchTime,
+    orderKitchenRefetchTime,
+  });
+  console.log(orderKitchenRefetchTime);
+  const { data: orderData } = value;
+
   const { data: recipeList } = useRecipeData();
-  const {
-    loading,
-    error,
-    data,
-    refetch,
-  } = useQuery(
-    GET_ORDER,
-    {
-      variables: {
-        // createdGte: moment()
-        //   .startOf('day')
-        //   .subtract(
-        //     168,
-        //     'hours',
-        //   )
-        //   .add(
-        //     10,
-        //     'hours',
-        //   )
-        //   .toDate(),
-        limit: 200,
-      },
-    },
-  );
-  const {
-    loading: orderKitchenLoading,
-    error: orderKitchenError,
-    data: orderKitchenData,
-    refetch: fetchOrderKitchen,
-  } = useQuery(
-    GET_ORDER_KITCHEN,
-    { variables: { limit: 200 } },
-  );
   useEffect(
     () => {
-      refetch();
+      setOrderDataLastCalled(Date.now());
     },
     [
-      refetch,
+      setOrderDataLastCalled,
       orderRefetchTime,
     ],
   );
   useEffect(
     () => {
-      fetchOrderKitchen();
+      setOrderDataLastCalled(Date.now());
     },
     [
-      fetchOrderKitchen,
+      setOrderDataLastCalled,
       orderKitchenRefetchTime,
     ],
   );
 
-  const orders = get(
-    data,
-    'orders',
+  const orderList = get(
+    orderData,
+    ['data'],
     [],
-  );
-
-  const orderList = uniqBy(
-    orders.map((order) => ({
+  )
+    .map((order) => ({
       ...order,
       ...get(
         order,
@@ -133,10 +102,12 @@ export default (options = {}) => {
         ],
         {},
       ),
-    })),
-    'channelNo',
-  );
+    }));
 
+  console.log(
+    'KOPO',
+    orderData,
+  );
   const checkIsEKMenu = (orderItem) => false;
   const checkIsSubMenu = (orderItem) => {
     const name = orderItem.item;
@@ -185,90 +156,109 @@ export default (options = {}) => {
     );
     return isSubMenu;
   };
-
-  const itemisedOrderList = orderList.reduce(
-    (ac, order) => {
-      const {
-        orderList: orderItems,
-        ...withoutOrderList
-      } = order;
-      // const group
-      const populatedOrderItems = orderItems.map((oi, lineIndex) => {
-        const orderKitchen = _.find(
-          get(
-            orderKitchenData,
-            'orderKitchen',
-            [],
-          ),
-          (ok) => {
-            const isOrderMatch = ok.orderId === withoutOrderList.id;
-            const isLineMatch = get(
-              ok,
-              'detail.menu.item',
-            ) === oi.item;
-
-            return isOrderMatch && isLineMatch;
-          },
-        );
-        const matchingPot = _.find(
-          chefMonitoringData,
-          { orderKitchenId: orderKitchen?.id },
-        );
-        const recipe = _.find(
-          recipeList,
-          { id: orderKitchen?.recipeId },
-        );
-        const matchingPotIsFirst = matchingPot?.id === _.get(
-          chefMonitorPotList,
+  console.log(orderList);
+  const itemisedOrderList = useMemo(
+    () => orderList.reduce(
+      (ac, order) => {
+        const {
+          orderKitchen,
+          ...withoutOrderList
+        } = order;
+        const receipt = get(
+          order,
           [
-            matchingPot?.cookerId,
-            0,
-            'id',
+            'detail',
+            'receipt',
           ],
+          {},
         );
-        const okStatus = (orderKitchen?.status === 'ORDER_WAITING' && !matchingPotIsFirst)
-          ? 'ORDER_ACCEPTED'
-          : orderKitchen?.status;
-        if (orderKitchen?.id === 8862) {
+        const orderItems = get(
+          receipt,
+          ['orderList'],
+          [],
+        );
+        // const group
+        // const orderKitchenList =
+        const populatedOrderItems = orderItems.map((oi, lineIndex) => {
+          const matchingOrderKitchen = _.find(
+            orderKitchen,
+            (ok) => {
+              const isOrderMatch = ok.orderId === withoutOrderList.id;
+              const isLineMatch = get(
+                ok,
+                [
+                  'detail',
+                  'menu',
+                  'item',
+                ],
+              ) === oi.item;
+
+              return isOrderMatch && isLineMatch;
+            },
+          );
           console.log({
             orderKitchen,
-            matchingPot,
-            okStatus,
-            chefMonitoringData,
-            matchingPotIsFirst,
-            chefMonitorPotList,
+            oi,
+            matchingOrderKitchen,
           });
-        }
-        return {
-          ...oi,
-          ...withoutOrderList,
-          isSubMenu: checkIsSubMenu(oi),
-          orderId: withoutOrderList.id,
-          orderKitchen: orderKitchen ? {
-            ...orderKitchen,
-            status: okStatus,
-          } : null,
-          cookStation: orderKitchen ? 'EK' : '-',
-          okId: orderKitchen?.id,
-          id: uuidv4(),
-          lineIndex,
-          pot: matchingPot,
-          recipe,
-        };
-      });
-      return [
-        ...ac,
-        ...populatedOrderItems,
-      ];
-    },
-    [],
+          const matchingPot = _.find(
+            chefMonitoringData,
+            { orderKitchenId: matchingOrderKitchen?.id },
+          );
+          const recipe = _.find(
+            recipeList,
+            { id: matchingOrderKitchen?.recipeId },
+          );
+          const matchingPotIsFirst = matchingPot?.id === _.get(
+            chefMonitorPotList,
+            [
+              matchingPot?.cookerId,
+              0,
+              'id',
+            ],
+          );
+          const okStatus = (matchingOrderKitchen?.status === 'ORDER_WAITING' && !matchingPotIsFirst)
+            ? 'ORDER_ACCEPTED'
+            : matchingOrderKitchen?.status;
+          return {
+            ...oi,
+            ...receipt,
+            ...withoutOrderList,
+            isSubMenu: checkIsSubMenu(oi),
+            orderId: withoutOrderList.id,
+            orderKitchen: matchingOrderKitchen ? {
+              ...matchingOrderKitchen,
+              status: okStatus,
+            } : null,
+            cookStation: matchingOrderKitchen ? 'EK' : '-',
+            okId: matchingOrderKitchen?.id,
+            id: uuidv4(),
+            lineIndex,
+            pot: matchingPot,
+            recipe,
+          };
+        });
+        return [
+          ...ac,
+          ...populatedOrderItems,
+        ];
+      },
+      [],
+    ),
+    [
+      chefMonitorPotList,
+      chefMonitoringData,
+      orderList,
+      recipeList,
+    ],
   );
+  console.log({
+    orderList,
+    itemisedOrderList,
+  });
   return {
     data: orderList,
     itemisedOrderList,
-    loading,
-    error,
-    refetch,
     recipeList,
   };
 };
