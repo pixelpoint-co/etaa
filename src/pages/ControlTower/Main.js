@@ -60,6 +60,7 @@ const ControlTowerMain = (props) => {
     <Wrapper>
       <ControlMonitorContainer>
         <OrderMonitor
+          pageSize={12}
           pickCellRenderers={(cellRenderers) => cellRenderers.filter(({ dataIndex }) => [
             'dateTimeISO',
             'channelNo',
