@@ -458,7 +458,7 @@ const usePotController = (cookerId, opts = {}) => {
   );
   const { recipe } = potMonitoringData;
   const inductionPowerToTemp = (power) => {
-    const perPower = Math.ceil(100 / 3);
+    const perPower = Math.ceil(100 / 7);
     return Math.min(
       perPower * power,
       100,
