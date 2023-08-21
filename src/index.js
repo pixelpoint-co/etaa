@@ -3,6 +3,10 @@ import ReactDOM from 'react-dom/client';
 import {
   Provider,
 } from 'react-redux';
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
 import Modal from 'react-modal';
 import {
   toast,
@@ -62,6 +66,8 @@ import store, {
   persistor,
 } from './store';
 import Button from './components/atoms/Button';
+
+const queryClient = new QueryClient();
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -152,18 +158,21 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <PersistGate loading="loading" persistor={persistor}>
-        <Suspense fallback="loading">
-          <Router basename={process.env.REACT_APP_BASE_URL || ''}>
-            <ApolloProvider client={client}>
-              <ThemeProvider theme={theme}>
-                <GlobalStyled />
-                <App />
-              </ThemeProvider>
-            </ApolloProvider>
-          </Router>
-        </Suspense>
+        <QueryClientProvider client={queryClient}>
+          <Suspense fallback="loading">
+            <Router basename={process.env.REACT_APP_BASE_URL || ''}>
+              <ApolloProvider client={client}>
+                <ThemeProvider theme={theme}>
+                  <GlobalStyled />
+                  <App />
+                </ThemeProvider>
+              </ApolloProvider>
+            </Router>
+          </Suspense>
+        </QueryClientProvider>
       </PersistGate>
     </Provider>
+
   </React.StrictMode>,
 );
 

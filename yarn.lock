@@ -3932,6 +3932,19 @@
   dependencies:
     "defer-to-connect" "^2.0.0"
 
+"@tanstack/query-core@4.32.1":
+  "integrity" "sha512-VEAGHboOFWN/bvf/7cCoeLQfld0AA8n0V/kfc77W+FvxnnSwJufEh6gfjqpX5bRE/DEYfYDYdNtuL3KM+lIs8Q=="
+  "resolved" "https://registry.npmjs.org/@tanstack/query-core/-/query-core-4.32.1.tgz"
+  "version" "4.32.1"
+
+"@tanstack/react-query@4.32.1":
+  "integrity" "sha512-lPTfOq6bR6DorPaS018gTMd3zs8r06tlERiVY6BRP9SnDkkl4ckqeANava/jPLWrSZP+EA15loQUTmvZs6k2GA=="
+  "resolved" "https://registry.npmjs.org/@tanstack/react-query/-/react-query-4.32.1.tgz"
+  "version" "4.32.1"
+  dependencies:
+    "@tanstack/query-core" "4.32.1"
+    "use-sync-external-store" "^1.2.0"
+
 "@testing-library/dom@^8.3.0", "@testing-library/dom@^8.5.0", "@testing-library/dom@>=7.21.4":
   "integrity" "sha512-9VHgfIatKNXQNaZTtLnalIy0jNZzY35a4S3oi08YAt9Hv1VsfZ/DfA45lM8D/UhtHBGJ4/lGwp0PZkVndRkoOQ=="
   "resolved" "https://registry.npmjs.org/@testing-library/dom/-/dom-8.13.0.tgz"
@@ -16070,7 +16083,7 @@
   "resolved" "https://registry.npmjs.org/react-native-gradle-plugin/-/react-native-gradle-plugin-0.71.18.tgz"
   "version" "0.71.18"
 
-"react-native@>=0.58", "react-native@>=0.59", "react-native@>=0.64":
+"react-native@*", "react-native@>=0.58", "react-native@>=0.59", "react-native@>=0.64":
   "integrity" "sha512-ftMAuhpgTkbHU9brrqsEyxcNrpYvXKeATY+if22Nfhhg1zW+6wn95w9otwTnA3xHkljPCbng8mUhmmERjGEl7g=="
   "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.71.8.tgz"
   "version" "0.71.8"
@@ -19205,7 +19218,7 @@
   "resolved" "https://registry.npmjs.org/use-isomorphic-layout-effect/-/use-isomorphic-layout-effect-1.1.2.tgz"
   "version" "1.1.2"
 
-"use-sync-external-store@^1.0.0", "use-sync-external-store@1.2.0":
+"use-sync-external-store@^1.0.0", "use-sync-external-store@^1.2.0", "use-sync-external-store@1.2.0":
   "integrity" "sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA=="
   "resolved" "https://registry.npmjs.org/use-sync-external-store/-/use-sync-external-store-1.2.0.tgz"
   "version" "1.2.0"

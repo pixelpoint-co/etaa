@@ -8,9 +8,14 @@ import moment from 'moment';
 import {
   v4 as uuidv4,
 } from 'uuid';
+
 import {
-  gql, useQuery,
-} from '@apollo/client';
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
 
 import _, {
   get,
@@ -68,6 +73,25 @@ const orderLastUpdatedAtom = atom(
 );
 const loadableOrderDataAtom = loadable(orderDataAtom);
 
+const orderQueryFn = ({ queryKey }) => {
+  const [
+    _key,
+    {
+      pageSize,
+      currentPage,
+    },
+  ] = queryKey;
+  return global.api.get(
+    '/order',
+    {
+      params: {
+        limit: pageSize,
+        offset: pageSize * currentPage,
+      },
+    },
+  );
+};
+
 export default (options = {}) => {
   const {
     orderKitchenRefetchTime = 0,
@@ -75,58 +99,72 @@ export default (options = {}) => {
     chefMonitoringData,
     chefMonitorPotList,
   } = options;
-  const [
-    orderList,
-    setOrderList,
-  ] = useState([]);
+  // const [
+  //   orderList,
+  //   setOrderList,
+  // ] = useState([]);
 
   const { data: recipeList } = useRecipeData();
-  const fetchOrder = useCallback(
-    async () => {
-      const response = await global.api.get(
-        '/order',
-        {
-          params: {
-            limit: 50,
-            offset: 0,
-          },
-        },
-      );
-      const orderListRaw = get(
-        response,
-        ['data'],
-        [],
-      ).map((order) => ({
-        ...order,
-        ...get(
-          order,
-          [
-            'detail',
-            'receipt',
-          ],
-          {},
-        ),
-      }));
-      console.log({
-        response,
-        orderListRaw,
-      });
-      console.log(orderListRaw);
+  // const fetchOrder = useCallback(
+  //   async () => {
+  //     const response = await global.api.get(
+  //       '/order',
+  //       {
+  //         params: {
+  //           limit: 50,
+  //           offset: 0,
+  //         },
+  //       },
+  //     );
+  //     const orderListRaw = get(
+  //       response,
+  //       ['data'],
+  //       [],
+  //     ).map((order) => ({
+  //       ...order,
+  //       ...get(
+  //         order,
+  //         [
+  //           'detail',
+  //           'receipt',
+  //         ],
+  //         {},
+  //       ),
+  //     }));
+  //     console.log({
+  //       response,
+  //       orderListRaw,
+  //     });
+  //     console.log(orderListRaw);
 
-      setOrderList(orderListRaw);
-    },
-    [],
-  );
-  useEffect(
-    () => {
-      fetchOrder();
-    },
-    [
-      fetchOrder,
-      orderRefetchTime,
-      orderKitchenRefetchTime,
+  //     setOrderList(orderListRaw);
+  //   },
+  //   [],
+  // );
+  const getOrderDataQuery = useQuery({
+    queryKey: [
+      'order',
+      {
+        pageSize: 50,
+        currentPage: 0,
+        orderRefetchTime,
+        orderKitchenRefetchTime,
+      },
     ],
-  );
+    queryFn: orderQueryFn,
+  });
+  const { data } = getOrderDataQuery;
+  console.log(data);
+  // useEffect(
+  //   () => {
+  //     fetchOrder();
+  //   },
+  //   [
+  //     fetchOrder,
+  //     orderRefetchTime,
+  //     orderKitchenRefetchTime,
+  //   ],
+  // );
 
   const checkIsSubMenu = (orderItem) => {
     const name = orderItem.item;
