@@ -6,7 +6,7 @@ export default (options = { }) => {
     const [_key] = queryKey;
     return global.api.get(
       '/recipe',
-      { params: {} },
+      { params: { limit: 100 } },
     );
   };
   const getRecipeDataQuery = useQuery({
