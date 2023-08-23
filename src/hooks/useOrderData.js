@@ -99,48 +99,48 @@ export default (options = {}) => {
     chefMonitoringData,
     chefMonitorPotList,
   } = options;
-  // const [
-  //   orderList,
-  //   setOrderList,
-  // ] = useState([]);
+  const [
+    orderList,
+    setOrderList,
+  ] = useState([]);
 
   const { data: recipeList } = useRecipeData();
-  // const fetchOrder = useCallback(
-  //   async () => {
-  //     const response = await global.api.get(
-  //       '/order',
-  //       {
-  //         params: {
-  //           limit: 50,
-  //           offset: 0,
-  //         },
-  //       },
-  //     );
-  //     const orderListRaw = get(
-  //       response,
-  //       ['data'],
-  //       [],
-  //     ).map((order) => ({
-  //       ...order,
-  //       ...get(
-  //         order,
-  //         [
-  //           'detail',
-  //           'receipt',
-  //         ],
-  //         {},
-  //       ),
-  //     }));
-  //     console.log({
-  //       response,
-  //       orderListRaw,
-  //     });
-  //     console.log(orderListRaw);
+  const fetchOrder = useCallback(
+    async () => {
+      const response = await global.api.get(
+        '/order',
+        {
+          params: {
+            limit: 50,
+            offset: 0,
+          },
+        },
+      );
+      const orderListRaw = get(
+        response,
+        ['data'],
+        [],
+      ).map((order) => ({
+        ...order,
+        ...get(
+          order,
+          [
+            'detail',
+            'receipt',
+          ],
+          {},
+        ),
+      }));
+      console.log({
+        response,
+        orderListRaw,
+      });
+      console.log(orderListRaw);
 
-  //     setOrderList(orderListRaw);
-  //   },
-  //   [],
-  // );
+      setOrderList(orderListRaw);
+    },
+    [],
+  );
   const getOrderDataQuery = useQuery({
     queryKey: [
       'order',
@@ -213,7 +213,6 @@ export default (options = {}) => {
     );
     return isSubMenu;
   };
-  console.log(orderList);
   const itemisedOrderList = useMemo(
     () => orderList.reduce(
       (ac, order) => {

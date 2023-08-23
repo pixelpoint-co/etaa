@@ -788,19 +788,14 @@ const usePotController = (cookerId, opts = {}) => {
       recipeId,
       orderKitchenId,
     );
-    // updateOrderKitchenStatus({
-    //   variables: {
-    //     id: orderKitchenId,
-    //     status: 'ORDER_WAITING',
-    //   },
     // });
-    global.api.post(
-      `/cooker/${cookerId}/prep-cook`,
-      {
-        recipeId,
-        orderKitchenId,
-      },
-    );
+    // global.api.post(
+    //   `/cooker/${cookerId}/prep-cook`,
+    //   {
+    //     recipeId,
+    //     orderKitchenId,
+    //   },
+    // );
     setSelectedRecipeId(recipeId);
     setSelectedOrderKitchenId(orderKitchenId);
   };

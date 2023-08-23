@@ -78,7 +78,7 @@ const ControlTowerMain = (props) => {
         {_.times(6).map((i) => (
           <PotCardContainer
             key={i}
-            href={`${window.origin}/gates/${i + 1}`}
+            href={`${window.origin}/controller/${i}`}
           >
             <PotUnit
               cookerId={i}

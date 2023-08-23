@@ -102,12 +102,12 @@ const PotControllerExtension = ({
   menuOptionsOpen,
   onMenuOptionsClose,
   onSelect,
-  prepIngredientAngle,
+  home,
   prepNoodle,
-  prepWashing,
+  prepWash,
   selectRecipe,
   isCooking,
-  rotateStart,
+  spinStart,
   lastActionType,
   lastActionId,
   resetPosition,
@@ -231,9 +231,9 @@ const PotControllerExtension = ({
             </PotControlButtonContainer> */}
             <PotControlButtonContainer>
               <PotControlButton
-                label="각도원점"
+                label="원점정지"
                 onClick={() => {
-                  prepIngredientAngle();
+                  home();
                   onClose();
                 }}
                 disabledTooltip={[isCooking ? '조리중입니다' : null]}
@@ -241,7 +241,7 @@ const PotControllerExtension = ({
               />
             </PotControlButtonContainer>
             <PotControlButtonContainer>
-              <PotControlButton
+              {/* <PotControlButton
                 label="회전원점"
                 hideLabelOnLoading
                 onClick={() => {
@@ -249,7 +249,7 @@ const PotControllerExtension = ({
                   onClose();
                 }}
                 active={lastActionType === 'machine' && lastActionId === '회전원점'}
-              />
+              /> */}
             </PotControlButtonContainer>
 
             <PotControlButtonContainer>
@@ -257,7 +257,7 @@ const PotControllerExtension = ({
                 label="역회전"
                 hideLabelOnLoading
                 onClick={() => {
-                  rotateStart();
+                  spinStart();
                   onClose();
                 }}
                 active={lastActionType === 'machine' && lastActionId === '역회전'}
@@ -267,7 +267,7 @@ const PotControllerExtension = ({
               <PotControlButton
                 label="세척준비"
                 hideLabelOnLoading
-                onClick={prepWashing}
+                onClick={prepWash}
                 active={lastActionType === 'machine' && lastActionId === '세척준비'}
               />
             </PotControlButtonContainer>

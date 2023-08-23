@@ -99,18 +99,18 @@ const PlaygroundMain = (props) => {
   } = props;
 
   const { id } = useParams();
-  const potController = usePotController(0);
-  const [
-    controllerPotIndex,
-    setControllerPotIndex,
-  ] = useState(Number(id));
-  const options = _.times(
-    6,
-    (i) => ({
-      value: i,
-      label: i + 1,
-    }),
-  );
+  const potController = usePotController(id);
+  // const [
+  //   controllerPotIndex,
+  //   setControllerPotIndex,
+  // ] = useState(Number(id));
+  // const options = _.times(
+  //   6,
+  //   (i) => ({
+  //     value: i,
+  //     label: i + 1,
+  //   }),
+  // );
   return (
     <Wrapper>
       <Flex direction="column">

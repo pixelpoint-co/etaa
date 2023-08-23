@@ -1,33 +1,25 @@
-import {
-  gql,
-  useQuery,
-} from '@apollo/client';
-
-const GET_RECIPE = gql`
-  query GetRecipes($tags: [Int]) {
-    recipes(tags: $tags, limit: 100) {
-      id
-      name
-      detail
-      tags
-    }
-  }
-`;
+import { useQuery } from '@tanstack/react-query';
+import _ from 'lodash';
 
 export default (options = { }) => {
-  const nodeQuery = [
-    GET_RECIPE,
-    { variables: { ...options } },
-  ];
-
-  const {
-    loading,
-    error,
-    data,
-  } = useQuery(...nodeQuery);
-  return {
-    data: data?.recipes,
-    loading,
-    error,
+  const recipeQueryFn = ({ queryKey }) => {
+    const [_key] = queryKey;
+    return global.api.get(
+      '/recipe',
+      { params: {} },
+    );
   };
+  const getRecipeDataQuery = useQuery({
+    queryKey: [
+      'recipe',
+      {},
+    ],
+    queryFn: recipeQueryFn,
+  });
+  const { data: responseData } = getRecipeDataQuery;
+  const data = _.get(
+    responseData,
+    ['data'],
+  );
+  return { data };
 };
