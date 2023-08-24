@@ -10,18 +10,20 @@ import {
 } from 'react-tooltip';
 
 import styled from 'styled-components';
+import { prop } from 'styled-tools';
 import Flex from '../../atoms/Flex';
 import Mask from '../../atoms/Mask';
 
 const StyledMask = styled(Mask)`
   background: none;
-  z-index: 3;
+  z-index: ${prop('$zIndex')};
 `;
 
 const TooltipMask = (props) => {
   const {
     visible,
     content,
+    zIndex,
     ...others
   } = props;
 
@@ -37,14 +39,21 @@ const TooltipMask = (props) => {
       data-tooltip-id={id}
       data-tooltip-content={content}
       visible={visible}
+      $zIndex={zIndex}
     >
       <Tooltip id={id} />
     </StyledMask>
   );
 };
 
-TooltipMask.defaultProps = { visible: false };
+TooltipMask.defaultProps = {
+  visible: false,
+  zIndex: 2,
+};
 
-TooltipMask.propTypes = { visible: PropTypes.bool };
+TooltipMask.propTypes = {
+  visible: PropTypes.bool,
+  zIndex: PropTypes.number,
+};
 
 export default TooltipMask;

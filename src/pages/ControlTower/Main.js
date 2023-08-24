@@ -21,11 +21,9 @@ import Card from '../../components/atoms/Card';
 import PageAction from '../../components/organisms/PageAction/index';
 import AntDList from '../../components/organisms/AntDList';
 import PotUnit from '../../components/organisms/PotUnit';
-import ControlMonitor from '../../containers/ControlMonitor';
 import Link from '../../components/atoms/Link';
 import OrderMonitor from '../../containers/OrderMonitor';
 import useChefMonitor from '../../hooks/useChefMonitor';
-import usePotController from '../../hooks/usePotController';
 
 const Wrapper = styled(Flex)`
   flex-direction: row;

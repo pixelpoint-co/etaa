@@ -35,6 +35,8 @@ const PotController = (props) => {
     selectRecipe,
     selectedRecipe,
     selectedRecipeId,
+    currentRecipe,
+    currentRecipeId,
     startCook,
     prepCook,
     isCooking,
@@ -44,8 +46,11 @@ const PotController = (props) => {
     startWash,
     prepWash,
     stopCook,
+    isWashing,
+    recipeRemainingTimeMs,
+    recipeDurationMs,
   } = potController;
-  console.log(selectedRecipe);
+
   const [
     extensionOpen,
     setExtensionOpen,
@@ -121,9 +126,9 @@ const PotController = (props) => {
       </PotControlButtonContainer>
       <PotControlButtonContainer>
         <PotControlButton
-          // duration={(potMonitoringData?.cooking && recipe.id === 21) ? recipeRemainingTimeMs : 0}
-          // totalDuration={(potMonitoringData?.cooking && recipe.id === 21) ? recipeDurationMs : 0}
-          // active={isCooking && recipe.id === 21}
+          duration={(isCooking && currentRecipeId === 21) ? recipeRemainingTimeMs : 0}
+          totalDuration={(isCooking && currentRecipeId === 21) ? recipeDurationMs : 0}
+          active={isCooking && currentRecipeId === 21}
           label="추가 조리"
           onClick={() => {
             startCook({ recipeId: 21 });
@@ -157,28 +162,28 @@ const PotController = (props) => {
       </PotControlButtonContainer>
       <PotControlButtonContainer>
         <PotControlButton
-          // disabled={
-          //   !(!isCooking && selectedRecipe)
-          //   || machineState.tilt !== 45
-          // }
-          // disabledTooltip={[
-          //   isCooking ? '조리중입니다' : null,
-          //   !selectedRecipe ? '레시피를 선택해야 합니다' : null,
-          //   machineState.tilt !== 45 ? '조리준비가 되어있는지 확인해주세요' : null,
-          // ]}
+          disabled={
+            !(!isCooking && selectedRecipe)
+            // || machineState.tilt !== 45
+          }
+          disabledTooltip={[
+            isCooking ? '조리중입니다' : null,
+            !selectedRecipe ? '레시피를 선택해야 합니다' : null,
+            // machineState.tilt !== 45 ? '조리준비가 되어있는지 확인해주세요' : null,
+          ]}
           label="조리시작"
           palette="primary"
           tone={0}
           themeType="solid"
           onClick={() => startCook()}
           timerColor={theme.palette.white[0]}
-          // {...(isCooking && currentRecipeId !== 21 ? (
-          //   {
-          //     durationLabel: recipe.name,
-          //     duration: recipeRemainingTimeMs,
-          //     totalDuration: recipeDurationMs,
-          //   }
-          // ) : {})}
+          {...(isCooking && currentRecipeId !== 21 ? (
+            {
+              durationLabel: currentRecipe.name,
+              duration: recipeRemainingTimeMs,
+              totalDuration: recipeDurationMs,
+            }
+          ) : {})}
           {...(!isCooking && selectedRecipe ? (
             {
               durationLabel: selectedRecipe.name,
@@ -189,7 +194,7 @@ const PotController = (props) => {
           ) : {})}
         />
       </PotControlButtonContainer>
-      <WashingMask washing={false} abort={null} />
+      <WashingMask washing={isWashing} abort={null} />
       <Extension
         isOpen={extensionOpen}
         menuOptionsOpen={recipeModalOpen}
@@ -197,13 +202,13 @@ const PotController = (props) => {
         isCooking={false}
         onClose={closeExtension}
         prepIngredientAngle={null}
-        prepNoodle={null}
+        prepCook={null}
         selectRecipe={selectRecipe}
         spinStart={spinStart}
         home={home}
         // lastActionType={lastActionType}
         // lastActionId={lastActionId}
-        // resetPosition={resetPosition}
+        // spinHome={spinHome}
         prepWash={prepWash}
         // machineState={machineState}
         onRecipeSelect={() => {

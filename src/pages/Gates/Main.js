@@ -36,7 +36,7 @@ import Label from '../../components/atoms/Label';
 
 import PotControlButton from '../../components/organisms/PotControlButton';
 import PotController from '../../components/organisms/PotController';
-import usePotController from '../../hooks/usePotController';
+import usePotController from '../../hooks/usePotControllerV2';
 import useOrderData from '../../hooks/useOrderData';
 import OrderSelection from '../../components/organisms/OrderSelection';
 import theme from '../../theme';
@@ -148,7 +148,8 @@ const GatesMain = (props) => {
 
   const potController = usePotController(cookerId);
   const {
-    recipe,
+    currentRecipe,
+    currentRecipeId,
     lastActionType,
     recipeRemainingTimeMs,
     recipeDurationMs,
@@ -219,14 +220,10 @@ const GatesMain = (props) => {
   //   ],
   // );
 
-  const recipeId = get(
-    recipe,
-    'id',
-  );
   let recipeName = '';
   if (isWashing) recipeName = '세척 중';
-  if (isCooking && recipeId === 21) recipeName = '추가 조리';
-  if (isCooking && recipeId !== 21) recipeName = recipe.name;
+  if (isCooking && currentRecipeId === 21) recipeName = '추가 조리';
+  if (isCooking && currentRecipeId !== 21) recipeName = currentRecipe.name;
   if (lastActionType === 'abort') recipeName = '정지중';
   if (lastActionType === 'machine') recipeName = lastActionId;
   const selectedOrder = data.find((o) => Number(o.id) === Number(selectedOrderId)) || {};
@@ -278,7 +275,7 @@ const GatesMain = (props) => {
         </ActivateButton> */}
       </HeaderSection>
       <BodySection>
-        <BodyColumn flex={0} shrink={0} grow={0} basis={710} direction="column">
+        {/* <BodyColumn flex={0} shrink={0} grow={0} basis={710} direction="column">
           <OrderMonitor
             pickCellRenderers={(cellRenderers) => cellRenderers.filter(({ dataIndex }) => [
               // 'id',
@@ -312,9 +309,6 @@ const GatesMain = (props) => {
             selectRecipe={selectRecipe}
           />
 
-        </BodyColumn>
-        {/* <BodyColumn flex={1}>
-          <Card>Receipt</Card>
         </BodyColumn> */}
         <BodyColumn style={{ overflow: 'hidden' }}>
           <PotController
@@ -352,7 +346,7 @@ const GatesMain = (props) => {
               }) => rest)}
               onClickOrderPrepare={({ orderKitchen }) => {
                 selectRecipe(
-                  orderKitchen.recipeId,
+                  orderKitchen.currentRecipeId,
                   orderKitchen.id,
                 );
               }}

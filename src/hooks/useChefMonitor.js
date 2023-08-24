@@ -1,6 +1,7 @@
 import React, {
   useState, useEffect,
 } from 'react';
+import _ from 'lodash';
 import { socket } from '../services/socket';
 
 const useChefMonitor = () => {
@@ -11,6 +12,18 @@ const useChefMonitor = () => {
   const [
     messageEvents,
     setMessageEvents,
+  ] = useState([]);
+  const [
+    activeStatusById,
+    setActiveStatusById,
+  ] = useState([]);
+  const [
+    completedJobsById,
+    setCompletedJobById,
+  ] = useState([]);
+  const [
+    machineStateById,
+    setMachineStateById,
   ] = useState([]);
 
   useEffect(
@@ -24,11 +37,28 @@ const useChefMonitor = () => {
       }
 
       function onMessageEvent(value) {
-        console.log(
-          'socket',
+        setMessageEvents(value.activeStatus);
+
+        console.log({
           value,
-        );
-        setMessageEvents(value);
+          activeStatusById,
+        });
+        if (value.cookerId > -1) {
+          const newStatusById = [...activeStatusById];
+          newStatusById[value.cookerId] = value.activeStatus;
+          const newJobById = [...completedJobsById];
+          newJobById[value.cookerId] = value.completedJobs;
+          const newMachineById = [...machineStateById];
+          newMachineById[value.cookerId] = value.machineState;
+
+          setActiveStatusById(newStatusById);
+          setCompletedJobById(newJobById);
+          setMachineStateById(newMachineById);
+          return;
+        }
+        setActiveStatusById(value.activeStatusList);
+        setCompletedJobById(value.completedJobList);
+        setMachineStateById(value.machineStateList);
       }
 
       socket.on(
@@ -40,7 +70,7 @@ const useChefMonitor = () => {
         onDisconnect,
       );
       socket.on(
-        'message',
+        'cookerStatus',
         onMessageEvent,
       );
 
@@ -54,20 +84,31 @@ const useChefMonitor = () => {
           onDisconnect,
         );
         socket.off(
-          'message',
+          'cookerStatus',
           onMessageEvent,
         );
       };
     },
-    [],
+    [
+      activeStatusById,
+      completedJobsById,
+      machineStateById,
+    ],
   );
-  const chefMonitorPotList = _.groupBy(
-    messageEvents.completedJobList,
-    (jb) => jb.cookerId,
-  );
+  // const chefMonitorPotList = _.groupBy(
+  //   messageEvents.completedJobList,
+  //   (jb) => jb.cookerId,
+  // );
+  console.log({
+    activeStatusById,
+    completedJobsById,
+    machineStateById,
+  });
   return {
-    eKQueue: messageEvents,
-    chefMonitorPotList,
+    cookerList: [],
+    activeStatusById,
+    completedJobsById,
+    machineStateById,
   };
 };
 export default useChefMonitor;

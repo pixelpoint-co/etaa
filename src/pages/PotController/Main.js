@@ -30,6 +30,7 @@ import PotController from '../../components/organisms/PotControllerV2';
 import PotGroup from '../../components/organisms/PotGroup';
 import Select from '../../components/atoms/Select';
 import usePotController from '../../hooks/usePotControllerV2';
+import useChefMonitor from '../../hooks/useChefMonitor';
 
 const Wrapper = styled(Flex)`
   /* flex-direction: row; */
@@ -99,6 +100,10 @@ const PlaygroundMain = (props) => {
   } = props;
 
   const { id } = useParams();
+  const {
+    eKQueue,
+    chefMonitorPotList,
+  } = useChefMonitor();
   const potController = usePotController(id);
   // const [
   //   controllerPotIndex,

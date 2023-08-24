@@ -574,7 +574,7 @@ const usePotController = (cookerId, opts = {}) => {
     ) ? 'on' : 'off',
   });
   // const stoves = currentStoveRecord.map(stoveRecordToProp);
-  // const isRotating = get(
+  // const isSpinning = get(
   //   currentSpinRecord,
   //   'spinDirection',
   //   0,
@@ -611,7 +611,7 @@ const usePotController = (cookerId, opts = {}) => {
     setLastActionType('machine');
     setLastActionId('재료담기');
   };
-  const prepNoodle = () => {
+  const prepCook = () => {
     setControlUUID(uuidv4());
     setControlOptions({
       ...controlCoords,
@@ -639,7 +639,7 @@ const usePotController = (cookerId, opts = {}) => {
     setLastActionId('역회전');
   };
 
-  const resetPosition = () => {
+  const spinHome = () => {
     setControlUUID(uuidv4());
     setControlOptions({
       ...controlCoords,
@@ -757,7 +757,7 @@ const usePotController = (cookerId, opts = {}) => {
       const isValve = parameters[0] === 'SOLENOID';
       const valveOpen = parameters[3] === 'OPEN';
       return {
-        isRotating: isSpin ? spinDirection !== 0 : currentState.isRotating,
+        isSpinning: isSpin ? spinDirection !== 0 : currentState.isSpinning,
         rotateDirection: isSpin ? spinDirection : currentState.spinDirection,
         stoves: stateStoves,
         tilt,
@@ -765,7 +765,7 @@ const usePotController = (cookerId, opts = {}) => {
       };
     },
     {
-      isRotating: false,
+      isSpinning: false,
       rotateDirection: 0,
       stoves: [
         {
@@ -869,20 +869,20 @@ const usePotController = (cookerId, opts = {}) => {
     orderRefetchTime,
     updateOrderKitchenStatus,
     // stoves,
-    // isRotating,
+    // isSpinning,
     // recordList,
     // parsedRecordList,
     machineState,
     stoves: machineState.stoves,
-    isRotating: machineState.isRotating,
+    isSpinning: machineState.isSpinning,
     rotateDirection: machineState.rotateDirection,
     tiltDegree: machineState.tilt,
     valveOpen: machineState.valveOpen,
     prepAngle,
     prepIngredientAngle,
-    prepNoodle,
+    prepCook,
     rotateStart,
-    resetPosition,
+    spinHome,
     prepWashing,
     startWashing,
     stopCook,

@@ -102,16 +102,17 @@ const PotControllerExtension = ({
   menuOptionsOpen,
   onMenuOptionsClose,
   onSelect,
-  prepIngredientAngle,
-  prepNoodle,
-  prepWashing,
+  tiltHome,
+  prepCook,
+  prepWash,
   selectRecipe,
   isCooking,
-  rotateStart,
+  startSpin,
   lastActionType,
   lastActionId,
-  resetPosition,
+  spinHome,
   onRecipeSelect,
+  machineState,
 }) => {
   const {
     data,
@@ -232,7 +233,7 @@ const PotControllerExtension = ({
               <PotControlButton
                 label="각도원점"
                 onClick={() => {
-                  prepIngredientAngle();
+                  tiltHome();
                   onClose();
                 }}
                 disabledTooltip={[isCooking ? '조리중입니다' : null]}
@@ -244,7 +245,7 @@ const PotControllerExtension = ({
                 label="회전원점"
                 hideLabelOnLoading
                 onClick={() => {
-                  resetPosition();
+                  spinHome();
                   onClose();
                 }}
                 active={lastActionType === 'machine' && lastActionId === '회전원점'}
@@ -256,7 +257,7 @@ const PotControllerExtension = ({
                 label="역회전"
                 hideLabelOnLoading
                 onClick={() => {
-                  rotateStart();
+                  startSpin();
                   onClose();
                 }}
                 active={lastActionType === 'machine' && lastActionId === '역회전'}
@@ -266,7 +267,7 @@ const PotControllerExtension = ({
               <PotControlButton
                 label="세척준비"
                 hideLabelOnLoading
-                onClick={prepWashing}
+                onClick={prepWash}
                 active={lastActionType === 'machine' && lastActionId === '세척준비'}
               />
             </PotControlButtonContainer>

@@ -45,7 +45,7 @@ import SpringNumber from '../../molecules/SpringNumber';
 import Icon from '../../atoms/Icon';
 import ErrorPulse from '../../molecules/ErrorPulse';
 import Button from '../../atoms/Button';
-import usePotController from '../../../hooks/usePotController';
+import usePotController from '../../../hooks/usePotControllerV2';
 import PotWash from '../../atoms/PotWash';
 import theme from '../../../theme';
 
@@ -202,7 +202,7 @@ const PotUnit = (props) => {
     // subscriptionTime,
 
     // potMonitoringData,
-    recipe,
+    currentRecipe: recipe,
     recipeRemainingTimeMs,
     recipeDurationMs,
     // recipeDuration,
@@ -210,7 +210,7 @@ const PotUnit = (props) => {
     // recipeEllapsedTime,
 
     stoves,
-    isRotating,
+    isSpinning,
     rotateDirection,
     isWashing,
     isCooking,
@@ -276,7 +276,7 @@ const PotUnit = (props) => {
           </ImageContainer>
 
           <Rotate
-            $rotate={isRotating}
+            $rotate={isSpinning}
             // $reverse={rotateDirection === -1}
           >
             <Icon

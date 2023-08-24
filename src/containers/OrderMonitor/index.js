@@ -25,7 +25,7 @@ import PlatformImage from '../../components/atoms/PlatformImage';
 import Tab from '../../components/molecules/Tab';
 import useChefMonitor from '../../hooks/useChefMonitor';
 import Tag from '../../components/atoms/Tag';
-import usePotController from '../../hooks/usePotController';
+import usePotController from '../../hooks/usePotControllerV2';
 
 const Wrapper = styled(Flex)`
   flex: 1;
