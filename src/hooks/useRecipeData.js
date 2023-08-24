@@ -20,6 +20,8 @@ export default (options = { }) => {
   const data = _.get(
     responseData,
     ['data'],
+    [],
   );
-  return { data };
+  const filteredData = data.filter((d) => d.viewable);
+  return { data: filteredData };
 };
