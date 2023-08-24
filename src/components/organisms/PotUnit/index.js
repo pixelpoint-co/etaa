@@ -45,7 +45,7 @@ import SpringNumber from '../../molecules/SpringNumber';
 import Icon from '../../atoms/Icon';
 import ErrorPulse from '../../molecules/ErrorPulse';
 import Button from '../../atoms/Button';
-import usePotController from '../../../hooks/usePotControllerV2';
+import usePotController from '../../../hooks/usePotController';
 import PotWash from '../../atoms/PotWash';
 import theme from '../../../theme';
 

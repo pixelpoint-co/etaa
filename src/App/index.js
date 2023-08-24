@@ -32,7 +32,6 @@ import Billy from '../pages/Billy';
 import ControlTower from '../pages/ControlTower';
 import Gates from '../pages/Gates';
 import Playground from '../pages/Playground';
-import PotControllerPage from '../pages/PotController';
 
 import LeftMenu from '../containers/LeftMenu';
 import Header from '../containers/Header';
@@ -89,12 +88,6 @@ const routes = [
     href: '/playground/*',
     element: <Playground />,
     // rootRoute: true,
-  },
-  {
-    label: '컨트롤러',
-    href: '/controller/*',
-    element: <PotControllerPage />,
-    rootRoute: true,
   },
   // {
   //   label: '자재관리',

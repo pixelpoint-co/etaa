@@ -36,7 +36,7 @@ import Label from '../../components/atoms/Label';
 
 import PotControlButton from '../../components/organisms/PotControlButton';
 import PotController from '../../components/organisms/PotController';
-import usePotController from '../../hooks/usePotControllerV2';
+import usePotController from '../../hooks/usePotController';
 import useOrderData from '../../hooks/useOrderData';
 import OrderSelection from '../../components/organisms/OrderSelection';
 import theme from '../../theme';
