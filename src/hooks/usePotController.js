@@ -322,7 +322,7 @@ const usePotController = (cookerId, opts = {}) => {
     machineState: parsedMachineState,
     stoves: parsedMachineState.stoves,
     isSpinning: parsedMachineState.isSpinning,
-    rotateDirection: parsedMachineState.rotateDirection,
+    spinDirection: parsedMachineState.spinDirection,
     tiltDegree: parsedMachineState.tilt,
     valveOpen: parsedMachineState.valveOpen,
   };

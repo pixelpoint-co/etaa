@@ -211,7 +211,7 @@ const PotUnit = (props) => {
 
     stoves,
     isSpinning,
-    rotateDirection,
+    spinDirection,
     isWashing,
     isCooking,
 
@@ -245,7 +245,7 @@ const PotUnit = (props) => {
     'lastActionType',
     lastActionType,
     lastActionId,
-    rotateDirection,
+    spinDirection,
   );
   return (
     <Wrapper {...others} hasError={!!error}>
@@ -277,7 +277,7 @@ const PotUnit = (props) => {
 
           <Rotate
             $rotate={isSpinning}
-            // $reverse={rotateDirection === -1}
+            // $reverse={spinDirection > 0}
           >
             <Icon
               icon="potRotateStraight"
