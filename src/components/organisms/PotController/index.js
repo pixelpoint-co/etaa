@@ -210,7 +210,7 @@ const PotController = (props) => {
           palette="primary"
           tone={0}
           themeType="solid"
-          onClick={startCook}
+          onClick={() => startCook()}
           timerColor={theme.palette.white[0]}
           {...(isCooking && currentRecipeId !== 21 ? (
             {
