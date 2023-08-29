@@ -106,15 +106,15 @@ wsClient.onDisconnected((d) => {
       s,
     );
     if (s > 1000) {
-      toast(
-        '서버와의 연결이 끊어졌습니다.',
-        {
-          autoClose: false,
-          type: toast.TYPE.ERROR,
-          toastId: 'WS_DISCONNECT',
-          closeButton: WSReloadButton,
-        },
-      );
+      // toast(
+      //   '서버와의 연결이 끊어졌습니다.',
+      //   {
+      //     autoClose: false,
+      //     type: toast.TYPE.ERROR,
+      //     toastId: 'WS_DISCONNECT',
+      //     closeButton: WSReloadButton,
+      //   },
+      // );
     }
   });
 });

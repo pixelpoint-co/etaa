@@ -233,7 +233,7 @@ const GatesMain = (props) => {
     selectedOrder,
   });
   const selectedItemisedOrder = itemisedOrderList
-    .filter((io) => io.channelNo === selectedOrder.channelNo);
+    .filter((io) => io.outsideId === selectedOrder.outsideId);
   console.log({
     itemisedOrderList,
     selectedOrder,
@@ -275,18 +275,19 @@ const GatesMain = (props) => {
         </ActivateButton> */}
       </HeaderSection>
       <BodySection>
-        {/* <BodyColumn flex={0} shrink={0} grow={0} basis={710} direction="column">
+        <BodyColumn flex={0} shrink={0} grow={0} basis={710} direction="column">
           <OrderMonitor
             pickCellRenderers={(cellRenderers) => cellRenderers.filter(({ dataIndex }) => [
               // 'id',
               // 'okId',
               // 'orderId',
               'dateTimeISO',
+              'date',
               'channelNo',
               'orderPlatform',
               'outsideId',
-              'item',
-              'qty',
+              'name',
+              // 'qty',
               'status',
               'orderKitchen',
               'cookStation',
@@ -309,7 +310,7 @@ const GatesMain = (props) => {
             selectRecipe={selectRecipe}
           />
 
-        </BodyColumn> */}
+        </BodyColumn>
         <BodyColumn style={{ overflow: 'hidden' }}>
           <PotController
             potController={potController}
@@ -344,9 +345,10 @@ const GatesMain = (props) => {
                 orderId,
                 ...rest
               }) => rest)}
-              onClickOrderPrepare={({ orderKitchen }) => {
+              onClickOrderPrepare={(orderKitchen) => {
+                console.log(orderKitchen);
                 selectRecipe(
-                  orderKitchen.currentRecipeId,
+                  orderKitchen.recipeId,
                   orderKitchen.id,
                 );
               }}

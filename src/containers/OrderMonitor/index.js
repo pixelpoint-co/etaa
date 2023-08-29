@@ -168,7 +168,11 @@ const OrderMonitor = (props) => {
   };
   const filteredItemisedOrderList = itemisedOrderList.filter((io) => {
     if (selectedTab === 'all') return true;
-    if (orderPlatformToTab[io.orderPlatform].indexOf(selectedTab) >= 0) return true;
+    if (_.get(
+      orderPlatformToTab,
+      [io.orderPlatform],
+      [],
+    ).indexOf(selectedTab) >= 0) return true;
     return false;
   });
   const count = filteredItemisedOrderList.length;
@@ -186,7 +190,7 @@ const OrderMonitor = (props) => {
   const cellRenderers = [
     {
       title: '채널',
-      dataIndex: 'channelNo',
+      dataIndex: 'outsideId',
       render: (
         data,
         {
@@ -234,46 +238,46 @@ const OrderMonitor = (props) => {
         return <StyledCell isCancel={isCancel}>{data}</StyledCell>;
       },
     },
-    {
-      title: '플랫폼',
-      dataIndex: 'orderPlatform',
-      render: (
-        data,
-        {
-          isCancel,
-          lineIndex,
-        },
-        rowIndex,
-      ) => {
-        if (rowIndex !== 0 && lineIndex !== 0) return null;
-        return (
-          <StyledCell isCancel={isCancel} style={{ width: 40 }}>
-            <Flex
-              style={{
-                position: 'absolute',
-                right: 0,
-                left: 0,
-                bottom: 0,
-                top: 0,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <PlatformImage
-                platform={data}
-                style={{
-                  marginTop: -18,
-                  marginBottom: -18,
-                }}
-              />
-            </Flex>
-          </StyledCell>
-        );
-      },
-    },
+    // {
+    //   title: '플랫폼',
+    //   dataIndex: 'orderPlatform',
+    //   render: (
+    //     data,
+    //     {
+    //       isCancel,
+    //       lineIndex,
+    //     },
+    //     rowIndex,
+    //   ) => {
+    //     if (rowIndex !== 0 && lineIndex !== 0) return null;
+    //     return (
+    //       <StyledCell isCancel={isCancel} style={{ width: 40 }}>
+    //         <Flex
+    //           style={{
+    //             position: 'absolute',
+    //             right: 0,
+    //             left: 0,
+    //             bottom: 0,
+    //             top: 0,
+    //             justifyContent: 'center',
+    //             alignItems: 'center',
+    //           }}
+    //         >
+    //           <PlatformImage
+    //             platform={data}
+    //             style={{
+    //               marginTop: -18,
+    //               marginBottom: -18,
+    //             }}
+    //           />
+    //         </Flex>
+    //       </StyledCell>
+    //     );
+    //   },
+    // },
     {
       title: '주문',
-      dataIndex: 'dateTimeISO',
+      dataIndex: 'date',
       render: (
         data,
         {
@@ -293,16 +297,17 @@ const OrderMonitor = (props) => {
     },
     {
       title: '메뉴',
-      dataIndex: 'item',
+      dataIndex: 'name',
       render: (data, {
         isCancel,
+        isSubMenu,
         qty,
       }) => (
         <StyledCell
           isCancel={isCancel}
           style={{ width: 230 }}
         >
-          {`${data}`}
+          {`${isSubMenu ? '- ' : ''}${data}`}
         </StyledCell>
       )
       ,
@@ -324,66 +329,66 @@ const OrderMonitor = (props) => {
         return <StyledCell isCancel={isCancel}>{data}</StyledCell>;
       },
     },
-    {
-      title: '조리상태',
-      dataIndex: 'orderKitchen',
-      render: (data, row) => {
-        const { isCancel } = row;
-        const pot = get(
-          row,
-          'pot',
-          {},
-        );
-        const recipeDurationS = _.get(
-          row,
-          [
-            'recipe',
-            'detail',
-            'duration',
-          ],
-          0,
-        );
-        const {
-          name,
-          finishedOn,
-        } = pot;
-        const cookStartTime = name === 'startCook' ? finishedOn : null;
-        const completionTimeMs = cookStartTime + (recipeDurationS * 1000);
-        const showTime = completionTimeMs > Date.now() && data?.status === 'ORDER_COOKING';
-        return (
-          <StyledCell isCancel={isCancel} style={{ width: 100 }}>
-            {data ? (
-              <StyledTag
-                icon={false}
-                themeProps={{
-                  palette: orderButtonProps[data.status]?.palette,
-                  themeType: 'light',
-                }}
-                label={(
-                  <Text
-                    color="white"
-                  >
-                    {orderButtonProps[data.status]?.label}
-                    {showTime ? (
-                      <>
-                        {' - '}
-                        <CountDown
-                          color="white"
-                          shorten
-                          completionTimeMs={completionTimeMs}
-                        />
-                      </>
-                    ) : null}
-                  </Text>
-                )}
-              />
+    // {
+    //   title: '조리상태',
+    //   dataIndex: 'orderKitchen',
+    //   render: (data, row) => {
+    //     const { isCancel } = row;
+    //     const pot = get(
+    //       row,
+    //       'pot',
+    //       {},
+    //     );
+    //     const recipeDurationS = _.get(
+    //       row,
+    //       [
+    //         'recipe',
+    //         'detail',
+    //         'duration',
+    //       ],
+    //       0,
+    //     );
+    //     const {
+    //       name,
+    //       finishedOn,
+    //     } = pot;
+    //     const cookStartTime = name === 'startCook' ? finishedOn : null;
+    //     const completionTimeMs = cookStartTime + (recipeDurationS * 1000);
+    //     const showTime = completionTimeMs > Date.now() && data?.status === 'ORDER_COOKING';
+    //     return (
+    //       <StyledCell isCancel={isCancel} style={{ width: 100 }}>
+    //         {data ? (
+    //           <StyledTag
+    //             icon={false}
+    //             themeProps={{
+    //               palette: orderButtonProps[data.status]?.palette,
+    //               themeType: 'light',
+    //             }}
+    //             label={(
+    //               <Text
+    //                 color="white"
+    //               >
+    //                 {orderButtonProps[data.status]?.label}
+    //                 {showTime ? (
+    //                   <>
+    //                     {' - '}
+    //                     <CountDown
+    //                       color="white"
+    //                       shorten
+    //                       completionTimeMs={completionTimeMs}
+    //                     />
+    //                   </>
+    //                 ) : null}
+    //               </Text>
+    //             )}
+    //           />
 
-            ) : null}
+    //         ) : null}
 
-          </StyledCell>
-        );
-      },
-    },
+    //       </StyledCell>
+    //     );
+    //   },
+    // },
     {
       title: '조리담당',
       dataIndex: 'cookStation',

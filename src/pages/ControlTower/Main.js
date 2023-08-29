@@ -61,11 +61,12 @@ const ControlTowerMain = (props) => {
           pageSize={12}
           pickCellRenderers={(cellRenderers) => cellRenderers.filter(({ dataIndex }) => [
             'dateTimeISO',
+            'date',
             'channelNo',
             'orderPlatform',
             'outsideId',
-            'item',
-            'qty',
+            'name',
+            // 'qty',
             'status',
             'orderKitchen',
             'cookStation',

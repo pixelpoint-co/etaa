@@ -113,6 +113,10 @@ const OrderSelection = (props) => {
     onClickOrderPrepare,
     ...others
   } = props;
+  console.log({
+    order,
+    orderItems,
+  });
   return (
     <OrderListCard>
       <List
@@ -126,7 +130,7 @@ const OrderSelection = (props) => {
             marginBottom: 60,
           }}
           >
-            <h1>{order ? order.channelNo : null}</h1>
+            <h1>{order ? order.outsideId : null}</h1>
             {/* <div>
               {
                 order ? moment().format(order.dateTime) : null
@@ -162,12 +166,12 @@ const OrderSelection = (props) => {
                         alignItems: 'center',
                       }}
                       >
-                        <Heading style={{ marginBottom: 0 }}>{d.item}</Heading>
+                        <Heading style={{ marginBottom: 0 }}>{d.name}</Heading>
                         <CookPrepareButton
                           palette="grayscale"
                           themeType="outline"
                           tone={0}
-                          onClick={() => onClickOrderPrepare(d)}
+                          onClick={() => onClickOrderPrepare(d.orderKitchen)}
                           {...(
                             matchingPot
                               ? orderButtonProps[get(
@@ -180,7 +184,7 @@ const OrderSelection = (props) => {
                       </span>
                     )
                       : (
-                        d.item
+                        d.name
                       )}
                   </span>
 
@@ -195,13 +199,13 @@ const OrderSelection = (props) => {
                         marginTop: 20,
                       }}
                     >
-                      <Heading style={{ marginBottom: 0 }}>{`${d.item} * ${d.qty}`}</Heading>
+                      <Heading style={{ marginBottom: 0 }}>{`${d.name}`}</Heading>
                       {d.orderKitchen ? (
                         <CookPrepareButton
                           palette="grayscale"
                           themeType="outline"
                           tone={0}
-                          onClick={() => onClickOrderPrepare(d)}
+                          onClick={() => onClickOrderPrepare(d.orderKitchen)}
                           {...(
                             matchingPot
                               ? orderButtonProps[get(

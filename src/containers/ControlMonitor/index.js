@@ -270,19 +270,19 @@ const OrderMonitor = (props) => {
       // width: 140,
       render: (data) => <StyledCell>{data}</StyledCell>,
     },
-    {
-      title: '조리상태',
-      dataIndex: 'orderKitchen',
-      // width: 140,
-      render: (data, row) => {
-        if (!data) return null;
-        return (
-          <DiffCell color={orderButtonProps[data.status].palette}>
-            {orderButtonProps[data.status].label}
-          </DiffCell>
-        );
-      },
-    },
+    // {
+    //   title: '조리상태',
+    //   dataIndex: 'orderKitchen',
+    //   // width: 140,
+    //   render: (data, row) => {
+    //     if (!data) return null;
+    //     return (
+    //       <DiffCell color={orderButtonProps[data.status].palette}>
+    //         {orderButtonProps[data.status].label}
+    //       </DiffCell>
+    //     );
+    //   },
+    // },
     {
       title: '상세내역',
       dataIndex: 'action',
