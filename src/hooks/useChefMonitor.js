@@ -38,11 +38,6 @@ const useChefMonitor = () => {
 
       function onMessageEvent(value) {
         setMessageEvents(value.activeStatus);
-
-        console.log({
-          value,
-          activeStatusById,
-        });
         if (value.cookerId > -1) {
           const newStatusById = [...activeStatusById];
           newStatusById[value.cookerId] = value.activeStatus;

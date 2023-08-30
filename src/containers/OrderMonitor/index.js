@@ -112,12 +112,6 @@ const OrderMonitor = (props) => {
     machineStateById,
   } = useChefMonitor();
   const { data: recipeData } = useRecipeData();
-  console.log({
-    activeStatusById,
-    completedJobsById,
-    machineStateById,
-    recipeData,
-  });
   const {
     queryParams,
     setQueryParams,

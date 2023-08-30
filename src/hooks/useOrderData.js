@@ -11,10 +11,6 @@ import {
 
 import {
   useQuery,
-  // useMutation,
-  // useQueryClient,
-  // QueryClient,
-  // QueryClientProvider,
 } from '@tanstack/react-query';
 
 import _, {
@@ -29,6 +25,7 @@ import {
 import {
   loadable, selectAtom,
 } from 'jotai/utils';
+import { socket } from '../services/socket';
 import useRecipeData from './useRecipeData';
 
 const orderQueryFn = ({ queryKey }) => {
@@ -72,10 +69,33 @@ export default (options = {}) => {
         },
       ],
       queryFn: orderQueryFn,
-      refetchInterval: 2 * 1000,
+      // refetchInterval: 2 * 1000,
     },
   );
-  const { data: resp } = getOrderDataQuery;
+  const {
+    data: resp,
+    refetch,
+  } = getOrderDataQuery;
+  useEffect(
+    () => {
+      function onMessageEvent(value) {
+        refetch();
+      }
+
+      socket.on(
+        'order',
+        onMessageEvent,
+      );
+
+      return () => {
+        socket.off(
+          'order',
+          onMessageEvent,
+        );
+      };
+    },
+    [refetch],
+  );
   const orderItemList = _.get(
     resp,
     ['data'],
