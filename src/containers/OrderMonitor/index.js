@@ -204,7 +204,7 @@ const OrderMonitor = (props) => {
         rowIndex,
       ) => {
         if (rowIndex !== 0 && lineIndex !== 0) return null;
-        const lastFour = `...${data.slice(-4)}`;
+        const lastFour = `...${data?.slice(-4)}`;
         return (
           <ChannelCell
             isCancel={isCancel}
