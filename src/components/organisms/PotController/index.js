@@ -97,6 +97,7 @@ const PotController = (props) => {
     isCooking,
     isWashing,
   } = potController;
+  console.log({ machineState });
   const closeExtension = useCallback(
     () => {
       setExtensionOpen(false);
@@ -134,7 +135,6 @@ const PotController = (props) => {
           disabledTooltip={[isCooking ? '조리중입니다' : null]}
         />
       </PotControlButtonContainer>
-
       <PotControlButtonContainer>
         <PotControlButton
           label="음식 담기"
@@ -214,7 +214,7 @@ const PotController = (props) => {
           timerColor={theme.palette.white[0]}
           {...(isCooking && currentRecipeId !== 21 ? (
             {
-              durationLabel: currentRecipe.name,
+              durationLabel: currentRecipe?.name,
               duration: recipeRemainingTimeMs,
               totalDuration: recipeDurationMs,
             }

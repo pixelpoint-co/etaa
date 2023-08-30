@@ -11,10 +11,10 @@ import {
 
 import {
   useQuery,
-  useMutation,
-  useQueryClient,
-  QueryClient,
-  QueryClientProvider,
+  // useMutation,
+  // useQueryClient,
+  // QueryClient,
+  // QueryClientProvider,
 } from '@tanstack/react-query';
 
 import _, {
@@ -31,48 +31,6 @@ import {
 } from 'jotai/utils';
 import useRecipeData from './useRecipeData';
 
-const pageSizeAtom = atom(50);
-const currentPageAtom = atom(0);
-const orderDataLastCalledAtom = atom(0);
-const orderDataLastReceivedAtom = atom(0);
-const orderDataAtom = atom(
-  async (getter) => {
-    const pageSize = getter(pageSizeAtom);
-    const currentPage = getter(currentPageAtom);
-    const lastCalled = getter(orderDataLastCalledAtom);
-    console.log('CALLING KOPO');
-    const response = await global.api.get(
-      '/order-item',
-      {
-        params: {
-          limit: pageSize,
-          offset: pageSize * currentPage,
-        },
-      },
-    );
-    return response;
-  },
-);
-const callApi = async () => {
-  const response = await global.api.get(
-    '/order-item',
-    {
-      params: {
-        limit: 50,
-        offset: 0,
-      },
-    },
-  );
-  return response;
-};
-const orderLastUpdatedAtom = atom(
-  (getter) => {
-    const data = getter(orderDataAtom);
-    if (data) return Date.now();
-  },
-);
-const loadableOrderDataAtom = loadable(orderDataAtom);
-
 const orderQueryFn = ({ queryKey }) => {
   const [
     _key,
@@ -87,7 +45,7 @@ const orderQueryFn = ({ queryKey }) => {
       params: {
         limit: pageSize,
         offset: pageSize * currentPage,
-        sortOrder: 'asc',
+        sortOrder: 'desc',
       },
     },
   );
@@ -134,7 +92,6 @@ export default (options = {}) => {
     orderItemList,
     'orderId',
   );
-  console.log(byOrderId);
   const itemisedOrderList = useMemo(
     () => orderItemList.map(
       (orderItem) => {
@@ -158,10 +115,11 @@ export default (options = {}) => {
         return {
           ...order,
           ...orderItem,
+          orderKitchen,
           isSubMenu: !!orderItem.parentId,
           // orderId: orderItem.orderId,
-          cookStation: orderItem.orderKitchen ? 'EK' : '-',
-          okId: orderItem?.orderKitchen?.id,
+          cookStation: orderKitchen ? 'EK' : '-',
+          okId: orderKitchen?.id,
           lineIndex,
           // pot: matchingPot,
           recipe,

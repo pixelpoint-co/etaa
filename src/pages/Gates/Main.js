@@ -223,7 +223,7 @@ const GatesMain = (props) => {
   let recipeName = '';
   if (isWashing) recipeName = '세척 중';
   if (isCooking && currentRecipeId === 21) recipeName = '추가 조리';
-  if (isCooking && currentRecipeId !== 21) recipeName = currentRecipe.name;
+  if (isCooking && currentRecipeId !== 21) recipeName = currentRecipe?.name;
   if (lastActionType === 'abort') recipeName = '정지중';
   if (lastActionType === 'machine') recipeName = lastActionId;
   const selectedOrder = data.find((o) => Number(o.id) === Number(selectedOrderId)) || {};

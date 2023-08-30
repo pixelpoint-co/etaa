@@ -26,6 +26,7 @@ import Tab from '../../components/molecules/Tab';
 import useChefMonitor from '../../hooks/useChefMonitor';
 import Tag from '../../components/atoms/Tag';
 import usePotController from '../../hooks/usePotController';
+import useRecipeData from '../../hooks/useRecipeData';
 
 const Wrapper = styled(Flex)`
   flex: 1;
@@ -106,9 +107,17 @@ const OrderMonitor = (props) => {
     ...others
   } = props;
   const {
-    eKQueue,
-    chefMonitorPotList,
+    activeStatusById,
+    completedJobsById,
+    machineStateById,
   } = useChefMonitor();
+  const { data: recipeData } = useRecipeData();
+  console.log({
+    activeStatusById,
+    completedJobsById,
+    machineStateById,
+    recipeData,
+  });
   const {
     queryParams,
     setQueryParams,
@@ -117,9 +126,6 @@ const OrderMonitor = (props) => {
     selectedTab,
     setSelectedTab,
   ] = useState('all');
-  const potController = usePotController(0);
-  const { orderKitchenRefetchTime } = potController;
-
   const {
     // data,
     // count,
@@ -130,9 +136,6 @@ const OrderMonitor = (props) => {
     error,
     refetch,
   } = useOrderData({
-    orderKitchenRefetchTime,
-    chefMonitorPotList,
-    chefMonitoringData: eKQueue?.completedJobList,
     limit: pageSize,
     offset: (queryParams.pageSize * (queryParams.page - 1)) || 0,
   });
@@ -329,66 +332,102 @@ const OrderMonitor = (props) => {
         return <StyledCell isCancel={isCancel}>{data}</StyledCell>;
       },
     },
-    // {
-    //   title: '조리상태',
-    //   dataIndex: 'orderKitchen',
-    //   render: (data, row) => {
-    //     const { isCancel } = row;
-    //     const pot = get(
-    //       row,
-    //       'pot',
-    //       {},
-    //     );
-    //     const recipeDurationS = _.get(
-    //       row,
-    //       [
-    //         'recipe',
-    //         'detail',
-    //         'duration',
-    //       ],
-    //       0,
-    //     );
-    //     const {
-    //       name,
-    //       finishedOn,
-    //     } = pot;
-    //     const cookStartTime = name === 'startCook' ? finishedOn : null;
-    //     const completionTimeMs = cookStartTime + (recipeDurationS * 1000);
-    //     const showTime = completionTimeMs > Date.now() && data?.status === 'ORDER_COOKING';
-    //     return (
-    //       <StyledCell isCancel={isCancel} style={{ width: 100 }}>
-    //         {data ? (
-    //           <StyledTag
-    //             icon={false}
-    //             themeProps={{
-    //               palette: orderButtonProps[data.status]?.palette,
-    //               themeType: 'light',
-    //             }}
-    //             label={(
-    //               <Text
-    //                 color="white"
-    //               >
-    //                 {orderButtonProps[data.status]?.label}
-    //                 {showTime ? (
-    //                   <>
-    //                     {' - '}
-    //                     <CountDown
-    //                       color="white"
-    //                       shorten
-    //                       completionTimeMs={completionTimeMs}
-    //                     />
-    //                   </>
-    //                 ) : null}
-    //               </Text>
-    //             )}
-    //           />
+    {
+      title: '조리상태',
+      dataIndex: 'orderKitchen',
+      render: (data, row) => {
+        const { isCancel } = row;
+        const cookerId = _.findIndex(
+          activeStatusById,
+          (list) => _.get(
+            list,
+            [
+              0,
+              'data',
+              'orderKitchenId',
+            ],
+          ) === data?.id,
+        );
+        const cookStatus = _.get(
+          activeStatusById,
+          [
+            cookerId,
+            0,
+          ],
+        );
+        const recipe = _.find(
+          recipeData,
+          {
+            id: _.get(
+              data,
+              'recipeId',
+            ),
+          },
+        );
+        console.log({});
+        const recipeDurationS = _.get(
+          row,
+          [
+            'recipe',
+            'detail',
+            'duration',
+          ],
+          0,
+        );
+        const {
+          name,
+          timestamp,
+        } = cookStatus || {};
+        const cookStartTime = name === 'cook' ? timestamp : null;
+        const completionTimeMs = cookStartTime + (recipeDurationS * 1000);
+        const showTime = completionTimeMs > Date.now() && name === 'cook';
+        console.log({
+          cookStatus,
+          data,
+          recipe,
+          activeStatusById,
+          row,
+          recipeDurationS,
+          cookerId,
+          cookStartTime,
+          completionTimeMs,
+          showTime,
+        });
+        return (
+          <StyledCell isCancel={isCancel} style={{ width: 100 }}>
+            {data && cookerId > -1 ? (
+              <StyledTag
+                icon={false}
+                themeProps={{
+                  palette: orderButtonProps[data.status]?.palette,
+                  themeType: 'light',
+                }}
+                label={(
+                  <Text
+                    color="white"
+                  >
+                    EK
+                    {cookerId + 1}
+                    {showTime ? (
+                      <>
+                        {' - '}
+                        <CountDown
+                          color="white"
+                          shorten
+                          completionTimeMs={completionTimeMs}
+                        />
+                      </>
+                    ) : null}
+                  </Text>
+                )}
+              />
 
-    //         ) : null}
+            ) : null}
 
-    //       </StyledCell>
-    //     );
-    //   },
-    // },
+          </StyledCell>
+        );
+      },
+    },
     {
       title: '조리담당',
       dataIndex: 'cookStation',

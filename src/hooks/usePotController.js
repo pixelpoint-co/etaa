@@ -51,7 +51,6 @@ const usePotController = (cookerId, opts = {}) => {
     machineStateById,
   } = useChefMonitor();
   const activeStatus = activeStatusById[cookerId];
-  const completedJobs = completedJobsById[cookerId];
   const machineState = machineStateById[cookerId];
   const startSpin = () => {
     global.api.post(
@@ -91,6 +90,7 @@ const usePotController = (cookerId, opts = {}) => {
       `${getMachineUrl(cookerId)}/cooker/0/start-cook`,
       {
         recipeId: selectedRecipeId,
+        orderKitchenId: selectedOrderKitchenId,
         ...data,
       },
     );
@@ -160,7 +160,6 @@ const usePotController = (cookerId, opts = {}) => {
       recipeData,
       currentRecipeId,
     ],
-    {},
   );
   const recipeDuration = get(
     currentRecipe,
