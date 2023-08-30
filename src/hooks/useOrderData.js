@@ -60,18 +60,21 @@ export default (options = {}) => {
   } = options;
 
   const { data: recipeList } = useRecipeData();
-  const getOrderDataQuery = useQuery({
-    queryKey: [
-      'order-item',
-      {
-        pageSize: 200,
-        currentPage: 0,
-        orderRefetchTime,
-        orderKitchenRefetchTime,
-      },
-    ],
-    queryFn: orderQueryFn,
-  });
+  const getOrderDataQuery = useQuery(
+    {
+      queryKey: [
+        'order-item',
+        {
+          pageSize: 200,
+          currentPage: 0,
+          orderRefetchTime,
+          orderKitchenRefetchTime,
+        },
+      ],
+      queryFn: orderQueryFn,
+      refetchInterval: 2 * 1000,
+    },
+  );
   const { data: resp } = getOrderDataQuery;
   const orderItemList = _.get(
     resp,
