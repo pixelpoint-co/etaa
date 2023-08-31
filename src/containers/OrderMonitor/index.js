@@ -243,32 +243,37 @@ const OrderMonitor = (props) => {
         data,
         {
           isCancel,
+          channelNumber,
           lineIndex,
         },
         rowIndex,
-      ) => (
-        <StyledCell isCancel={isCancel} style={{ width: 40 }}>
-          <Flex
-            style={{
-              position: 'absolute',
-              right: 0,
-              left: 0,
-              bottom: 0,
-              top: 0,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <PlatformImage
-              platform={data}
+      ) => {
+        if (rowIndex !== 0 && lineIndex !== 0) return null;
+        return (
+          <StyledCell isCancel={isCancel} style={{ width: 40 }}>
+            <Flex
               style={{
-                marginTop: -18,
-                marginBottom: -18,
+                position: 'absolute',
+                right: 0,
+                left: 0,
+                bottom: 0,
+                top: 0,
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
-            />
-          </Flex>
-        </StyledCell>
-      ),
+            >
+              <PlatformImage
+                platform={data}
+                style={{
+                  marginTop: -18,
+                  marginBottom: -18,
+                }}
+              />
+            </Flex>
+          </StyledCell>
+        );
+      },
+
     },
     {
       title: '주문',
