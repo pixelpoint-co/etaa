@@ -319,7 +319,7 @@ const OrderMonitor = (props) => {
     },
     {
       title: '고객요청',
-      dataIndex: 'requestCustomer',
+      dataIndex: 'customerRequest',
       render: (data, row) => {
         const { isCancel } = row;
         if (row.isSubMenu) return null;

@@ -117,11 +117,6 @@ const usePotController = (cookerId, opts = {}) => {
     );
   };
   const selectRecipe = (recipeId, orderKitchenId) => {
-    console.log(
-      'eftg: ',
-      recipeId,
-      orderKitchenId,
-    );
     // global.api.post(
     //   `/cooker/${cookerId}/prep-cook`,
     //   {
@@ -129,6 +124,13 @@ const usePotController = (cookerId, opts = {}) => {
     //     orderKitchenId,
     //   },
     // );
+    global.api.post(
+      `${getMachineUrl(cookerId)}/cooker/0/select-recipe`,
+      {
+        recipeId,
+        orderKitchenId,
+      },
+    );
     setSelectedRecipeId(recipeId);
     setSelectedOrderKitchenId(orderKitchenId);
   };
@@ -299,6 +301,7 @@ const usePotController = (cookerId, opts = {}) => {
     selectedRecipeId,
     selectedRecipe,
     selectedOrderKitchenId,
+    recipeData,
     currentRecipe,
     currentRecipeId,
     isWashing: _.get(

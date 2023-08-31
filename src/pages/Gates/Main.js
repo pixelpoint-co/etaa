@@ -124,6 +124,58 @@ const PotGridContainer = styled(Flex)`
   flex: 0;
   flex-basis: 640px;
 `;
+const OffC = (props) => {
+  const {
+    selectedOrder,
+    selectedItemisedOrder,
+    chefMonitoringData,
+    selectRecipe,
+    ...others
+  } = props;
+  const {
+    queryParams,
+    setQueryParams,
+  } = useQueryParams();
+  return (
+    <COffcanvas
+      visible={queryParams.orderId > 0}
+      placement="start"
+      backdrop={false}
+      onHide={() => setQueryParams(({
+        orderId,
+        ...rest
+      }) => rest)}
+      style={{
+        width: '852px',
+        marginTop: '94px',
+        marginBottom: '14px',
+        overflow: 'auto',
+        backgroundColor: '#EEF0F3',
+        border: 'none',
+      }}
+    >
+      <Flex flex={0}>
+        <Card padding={0}>
+          <OrderSelection
+            order={selectedOrder}
+            orderItems={selectedItemisedOrder}
+            chefMonitoringData={chefMonitoringData}
+            onClickOrderChange={() => setQueryParams(({
+              orderId,
+              ...rest
+            }) => rest)}
+            onClickOrderPrepare={(orderKitchen) => {
+              selectRecipe(
+                orderKitchen.recipeId,
+                orderKitchen.id,
+              );
+            }}
+          />
+        </Card>
+      </Flex>
+    </COffcanvas>
+  );
+};
 const GatesMain = (props) => {
   const { id } = useParams();
   const location = useLocation();
@@ -227,19 +279,14 @@ const GatesMain = (props) => {
   if (lastActionType === 'abort') recipeName = '정지중';
   if (lastActionType === 'machine') recipeName = lastActionId;
   const selectedOrder = data.find((o) => Number(o.id) === Number(selectedOrderId)) || {};
-  console.log({
-    selectedOrderId,
-    data,
-    selectedOrder,
-  });
   const selectedItemisedOrder = itemisedOrderList
-    .filter((io) => io.outsideId === selectedOrder.outsideId);
-  console.log({
-    itemisedOrderList,
-    selectedOrder,
-    selectedOrderId,
-    selectedItemisedOrder,
-  });
+    .filter((io) => get(
+      io,
+      [
+        'order',
+        'id',
+      ],
+    ) === Number(selectedOrderId));
   const handleCountUpdate = (count) => {
     if (count && count < 90 && isCooking) {
       return setNeedTaste(true);
@@ -293,17 +340,11 @@ const GatesMain = (props) => {
               'cookStation',
               'action',
             ].indexOf(dataIndex) > -1)}
-            // onClickOrderItem={() => setOrderMonitorVisible(true)}
             onClickOrder={(order) => {
-              console.log(
-                '###',
-                order,
-              );
               setQueryParams((old) => ({
                 ...old,
                 orderId: order.orderId,
               }));
-              // setOrderMonitorVisible(true);
             }}
             selectedChannelNo={selectedOrder.channelNo}
             pageSize={8}
@@ -318,44 +359,12 @@ const GatesMain = (props) => {
           />
         </BodyColumn>
       </BodySection>
-      <COffcanvas
-        visible={queryParams.orderId > 0}
-        placement="start"
-        backdrop={false}
-        onHide={() => setQueryParams(({
-          orderId,
-          ...rest
-        }) => rest)}
-        style={{
-          width: '852px',
-          marginTop: '94px',
-          marginBottom: '14px',
-          overflow: 'auto',
-          backgroundColor: '#EEF0F3',
-          border: 'none',
-        }}
-      >
-        <Flex flex={0}>
-          <Card padding={0}>
-            <OrderSelection
-              order={selectedOrder}
-              orderItems={selectedItemisedOrder}
-              chefMonitoringData={chefMonitoringData}
-              onClickOrderChange={() => setQueryParams(({
-                orderId,
-                ...rest
-              }) => rest)}
-              onClickOrderPrepare={(orderKitchen) => {
-                console.log(orderKitchen);
-                selectRecipe(
-                  orderKitchen.recipeId,
-                  orderKitchen.id,
-                );
-              }}
-            />
-          </Card>
-        </Flex>
-      </COffcanvas>
+      <OffC
+        selectedOrder={selectedOrder}
+        selectedItemisedOrder={selectedItemisedOrder}
+        chefMonitoringData={chefMonitoringData}
+        selectRecipe={selectRecipe}
+      />
     </Wrapper>
   );
 };

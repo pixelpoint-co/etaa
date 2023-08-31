@@ -149,10 +149,23 @@ const OrderSelection = (props) => {
           </div>
         )}
         footer={(
-          <>{order ? (order.requestCustomer !== '' ? <OrderListSection>{order.requestCustomer}</OrderListSection> : null) : null}</>
+          <>{order ? (order.customerRequest !== '' ? <OrderListSection>{order.customerRequest}</OrderListSection> : null) : null}</>
         )}
         RowComponent={(d) => {
+          const meta = get(
+            d,
+            [
+              'orderKitchen',
+              'meta',
+            ],
+            {},
+          );
           const matchingPot = d.pot;
+          console.log({
+            d,
+            meta,
+            matchingPot,
+          });
           return (
             <div style={{ fontSize: 20 }}>
               {
@@ -173,12 +186,17 @@ const OrderSelection = (props) => {
                           tone={0}
                           onClick={() => onClickOrderPrepare(d.orderKitchen)}
                           {...(
-                            matchingPot
-                              ? orderButtonProps[get(
+                            orderButtonProps[
+                              get(
                                 d,
-                                'orderKitchen.status',
-                              )]
-                              : orderButtonProps.ORDER_ACCEPTED
+                                [
+                                  'orderKitchen',
+                                  'meta',
+                                  'cookerId',
+                                ],
+                              ) > -1 ? 'ORDER_WAITING' : null
+                            ]
+                              || orderButtonProps.ORDER_ACCEPTED
                           )}
                         />
                       </span>
@@ -207,12 +225,17 @@ const OrderSelection = (props) => {
                           tone={0}
                           onClick={() => onClickOrderPrepare(d.orderKitchen)}
                           {...(
-                            matchingPot
-                              ? orderButtonProps[get(
+                            orderButtonProps[
+                              get(
                                 d,
-                                'orderKitchen.status',
-                              )]
-                              : orderButtonProps.ORDER_ACCEPTED
+                                [
+                                  'orderKitchen',
+                                  'meta',
+                                  'cookerId',
+                                ],
+                              ) > -1 ? 'ORDER_WAITING' : null
+                            ]
+                              || orderButtonProps.ORDER_ACCEPTED
                           )}
                         />
                       ) : null}

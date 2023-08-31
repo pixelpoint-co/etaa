@@ -257,7 +257,7 @@ const OrderMonitor = (props) => {
     // },
     {
       title: '고객요청',
-      dataIndex: 'requestCustomer',
+      dataIndex: 'customerRequest',
       width: 140,
       render: (data, row) => {
         if (row.isSubMenu) return null;
