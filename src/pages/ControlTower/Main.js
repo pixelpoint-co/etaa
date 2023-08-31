@@ -63,7 +63,7 @@ const ControlTowerMain = (props) => {
             'dateTimeISO',
             'date',
             'channelNo',
-            'orderPlatform',
+            'platform',
             'outsideId',
             'name',
             // 'qty',
