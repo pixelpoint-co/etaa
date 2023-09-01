@@ -119,5 +119,6 @@ export default (options = {}) => {
   if (type === 'solid') return solidTheme;
   if (type === 'outline') return outlineTheme;
   if (type === 'text') return textTheme;
+  if (type === 'light') return textTheme;
   return solidTheme;
 };

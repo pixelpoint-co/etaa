@@ -29,7 +29,7 @@ const Container = styled(Flex)`
   padding: 10px 20px;
 `;
 const Label = styled(Text)`
-  ${themeColor}
+  ${themeColor};
   white-space: nowrap;
   font-size: 22px;
   line-height: 22px;
@@ -61,7 +61,7 @@ const Tag = (props) => {
             size={13}
           />
         ) : null}
-        <Label {...others}>
+        <Label>
           {label}
         </Label>
       </Container>

@@ -321,6 +321,7 @@ Button.propTypes = {
     'solid',
     'outline',
     'text',
+    'light',
   ]),
   loading: PropTypes.bool,
   loaderStroke: PropTypes.string,
