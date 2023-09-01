@@ -51,6 +51,10 @@ import {
 import {
   ReactComponent as PlayIcon,
 } from './icons-o/play.svg';
+import {
+  ReactComponent as ClockIcon,
+} from './icons-o/clock.svg';
+import useTheme from '../../../hooks/useTheme';
 
 const ReactIcons = {
   loader: LoaderIcon,
@@ -67,6 +71,7 @@ const ReactIcons = {
   potRotateStraight: PotRotateStraightIcon,
   alert: AlertIcon,
   play: PlayIcon,
+  clock: ClockIcon,
 };
 
 const fillStyle = css`
@@ -101,11 +106,11 @@ const fillOnHover = css`
       .filled {
         fill: ${({ hoverPalette }) => palette(
     hoverPalette,
-    hoverPalette === 'gray' ? 0 : 3,
+    hoverPalette === 'grayscale' ? 0 : 3,
   )};
         stroke: ${({ hoverPalette }) => palette(
     hoverPalette,
-    hoverPalette === 'gray' ? 0 : 3,
+    hoverPalette === 'grayscale' ? 0 : 3,
   )};
       }
       .unfilled {
@@ -127,11 +132,11 @@ const unfillOnHover = css`
       .unfilled {
         fill: ${({ hoverPalette }) => palette(
     hoverPalette,
-    hoverPalette === 'gray' ? 0 : 3,
+    hoverPalette === 'grayscale' ? 0 : 3,
   )};
         stroke: ${({ hoverPalette }) => palette(
     hoverPalette,
-    hoverPalette === 'gray' ? 0 : 3,
+    hoverPalette === 'grayscale' ? 0 : 3,
   )};
       }
     `,
@@ -179,33 +184,22 @@ const Wrapper = styled.span`
     stroke: ${(props) => (props.stroke ? props.stroke : '')};
     transform: rotate(${({ rotateDeg }) => `${rotateDeg}deg`});
   }
-
-  ${ifProp(
-    'hoverPalette',
-    css`
-      &:hover > svg {
-        fill: ${({ hoverPalette }) => palette(
-    hoverPalette,
-    hoverPalette === 'gray' ? 0 : 3,
-  )};
-        stroke: ${({ hoverPalette }) => palette(
-    hoverPalette,
-    hoverPalette === 'gray' ? 0 : 3,
-  )};
-        ${unfillOnHover};
-        ${fillOnHover};
-        ${fillHover};
-      }
-    `,
-  )};
 `;
 
 const Icon = ({
   icon,
+  tone = 0,
+  palette = 'grayscale',
   ...props
 }) => {
+  const componentTheme = useTheme({
+    palette,
+    tone,
+  });
+  const themeFill = componentTheme.foreground;
+  const fill = props.fill || themeFill;
   const ReactIcon = ReactIcons[icon];
-  return <Wrapper {...props}>{ReactIcon && <ReactIcon />}</Wrapper>;
+  return <Wrapper {...props} fill={fill}>{ReactIcon && <ReactIcon />}</Wrapper>;
 };
 
 Icon.propTypes = {
@@ -222,8 +216,8 @@ Icon.defaultProps = {
   height: 24,
   width: 24,
   size: null,
-  hoverPalette: 'gray',
-  palette: 'gray',
+  hoverPalette: 'grayscale',
+  palette: 'grayscale',
   rotateDeg: 0,
 };
 

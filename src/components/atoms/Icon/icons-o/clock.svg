@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22" height="22" viewBox="0 0 22 22">
+  <defs>
+    <clipPath id="clock_svg__clip-path">
+      <rect id="clock_svg__Rectangle_2307" data-name="Rectangle 2307" width="22" height="22" transform="translate(-0.365 -0.365)"/>
+    </clipPath>
+  </defs>
+  <g id="clock_svg__Group_2774" data-name="Group 2774" transform="translate(0.365 0.365)">
+    <g id="clock_svg__Group_2773" data-name="Group 2773" clip-path="url(#clock_svg__clip-path)">
+      <path id="clock_svg__Path_805" data-name="Path 805" d="M10.731,0A10.731,10.731,0,1,0,21.462,10.731,10.743,10.743,0,0,0,10.731,0m0,19.315a8.585,8.585,0,1,1,8.585-8.585,8.595,8.595,0,0,1-8.585,8.585"/>
+      <path id="clock_svg__Path_806" data-name="Path 806" d="M15.092,10.292H12.946V7.073a1.073,1.073,0,0,0-2.146,0v4.292a1.073,1.073,0,0,0,1.073,1.073h3.219a1.073,1.073,0,0,0,0-2.146" transform="translate(-1.142 -0.635)"/>
+    </g>
+  </g>
+</svg>
