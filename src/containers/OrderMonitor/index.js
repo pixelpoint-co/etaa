@@ -163,11 +163,12 @@ const OrderMonitor = (props) => {
     ],
     POS: ['hall'],
   };
+
   const filteredItemisedOrderList = itemisedOrderList.filter((io) => {
     if (selectedTab === 'all') return true;
     if (_.get(
       orderPlatformToTab,
-      [io.orderPlatform],
+      [io.platform],
       [],
     ).indexOf(selectedTab) >= 0) return true;
     return false;
@@ -235,43 +236,45 @@ const OrderMonitor = (props) => {
         return <StyledCell isCancel={isCancel}>{data}</StyledCell>;
       },
     },
-    // {
-    //   title: '플랫폼',
-    //   dataIndex: 'orderPlatform',
-    //   render: (
-    //     data,
-    //     {
-    //       isCancel,
-    //       lineIndex,
-    //     },
-    //     rowIndex,
-    //   ) => {
-    //     if (rowIndex !== 0 && lineIndex !== 0) return null;
-    //     return (
-    //       <StyledCell isCancel={isCancel} style={{ width: 40 }}>
-    //         <Flex
-    //           style={{
-    //             position: 'absolute',
-    //             right: 0,
-    //             left: 0,
-    //             bottom: 0,
-    //             top: 0,
-    //             justifyContent: 'center',
-    //             alignItems: 'center',
-    //           }}
-    //         >
-    //           <PlatformImage
-    //             platform={data}
-    //             style={{
-    //               marginTop: -18,
-    //               marginBottom: -18,
-    //             }}
-    //           />
-    //         </Flex>
-    //       </StyledCell>
-    //     );
-    //   },
-    // },
+    {
+      title: '플랫폼',
+      dataIndex: 'platform',
+      render: (
+        data,
+        {
+          isCancel,
+          channelNumber,
+          lineIndex,
+        },
+        rowIndex,
+      ) => {
+        if (rowIndex !== 0 && lineIndex !== 0) return null;
+        return (
+          <StyledCell isCancel={isCancel} style={{ width: 40 }}>
+            <Flex
+              style={{
+                position: 'absolute',
+                right: 0,
+                left: 0,
+                bottom: 0,
+                top: 0,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <PlatformImage
+                platform={data}
+                style={{
+                  marginTop: -18,
+                  marginBottom: -18,
+                }}
+              />
+            </Flex>
+          </StyledCell>
+        );
+      },
+
+    },
     {
       title: '주문',
       dataIndex: 'date',
@@ -523,18 +526,18 @@ const OrderMonitor = (props) => {
           //   label: '포장',
           //   value: 'pickup',
           // },
-          // {
-          //   label: '배민',
-          //   value: 'baeMin',
-          // },
-          // {
-          //   label: '요기요',
-          //   value: 'yogiyo',
-          // },
-          // {
-          //   label: '쿠팡',
-          //   value: 'coupangEats',
-          // },
+          {
+            label: '배민',
+            value: 'baeMin',
+          },
+          {
+            label: '요기요',
+            value: 'yogiyo',
+          },
+          {
+            label: '쿠팡',
+            value: 'coupangEats',
+          },
         ]}
         value={selectedTab}
         onSelect={setSelectedTab}

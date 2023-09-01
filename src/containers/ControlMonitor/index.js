@@ -218,7 +218,7 @@ const OrderMonitor = (props) => {
     },
     {
       title: '플랫폼',
-      dataIndex: 'orderPlatform',
+      dataIndex: 'platform',
       width: 50,
       render: (data) => (
         <StyledCell>
