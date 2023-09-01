@@ -34,6 +34,7 @@ const orderQueryFn = ({ queryKey }) => {
     {
       pageSize,
       currentPage,
+      sortOrder,
     },
   ] = queryKey;
   return global.api.get(
@@ -42,7 +43,7 @@ const orderQueryFn = ({ queryKey }) => {
       params: {
         limit: pageSize,
         offset: pageSize * currentPage,
-        sortOrder: 'desc',
+        sortOrder,
       },
     },
   );
@@ -54,6 +55,7 @@ export default (options = {}) => {
     orderRefetchTime = 0,
     chefMonitoringData,
     chefMonitorPotList,
+    sortOrder = 'desc',
   } = options;
 
   const { data: recipeList } = useRecipeData();
@@ -64,6 +66,7 @@ export default (options = {}) => {
         {
           pageSize: 200,
           currentPage: 0,
+          sortOrder,
           orderRefetchTime,
           orderKitchenRefetchTime,
         },
@@ -154,10 +157,11 @@ export default (options = {}) => {
       recipeList,
     ],
   );
-
+  const orderedOrderId = _.uniq(orderItemList.map((v) => v.orderId));
   const orderList = _.map(
-    byOrderId,
-    (oiList) => {
+    orderedOrderId,
+    (oid) => {
+      const oiList = byOrderId[oid];
       const { order } = oiList[0];
       return {
         ...order,
