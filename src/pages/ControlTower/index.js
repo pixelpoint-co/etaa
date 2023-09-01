@@ -13,22 +13,18 @@ const PageWrapper = styled(Flex)`
   flex-direction: column;
 `;
 
-const Layout = () => {
-  return (
-    <PageWrapper>
-      <Outlet />
-    </PageWrapper>
-  );
-};
+const Layout = () => (
+  <PageWrapper>
+    <Outlet />
+  </PageWrapper>
+);
 
-const RecipePage = () => {
-  return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route path="/" index element={<Main />} />
-      </Route>
-    </Routes>
-  );
-};
+const RecipePage = () => (
+  <Routes>
+    <Route path="/" element={<Layout />}>
+      <Route path="/" index element={<Main />} />
+    </Route>
+  </Routes>
+);
 
 export default RecipePage;
