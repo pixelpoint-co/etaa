@@ -150,8 +150,12 @@ moment.locale('ko');
 //   //   },
 //   // },
 // });
-
-global.api = apiService.create({ defaultUrl: `${process.env.REACT_APP_CHEF_URL}/api/v1` });
+const currentUrl = new URL(window.location);
+const isRemote = currentUrl.hostname !== 'localhost' && currentUrl.hostname.slice(
+  0,
+  3,
+) !== '192';
+global.api = apiService.create({ defaultUrl: isRemote ? `http://${currentUrl.hostname}:10105/api/v1` : `${process.env.REACT_APP_CHEF_URL}/api/v1` });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
