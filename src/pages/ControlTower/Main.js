@@ -34,6 +34,7 @@ import Tag from '../../components/atoms/Tag';
 import CountDown from '../../components/molecules/CountDown';
 import useRecipeData from '../../hooks/useRecipeData';
 import PotUnit from '../../components/organisms/PotUnit';
+import Receipt from '../../components/organisms/Receipt';
 
 const Wrapper = styled(Flex)`
   flex-direction: column;
@@ -231,84 +232,13 @@ const ControlTowerMain = (props) => {
     <Wrapper>
       <ReceiptWrapper>
         {orderList.map((order) => (
-          <ReceiptContainer key={order.id}>
-            <ReceiptSection>
-              <ReceiptHeader palette="grayscale">
-                <HaederContent>
-                  <HeaderContentRow>
-                    <BrandIcon size={36} icon="loader" palette="red" />
-                    <ChannelNumber>
-                      {lastFour(order.channelNumber || order.outsideId)}-{order.id}
-                    </ChannelNumber>
-                  </HeaderContentRow>
-                  <HeaderContentRow style={{ marginTop: 10 }}>
-                    <Icon size="22" icon="clock" palette="grayscale" tone={3} style={{ margin: 5 }} />
-                    <DateText>
-                      {moment(order.date)
-                        .format('HH:mm')}
-                    </DateText>
-                    <PlatformImage
-                      platform={order.platform}
-                      style={{ marginLeft: 15 }}
-                    />
-                    <DateText>
-                      {ORDER_TYPE_LABEL[order.type]}
-                    </DateText>
-                  </HeaderContentRow>
-                </HaederContent>
-
-                <HeaderAction>
-                  <Button label="완료" palette="black" />
-                </HeaderAction>
-              </ReceiptHeader>
-            </ReceiptSection>
-            {order.orderItem.filter((oi) => oi.parentId == null).map((orderItem, i) => {
-              const option = order.orderItem.filter((oi) => oi.parentId === orderItem.id);
-
-              return (
-                <ReceiptSection key={orderItem.id}>
-                  <StyledRipped ripTop={i !== 0}>
-                    <MenuName>{orderItem.name}</MenuName>
-                    {orderItem.orderKitchen ? (
-                      <TagSection>
-                        <EKStatusTag
-                          orderKitchen={orderItem.orderKitchen}
-                          activeStatusById={activeStatusById}
-                          completedJobsById={completedJobsById}
-                          recipeData={recipeData}
-                        />
-                      </TagSection>
-                    ) : null}
-                    <OptionSection>
-                      {option.map((option) => (
-                        <>
-                          <OptionName key={option.id}>{option.name}</OptionName>
-                          {option.orderKitchen ? (
-                            <TagSection>
-                              <EKStatusTag
-                                orderKitchen={option.orderKitchen}
-                                activeStatusById={activeStatusById}
-                                recipeData={recipeData}
-                              />
-                            </TagSection>
-                          ) : null}
-                        </>
-                      ))}
-                    </OptionSection>
-                  </StyledRipped>
-                </ReceiptSection>
-              );
-            })}
-            <ReceiptSection>
-              <ReceiptFooter ripBottom={false}>
-                <CustomerRequest>
-                  <CustomerRequestText>
-                    {order.customerRequest}
-                  </CustomerRequestText>
-                </CustomerRequest>
-              </ReceiptFooter>
-            </ReceiptSection>
-          </ReceiptContainer>
+          <Receipt
+            key={order.id}
+            order={order}
+            activeStatusById={activeStatusById}
+            completedJobsById={completedJobsById}
+            recipeData={recipeData}
+          />
         ))}
       </ReceiptWrapper>
       <PotWrapper>
