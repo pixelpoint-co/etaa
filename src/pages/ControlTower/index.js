@@ -11,6 +11,7 @@ import Main from './Main';
 
 const PageWrapper = styled(Flex)`
   flex-direction: column;
+  overflow: hidden;
 `;
 
 const Layout = () => (

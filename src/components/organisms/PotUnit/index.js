@@ -53,6 +53,7 @@ const Wrapper = styled(Card)`
   padding: 20px;
   justify-content: flex-end;
   position: relative;
+  overflow: hidden;
 `;
 const PotNumber = styled(Text)`
   padding: 20px;
@@ -111,7 +112,7 @@ const ImageContainer = styled(Flex)`
   margin: 0px 20px 0px 20px;
   flex: 0;
   flex-basis: 40%;
-  min-width: 90px;
+  min-width: 60px;
   max-width: 120px;
 `;
 const StyledImage = styled(Image)`
@@ -236,7 +237,12 @@ const PotUnit = (props) => {
   let recipeName = '';
   if (isWashing) recipeName = '세척 중';
   if (isCooking && recipeId === 21) recipeName = '추가 조리';
-  if (isCooking && recipeId !== 21) recipeName = recipe.name;
+  if (isCooking && recipeId !== 21) {
+    recipeName = _.get(
+      recipe,
+      'name',
+    );
+  }
   if (lastActionType === 'abort') recipeName = '정지중';
   if (lastActionType === 'machine') recipeName = lastActionId;
 

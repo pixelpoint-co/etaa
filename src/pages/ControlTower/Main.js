@@ -32,13 +32,26 @@ import PlatformImage from '../../components/atoms/PlatformImage';
 import Tag from '../../components/atoms/Tag';
 import CountDown from '../../components/molecules/CountDown';
 import useRecipeData from '../../hooks/useRecipeData';
+import PotUnit from '../../components/organisms/PotUnit';
 
 const Wrapper = styled(Flex)`
+  flex-direction: column;
+  align-items: stretch;
+  padding: 20px 10px;
+`;
+
+const ReceiptWrapper = styled(Flex)`
   flex-direction: row;
   justify-content: flex-start;
   align-items: flex-start;
-  padding: 20px 10px;
-  overflow: hidden;
+  flex: 1;
+  overflow: auto;
+`;
+const PotWrapper = styled(Flex)`
+  padding: 0px;
+  flex: 0;
+  flex-basis: 240px;
+  max-height: 240px;
 `;
 
 const ReceiptSection = styled(Flex)`
@@ -160,6 +173,12 @@ const StyledTag = styled(Tag)`
     font-size: 18px;
     line-height: 18px;
   }
+`;
+
+const PotCardContainer = styled(Flex)`
+  display: flex;
+  flex: 1;
+  margin: 10px;
 `;
 
 export const ORDER_TYPE_LABEL = {
@@ -326,74 +345,88 @@ const ControlTowerMain = (props) => {
 
   return (
     <Wrapper>
-      {orderList.map((order) => (
-        <ReceiptContainer key={order.id}>
-          <ReceiptSection>
-            <ReceiptHeader palette="grayscale">
-              <HaederContent>
-                <HeaderContentRow>
-                  <BrandIcon size={36} icon="loader" palette="red" />
-                  <ChannelNumber>
-                    {lastFour(order.channelNumber || order.outsideId)}-{order.id}
-                  </ChannelNumber>
-                </HeaderContentRow>
-                <HeaderContentRow style={{ marginTop: 10 }}>
-                  <Icon size="22" icon="clock" palette="grayscale" tone={3} style={{ margin: 5 }} />
-                  <DateText>
-                    {moment(order.date)
-                      .format('HH:mm')}
-                  </DateText>
-                  <PlatformImage
-                    platform={order.platform}
-                    style={{ marginLeft: 15 }}
-                  />
-                  <DateText>
-                    {ORDER_TYPE_LABEL[order.type]}
-                  </DateText>
-                </HeaderContentRow>
-              </HaederContent>
+      <ReceiptWrapper>
+        {orderList.map((order) => (
+          <ReceiptContainer key={order.id}>
+            <ReceiptSection>
+              <ReceiptHeader palette="grayscale">
+                <HaederContent>
+                  <HeaderContentRow>
+                    <BrandIcon size={36} icon="loader" palette="red" />
+                    <ChannelNumber>
+                      {lastFour(order.channelNumber || order.outsideId)}-{order.id}
+                    </ChannelNumber>
+                  </HeaderContentRow>
+                  <HeaderContentRow style={{ marginTop: 10 }}>
+                    <Icon size="22" icon="clock" palette="grayscale" tone={3} style={{ margin: 5 }} />
+                    <DateText>
+                      {moment(order.date)
+                        .format('HH:mm')}
+                    </DateText>
+                    <PlatformImage
+                      platform={order.platform}
+                      style={{ marginLeft: 15 }}
+                    />
+                    <DateText>
+                      {ORDER_TYPE_LABEL[order.type]}
+                    </DateText>
+                  </HeaderContentRow>
+                </HaederContent>
 
-              <HeaderAction>
-                <Button label="완료" palette="black" />
-              </HeaderAction>
-            </ReceiptHeader>
-          </ReceiptSection>
-          {order.orderItem.filter((oi) => oi.parentId == null).map((orderItem, i) => {
-            const option = order.orderItem.filter((oi) => oi.parentId === orderItem.id);
+                <HeaderAction>
+                  <Button label="완료" palette="black" />
+                </HeaderAction>
+              </ReceiptHeader>
+            </ReceiptSection>
+            {order.orderItem.filter((oi) => oi.parentId == null).map((orderItem, i) => {
+              const option = order.orderItem.filter((oi) => oi.parentId === orderItem.id);
 
-            return (
-              <ReceiptSection key={orderItem.id}>
-                <StyledRipped ripTop={i !== 0}>
-                  <MenuName>{orderItem.name}</MenuName>
-                  {orderItem.orderKitchen ? (
-                    <TagSection>
-                      <EKStatusTag
-                        orderKitchen={orderItem.orderKitchen}
-                        activeStatusById={activeStatusById}
-                        recipeData={recipeData}
-                      />
-                    </TagSection>
-                  ) : null}
-                  <OptionSection>
-                    {option.map((option) => (
-                      <OptionName key={option.id}>{option.name}</OptionName>
-                    ))}
-                  </OptionSection>
-                </StyledRipped>
-              </ReceiptSection>
-            );
-          })}
-          <ReceiptSection>
-            <ReceiptFooter ripBottom={false}>
-              <CustomerRequest>
-                <CustomerRequestText>
-                  {order.customerRequest}
-                </CustomerRequestText>
-              </CustomerRequest>
-            </ReceiptFooter>
-          </ReceiptSection>
-        </ReceiptContainer>
-      ))}
+              return (
+                <ReceiptSection key={orderItem.id}>
+                  <StyledRipped ripTop={i !== 0}>
+                    <MenuName>{orderItem.name}</MenuName>
+                    {orderItem.orderKitchen ? (
+                      <TagSection>
+                        <EKStatusTag
+                          orderKitchen={orderItem.orderKitchen}
+                          activeStatusById={activeStatusById}
+                          recipeData={recipeData}
+                        />
+                      </TagSection>
+                    ) : null}
+                    <OptionSection>
+                      {option.map((option) => (
+                        <OptionName key={option.id}>{option.name}</OptionName>
+                      ))}
+                    </OptionSection>
+                  </StyledRipped>
+                </ReceiptSection>
+              );
+            })}
+            <ReceiptSection>
+              <ReceiptFooter ripBottom={false}>
+                <CustomerRequest>
+                  <CustomerRequestText>
+                    {order.customerRequest}
+                  </CustomerRequestText>
+                </CustomerRequest>
+              </ReceiptFooter>
+            </ReceiptSection>
+          </ReceiptContainer>
+        ))}
+      </ReceiptWrapper>
+      <PotWrapper>
+        {_.times(5).map((i) => (
+          <PotCardContainer
+            key={i}
+            href={`${window.origin}/gates/${i + 1}`}
+          >
+            <PotUnit
+              cookerId={i}
+            />
+          </PotCardContainer>
+        ))}
+      </PotWrapper>
     </Wrapper>
   );
 };
