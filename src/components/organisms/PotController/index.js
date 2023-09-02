@@ -148,7 +148,6 @@ const PotController = (props) => {
           label="세척"
           onClick={() => {
             startWash();
-            selectRecipe(null);
           }}
           disabled={isCooking}
           disabledTooltip={[isCooking ? '조리중입니다' : null]}
