@@ -52,6 +52,7 @@ const ReceiptContainer = styled(Flex)`
   writing-mode: vertical-lr;
   flex-wrap: wrap;
   align-content: flex-start;
+  align-self: stretch;
 `;
 const ReceiptHeader = styled(Card)`
   border-bottom: none;
