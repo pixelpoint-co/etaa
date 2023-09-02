@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import _ from 'lodash';
 import Tag from '../../atoms/Tag';
 import CountDown from '../../molecules/CountDown';
 
@@ -53,6 +54,8 @@ const getStatus = ({
     ],
     -1,
   );
+  let status = orderKitchen.status || 'ORDER_ACCEPTED';
+
   const cookStatus = _.get(
     activeStatusById,
     [
@@ -60,6 +63,18 @@ const getStatus = ({
       0,
     ],
   );
+  if (_.get(
+    cookStatus,
+    [
+      'data',
+      'orderKitchenId',
+    ],
+  ) !== orderKitchen.id) {
+    return {
+      cookerId,
+      status,
+    };
+  }
   console.log({
     cookerId,
     orderKitchen,
@@ -92,7 +107,6 @@ const getStatus = ({
   const completionTimeMs = cookStartTime + (recipeDurationS * 1000);
   const showTime = completionTimeMs > Date.now() && name === 'cook';
 
-  let status = orderKitchen.status || 'ORDER_ACCEPTED';
   if (showTime) status = 'ORDER_COOKING';
   return {
     cookStartTime,
