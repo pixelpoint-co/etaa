@@ -29,6 +29,7 @@ import Ripped from '../../components/molecules/Ripped';
 import useOrderData from '../../hooks/useOrderData';
 import Icon from '../../components/atoms/Icon';
 import PlatformImage from '../../components/atoms/PlatformImage';
+import EKStatusTag from '../../components/organisms/EKStatusTag';
 import Tag from '../../components/atoms/Tag';
 import CountDown from '../../components/molecules/CountDown';
 import useRecipeData from '../../hooks/useRecipeData';
@@ -167,14 +168,6 @@ const TagSection = styled(Flex)`
   flex: 1;
   justify-content: flex-end;
 `;
-const StyledTag = styled(Tag)`
-  padding: 4px 10px;
-  align-self: flex-start;
-  > p {
-    font-size: 18px;
-    line-height: 18px;
-  }
-`;
 
 const PotCardContainer = styled(Flex)`
   display: flex;
@@ -215,116 +208,6 @@ export const orderButtonProps = {
   },
 };
 
-const getStatus = ({
-  orderKitchen,
-  activeStatusById,
-  recipeData,
-}) => {
-  const cookerId = _.findIndex(
-    activeStatusById,
-    (list) => _.get(
-      list,
-      [
-        0,
-        'data',
-        'orderKitchenId',
-      ],
-    ) === orderKitchen?.id,
-  );
-  const cookStatus = _.get(
-    activeStatusById,
-    [
-      cookerId,
-      0,
-    ],
-  );
-  const recipe = _.find(
-    recipeData,
-    {
-      id: _.get(
-        orderKitchen,
-        'recipeId',
-      ),
-    },
-  );
-  const recipeDurationS = _.get(
-    recipe,
-    [
-      'detail',
-      'duration',
-    ],
-    0,
-  );
-  const {
-    name,
-    timestamp,
-  } = cookStatus || {};
-  const cookStartTime = name === 'cook' ? timestamp : null;
-  const completionTimeMs = cookStartTime + (recipeDurationS * 1000);
-  const showTime = completionTimeMs > Date.now() && name === 'cook';
-
-  let status = orderKitchen.status || 'ORDER_ACCEPTED';
-  if (showTime) status = 'ORDER_COOKING';
-  return {
-    cookStartTime,
-    completionTimeMs,
-    showTime,
-    cookerId,
-    status,
-  };
-};
-const EKStatusTag = (props) => {
-  const {
-    orderKitchen,
-    activeStatusById,
-    recipeData,
-    ...others
-  } = props;
-  const {
-    cookStartTime,
-    completionTimeMs,
-    showTime,
-    cookerId,
-    status,
-  } = getStatus({
-    orderKitchen,
-    activeStatusById,
-    recipeData,
-  });
-  const okStatusProps = orderButtonProps[status];
-  return (
-    <StyledTag
-      icon={false}
-      themeProps={{
-        palette: okStatusProps?.palette,
-        type: okStatusProps?.themeType || 'light',
-      }}
-      label={(
-        <>
-          {okStatusProps?.label}
-          {showTime ? (
-            <>
-              {' - '}
-              <CountDown
-                palette="orange"
-                shorten
-                completionTimeMs={completionTimeMs}
-              />
-            </>
-          ) : null}
-          {cookerId > -1 ? (
-            <>
-              {' | '}
-              {`EK P${cookerId + 1}`}
-              {'  '}
-            </>
-          ) : null}
-        </>
-      )}
-      style={{ paddingRight: showTime ? 20 : null }}
-    />
-  );
-};
 const ControlTowerMain = (props) => {
   const location = useLocation();
   const { data } = useOrderData({ sortOrder: 'desc' });
@@ -391,6 +274,7 @@ const ControlTowerMain = (props) => {
                         <EKStatusTag
                           orderKitchen={orderItem.orderKitchen}
                           activeStatusById={activeStatusById}
+                          completedJobsById={completedJobsById}
                           recipeData={recipeData}
                         />
                       </TagSection>
