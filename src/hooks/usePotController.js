@@ -116,6 +116,17 @@ const usePotController = (cookerId, opts = {}) => {
       `${getMachineUrl(cookerId)}/cooker/0/finish-cook`,
     );
   };
+
+  const dishIn = () => {
+    global.api.post(
+      `${getMachineUrl(cookerId)}/cooker/0/dish-in`,
+    );
+  };
+  const dishOut = () => {
+    global.api.post(
+      `${getMachineUrl(cookerId)}/cooker/0/dish-out`,
+    );
+  };
   const selectRecipe = (recipeId, orderKitchenId) => {
     // global.api.post(
     //   `/cooker/${cookerId}/prep-cook`,
@@ -291,7 +302,8 @@ const usePotController = (cookerId, opts = {}) => {
     spinHome,
 
     tiltHome,
-
+    dishIn,
+    dishOut,
     home,
     startWash,
     prepWash,

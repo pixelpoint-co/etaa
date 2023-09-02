@@ -89,6 +89,8 @@ const PotController = (props) => {
     prepWash,
     startWash,
     stopCook,
+    dishIn,
+    dishOut,
     abort,
 
     selectRecipe,
@@ -247,6 +249,8 @@ const PotController = (props) => {
         lastActionId={lastActionId}
         spinHome={spinHome}
         prepWash={prepWash}
+        dishIn={dishIn}
+        dishOut={dishOut}
         machineState={machineState}
         onRecipeSelect={() => {
           setExtensionOpen(false);
