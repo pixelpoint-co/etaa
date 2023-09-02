@@ -94,10 +94,11 @@ const BodySection = styled(Flex)`
   margin: 15px -8px 0px -8px;
   flex-basis: 100%;
   flex-grow: 0;
-  overflow: auto;
+  overflow: hidden;
 `;
 const BodyColumn = styled(Flex)`
   margin: 0px 8px;
+  overflow: hidden;
 `;
 const PotControlButtonContainer = styled(Flex)`
   flex-basis: 50%;
@@ -240,38 +241,6 @@ const GatesMain = (props) => {
     labelColor: theme.palette.white[0],
   };
 
-  // useEffect(
-  //   () => {
-  //     if (
-  //       potMonitoringData.status === 'COOKER_COOKED'
-  //     && potMonitoringData.orderKitchenId > 0
-  //     ) {
-  //       updateOrderKitchenStatus({
-  //         variables: {
-  //           id: potMonitoringData.orderKitchenId,
-  //           status: 'ORDER_COOKED',
-  //         },
-  //       });
-  //     }
-  //     if (
-  //       potMonitoringData.status === 'COOKER_COOKING'
-  //     && potMonitoringData.orderKitchenId > 0
-  //     ) {
-  //       updateOrderKitchenStatus({
-  //         variables: {
-  //           id: potMonitoringData.orderKitchenId,
-  //           status: 'ORDER_COOKING',
-  //         },
-  //       });
-  //     }
-  //   },
-  //   [
-  //     updateOrderKitchenStatus,
-  //     potMonitoringData.status,
-  //     potMonitoringData.orderKitchenId,
-  //   ],
-  // );
-
   let recipeName = '';
   if (isWashing) recipeName = '세척 중';
   if (isCooking && currentRecipeId === 21) recipeName = '추가 조리';
@@ -322,24 +291,8 @@ const GatesMain = (props) => {
         </ActivateButton> */}
       </HeaderSection>
       <BodySection>
-        <BodyColumn flex={0} shrink={0} grow={0} basis={710} direction="column">
+        <BodyColumn flex={1} shrink={0} grow={0} basis={720} direction="column">
           <OrderMonitor
-            pickCellRenderers={(cellRenderers) => cellRenderers.filter(({ dataIndex }) => [
-              // 'id',
-              // 'okId',
-              // 'orderId',
-              'dateTimeISO',
-              'date',
-              'channelNo',
-              'platform',
-              'outsideId',
-              'name',
-              // 'qty',
-              'status',
-              'orderKitchen',
-              'cookStation',
-              'action',
-            ].indexOf(dataIndex) > -1)}
             onClickOrder={(order) => {
               setQueryParams((old) => ({
                 ...old,
@@ -350,9 +303,8 @@ const GatesMain = (props) => {
             pageSize={8}
             selectRecipe={selectRecipe}
           />
-
         </BodyColumn>
-        <BodyColumn style={{ overflow: 'hidden' }}>
+        <BodyColumn flex={0} shrink={0} grow={1} basis={10} direction="column">
           <PotController
             potController={potController}
             cookerId={cookerId}

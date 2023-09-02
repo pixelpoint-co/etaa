@@ -22,6 +22,7 @@ const ReceiptContainer = styled(Flex)`
   padding-bottom: 20px;
 `;
 const ReceiptInnerSection = styled(Flex)`
+  flex-direction: column;
   flex: 0;
   margin: 0px 10px;
   writing-mode: horizontal-tb;
@@ -40,6 +41,7 @@ const ReceiptHeader = styled(Card)`
 const HaederContent = styled(Flex)`
   flex-direction: column;
   flex: 1;
+  /* margin-bottom: 10px; */
 `;
 const HeaderContentRow = styled(Flex)`
   flex: 1;
@@ -66,13 +68,14 @@ const HeaderAction = styled(Flex)`
   margin-left: auto;
   align-self: flex-start;
   flex: 0;
+  margin-left: 8px;
 `;
 
 const MenuSection = styled(Flex)`
 `;
 const StyledRipped = styled(Ripped)`
   flex-direction: column;
-  padding: 10px 20px;
+  padding: 6px 20px;
 `;
 const OptionSection = styled(Flex)`
   flex-direction: column;
@@ -139,47 +142,56 @@ const Receipt = (props) => {
     completedJobsById,
     recipeData,
     completeOrder,
+    hideComplete,
+    onClickOrderKitchenTag,
     ...other
   } = props;
 
+  const mainOrderItemList = order.orderItem.filter((oi) => oi.parentId == null);
   return (
     <ReceiptContainer key={order.id}>
-      <ReceiptInnerSection>
-        <ReceiptHeader palette="grayscale">
-          <HaederContent>
-            <HeaderContentRow>
-              <BrandIcon size={36} icon="loader" palette="red" />
-              <ChannelNumber>
-                {lastFour(order.channelNumber || order.outsideId)}-{order.id}
-              </ChannelNumber>
-            </HeaderContentRow>
-            <HeaderContentRow style={{ marginTop: 10 }}>
-              <Icon size="22" icon="clock" palette="grayscale" tone={3} style={{ margin: 5 }} />
-              <DateText>
-                {moment(order.date)
-                  .format('HH:mm')}
-              </DateText>
-              <PlatformImage
-                platform={order.platform}
-                style={{ marginLeft: 15 }}
-              />
-              <DateText>
-                {ORDER_TYPE_LABEL[order.type]}
-              </DateText>
-            </HeaderContentRow>
-          </HaederContent>
 
-          <HeaderAction>
-            <Button label="완료" palette="black" onClick={() => completeOrder(order.id)} />
-          </HeaderAction>
-        </ReceiptHeader>
-      </ReceiptInnerSection>
       {order.orderItem.filter((oi) => oi.parentId == null).map((orderItem, i) => {
         const option = order.orderItem.filter((oi) => oi.parentId === orderItem.id);
 
         return (
           <ReceiptInnerSection key={orderItem.id}>
+            {i === 0 ? (
+              <ReceiptHeader palette="grayscale">
+                <HaederContent>
+                  <HeaderContentRow>
+                    <BrandIcon size={36} />
+                    <ChannelNumber>
+                      {lastFour(order.channelNumber || order.outsideId)}
+                    </ChannelNumber>
+                  </HeaderContentRow>
+                  <HeaderContentRow style={{ marginTop: 10 }}>
+                    <Icon size="22" icon="clock" palette="grayscale" tone={3} style={{ margin: 5 }} />
+                    <DateText>
+                      {moment(order.date)
+                        .format('HH:mm')}
+                    </DateText>
+                    <PlatformImage
+                      platform={order.platform}
+                      style={{ marginLeft: 15 }}
+                    />
+                    <DateText>
+                      {ORDER_TYPE_LABEL[order.type]}
+                    </DateText>
+                  </HeaderContentRow>
+                </HaederContent>
+
+                {!hideComplete ? (
+                  <HeaderAction>
+                    <Button label="완료" palette="black" onClick={() => completeOrder(order.id)} />
+                  </HeaderAction>
+                ) : null}
+              </ReceiptHeader>
+            ) : null}
             <StyledRipped ripTop={i !== 0}>
+              {i === 0 ? (
+                <Flex style={{ padding: 5 }} />
+              ) : null}
               <MenuName>{orderItem.name}</MenuName>
               {orderItem.orderKitchen ? (
                 <TagSection>
@@ -188,6 +200,9 @@ const Receipt = (props) => {
                     activeStatusById={activeStatusById}
                     completedJobsById={completedJobsById}
                     recipeData={recipeData}
+                    {...(onClickOrderKitchenTag
+                      ? { onClick: () => onClickOrderKitchenTag(orderItem.orderKitchen) }
+                      : {})}
                   />
                 </TagSection>
               ) : null}

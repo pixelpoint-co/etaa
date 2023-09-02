@@ -17,7 +17,6 @@ import useTheme from '../../../hooks/useTheme';
 const Container = styled(Flex)`
   ${defaultStyle}
   ${themeStyle}
-  ${themeColor}
 
   display: inline-flex;
   flex: 0;

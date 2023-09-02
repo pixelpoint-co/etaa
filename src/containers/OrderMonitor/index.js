@@ -22,12 +22,27 @@ import Tab from '../../components/molecules/Tab';
 import useChefMonitor from '../../hooks/useChefMonitor';
 import Tag from '../../components/atoms/Tag';
 import useRecipeData from '../../hooks/useRecipeData';
+import Receipt from '../../components/organisms/Receipt';
 
 const Wrapper = styled(Flex)`
   flex: 1;
   flex-direction: column;
   flex-basis: 100%;
   flex-grow: 0;
+  overflow: auto;
+  max-width: 100%;
+  overflow: hidden;
+`;
+
+const ReceiptWrapper = styled(Flex)`
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex: 1;
+
+  margin: 0px -10px;
+  margin-top: 20px;
+
   overflow: auto;
 `;
 const SearchContainer = styled(Flex)`
@@ -36,6 +51,8 @@ const SearchContainer = styled(Flex)`
 `;
 const TableContainer = styled(Flex)`
   margin-top: 20px;
+  overflow-x: auto;
+  flex-basis: 1px;
 `;
 const StyledButton = styled(Button)`
   padding: 10px;
@@ -104,22 +121,20 @@ const OrderMonitor = (props) => {
   const {
     activeStatusById,
     completedJobsById,
-    machineStateById,
   } = useChefMonitor();
   const { data: recipeData } = useRecipeData();
-  const {
-    queryParams,
-    setQueryParams,
-  } = useQueryParams({ initialQueryParams: { page: 1 } });
+  const { queryParams } = useQueryParams({ initialQueryParams: { page: 1 } });
   const [
     selectedTab,
     setSelectedTab,
   ] = useState('all');
-  const { itemisedOrderList } = useOrderData({
+  const { data: orderData } = useOrderData({
+    sortOrder: 'asc',
+    maxOrderStatus: 99,
     limit: pageSize,
     offset: (queryParams.pageSize * (queryParams.page - 1)) || 0,
   });
-
+  const orderList = orderData.slice();
   const orderPlatformToTab = {
     배민: [
       'delivery',
@@ -150,333 +165,15 @@ const OrderMonitor = (props) => {
     POS: ['hall'],
   };
 
-  const filteredItemisedOrderList = itemisedOrderList.filter((io) => {
+  const filteredOrderList = orderList.filter((order) => {
     if (selectedTab === 'all') return true;
     if (_.get(
       orderPlatformToTab,
-      [io.platform],
+      [order.platform],
       [],
     ).indexOf(selectedTab) >= 0) return true;
     return false;
   });
-  const count = filteredItemisedOrderList.length;
-  const { page: currentPage } = queryParams;
-  const onPageChange = useCallback(
-    async ({ currentPage: newPage }) => {
-      setQueryParams((prev) => ({
-        ...prev,
-        page: newPage,
-      }));
-    },
-    [setQueryParams],
-  );
-
-  const cellRenderers = [
-    {
-      title: '채널',
-      dataIndex: 'outsideId',
-      render: (
-        data,
-        {
-          isCancel,
-          lineIndex,
-          ...rest
-        },
-        rowIndex,
-      ) => {
-        if (rowIndex !== 0 && lineIndex !== 0) return null;
-        const lastFour = `...${data?.slice(-4)}`;
-        return (
-          <ChannelCell
-            isCancel={isCancel}
-          >
-            {lastFour}
-          </ChannelCell>
-        );
-      },
-    },
-    {
-      title: 'orderId',
-      dataIndex: 'orderId',
-      width: 60,
-      render: (data, row) => {
-        const { isCancel } = row;
-        return <StyledCell isCancel={isCancel}>{data}</StyledCell>;
-      },
-    },
-    {
-      title: 'id',
-      dataIndex: 'id',
-      width: 60,
-      render: (data, row) => {
-        const { isCancel } = row;
-        return <StyledCell isCancel={isCancel}>{data}</StyledCell>;
-      },
-    },
-    {
-      title: 'okId',
-      dataIndex: 'okId',
-      width: 60,
-      render: (data, row) => {
-        const { isCancel } = row;
-        return <StyledCell isCancel={isCancel}>{data}</StyledCell>;
-      },
-    },
-    {
-      title: '플랫폼',
-      dataIndex: 'platform',
-      render: (
-        data,
-        {
-          isCancel,
-          channelNumber,
-          lineIndex,
-        },
-        rowIndex,
-      ) => {
-        if (rowIndex !== 0 && lineIndex !== 0) return null;
-        return (
-          <StyledCell isCancel={isCancel} style={{ width: 40 }}>
-            <Flex
-              style={{
-                position: 'absolute',
-                right: 0,
-                left: 0,
-                bottom: 0,
-                top: 0,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <PlatformImage
-                platform={data}
-                style={{
-                  marginTop: -18,
-                  marginBottom: -18,
-                }}
-              />
-            </Flex>
-          </StyledCell>
-        );
-      },
-
-    },
-    {
-      title: '주문',
-      dataIndex: 'date',
-      render: (
-        data,
-        {
-          isCancel,
-          lineIndex,
-        },
-        rowIndex,
-      ) => {
-        if (rowIndex !== 0 && lineIndex !== 0) return null;
-        return (
-          <StyledCell isCancel={isCancel} style={{ width: 38 }}>
-            {moment(data)
-              .format('HH:mm')}
-          </StyledCell>
-        );
-      },
-    },
-    {
-      title: '메뉴',
-      dataIndex: 'name',
-      render: (data, {
-        isCancel,
-        isSubMenu,
-        qty,
-      }) => (
-        <StyledCell
-          isCancel={isCancel}
-          style={{ width: 230 }}
-        >
-          {`${isSubMenu ? '- ' : ''}${data}`}
-        </StyledCell>
-      )
-      ,
-    },
-    {
-      title: '수',
-      dataIndex: 'qty',
-      render: (data, row) => {
-        const { isCancel } = row;
-        return <StyledCell isCancel={isCancel} style={{ width: 16 }}>{data}</StyledCell>;
-      },
-    },
-    {
-      title: '고객요청',
-      dataIndex: 'customerRequest',
-      render: (data, row) => {
-        const { isCancel } = row;
-        if (row.isSubMenu) return null;
-        return <StyledCell isCancel={isCancel}>{data}</StyledCell>;
-      },
-    },
-    {
-      title: '조리상태',
-      dataIndex: 'orderKitchen',
-      render: (data, row) => {
-        const { isCancel } = row;
-        const cookerId = _.findIndex(
-          activeStatusById,
-          (list) => _.get(
-            list,
-            [
-              0,
-              'data',
-              'orderKitchenId',
-            ],
-          ) === data?.id,
-        );
-        const cookStatus = _.get(
-          activeStatusById,
-          [
-            cookerId,
-            0,
-          ],
-        );
-        const recipe = _.find(
-          recipeData,
-          {
-            id: _.get(
-              data,
-              'recipeId',
-            ),
-          },
-        );
-        console.log({});
-        const recipeDurationS = _.get(
-          row,
-          [
-            'recipe',
-            'detail',
-            'duration',
-          ],
-          0,
-        );
-        const {
-          name,
-          timestamp,
-        } = cookStatus || {};
-        const cookStartTime = name === 'cook' ? timestamp : null;
-        const completionTimeMs = cookStartTime + (recipeDurationS * 1000);
-        const showTime = completionTimeMs > Date.now() && name === 'cook';
-        console.log({
-          cookStatus,
-          data,
-          recipe,
-          activeStatusById,
-          row,
-          recipeDurationS,
-          cookerId,
-          cookStartTime,
-          completionTimeMs,
-          showTime,
-        });
-        return (
-          <StyledCell isCancel={isCancel} style={{ width: 100 }}>
-            {data && cookerId > -1 ? (
-              <StyledTag
-                icon={false}
-                themeProps={{
-                  palette: orderButtonProps[data.status]?.palette,
-                  themeType: 'light',
-                }}
-                label={(
-                  <Text
-                    color="white"
-                  >
-                    EK
-                    {cookerId + 1}
-                    {showTime ? (
-                      <>
-                        {' - '}
-                        <CountDown
-                          color="white"
-                          shorten
-                          completionTimeMs={completionTimeMs}
-                        />
-                      </>
-                    ) : null}
-                  </Text>
-                )}
-              />
-
-            ) : null}
-
-          </StyledCell>
-        );
-      },
-    },
-    {
-      title: '조리담당',
-      dataIndex: 'cookStation',
-      render: (data, row) => {
-        const { isCancel } = row;
-        const cookerId = _.get(
-          row,
-          [
-            'pot',
-            'cookerId',
-          ],
-          null,
-        );
-
-        const potLabel = _.isNull(cookerId) ? null : ` P${cookerId + 1}`;
-        return (
-          <StyledCell isCancel={isCancel} style={{ width: 50 }}>
-            {data}
-            {potLabel}
-          </StyledCell>
-        );
-      },
-    },
-    {
-      title: '',
-      dataIndex: 'action',
-      width: 80,
-      render: (
-        data,
-        row,
-        rowIndex,
-      ) => {
-        const {
-          isCancel,
-          lineIndex,
-        } = row;
-        const hasOrderKitchen = row.orderKitchen;
-        const isSelected = row.channelNo === selectedChannelNo;
-        const firstLineOrFirstRow = rowIndex !== 0 && lineIndex !== 0;
-        return (
-          <StyledCell
-            isCancel={isCancel}
-            style={{
-              marginTop: -12,
-              marginBottom: -12,
-            }}
-          >
-            {!firstLineOrFirstRow ? (
-              <StyledButton
-                themeType="outline"
-                palette="grayscale"
-                tone={isSelected ? 4 : 0}
-                disabled={isCancel}
-                disable
-                onClick={() => {
-                  onClickOrder(row);
-                }}
-              >
-                +
-              </StyledButton>
-            ) : null}
-          </StyledCell>
-        );
-      },
-    },
-  ];
   return (
     <Wrapper>
       {/* <SearchContainer>
@@ -528,24 +225,24 @@ const OrderMonitor = (props) => {
         value={selectedTab}
         onSelect={setSelectedTab}
       />
-      <TableContainer>
-        <AntDTable
-          modelName="model"
-          cellRenderers={pickCellRenderers(cellRenderers)}
-          data={
-            filteredItemisedOrderList
-            // _.uniqBy(
-            //     .filter((io) => !io.isSubMenu && !!io.orderKitchen),
-            //   'orderNo',
-            // )
-          }
-          itemsPerPage={pageSize}
-          onPageChange={onPageChange}
-          currentPage={currentPage}
-          count={count}
-          rowKey="id"
-        />
-      </TableContainer>
+      <ReceiptWrapper>
+        {filteredOrderList.map((order) => (
+          <Receipt
+            key={order.id}
+            order={order}
+            hideComplete
+            activeStatusById={activeStatusById}
+            completedJobsById={completedJobsById}
+            recipeData={recipeData}
+            onClickOrderKitchenTag={(orderKitchen) => {
+              selectRecipe(
+                orderKitchen.recipeId,
+                orderKitchen.id,
+              );
+            }}
+          />
+        ))}
+      </ReceiptWrapper>
     </Wrapper>
   );
 };

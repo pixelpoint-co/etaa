@@ -75,13 +75,7 @@ const getStatus = ({
       status,
     };
   }
-  console.log({
-    cookerId,
-    orderKitchen,
-    activeStatusById,
-    cookStatus,
-    completedJobsById,
-  });
+
   const recipe = _.find(
     recipeData,
     {
@@ -140,6 +134,7 @@ const EKStatusTag = (props) => {
   const okStatusProps = orderButtonProps[status];
   return (
     <StyledTag
+      {...others}
       icon={false}
       themeProps={{
         palette: okStatusProps?.palette,
