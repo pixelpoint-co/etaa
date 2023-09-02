@@ -38,8 +38,7 @@ const Wrapper = styled(Flex)`
   justify-content: flex-start;
   align-items: flex-start;
   padding: 20px 10px;
-  overflow-y: hidden;
-  overflow-x: auto;
+  overflow: hidden;
 `;
 
 const ReceiptSection = styled(Flex)`
