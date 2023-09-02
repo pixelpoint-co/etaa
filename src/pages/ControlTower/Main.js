@@ -215,14 +215,13 @@ const ControlTowerMain = (props) => {
   const {
     activeStatusById,
     completedJobsById,
-    machineStateById,
   } = useChefMonitor();
   const { data: recipeData } = useRecipeData();
 
   console.log(data);
   const orderList = data.slice(
     0,
-    5,
+    10,
   );
   console.log(orderList);
   const { ...others } = props;
