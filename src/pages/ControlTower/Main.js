@@ -46,6 +46,7 @@ const ReceiptWrapper = styled(Flex)`
   align-items: flex-start;
   flex: 1;
   overflow: auto;
+  flex-basis: 1px;
 `;
 const PotWrapper = styled(Flex)`
   padding: 0px;
@@ -396,7 +397,18 @@ const ControlTowerMain = (props) => {
                     ) : null}
                     <OptionSection>
                       {option.map((option) => (
-                        <OptionName key={option.id}>{option.name}</OptionName>
+                        <>
+                          <OptionName key={option.id}>{option.name}</OptionName>
+                          {option.orderKitchen ? (
+                            <TagSection>
+                              <EKStatusTag
+                                orderKitchen={option.orderKitchen}
+                                activeStatusById={activeStatusById}
+                                recipeData={recipeData}
+                              />
+                            </TagSection>
+                          ) : null}
+                        </>
                       ))}
                     </OptionSection>
                   </StyledRipped>
