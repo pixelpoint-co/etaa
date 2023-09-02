@@ -79,10 +79,8 @@ const routes = [
   {
     label: '관제',
     href: '/order-monitor/*',
-    element: <ControlTower />,
     rootRoute: true,
   },
-
   {
     label: '놀이터',
     href: '/playground/*',
@@ -162,6 +160,7 @@ const App = () => (
     <Routes>
       <Route path="/signin" element={<SignIn />} />
       <Route path="/gates/*" element={<Gates />} />
+      <Route path="/order-monitor/*" element={<ControlTower />} />
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
         {routes.map((route) => {
