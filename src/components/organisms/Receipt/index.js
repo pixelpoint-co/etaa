@@ -215,7 +215,11 @@ const Receipt = (props) => {
                         <EKStatusTag
                           orderKitchen={option.orderKitchen}
                           activeStatusById={activeStatusById}
+                          completedJobsById={completedJobsById}
                           recipeData={recipeData}
+                          {...(onClickOrderKitchenTag
+                            ? { onClick: () => onClickOrderKitchenTag(option.orderKitchen) }
+                            : {})}
                         />
                       </TagSection>
                     ) : null}
