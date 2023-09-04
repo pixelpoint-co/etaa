@@ -124,7 +124,7 @@ const CustomerRequestText = styled(Text)`
 const TagSection = styled(Flex)`
   margin: 5px 0px;
   flex: 1;
-  justify-content: flex-end;
+  justify-content: flex-start;
 `;
 const lastFour = (str) => (str.length > 4 ? `...${str?.slice(-4)}` : str);
 const ORDER_TYPE_LABEL = {
