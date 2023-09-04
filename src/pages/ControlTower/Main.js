@@ -215,7 +215,7 @@ const ControlTowerMain = (props) => {
     data,
     completeOrder,
   } = useOrderData({
-    sortOrder: 'desc',
+    sortOrder: 'asc',
     maxOrderStatus: 99,
   });
   const {
