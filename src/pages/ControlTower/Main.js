@@ -57,119 +57,6 @@ const PotWrapper = styled(Flex)`
   max-height: 240px;
 `;
 
-const ReceiptSection = styled(Flex)`
-  flex: 0;
-  margin: 0px 10px;
-  writing-mode: horizontal-tb;
-  width: 380px;
-`;
-const ReceiptContainer = styled(Flex)`
-  display: inline-flex;
-  writing-mode: vertical-lr;
-  flex-wrap: wrap;
-  align-content: flex-start;
-  align-self: stretch;
-`;
-const ReceiptHeader = styled(Card)`
-  border-bottom: none;
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
-  z-index: 1;
-  padding: 20px;
-  padding-bottom: 12px;
-  justify-content: stretch;
-  flex-direction: row;
-`;
-const HaederContent = styled(Flex)`
-  flex-direction: column;
-  flex: 1;
-`;
-const HeaderContentRow = styled(Flex)`
-  flex: 1;
-  align-items: center;
-`;
-const BrandIcon = styled(Icon)`
-
-`;
-const ChannelNumber = styled(Text)`
-  margin-left: 20px;
-  font-weight: 600;
-  font-size: 30px;
-  line-height: 30px;
-`;
-const DateText = styled(Text)`
-  font-size: 20px;
-  margin-left: 5px;
-  color: ${palette(
-    'grayscale',
-    2,
-  )};
-`;
-const HeaderAction = styled(Flex)`
-  margin-left: auto;
-  align-self: flex-start;
-  flex: 0;
-`;
-
-const MenuSection = styled(Flex)`
-`;
-const StyledRipped = styled(Ripped)`
-  flex-direction: column;
-  padding: 10px 20px;
-`;
-const OptionSection = styled(Flex)`
-  flex-direction: column;
-  margin-top: 5px;
-`;
-const MenuName = styled(Text)`
-  font-weight: 600;
-  color: ${palette(
-    'grayscale',
-    0,
-  )};
-  font-size: 22px;
-  line-height: 26px;
-`;
-const OptionName = styled(Text)`
-  font-weight: 400;
-  color: ${palette(
-    'grayscale',
-    2,
-  )};
-  font-size: 20px;
-  line-height: 30px;
-`;
-
-const ReceiptFooter = styled(Ripped)`
-  border-top: none;
-  border-top-left-radius: 0px;
-  border-top-right-radius: 0px;
-  border-radius: 0px 0px 15px 15px;
-  padding: 20px;
-  padding-top: 10px;
-  z-index: 1;
-`;
-const CustomerRequest = styled(Card)`
-  border: 2px solid ${palette(
-    'grayscale',
-    5,
-  )};
-`;
-const CustomerRequestText = styled(Text)`
-  font-weight: 400;
-  color: ${palette(
-    'grayscale',
-    2,
-  )};
-  font-size: 20px;
-  line-height: 26px;
-`;
-const TagSection = styled(Flex)`
-  margin: 5px 0px;
-  flex: 1;
-  justify-content: flex-end;
-`;
-
 const PotCardContainer = styled(Flex)`
   display: flex;
   flex: 1;
@@ -210,7 +97,6 @@ export const orderButtonProps = {
 };
 
 const ControlTowerMain = (props) => {
-  const location = useLocation();
   const {
     data,
     completeOrder,
@@ -224,14 +110,9 @@ const ControlTowerMain = (props) => {
   } = useChefMonitor();
   const { data: recipeData } = useRecipeData();
 
-  console.log(data);
-  const orderList = data.slice(
-    0,
-    10,
-  );
-  console.log(orderList);
+  const orderList = data.slice();
+
   const { ...others } = props;
-  const lastFour = (str) => (str.length > 4 ? `...${str?.slice(-4)}` : str);
 
   return (
     <Wrapper>

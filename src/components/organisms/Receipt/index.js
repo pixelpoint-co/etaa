@@ -12,17 +12,20 @@ import PlatformImage from '../../atoms/PlatformImage';
 import Button from '../../atoms/Button';
 
 const ReceiptContainer = styled(Flex)`
+  flex: 0;
+  flex-basis: 1px;
   display: inline-flex;
   writing-mode: vertical-lr;
   flex-wrap: wrap;
   align-content: flex-start;
   align-self: stretch;
+  padding-bottom: 20px;
 `;
 const ReceiptInnerSection = styled(Flex)`
   flex: 0;
   margin: 0px 10px;
   writing-mode: horizontal-tb;
-  width: 380px;
+  width: 350px;
 `;
 const ReceiptHeader = styled(Card)`
   border-bottom: none;
