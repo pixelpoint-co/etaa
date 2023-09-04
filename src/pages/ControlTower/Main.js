@@ -211,7 +211,13 @@ export const orderButtonProps = {
 
 const ControlTowerMain = (props) => {
   const location = useLocation();
-  const { data } = useOrderData({ sortOrder: 'desc' });
+  const {
+    data,
+    completeOrder,
+  } = useOrderData({
+    sortOrder: 'desc',
+    maxOrderStatus: 99,
+  });
   const {
     activeStatusById,
     completedJobsById,
@@ -237,6 +243,7 @@ const ControlTowerMain = (props) => {
             activeStatusById={activeStatusById}
             completedJobsById={completedJobsById}
             recipeData={recipeData}
+            completeOrder={completeOrder}
           />
         ))}
       </ReceiptWrapper>

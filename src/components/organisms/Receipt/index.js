@@ -135,6 +135,7 @@ const Receipt = (props) => {
     activeStatusById,
     completedJobsById,
     recipeData,
+    completeOrder,
     ...other
   } = props;
 
@@ -166,7 +167,7 @@ const Receipt = (props) => {
           </HaederContent>
 
           <HeaderAction>
-            <Button label="완료" palette="black" />
+            <Button label="완료" palette="black" onClick={() => completeOrder(order.id)} />
           </HeaderAction>
         </ReceiptHeader>
       </ReceiptInnerSection>

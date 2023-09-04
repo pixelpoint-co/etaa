@@ -21,7 +21,7 @@ const machineUrl = [
   'http://192.168.0.195:4100/api/v1',
 ];
 
-const getMachineUrl = (cookerId) => {
+export const getMachineUrl = (cookerId) => {
   if (
     process.env.REACT_APP_ENV === 'staging'
     || process.env.REACT_APP_ENV === 'development'

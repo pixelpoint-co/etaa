@@ -27,6 +27,7 @@ import {
 } from 'jotai/utils';
 import { socket } from '../services/socket';
 import useRecipeData from './useRecipeData';
+import { getMachineUrl } from './usePotController';
 
 const orderQueryFn = ({ queryKey }) => {
   const [
@@ -35,6 +36,7 @@ const orderQueryFn = ({ queryKey }) => {
       pageSize,
       currentPage,
       sortOrder,
+      maxOrderStatus,
     },
   ] = queryKey;
   return global.api.get(
@@ -43,6 +45,7 @@ const orderQueryFn = ({ queryKey }) => {
       params: {
         limit: pageSize,
         offset: pageSize * currentPage,
+        maxOrderStatus,
         sortOrder,
       },
     },
@@ -56,6 +59,7 @@ export default (options = {}) => {
     chefMonitoringData,
     chefMonitorPotList,
     sortOrder = 'desc',
+    maxOrderStatus,
   } = options;
 
   const { data: recipeList } = useRecipeData();
@@ -67,6 +71,7 @@ export default (options = {}) => {
           pageSize: 200,
           currentPage: 0,
           sortOrder,
+          maxOrderStatus,
           orderRefetchTime,
           orderKitchenRefetchTime,
         },
@@ -174,9 +179,15 @@ export default (options = {}) => {
     orderItemList,
     itemisedOrderList,
   });
+  const completeOrder = (orderId) => {
+    global.api.put(
+      `${getMachineUrl(0)}/order/${orderId}/complete`,
+    );
+  };
   return {
     data: orderList,
     itemisedOrderList,
     recipeList,
+    completeOrder,
   };
 };
