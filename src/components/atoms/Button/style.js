@@ -35,6 +35,7 @@ export const themeColor = css`
       solid: prop('theme.componentTheme.background'),
       outline: prop('theme.componentTheme.foreground'),
       text: prop('theme.componentTheme.foreground'),
+      light: prop('theme.componentTheme.foreground'),
     },
   )};
 `;
@@ -47,6 +48,7 @@ export const themeSvg = css`
       solid: prop('theme.componentTheme.background'),
       outline: prop('theme.componentTheme.foreground'),
       text: prop('theme.componentTheme.foreground'),
+      light: prop('theme.componentTheme.foreground'),
     },
   )};
   }
@@ -58,6 +60,7 @@ const themeColorHover = css`
       solid: prop('theme.componentTheme.hover.background'),
       outline: prop('theme.componentTheme.hover.foreground'),
       text: prop('theme.componentTheme.hover.foreground'),
+      light: prop('theme.componentTheme.hover.foreground'),
     },
   )};
 `;
@@ -69,6 +72,7 @@ const themeSvgHover = css`
       solid: prop('theme.componentTheme.hover.background'),
       outline: prop('theme.componentTheme.hover.foreground'),
       text: prop('theme.componentTheme.hover.foreground'),
+      light: prop('theme.componentTheme.hover.foreground'),
     },
   )};
   }
@@ -80,6 +84,7 @@ const themeColorFocus = css`
       solid: prop('theme.componentTheme.focus.background'),
       outline: prop('theme.componentTheme.focus.foreground'),
       text: prop('theme.componentTheme.focus.foreground'),
+      light: prop('theme.componentTheme.focus.foreground'),
     },
   )};
 `;
@@ -91,6 +96,7 @@ const themeSvgFocus = css`
       solid: prop('theme.componentTheme.focus.background'),
       outline: prop('theme.componentTheme.focus.foreground'),
       text: prop('theme.componentTheme.focus.foreground'),
+      light: prop('theme.componentTheme.focus.foreground'),
     },
   )};
   }
@@ -103,6 +109,7 @@ const themeBorder = css`
       solid: prop('theme.componentTheme.foreground'),
       outline: prop('theme.componentTheme.foreground'),
       text: prop('theme.componentTheme.background'),
+      light: prop('theme.componentTheme.focus.background'),
     },
   )};
 `;
@@ -113,6 +120,7 @@ const themeBorderHover = css`
       solid: prop('theme.componentTheme.hover.foreground'),
       outline: prop('theme.componentTheme.hover.foreground'),
       text: prop('theme.componentTheme.hover.background'),
+      light: prop('theme.componentTheme.hover.background'),
     },
   )};
 `;
@@ -123,6 +131,7 @@ const themeBorderFocus = css`
       solid: prop('theme.componentTheme.focus.foreground'),
       outline: prop('theme.componentTheme.focus.foreground'),
       text: prop('theme.componentTheme.focus.background'),
+      light: prop('theme.componentTheme.focus.background'),
     },
   )};
 `;
@@ -133,6 +142,7 @@ const themeBackground = css`
       solid: prop('theme.componentTheme.foreground'),
       outline: prop('theme.componentTheme.background'),
       text: prop('theme.componentTheme.background'),
+      light: prop('theme.componentTheme.focus.background'),
     },
   )};
 `;
@@ -143,6 +153,7 @@ const themeBackgroundHover = css`
       solid: prop('theme.componentTheme.hover.foreground'),
       outline: prop('theme.componentTheme.hover.background'),
       text: prop('theme.componentTheme.hover.background'),
+      light: prop('theme.componentTheme.hover.background'),
     },
   )};
 `;
@@ -153,6 +164,7 @@ const themeBackgroundFocus = css`
       solid: prop('theme.componentTheme.focus.foreground'),
       outline: prop('theme.componentTheme.focus.background'),
       text: prop('theme.componentTheme.focus.background'),
+      light: prop('theme.componentTheme.focus.background'),
     },
   )};
 `;

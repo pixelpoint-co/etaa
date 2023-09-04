@@ -6,9 +6,7 @@ import {
 
 import styled from 'styled-components';
 import moment from 'moment';
-import _, {
-  get,
-} from 'lodash';
+import _ from 'lodash';
 
 import { ifProp } from 'styled-tools';
 import Flex from '../../components/atoms/Flex';
@@ -19,13 +17,10 @@ import Cell from '../../components/atoms/AntDTableCell';
 import Text from '../../components/atoms/P';
 import useQueryParams from '../../hooks/useQueryParams';
 import useOrderData from '../../hooks/useOrderData';
-import SearchBar from '../../components/organisms/SearchBar';
-import TooltipMask from '../../components/molecules/TooltipMask';
 import PlatformImage from '../../components/atoms/PlatformImage';
 import Tab from '../../components/molecules/Tab';
 import useChefMonitor from '../../hooks/useChefMonitor';
 import Tag from '../../components/atoms/Tag';
-import usePotController from '../../hooks/usePotController';
 import useRecipeData from '../../hooks/useRecipeData';
 
 const Wrapper = styled(Flex)`
@@ -120,16 +115,7 @@ const OrderMonitor = (props) => {
     selectedTab,
     setSelectedTab,
   ] = useState('all');
-  const {
-    // data,
-    // count,
-    data,
-    itemisedOrderList,
-    // orderListCount: count,
-    loading,
-    error,
-    refetch,
-  } = useOrderData({
+  const { itemisedOrderList } = useOrderData({
     limit: pageSize,
     offset: (queryParams.pageSize * (queryParams.page - 1)) || 0,
   });

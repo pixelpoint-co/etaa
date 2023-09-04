@@ -17,7 +17,7 @@ const errorTheme = getTheme({
   type: 'outline',
 });
 
-const errorStyle = css`
+export const errorStyle = css`
   border-color: ${errorTheme.foreground};
   background-color: ${errorTheme.hover.background};
 `;

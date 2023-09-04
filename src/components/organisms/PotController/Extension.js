@@ -105,6 +105,8 @@ const PotControllerExtension = ({
   tiltHome,
   prepCook,
   prepWash,
+  dishIn,
+  dishOut,
   selectRecipe,
   isCooking,
   startSpin,
@@ -271,7 +273,20 @@ const PotControllerExtension = ({
                 active={lastActionType === 'machine' && lastActionId === '세척준비'}
               />
             </PotControlButtonContainer>
-            <PotControlButtonContainer />
+            <PotControlButtonContainer>
+              <PotControlButton
+                label="접시넣기"
+                hideLabelOnLoading
+                onClick={dishIn}
+              />
+            </PotControlButtonContainer>
+            <PotControlButtonContainer>
+              <PotControlButton
+                label="접시빼기"
+                hideLabelOnLoading
+                onClick={dishOut}
+              />
+            </PotControlButtonContainer>
             <PotControlButtonContainer>
               <PotControlButton
                 label="인덕션 끄기"
@@ -286,13 +301,13 @@ const PotControllerExtension = ({
                 label="회전 센서"
               />
             </PotControlButtonContainer>
-            <PotControlButtonContainer>
+            {/* <PotControlButtonContainer>
               <PotControlButton
                 disabled
                 disabledTooltip={['준비중인 기능입니다']}
                 label="세척 센서"
               />
-            </PotControlButtonContainer>
+            </PotControlButtonContainer> */}
           </PotControllerWrapper>
         </Container>
       </Modal>
