@@ -15,7 +15,7 @@ export const checkStatus = (response) => new Promise((resolve, reject) => {
           : `${response.status} ${response.statusText}`,
       );
       error.response = jsonError;
-
+      if (jsonError.errors) error.errors = jsonError.errors;
       reject(error);
     })
     .catch(() => {
@@ -62,18 +62,32 @@ const api = {};
 api.request = (endpoint, {
   params,
   ...settings
-} = {}) => fetch(parseEndpoint(endpoint, params, settings), parseSettings(settings))
+} = {}) => fetch(
+  parseEndpoint(
+    endpoint,
+    params,
+    settings,
+  ),
+  parseSettings(settings),
+)
   .then(checkStatus)
   .then(parseJSON)
+  .catch((e) => {
+    if (settings.onError) settings.onError(e);
+    throw e;
+  })
 
 ;[
   'delete',
   'get',
 ].forEach((method) => {
-  api[method] = (endpoint, settings) => api.request(endpoint, {
-    method,
-    ...settings,
-  });
+  api[method] = (endpoint, settings) => api.request(
+    endpoint,
+    {
+      method,
+      ...settings,
+    },
+  );
 })
 
 ;[
@@ -81,14 +95,22 @@ api.request = (endpoint, {
   'put',
   'patch',
 ].forEach((method) => {
-  api[method] = (endpoint, data, settings) => api.request(endpoint, {
-    method,
-    data,
-    ...settings,
-  });
+  api[method] = (endpoint, data, settings) => api.request(
+    endpoint,
+    {
+      method,
+      data,
+      ...settings,
+    },
+  );
 });
 
-api.create = (settings = { defaultUrl: 'http://localhost:3000/api' }) => ({
+api.create = (
+  settings = {
+    defaultUrl: 'http://localhost:3000/api',
+    onError: () => {},
+  },
+) => ({
   settings,
 
   setToken(token) {
@@ -106,45 +128,67 @@ api.create = (settings = { defaultUrl: 'http://localhost:3000/api' }) => ({
   },
 
   request(endpoint, requestSettings) {
-    return api.request(endpoint, merge({}, this.settings, requestSettings));
+    return api.request(
+      endpoint,
+      merge(
+        {},
+        this.settings,
+        requestSettings,
+      ),
+    );
   },
 
   post(endpoint, data, requestSettings) {
-    return this.request(endpoint, {
-      method: 'post',
-      data,
-      ...requestSettings,
-    });
+    return this.request(
+      endpoint,
+      {
+        method: 'post',
+        data,
+        ...requestSettings,
+      },
+    );
   },
 
   get(endpoint, requestSettings) {
-    return this.request(endpoint, {
-      method: 'get',
-      ...requestSettings,
-    });
+    return this.request(
+      endpoint,
+      {
+        method: 'get',
+        ...requestSettings,
+      },
+    );
   },
 
   put(endpoint, data, requestSettings) {
-    return this.request(endpoint, {
-      method: 'put',
-      data,
-      ...requestSettings,
-    });
+    return this.request(
+      endpoint,
+      {
+        method: 'put',
+        data,
+        ...requestSettings,
+      },
+    );
   },
 
   patch(endpoint, data, requestSettings) {
-    return this.request(endpoint, {
-      method: 'patch',
-      data,
-      ...requestSettings,
-    });
+    return this.request(
+      endpoint,
+      {
+        method: 'patch',
+        data,
+        ...requestSettings,
+      },
+    );
   },
 
   delete(endpoint, requestSettings) {
-    return this.request(endpoint, {
-      method: 'delete',
-      ...requestSettings,
-    });
+    return this.request(
+      endpoint,
+      {
+        method: 'delete',
+        ...requestSettings,
+      },
+    );
   },
 });
 

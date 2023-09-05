@@ -49,6 +49,7 @@ import {
 import 'react-toastify/dist/ReactToastify.css';
 import '@coreui/coreui/dist/css/coreui.min.css';
 
+import _ from 'lodash';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 
@@ -157,7 +158,24 @@ const isRemote = (
     3,
   ) !== '192'
 ) || process.env.REACT_APP_IS_REMOTE;
-global.api = apiService.create({ defaultUrl: isRemote ? `${process.env.REACT_APP_CHEF_URL_REMOTE}/api/v1` : `${process.env.REACT_APP_CHEF_URL}/api/v1` });
+global.api = apiService.create({
+  defaultUrl: isRemote ? `${process.env.REACT_APP_CHEF_URL_REMOTE}/api/v1` : `${process.env.REACT_APP_CHEF_URL}/api/v1`,
+  onError: (e) => {
+    const errors = e.errors || [];
+    const errorsLabel = errors.length > 0 ? `[${errors.join(', ')}]` : null;
+    toast(
+      [
+        e.message,
+        errorsLabel,
+      ].filter((v) => !_.isNil(v)).join(' '),
+      {
+        autoClose: true,
+        type: toast.TYPE.ERROR,
+        toastId: 'WS_DISCONNECT',
+      },
+    );
+  },
+});
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

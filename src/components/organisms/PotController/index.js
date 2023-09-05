@@ -99,7 +99,7 @@ const PotController = (props) => {
     isCooking,
     isWashing,
   } = potController;
-  console.log({ machineState });
+
   const closeExtension = useCallback(
     () => {
       setExtensionOpen(false);
