@@ -183,7 +183,7 @@ const Receipt = (props) => {
 
                 {!hideComplete ? (
                   <HeaderAction>
-                    <Button label="완료" palette="black" onClick={() => completeOrder(order.id)} />
+                    <Button hideLabelOnLoading label="완료" palette="black" isAsync onClick={async () => completeOrder(order.id)} />
                   </HeaderAction>
                 ) : null}
               </ReceiptHeader>
