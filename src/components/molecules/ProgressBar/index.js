@@ -48,6 +48,8 @@ const Bar = styled(Flex)`
 const ProgressBar = ({
   color,
   containerColor,
+  containerStyle = {},
+  barStyle = {},
   percentage,
   size = 3,
   direction,
@@ -77,18 +79,24 @@ const ProgressBar = ({
       height: progress || 0,
       width: size,
     };
-  const containerStyle = direction === 'horizontal'
+  const containerDefaultStyle = direction === 'horizontal'
     ? { height: size }
     : { width: size };
 
   return (
     <Container
-      style={containerStyle}
+      style={{
+        ...containerDefaultStyle,
+        ...containerStyle,
+      }}
       size={size}
       containerColor={containerColor}
     >
       <Bar
-        style={{ ...progressStyle }}
+        style={{
+          ...progressStyle,
+          ...barStyle,
+        }}
         direction={direction}
         size={size}
         {...others}

@@ -20,7 +20,15 @@ const machineUrl = [
   'http://192.168.0.196:4100/api/v1',
   'http://192.168.0.195:4100/api/v1',
 ];
-
+const mapPowerToCommand = (power, id = 0) => {
+  return {
+    type: 'induction',
+    command: {
+      power,
+      id,
+    },
+  };
+};
 export const getMachineUrl = (cookerId) => {
   if (
     process.env.REACT_APP_ENV === 'staging'
@@ -114,6 +122,16 @@ const usePotController = (cookerId, opts = {}) => {
   const finishCook = () => {
     global.api.post(
       `${getMachineUrl(cookerId)}/cooker/0/finish-cook`,
+    );
+  };
+
+  const setInductionPower = (power, id = 0) => {
+    global.api.post(
+      `${getMachineUrl(cookerId)}/machine/raw`,
+      mapPowerToCommand(
+        power,
+        id,
+      ),
     );
   };
 
@@ -250,8 +268,8 @@ const usePotController = (cookerId, opts = {}) => {
     ],
     {},
   );
-  const inductionPowerToTemp = (power) => {
-    const perPower = Math.ceil(100 / 7);
+  const inductionPowerToTemp = (power, max = 7) => {
+    const perPower = Math.ceil((100 / max) * 100) / 100;
     return Math.min(
       perPower * power,
       100,
@@ -312,6 +330,7 @@ const usePotController = (cookerId, opts = {}) => {
     startCook,
     stopCook,
     finishCook,
+    setInductionPower,
     selectedRecipeId,
     selectedRecipe,
     selectedOrderKitchenId,

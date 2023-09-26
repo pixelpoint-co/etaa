@@ -33,6 +33,7 @@ import usePotController from '../../../hooks/usePotController';
 import WashingMask from './WashingMask';
 import Extension from './Extension';
 import theme from '../../../theme';
+import InductionController from '../InductionController';
 
 const PotControllerWrapper = styled(Flex)`
   position: relative;
@@ -61,19 +62,8 @@ const PotController = (props) => {
   ] = useState(false);
   const {
     startSpin,
-    // cookerMonitoringError,
-    // cookerMonitoringData,
-    // cookerMonitoringLoading,
-
-    // subscriptionData,
-    // subscriptionLoading,
-
-    // fetchMonitoring,
-    // subscriptionTime,
-
     recipeRemainingTimeMs,
     recipeDurationMs,
-
     startCook,
     currentRecipe,
     currentRecipeId,
@@ -92,10 +82,8 @@ const PotController = (props) => {
     dishIn,
     dishOut,
     abort,
-
     selectRecipe,
     selectedRecipe,
-    // setSelectedRecipeId, // 선택된 레시피.  startRecipe에 들어가는 id 의 기본값
     isCooking,
     isWashing,
   } = potController;
@@ -175,7 +163,6 @@ const PotController = (props) => {
           ]}
         />
       </PotControlButtonContainer>
-
       <PotControlButtonContainer>
         <PotControlButton
           label="···"

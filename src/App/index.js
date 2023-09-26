@@ -32,6 +32,7 @@ import Billy from '../pages/Billy';
 import ControlTower from '../pages/ControlTower';
 import Gates from '../pages/Gates';
 import Playground from '../pages/Playground';
+import DevMode from '../pages/DevMode';
 
 import LeftMenu from '../containers/LeftMenu';
 import Header from '../containers/Header';
@@ -74,6 +75,12 @@ const routes = [
     label: '빌',
     href: '/billy/*',
     element: <Billy />,
+    rootRoute: true,
+  },
+  {
+    label: '개발모드',
+    href: '/pot-controller',
+    element: <DevMode />,
     rootRoute: true,
   },
   {

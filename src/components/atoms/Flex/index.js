@@ -7,6 +7,7 @@ const Flex = styled.div`
   flex-basis: ${({ basis = 1 }) => `${basis}px`};
   flex-shrink: ${({ shrink = 1 }) => `${shrink}`};
   flex-grow: ${({ grow = 1 }) => `${grow}`};
+  gap: ${({ gap = 0 }) => `${gap}px`};
 `;
 
 export default Flex;

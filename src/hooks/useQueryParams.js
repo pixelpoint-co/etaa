@@ -7,7 +7,10 @@ import {
   useEffect, useCallback,
 } from 'react';
 
-const parseQueryFromUrl = (search) => qs.parse(search, { ignoreQueryPrefix: true });
+const parseQueryFromUrl = (search) => qs.parse(
+  search,
+  { ignoreQueryPrefix: true },
+);
 
 export default (options = {}) => {
   const { initialQueryParams = {} } = options;
@@ -20,34 +23,51 @@ export default (options = {}) => {
     initialQueryParams,
     { skipNulls: true },
   );
+  console.log({ initialQueryParams });
   const queryParams = parseQueryFromUrl(search);
   const queryString = qs.stringify(
     queryParams,
     { skipNulls: true },
   );
 
-  const setQueryParams = useCallback((mapper, opt) => {
-    const shouldReplace = get(opt, 'replace', true);
-    const newQueryParams = mapper(qs.parse(queryString));
-    const queryStr = qs.stringify(
-      newQueryParams,
-      { skipNulls: true },
-    );
-    if (shouldReplace) {
-      navigate(`?${queryStr}`, { replace: true });
-    } else {
-      navigate(`?${queryStr}`);
-    }
-  }, [
-    queryString,
-    navigate,
-  ]);
+  const setQueryParams = useCallback(
+    (mapper, opt) => {
+      const shouldReplace = get(
+        opt,
+        'replace',
+        true,
+      );
+      const newQueryParams = mapper(qs.parse(queryString));
+      const queryStr = qs.stringify(
+        newQueryParams,
+        { skipNulls: true },
+      );
+      if (shouldReplace) {
+        navigate(
+          `?${queryStr}`,
+          { replace: true },
+        );
+      } else {
+        navigate(`?${queryStr}`);
+      }
+    },
+    [
+      queryString,
+      navigate,
+    ],
+  );
 
-  useEffect(() => {
-    if (!initialQueryParamsString) return;
-    if (queryString) return;
-    navigate(`?${initialQueryParamsString}`, { replace: true });
-  }, [/* only runs once on initial render */]);
+  useEffect(
+    () => {
+      if (!initialQueryParamsString) return;
+      if (queryString) return;
+      navigate(
+        `?${initialQueryParamsString}`,
+        { replace: true },
+      );
+    },
+    [/* only runs once on initial render */],
+  );
 
   return {
     queryParams,
