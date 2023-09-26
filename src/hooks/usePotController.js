@@ -26,6 +26,7 @@ const mapPowerToCommand = (power, id = 0) => {
     command: {
       power,
       id,
+      exec: 'run',
     },
   };
 };
