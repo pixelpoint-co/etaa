@@ -62,6 +62,8 @@ const PotController = (props) => {
   ] = useState(false);
   const {
     startSpin,
+    startSpin150,
+    startSpin200,
     recipeRemainingTimeMs,
     recipeDurationMs,
     startCook,
@@ -232,6 +234,8 @@ const PotController = (props) => {
         prepCook={prepCook}
         selectRecipe={selectRecipe}
         startSpin={startSpin}
+        startSpin150={startSpin150}
+        startSpin200={startSpin200}
         lastActionType={lastActionType}
         lastActionId={lastActionId}
         spinHome={spinHome}

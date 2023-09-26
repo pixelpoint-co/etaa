@@ -65,6 +65,32 @@ const usePotController = (cookerId, opts = {}) => {
       `${getMachineUrl(cookerId)}/cooker/0/start-spin`,
     );
   };
+  const startSpin150 = () => {
+    global.api.post(
+      `${getMachineUrl(cookerId)}/machine/raw`,
+      {
+        type: 'motor',
+        command: {
+          velocity: 6500 * 1.5,
+          id: 1,
+          exec: 'run',
+        },
+      },
+    );
+  };
+  const startSpin200 = () => {
+    global.api.post(
+      `${getMachineUrl(cookerId)}/machine/raw`,
+      {
+        type: 'motor',
+        command: {
+          velocity: 6500 * 2,
+          id: 1,
+          exec: 'run',
+        },
+      },
+    );
+  };
   const stopSpin = () => {
     global.api.post(
       `${getMachineUrl(cookerId)}/cooker/0/stop-spin`,
@@ -318,6 +344,8 @@ const usePotController = (cookerId, opts = {}) => {
     prepCook,
     selectRecipe,
     startSpin,
+    startSpin150,
+    startSpin200,
     stopSpin,
     spinHome,
 
