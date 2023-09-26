@@ -33,7 +33,7 @@ export default (options = {}) => {
         parsedBaseColorHSL[1],
         Math.min(
           parsedBaseColorHSL[2] + 20,
-          90,
+          95,
         ),
       ],
       backgroundHSL: [ // white
@@ -84,7 +84,7 @@ export default (options = {}) => {
         parsedBaseColorHSL[1],
         Math.min(
           parsedBaseColorHSL[2] + 40,
-          90,
+          95,
         ),
       ])}`,
     },
