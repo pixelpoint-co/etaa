@@ -266,6 +266,8 @@ const usePotController = (cookerId, opts = {}) => {
         return 45;
       case -150000:
         return 135;
+      case -123000:
+        return 135;
       case -255000:
         return 180;
       default:

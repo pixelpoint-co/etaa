@@ -87,7 +87,7 @@ const loadingTextStyle = css`
 `;
 const labelStyle = css`
   ${themeColor}
-  font-weight: 500;
+  font-weight: 600;
   font-size: inherit;
   overflow: visible;
   text-align: center;
