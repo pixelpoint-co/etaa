@@ -1,1 +1,1 @@
-git branch --merged | egrep -v "^\*|^\s*(master|main|staging|develop|rn/*)$" | xargs git branch -d
+git branch --merged | egrep -v "^\*|(master|main|staging|develop|release|candidate)" | xargs git branch -d
