@@ -4,7 +4,6 @@ import Flex from '../../components/atoms/Flex';
 
 import AntDTable from '../../components/organisms/AntDTable';
 
-import useProductData from '../../hooks/useProductData';
 import useTableData from '../../hooks/useTableData';
 
 const Wrapper = styled(Flex)`
@@ -41,27 +40,17 @@ const Ingredient = () => {
     itemsPerPage: 10,
   });
 
-  const {
-    productListData: data,
-    productListCount: count,
-    loading,
-    error,
-  } = useProductData({
-    limit: pageSize,
-    offset: (pageSize * (currentPage - 1)) || 0,
-  });
-
   return (
     <Wrapper>
       <AntDTable
         modelName="model"
         cellRenderers={cellRenderers}
-        data={data}
+        data={[]}
         itemsPerPage={pageSize}
         onPageChange={onPageChange}
         onItemsPerPageChange={onItemsPerPageChange}
         currentPage={currentPage}
-        count={count}
+        count={0}
         rowKey="id"
       />
     </Wrapper>

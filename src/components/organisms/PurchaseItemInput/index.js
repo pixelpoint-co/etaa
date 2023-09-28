@@ -15,9 +15,6 @@ import {
   useField,
 } from 'formik';
 
-import {
-  gql,
-} from '@apollo/client';
 import Text from '../../atoms/P';
 import Flex from '../../atoms/Flex';
 import Icon from '../../atoms/Icon';
@@ -85,27 +82,27 @@ const PurchaseItemInput = (props) => {
           style={{ width: '100%' }}
           placeholder="자재명"
           required
-          query={gql`
-            query FetchProductList($offset:Int, $limit:Int) {
-              productList (
-                offset: $offset,
-                limit: $limit,
-              ) {
-                list {
-                  id
-                  name
-                }
-              }
-            }
-          `}
-          addItemQuery={gql`
-            mutation AddProduct($name:String, $unit:String) {
-              addProduct(name: $name, unit: $unit) {
-                name,
-                unit,
-              }
-            }
-          `}
+          // query={gql`
+          //   query FetchProductList($offset:Int, $limit:Int) {
+          //     productList (
+          //       offset: $offset,
+          //       limit: $limit,
+          //     ) {
+          //       list {
+          //         id
+          //         name
+          //       }
+          //     }
+          //   }
+          // `}
+          // addItemQuery={gql`
+          //   mutation AddProduct($name:String, $unit:String) {
+          //     addProduct(name: $name, unit: $unit) {
+          //       name,
+          //       unit,
+          //     }
+          //   }
+          // `}
           onChange={(v, a) => {
             onChangeKey('productId')(a);
           }}

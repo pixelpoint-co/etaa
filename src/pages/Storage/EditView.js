@@ -7,25 +7,15 @@ import {
 } from 'styled-theme';
 import styled from 'styled-components';
 
-import {
-  useParams,
-} from 'react-router-dom';
-
 import moment from 'moment';
 import _, {
   cloneDeep,
-  lowerCase,
   reduce,
-  get,
 } from 'lodash';
-import {
-  gql, useMutation,
-} from '@apollo/client';
 
 import Flex from '../../components/atoms/Flex';
 import Button from '../../components/atoms/Button';
 import LabelValue from '../../components/molecules/LabelValue';
-import usePurchaseData from '../../hooks/usePurchaseData';
 import OrderItemInput from '../../components/molecules/OrderItemInput';
 import PageAction from '../../components/organisms/PageAction';
 
@@ -47,14 +37,6 @@ const StyledForm = styled(Form)`
   flex-direction: column;
 `;
 
-const ADD_INVETORY_LIST = gql`
-  mutation AddInventoryList($inventoryList: [InventoryInput]) {
-    addInventoryList(inventoryList: $inventoryList) {
-      id,
-      name,
-    }
-  }
-`;
 const DDContainer = styled(Flex)`
   flex-direction: column;
 `;
@@ -103,22 +85,6 @@ const DummyDataField = (props) => {
 const today = moment().toISOString(); // TODO waiter db.Timestamp에 따라 수동으로 UTC기준으로 전환
 
 const Inventory = () => {
-  const { id } = useParams();
-  const {
-    purchaseData: data,
-    purchaseListData: listData,
-    loading,
-    error,
-  } = usePurchaseData({
-    id,
-    created: today,
-    startDate: moment(today).subtract(
-      1,
-      'day',
-    ),
-    endDate: today,
-    type: 'many',
-  });
   // const {
   //   id,
   //   detail: purchaseItemList,
@@ -130,20 +96,8 @@ const Inventory = () => {
     window.location.reload();
   };
 
-  const [
-    addInventoryList,
-    {
-      loading: addInventoryListLoading,
-      error: addInventoryListError,
-    },
-  ] = useMutation(
-    ADD_INVETORY_LIST,
-    { onCompleted: addInventoryListCompleted },
-  );
-  if (data == null) return null;
-  if (loading) return null;
   const parsedPurchaseItemList = reduce(
-    listData,
+    [],
     (ac, cu) => {
       return [
         ...ac,
@@ -159,7 +113,7 @@ const Inventory = () => {
     [],
   );
   const inventoryList = reduce(
-    listData,
+    [],
     (ac, cu) => {
       const { inventory } = cu;
       return [
@@ -215,25 +169,14 @@ const Inventory = () => {
       ),
     };
   });
-  console.log({
-    inventoryList,
-    formattedInventoryList,
-    formattedPurchaseItemList,
-    listData,
-  });
 
-  const {
-    created,
-    account,
-  } = listData[0];
-  const createdAt = moment(Number(created));
   return (
     <Wrapper>
       <LabelValue
         style={{ padding: 15 }}
         bold
-        label={`기록날짜 (${account})`}
-        value={`${createdAt.format('YYYY-MM-DD')}`}
+        label="기록날짜 ()"
+        value={`${moment().format('YYYY-MM-DD')}`}
       />
       <Formik
         initialValues={{
@@ -260,7 +203,6 @@ const Inventory = () => {
               ),
             };
           });
-          addInventoryList({ variables: { inventoryList: formattedInventoryList } });
         }}
       >
         <StyledForm>
@@ -269,7 +211,7 @@ const Inventory = () => {
             name="inventoryList"
           />
           <PageAction actions={[]}>
-            <Button type="submit" label="저장" loaderStroke="white" loaderSize={32} loading={addInventoryListLoading} />
+            <Button type="submit" label="저장" loaderStroke="white" loaderSize={32} loading={false} />
           </PageAction>
         </StyledForm>
       </Formik>

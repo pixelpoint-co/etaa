@@ -13,9 +13,6 @@ import moment from 'moment';
 import _, {
   get,
 } from 'lodash';
-import {
-  gql, useMutation,
-} from '@apollo/client';
 
 import Flex from '../components/atoms/Flex';
 import Button from '../components/atoms/Button';
@@ -32,7 +29,6 @@ import {
   formatCurrency,
   formatNumber,
 } from '../services/number';
-import useProductData from '../hooks/useProductData';
 import SearchBar from '../components/organisms/SearchBar';
 
 const Wrapper = styled(Flex)`
@@ -168,21 +164,6 @@ const Storage = () => {
   );
 
   const {
-    // data,
-    // count,
-    productListData: data,
-    productListCount: count,
-    ingredientListData,
-    ingredientListCount,
-    loading,
-    setKeyword,
-    error,
-  } = useProductData({
-    limit: Number(queryParams.pageSize),
-    offset: (queryParams.pageSize * (queryParams.page - 1)) || 0,
-  });
-
-  const {
     pageSize,
     page: currentPage,
   } = queryParams;
@@ -204,18 +185,17 @@ const Storage = () => {
         label="검색"
         icon="search"
         onSubmit={(searchKey) => {
-          setKeyword(searchKey);
         }}
       />
       <TableContainer>
         <AntDTable
           modelName="model"
           cellRenderers={cellRenderers}
-          data={data}
+          data={[]}
           itemsPerPage={pageSize}
           onPageChange={onPageChange}
           currentPage={currentPage}
-          count={count}
+          count={0}
           rowKey="id"
         />
       </TableContainer>

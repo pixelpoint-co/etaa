@@ -14,9 +14,6 @@ import {
 import {
   ifProp,
 } from 'styled-tools';
-import {
-  gql, useQuery,
-} from '@apollo/client';
 import IconButton from '../../molecules/IconButton';
 import Input from '../../molecules/Input';
 import Flex from '../../atoms/Flex';

@@ -1,6 +1,3 @@
-import {
-  gql, useMutation, useQuery, useSubscription,
-} from '@apollo/client';
 import styled, {
   css,
 } from 'styled-components';

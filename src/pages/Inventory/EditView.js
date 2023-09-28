@@ -1,32 +1,19 @@
 import {
-  Formik, useField, Form, Field,
+  Formik, useField, Form,
 } from 'formik';
 
 import {
-  palette, size,
+  size,
 } from 'styled-theme';
 import styled from 'styled-components';
-
-import {
-  useNavigate,
-  useParams,
-} from 'react-router-dom';
 
 import moment from 'moment';
 import _, {
   cloneDeep,
-  lowerCase,
   reduce,
-  get,
 } from 'lodash';
-import {
-  gql, useMutation,
-} from '@apollo/client';
 
 import Flex from '../../components/atoms/Flex';
-import Button from '../../components/atoms/Button';
-import LabelValue from '../../components/molecules/LabelValue';
-import usePurchaseData from '../../hooks/usePurchaseData';
 import OrderItemInput from '../../components/molecules/OrderItemInput';
 import AntDList from '../../components/organisms/AntDList';
 import PageAction from '../../components/organisms/PageAction';
@@ -35,7 +22,6 @@ import {
   unformat, roundTo, convertUnit,
 } from '../../services/number';
 import Card from '../../components/atoms/Card';
-import useProductData from '../../hooks/useProductData';
 
 const Wrapper = styled(Flex)`
   flex-direction: column;
@@ -50,14 +36,6 @@ const StyledForm = styled(Form)`
   flex-direction: column;
 `;
 
-const ADD_INVETORY_LIST = gql`
-  mutation AddInventoryList($inventoryList: [InventoryInput]) {
-    addInventoryList(inventoryList: $inventoryList) {
-      id,
-      name,
-    }
-  }
-`;
 const DDContainer = styled(Flex)`
   flex-direction: column;
   padding: 20px;
@@ -108,48 +86,11 @@ const DummyDataField = (props) => {
   );
 };
 
-const today = moment().toISOString(); // TODO waiter db.Timestamp에 따라 수동으로 UTC기준으로 전환
-
 const StorageEdit = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
+  const data = [];
+  const listData = [];
+  const loading = false;
 
-  const {
-    purchaseData: data,
-    purchaseListData: listData,
-    loading,
-    error,
-  } = usePurchaseData({
-    id,
-    created: today,
-    startDate: moment(today).subtract(
-      1,
-      'day',
-    ),
-    endDate: today,
-    type: 'many',
-  });
-  // const {
-  //   id,
-  //   detail: purchaseItemList,
-  //   inventory: inventoryList,
-  // } = data;
-  const addInventoryListCompleted = () => {
-    console.log('add inventory db');
-    alert('기록되었습니다');
-    navigate('/purchase');
-  };
-
-  const [
-    addInventoryList,
-    {
-      loading: addInventoryListLoading,
-      error: addInventoryListError,
-    },
-  ] = useMutation(
-    ADD_INVETORY_LIST,
-    { onCompleted: addInventoryListCompleted },
-  );
   if (data == null) return null;
   if (loading) return null;
   const parsedPurchaseItemList = reduce(
@@ -224,17 +165,8 @@ const StorageEdit = () => {
       ),
     };
   });
-  console.log({
-    inventoryList,
-    formattedInventoryList,
-    formattedPurchaseItemList,
-    listData,
-  });
 
-  const {
-    created,
-    account,
-  } = listData[0];
+  const { created } = listData[0];
   const createdAt = moment(Number(created));
   return (
     <Wrapper>
@@ -264,7 +196,6 @@ const StorageEdit = () => {
             };
           });
           console.log(JSON.stringify({ variables: { inventoryList: formattedInventoryList } }));
-          addInventoryList({ variables: { inventoryList: formattedInventoryList } });
         }}
       >
         <StyledForm>
@@ -278,7 +209,7 @@ const StorageEdit = () => {
               label: '입고확정',
               loaderStroke: 'white',
               loaderSize: 32,
-              loading: addInventoryListLoading,
+              loading: false,
             }]}
           />
         </StyledForm>

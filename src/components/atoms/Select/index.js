@@ -77,54 +77,34 @@ const Select = ({
   // .map((v) => pick(v, ['label', 'value']));
   const defaultValue = (selectedOption.length > 0 ? selectedOption : initialOption);
   return (
-    <React.Fragment>
-      <ReactSelect
-        className="select"
-        autoBlur
-        components={{ MenuList }}
-        filterOption={createFilter({ ignoreAccents: false })}
-        options={options}
-        onChange={(sValue) => {
-          onChange(get(
-            sValue,
-            'value',
-            null,
-          ));
-        }}
-        closeMenuOnSelect
-        isClearable={isClearable}
-        onBlurResetsInput={false}
-        onCloseResetsInput={false}
-        hideSelectedOptions={false}
-        // styles={customStyle({
-        //   invalid,
-        //   disabled,
-        // })}
-        value={selectedOption}
-        defaultValue={defaultValue}
-        isDisabled={disabled}
-        menuPlacement="auto"
-        {...others}
-      />
-      {/* {preview.length > 0 && (
-        <Card>
-          <DataView
-            entries={preview.map((name) => {
-              return {
-                label: name,
-                value: get(
-                  selectedOption[0],
-                  [
-                    'rawData',
-                    name,
-                  ],
-                ) || '-',
-              };
-            })}
-          />
-        </Card>
-      )} */}
-    </React.Fragment>
+    <ReactSelect
+      className="select"
+      autoBlur
+      components={{ MenuList }}
+      filterOption={createFilter({ ignoreAccents: false })}
+      options={options}
+      onChange={(sValue) => {
+        onChange(get(
+          sValue,
+          'value',
+          null,
+        ));
+      }}
+      closeMenuOnSelect
+      isClearable={isClearable}
+      onBlurResetsInput={false}
+      onCloseResetsInput={false}
+      hideSelectedOptions={false}
+      // styles={customStyle({
+      //   invalid,
+      //   disabled,
+      // })}
+      value={selectedOption}
+      defaultValue={defaultValue}
+      isDisabled={disabled}
+      menuPlacement="auto"
+      {...others}
+    />
   );
 };
 

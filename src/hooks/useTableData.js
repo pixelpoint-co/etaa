@@ -18,20 +18,29 @@ export default (options = {}) => {
 
   const { page = 1 } = queryParams;
 
-  const setCurrentPage = useCallback((newPage) => {
-    setQueryParams((old) => ({
-      ...old,
-      page: newPage,
-    }));
-  }, [setQueryParams]);
+  const setCurrentPage = useCallback(
+    (newPage) => {
+      setQueryParams((old) => ({
+        ...old,
+        page: newPage,
+      }));
+    },
+    [setQueryParams],
+  );
 
-  const onPageChange = useCallback(async ({ currentPage: newPage }) => {
-    setCurrentPage(newPage);
-  }, [setCurrentPage]);
+  const onPageChange = useCallback(
+    async ({ currentPage: newPage }) => {
+      setCurrentPage(newPage);
+    },
+    [setCurrentPage],
+  );
 
-  const onItemsPerPageChange = useCallback(async ({ itemsPerPage: currentItemsPerPage }) => {
-    setItemsPerPage(currentItemsPerPage);
-  }, [setItemsPerPage]);
+  const onItemsPerPageChange = useCallback(
+    async ({ itemsPerPage: currentItemsPerPage }) => {
+      setItemsPerPage(currentItemsPerPage);
+    },
+    [setItemsPerPage],
+  );
 
   return {
     onPageChange,

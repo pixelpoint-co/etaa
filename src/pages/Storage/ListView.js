@@ -1,31 +1,12 @@
-import {
-  Formik, useField, Form,
-} from 'formik';
-
-import {
-  palette, size,
-} from 'styled-theme';
 import styled from 'styled-components';
 import moment from 'moment';
-import _, {
-  cloneDeep, lowerCase,
-} from 'lodash';
-import {
-  gql, useMutation,
-} from '@apollo/client';
 
 import Flex from '../../components/atoms/Flex';
 import Button from '../../components/atoms/Button';
 import Link from '../../components/atoms/Link';
 
-import usePurchaseData from '../../hooks/usePurchaseData';
-import OrderItemInput from '../../components/molecules/OrderItemInput';
 import PurchaseRow from '../../components/organisms/PurchaseRow';
 import AntDList from '../../components/organisms/AntDList';
-
-import {
-  unformat,
-} from '../../services/number';
 
 const Wrapper = styled(Flex)`
   flex: 1;
@@ -33,15 +14,6 @@ const Wrapper = styled(Flex)`
 `;
 const StyledList = styled(AntDList)`
   flex: 1;
-`;
-
-const ADD_INVETORY_LIST = gql`
-  mutation AddInventoryList($inventoryList: [InventoryInput]) {
-    addInventoryList(inventoryList: $inventoryList) {
-      id,
-      name,
-    }
-  }
 `;
 
 const today = moment().startOf('day');
@@ -68,29 +40,7 @@ const PurchaseRowLink = (props) => {
 };
 
 const Inventory = () => {
-  const {
-    pId,
-    purchaseListData,
-    loading,
-    error,
-  } = usePurchaseData({
-    id: null,
-    startDate: startDate.toISOString(),
-    endDate: endDate.toISOString(),
-  });
-
-  const addInventoryListCompleted = () => {
-    console.log('add inventory db');
-  };
-
-  const [addInventoryList] = useMutation(
-    ADD_INVETORY_LIST,
-    { onCompleted: addInventoryListCompleted },
-  );
-
-  if (purchaseListData == null) return null;
-  if (loading) return null;
-  const listSource = purchaseListData.map((d) => ({ data: d }));
+  const listSource = [].map((d) => ({ data: d }));
   return (
     <Wrapper>
       <Button

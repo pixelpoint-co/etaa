@@ -1,7 +1,5 @@
 import {
   useEffect,
-  useCallback,
-  useState,
   useMemo,
 } from 'react';
 import moment from 'moment';
@@ -15,16 +13,8 @@ import {
 
 import _, {
   get,
-  uniqBy,
 } from 'lodash';
 
-import {
-  atom, useAtom,
-  setAtom,
-} from 'jotai';
-import {
-  loadable, selectAtom,
-} from 'jotai/utils';
 import { socket } from '../services/socket';
 import useRecipeData from './useRecipeData';
 import { getMachineUrl } from './usePotController';

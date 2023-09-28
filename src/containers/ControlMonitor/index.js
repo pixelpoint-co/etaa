@@ -2,22 +2,11 @@ import PropTypes from 'prop-types';
 import {
   useCallback,
 } from 'react';
-import {
-  Formik, useField, Form,
-} from 'formik';
 
-import {
-  palette, size,
-} from 'styled-theme';
 import hexToRgba from 'hex-to-rgba';
 import styled from 'styled-components';
 import moment from 'moment';
-import _, {
-  get,
-} from 'lodash';
-import {
-  gql, useMutation,
-} from '@apollo/client';
+
 import theme from '../../theme';
 
 import Flex from '../../components/atoms/Flex';
@@ -39,10 +28,8 @@ import {
 
 import PlatformImage from '../../components/atoms/PlatformImage';
 
-import useProductData from '../../hooks/useProductData';
 import useOrderData from '../../hooks/useOrderData';
 import SearchBar from '../../components/organisms/SearchBar';
-import useOrderAlert from '../../hooks/useOrderAlert';
 import usePotController from '../../hooks/usePotController';
 
 const Wrapper = styled(Flex)`
@@ -153,7 +140,6 @@ const OrderMonitor = (props) => {
     queryParams,
     setQueryParams,
   } = useQueryParams({ initialQueryParams: { page: 1 } });
-  const { onAlert } = useOrderAlert();
   const potController = usePotController(1); // TODO 선택 안해야함
   const {
     orderRefetchTime,

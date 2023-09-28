@@ -21,9 +21,6 @@ import _, {
   reduce,
   get,
 } from 'lodash';
-import {
-  gql, useMutation,
-} from '@apollo/client';
 
 import {
   withProp,
@@ -31,7 +28,6 @@ import {
 import Flex from '../../components/atoms/Flex';
 import Button from '../../components/atoms/Button';
 import LabelValue from '../../components/molecules/LabelValue';
-import usePurchaseData from '../../hooks/usePurchaseData';
 import OrderItemInput from '../../components/molecules/OrderItemInput';
 import AntDList from '../../components/organisms/AntDList';
 import Card from '../../components/atoms/Card';
@@ -56,16 +52,6 @@ const Wrapper = styled(Flex)`
   padding: 20px;
 `;
 
-const OverViewCard = styled(Card)`
-  flex-direction: column;
-  flex: 1;
-  margin: 16px 0px;
-  padding: 16px;
-`;
-const OverViewHeader = styled(Flex)`
-  flex-direction: row;
-
-`;
 const HeadingContainer = styled(Flex)`
   min-height: 90px;
   flex: 0;
@@ -86,108 +72,46 @@ const OverviewStatContainer = styled(Flex)`
   margin: 0px 10px;
 `;
 
-const StyledForm = styled(Form)`
-  display: flex;
-  flex: 1;
-  max-width: 100%;
-  flex-direction: column;
-`;
-
-const ADD_INVETORY_LIST = gql`
-  mutation AddInventoryList($inventoryList: [InventoryInput]) {
-    addInventoryList(inventoryList: $inventoryList) {
-      id,
-      name,
-    }
-  }
-`;
 const DDContainer = styled(Flex)`
   flex-direction: column;
   padding: 20px;
 `;
-const DummyDataField = (props) => {
-  const [
-    field,
-    meta,
-    helpers,
-  ] = useField(props);
-  const { purchaseList } = props;
-  const { value } = meta;
-  const onChange = helpers.setValue;
-  return (
-    <DDContainer />
-  );
-};
 
 const today = moment().toISOString(); // TODO waiter db.Timestamp에 따라 수동으로 UTC기준으로 전환
 
 const InventoryDashboard = () => {
   const { id } = useParams();
-  const {
-    purchaseData: data,
-    purchaseListData: listData,
-    loading,
-    error,
-  } = usePurchaseData({
-    id,
-    created: today,
-    startDate: moment(today).subtract(
-      1,
-      'day',
-    ),
-    endDate: today,
-    type: 'many',
-  });
-  // const {
-  //   id,
-  //   detail: purchaseItemList,
-  //   inventory: inventoryList,
-  // } = data;
-  const addInventoryListCompleted = () => {
-    console.log('add inventory db');
-    alert('기록되었습니다');
-    window.location.reload();
-  };
-
-  const [
-    addInventoryList,
-    {
-      loading: addInventoryListLoading,
-      error: addInventoryListError,
-    },
-  ] = useMutation(
-    ADD_INVETORY_LIST,
-    { onCompleted: addInventoryListCompleted },
-  );
-  if (data == null) return null;
-  if (loading) return null;
-  const parsedPurchaseItemList = reduce(
-    listData,
-    (ac, cu) => {
-      return [
-        ...ac,
-        ...cu.detail.map((purchaseItem) => ({
-          ...purchaseItem,
-          // unit_quantity: 0,
-          purchase_id: cu.id,
-          account: cu.account,
-          created: cu.created,
-        })),
-      ];
-    },
-    [],
-  );
-  const inventoryList = reduce(
-    listData,
-    (ac, cu) => {
-      const { inventory } = cu;
-      return [
-        ...ac,
-        ...cu.inventory,
-      ];
-    },
-    [],
-  );
+  // if (data == null) return null;
+  // if (loading) return null;
+  const inventoryList = [];
+  const parsedPurchaseItemList = [];
+  // const parsedPurchaseItemList = reduce(
+  //   listData,
+  //   (ac, cu) => {
+  //     return [
+  //       ...ac,
+  //       ...cu.detail.map((purchaseItem) => ({
+  //         ...purchaseItem,
+  //         // unit_quantity: 0,
+  //         purchase_id: cu.id,
+  //         account: cu.account,
+  //         created: cu.created,
+  //       })),
+  //     ];
+  //   },
+  //   [],
+  // );
+  // const inventoryList = reduce(
+  //   listData,
+  //   (ac, cu) => {
+  //     const { inventory } = cu;
+  //     return [
+  //       ...ac,
+  //       ...cu.inventory,
+  //     ];
+  //   },
+  //   [],
+  // );
   const formattedPurchaseItemList = parsedPurchaseItemList.map((item) => {
     return { ...item };
   });

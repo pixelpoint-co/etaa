@@ -17,9 +17,6 @@ import {
   useState,
 } from 'react';
 import {
-  gql, useQuery, useSubscription,
-} from '@apollo/client';
-import {
   ifNotProp,
   ifProp,
 } from 'styled-tools';

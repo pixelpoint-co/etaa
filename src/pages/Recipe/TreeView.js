@@ -17,8 +17,6 @@ import 'reactflow/dist/style.css';
 
 import Flex from '../../components/atoms/Flex';
 
-import useProductData from '../../hooks/useProductData';
-
 const Wrapper = styled(Flex)`
   height: 100%;
 `;
@@ -50,8 +48,14 @@ const Wrapper = styled(Flex)`
 const mapProductToNode = (product, i, edges) => {
   const id = String(product.id);
   const productEdges = edges.filter((edge) => edge.source === id || edge.target === id);
-  const isTop = every(productEdges, (edge) => edge.target !== id);
-  const isBottom = every(productEdges, (edge) => edge.source !== id);
+  const isTop = every(
+    productEdges,
+    (edge) => edge.target !== id,
+  );
+  const isBottom = every(
+    productEdges,
+    (edge) => edge.source !== id,
+  );
   return {
     id: String(product.id),
     position: {
@@ -87,7 +91,13 @@ const Flow = (props) => {
     onEdgesChange,
   ] = useEdgesState(initialEdges);
 
-  const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
+  const onConnect = useCallback(
+    (params) => setEdges((eds) => addEdge(
+      params,
+      eds,
+    )),
+    [setEdges],
+  );
   console.log(nodes);
   return (
     <ReactFlow
@@ -105,19 +115,25 @@ const Flow = (props) => {
 };
 
 const TreeView = (props) => {
-  const {
-    productListData,
-    ingredientListData,
-    loading,
-    error,
-  } = useProductData();
-  if (loading) return null;
-  const edges = map(ingredientListData, mapIngredientToEdge);
-  const nodes = map(productListData, (product, i) => mapProductToNode(product, i, edges));
-  console.log(productListData);
-  console.log(ingredientListData);
-  console.log(nodes);
-  console.log(edges);
+  // const {
+  //   productListData,
+  //   ingredientListData,
+  //   loading,
+  //   error,
+  // } = useProductData();
+  // if (loading) return null;
+  const edges = map(
+    [],
+    mapIngredientToEdge,
+  );
+  const nodes = map(
+    [],
+    (product, i) => mapProductToNode(
+      product,
+      i,
+      edges,
+    ),
+  );
   return (
     <Wrapper>
       <Flow

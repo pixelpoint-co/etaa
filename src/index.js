@@ -7,26 +7,9 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
-import Modal from 'react-modal';
 import {
   toast,
 } from 'react-toastify';
-import {
-  HttpLink,
-  ApolloProvider,
-  ApolloClient,
-  InMemoryCache,
-  split,
-} from '@apollo/client';
-import {
-  WebSocketLink,
-} from '@apollo/client/link/ws';
-import {
-  getMainDefinition,
-} from '@apollo/client/utilities';
-import {
-  SubscriptionClient,
-} from 'subscriptions-transport-ws'; // <- import this
 
 import moment from 'moment-timezone';
 import 'moment/locale/ko';
@@ -137,20 +120,6 @@ moment.locale('ko');
 //   httpLink,
 // );
 
-// const client = new ApolloClient({
-//   link: splitLink,
-//   cache: new InMemoryCache(),
-//   // defaultOptions: {
-//   //   watchQuery: {
-//   //     fetchPolicy: 'no-cache',
-//   //     errorPolicy: 'ignore',
-//   //   },
-//   //   query: {
-//   //     fetchPolicy: 'no-cache',
-//   //     errorPolicy: 'all',
-//   //   },
-//   // },
-// });
 const currentUrl = new URL(window.location);
 const isRemote = (
   currentUrl.hostname !== 'localhost' && currentUrl.hostname.slice(
@@ -185,12 +154,10 @@ root.render(
         <QueryClientProvider client={queryClient}>
           <Suspense fallback="loading">
             <Router basename={process.env.REACT_APP_BASE_URL || ''}>
-              {/* <ApolloProvider client={client}> */}
               <ThemeProvider theme={theme}>
                 <GlobalStyled />
                 <App />
               </ThemeProvider>
-              {/* </ApolloProvider> */}
             </Router>
           </Suspense>
         </QueryClientProvider>

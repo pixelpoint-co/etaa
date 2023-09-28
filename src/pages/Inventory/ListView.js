@@ -9,9 +9,6 @@ import {
 import styled from 'styled-components';
 import moment from 'moment';
 import _, { get } from 'lodash';
-import {
-  gql, useMutation,
-} from '@apollo/client';
 
 import Flex from '../../components/atoms/Flex';
 import Button from '../../components/atoms/Button';
@@ -31,23 +28,6 @@ import {
 const Wrapper = styled(Flex)`
   flex: 1;
   flex-direction: column;
-`;
-const StyledList = styled(AntDTable)`
-  flex: 1;
-`;
-const StyledForm = styled(Form)`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-`;
-
-const ADD_INVETORY_LIST = gql`
-  mutation AddInventoryList($inventoryList: [InventoryInput]) {
-    addInventoryList(inventoryList: $inventoryList) {
-      id,
-      name,
-    }
-  }
 `;
 
 const cellRenderers = [
@@ -82,8 +62,15 @@ const cellRenderers = [
     dataIndex: 'unitQuantity',
     width: 120,
     render: (data, row) => {
-      const unit = get(row, 'product.unit');
-      const unitText = unit ? `(${get(row, 'product.unit', '')})` : '';
+      const unit = get(
+        row,
+        'product.unit',
+      );
+      const unitText = unit ? `(${get(
+        row,
+        'product.unit',
+        '',
+      )})` : '';
       return (
         <Cell>
           {`${formatNumber(data)}${unitText}`}
@@ -100,9 +87,21 @@ const cellRenderers = [
     title: '구매 가격',
     dataIndex: 'amount',
     render: (data, row) => {
-      const unit = get(row, 'product.unit', '');
-      const unitPrice = get(row, 'unitPrice', 0);
-      const unitQuantity = get(row, 'unitQuantity', 0);
+      const unit = get(
+        row,
+        'product.unit',
+        '',
+      );
+      const unitPrice = get(
+        row,
+        'unitPrice',
+        0,
+      );
+      const unitQuantity = get(
+        row,
+        'unitQuantity',
+        0,
+      );
       return (
         <Cell>
           {`${formatCurrency(unitPrice * unitQuantity)}`}
@@ -146,12 +145,15 @@ const Storage = () => {
     page: currentPage,
   } = queryParams;
 
-  const onPageChange = useCallback(async ({ currentPage: newPage }) => {
-    setQueryParams((prev) => ({
-      ...prev,
-      page: newPage,
-    }));
-  }, [setQueryParams]);
+  const onPageChange = useCallback(
+    async ({ currentPage: newPage }) => {
+      setQueryParams((prev) => ({
+        ...prev,
+        page: newPage,
+      }));
+    },
+    [setQueryParams],
+  );
 
   return (
     <Wrapper>

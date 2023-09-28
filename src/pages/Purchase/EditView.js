@@ -15,13 +15,7 @@ import {
 import moment from 'moment';
 import _, {
   cloneDeep,
-  lowerCase,
-  reduce,
-  get,
 } from 'lodash';
-import {
-  gql, useMutation,
-} from '@apollo/client';
 import {
   useState,
 } from 'react';
@@ -29,18 +23,12 @@ import Input from '../../components/molecules/Input';
 import Flex from '../../components/atoms/Flex';
 import Text from '../../components/atoms/P';
 import Button from '../../components/atoms/Button';
-import LabelValue from '../../components/molecules/LabelValue';
-import usePurchaseData from '../../hooks/usePurchaseData';
 import PurchaseItemInput from '../../components/organisms/PurchaseItemInput';
 import PageAction from '../../components/organisms/PageAction';
 
-import {
-  unformat, roundTo, convertUnit,
-} from '../../services/number';
 import AntDList from '../../components/organisms/AntDList';
 import Card from '../../components/atoms/Card';
 import Select from '../../components/molecules/Select';
-import ModelSelect from '../../containers/ModelSelect';
 
 const Wrapper = styled(Flex)`
   flex: 1;
@@ -72,30 +60,8 @@ const StyledForm = styled(Form)`
 `;
 const StyledInput = styled(Input)`
 `;
-// addInventoryList(inventoryList: [InventoryInput])       : [Inventory]
-// const ADD_INVETORY_LIST = gql`
-//   mutation AddInventoryList($inventoryList: [InventoryInput]) {
-//     addInventoryList(inventoryList: $inventoryList) {
-//       id,
-//       name,
-//     }
-//   }
-// `;
 
 // addPurchase(detail:JSON, account:String, company:String): Purchase
-const ADD_PURCHASE = gql`
-  mutation AddPurchase(
-    $detail: JSON,
-    $account: String,
-    $company: String,
-  ) {
-    addPurchase(account: $account, detail: $detail, company: $company) {
-      account,
-      detail,
-      company,
-    }
-  }
-`;
 const DDContainer = styled(Flex)`
   flex-direction: column;
   margin-top: 20px;
@@ -207,32 +173,10 @@ const PurchaseListField = (props) => {
 };
 
 const Purchase = () => {
-  const { id } = useParams();
-  const isCreate = !id;
-  const navigate = useNavigate();
-
-  const onAddPurchaseCompleted = () => {
-    alert('성공');
-
-    navigate('/purchase');
-  };
-
-  const [
-    addPurchase,
-    {
-      loading: addPurchaseLoading,
-      error: addPurchaseError,
-    },
-  ] = useMutation(
-    ADD_PURCHASE,
-    { onCompleted: onAddPurchaseCompleted },
-  );
-
   const [
     customSellers,
     setCustomSellers,
   ] = useState([]);
-  console.log(`addPurchaseLoading: ${addPurchaseLoading}`);
   return (
     <Wrapper>
       <Formik
@@ -250,7 +194,6 @@ const Purchase = () => {
           }],
         }}
         onSubmit={(values) => {
-          console.log(values);
           const purchaseList = values.purchaseList || [];
 
           const parsedValues = purchaseList.map((purchase) => {
@@ -276,14 +219,6 @@ const Purchase = () => {
               value,
               (v, k) => _.snakeCase(k),
             ));
-
-          addPurchase({
-            variables: {
-              detail: snakeValues,
-              account: null,
-              company: values.seller,
-            },
-          });
         }}
       >
         <StyledForm>

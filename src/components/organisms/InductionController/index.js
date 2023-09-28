@@ -16,9 +16,7 @@ import {
   useEffect,
   useState,
 } from 'react';
-import {
-  gql, useQuery, useSubscription,
-} from '@apollo/client';
+
 import {
   ifNotProp,
   ifProp,

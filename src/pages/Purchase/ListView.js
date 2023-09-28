@@ -8,15 +8,10 @@ import _ from 'lodash';
 import {
   DatePicker,
 } from 'antd';
-import {
-  gql, useMutation,
-} from '@apollo/client';
 
 import Flex from '../../components/atoms/Flex';
-import Button from '../../components/atoms/Button';
 import Link from '../../components/atoms/Link';
 
-import usePurchaseData from '../../hooks/usePurchaseData';
 import PurchaseRow from '../../components/organisms/PurchaseRow';
 import AntDList from '../../components/organisms/AntDList';
 import PageAction from '../../components/organisms/PageAction';
@@ -38,29 +33,6 @@ const StyledList = styled(AntDList)`
   margin-top: 20px;
 `;
 
-const ADD_INVETORY_LIST = gql`
-  mutation AddInventoryList($inventoryList: [InventoryInput]) {
-    addInventoryList(inventoryList: $inventoryList) {
-      id,
-      name,
-    }
-  }
-`;
-
-const PurchaseRowLink = (props) => {
-  const { data } = props;
-  console.log(data);
-  return (
-    <Link
-      fill
-      to={`/inventory/edit/${data.id}`}
-      // to={`/inventory/edit/group?startDate=${todayStart}&endDate=${todayEnd}`}
-    >
-      <PurchaseRow {...props} />
-    </Link>
-  );
-};
-
 const Inventory = () => {
   const today = dayjs().startOf('day');
   const initialStartDate = today.subtract(
@@ -77,46 +49,6 @@ const Inventory = () => {
     setEndDate,
   ] = useState(initialEndDate);
 
-  console.log(startDate);
-  console.log(
-    'initialEndDate: ',
-    initialEndDate,
-    endDate,
-    endDate.format(),
-  );
-
-  const {
-    pId,
-    purchaseListData,
-    loading,
-    error,
-    refetch,
-  } = usePurchaseData({
-    id: null,
-    startDate: startDate.format(),
-    endDate: endDate.format(),
-    limit: 99,
-  });
-
-  // const {
-  //   Collapse,
-  //   buttonNode,
-  // } = useButtonCollapse();
-
-  const addInventoryListCompleted = () => {
-    console.log('add inventory db');
-  };
-
-  const [addInventoryList] = useMutation(
-    ADD_INVETORY_LIST,
-    { onCompleted: addInventoryListCompleted },
-  );
-
-  if (purchaseListData == null) return null;
-  if (loading) return null;
-  const listSource = purchaseListData
-    .filter((d) => d.detail?.length > 0)
-    .map((d) => ({ data: d }));
   return (
     <Wrapper>
       <FilterSection>
@@ -132,7 +64,7 @@ const Inventory = () => {
         />
       </FilterSection>
       <StyledList
-        dataSource={listSource}
+        dataSource={[]}
         RowComponent={PurchaseRow}
         hideDivider
       />

@@ -1,23 +1,10 @@
-import {
-  Formik, useField, Form,
-} from 'formik';
-
-import {
-  palette, size,
-} from 'styled-theme';
 import styled from 'styled-components';
 import moment from 'moment';
 import _, { get } from 'lodash';
-import {
-  gql, useMutation,
-} from '@apollo/client';
 
 import Flex from '../../components/atoms/Flex';
-import Button from '../../components/atoms/Button';
-import Link from '../../components/atoms/Link';
 
 import useInventoryData from '../../hooks/useInventoryData';
-import PurchaseRow from '../../components/organisms/PurchaseRow';
 import AntDTable from '../../components/organisms/AntDTable';
 import Cell from '../../components/atoms/AntDTableCell';
 
@@ -30,49 +17,7 @@ const Wrapper = styled(Flex)`
   flex: 1;
   flex-direction: column;
 `;
-const StyledList = styled(AntDTable)`
-  flex: 1;
-`;
-const StyledForm = styled(Form)`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-`;
 
-const ADD_INVETORY_LIST = gql`
-  mutation AddInventoryList($inventoryList: [InventoryInput]) {
-    addInventoryList(inventoryList: $inventoryList) {
-      id,
-      name,
-    }
-  }
-`;
-
-const today = moment().startOf('day');
-const startDate = today.subtract(7, 'days');
-const endDate = moment().endOf('day');
-
-const PurchaseRowLink = (props) => {
-  const { data } = props;
-  return (
-    <Link
-      fill
-      to={`/storage/edit/${data.id}`}
-      // to={`/storage/edit/group?startDate=${todayStart}&endDate=${todayEnd}`}
-    >
-      <PurchaseRow {...props} />
-    </Link>
-  );
-};
-// id 				: Int
-// productId		: Int
-// name 			: String
-// amount 			: Int
-// unitPrice 		: Float
-// parentId 		: Int
-// created 		: String
-// unitWeight 		: Int
-// unitQuantity 	: Int
 const cellRenderers = [
   {
     title: 'Id',
@@ -105,8 +50,15 @@ const cellRenderers = [
     dataIndex: 'unitQuantity',
     width: 120,
     render: (data, row) => {
-      const unit = get(row, 'product.unit');
-      const unitText = unit ? `(${get(row, 'product.unit', '')})` : '';
+      const unit = get(
+        row,
+        'product.unit',
+      );
+      const unitText = unit ? `(${get(
+        row,
+        'product.unit',
+        '',
+      )})` : '';
       return (
         <Cell>
           {`${formatNumber(data)}${unitText}`}
@@ -123,9 +75,21 @@ const cellRenderers = [
     title: '구매 가격',
     dataIndex: 'amount',
     render: (data, row) => {
-      const unit = get(row, 'product.unit', '');
-      const unitPrice = get(row, 'unitPrice', 0);
-      const unitQuantity = get(row, 'unitQuantity', 0);
+      const unit = get(
+        row,
+        'product.unit',
+        '',
+      );
+      const unitPrice = get(
+        row,
+        'unitPrice',
+        0,
+      );
+      const unitQuantity = get(
+        row,
+        'unitQuantity',
+        0,
+      );
       return (
         <Cell>
           {`${formatCurrency(unitPrice * unitQuantity)}`}
@@ -148,15 +112,6 @@ const Storage = () => {
     error,
   } = useInventoryData({});
 
-  const addInventoryListCompleted = () => {
-    console.log('add inventory db');
-  };
-
-  const [addInventoryList] = useMutation(
-    ADD_INVETORY_LIST,
-    { onCompleted: addInventoryListCompleted },
-  );
-
   if (data == null) return null;
   if (loading) return null;
 
@@ -171,22 +126,6 @@ const Storage = () => {
         count={data.length}
         rowKey="id"
       />
-      {/* dataSource={data}
-        rowKey={rowKey}
-        expandable={expandable}
-        pagination={itemsPerPage > 0 ? {
-          ...pagination,
-          total: count,
-          current: Number(currentPage),
-          simple: isMobile,
-          hideOnSinglePage: false,
-        } : false}
-        scroll={true || scroll}
-        onChange={handleChange}
-        isExpanded={isExpanded}
-        loading={loading}
-        tableLayout={tableLayout}
-        rowSelection={rowSelection} */}
     </Wrapper>
   );
 };
