@@ -227,6 +227,15 @@ const usePotController = (cookerId, opts = {}) => {
     ],
     0,
   );
+  const recipeDurationMilleSecond = get(
+    currentRecipe,
+    [
+      'detail',
+      'durationMs',
+    ],
+    0,
+  );
+
   const recipeStartTimeMs = _.get(
     activeStatus,
     [
@@ -242,7 +251,7 @@ const usePotController = (cookerId, opts = {}) => {
     ],
   ) === 'cook';
   const recipeEllapsedTimeMs = isCooking ? moment().valueOf() - recipeStartTimeMs : 0;
-  const recipeDurationMs = recipeDuration * 1000;
+  const recipeDurationMs = recipeDurationMilleSecond || recipeDuration * 1000;
   const recipeRemainingTimeMs = (!isCooking) ? 0
     : Math.max(
       0,
