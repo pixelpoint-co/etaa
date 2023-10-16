@@ -86,7 +86,6 @@ const PotController = (props) => {
     isCooking,
     isWashing,
   } = potController;
-
   const closeExtension = useCallback(
     () => {
       setExtensionOpen(false);
@@ -210,7 +209,7 @@ const PotController = (props) => {
             {
               durationLabel: selectedRecipe.name,
               duration: 0,
-              totalDuration: selectedRecipe.detail.duration,
+              totalDuration: selectedRecipe.detail.durationMs || selectedRecipe.detail.duration,
               totalDurationLabel: '||',
             }
           ) : {})}
