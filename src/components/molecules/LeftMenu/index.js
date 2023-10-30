@@ -209,11 +209,11 @@ const LeftMenu = ({
           </li>
         ))}
       </ul>
-      <MenuLink
+      {/* <MenuLink
         to="/"
         onClick={() => { onClose(); }}
       >Log Out
-      </MenuLink>
+      </MenuLink> */}
     </MenuWrapper>
   </Wrapper>
 );
