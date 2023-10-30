@@ -134,6 +134,7 @@ const ORDER_TYPE_LABEL = {
   ORDER_DELIVERY: '배달',
   ORDER_HALL: '홀',
   ORDER_TAKEOUT: '포장',
+  ORDER_CANCEL: '취소',
 };
 const Receipt = (props) => {
   const {

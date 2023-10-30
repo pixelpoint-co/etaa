@@ -5,6 +5,7 @@ import Image from '../Image';
 import taky from '../../../assets/image/taki.png';
 import yogiyo from '../../../assets/image/yogiyo.png';
 import yogiyoExpress from '../../../assets/image/yogiyo_express.png';
+import yogiBaedal from '../../../assets/image/yogi-baedal.png';
 import baemin from '../../../assets/image/baemin.png';
 import baemin1 from '../../../assets/image/baemin1.png';
 import coupangEats from '../../../assets/image/coupang_eats.png';
@@ -21,6 +22,8 @@ const getPlatform = (platform) => {
       return baemin1;
     case '요기요':
       return yogiyo;
+    case '요기배달':
+      return yogiBaedal;
     case '요기요 익스프레스':
       return yogiyoExpress;
     default:

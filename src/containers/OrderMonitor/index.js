@@ -62,7 +62,7 @@ const StyledButton = styled(Button)`
 
 const StyledCell = styled(Cell)`
   text-decoration: ${ifProp(
-    'isCancel',
+    'isCancelled',
     'line-through',
   )};
 `;
@@ -154,8 +154,15 @@ const OrderMonitor = (props) => {
       'delivery',
       'yogiyoExpress',
     ],
+    요기배달: [
+      'delivery',
+      'yogiyoExpress',
+      'yogiyo',
+      'yogiBaedal',
+    ],
     배민1: [
       'delivery',
+      'baeMin',
       'baeMin1',
     ],
     타키: [
