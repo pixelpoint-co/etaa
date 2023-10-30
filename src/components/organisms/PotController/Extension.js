@@ -258,7 +258,7 @@ const PotControllerExtension = ({
 
             <PotControlButtonContainer>
               <PotControlButton
-                label="역회전"
+                label="회전 약"
                 hideLabelOnLoading
                 onClick={() => {
                   startSpin();
@@ -269,7 +269,7 @@ const PotControllerExtension = ({
             </PotControlButtonContainer>
             <PotControlButtonContainer>
               <PotControlButton
-                label="역회전150"
+                label="회전 중"
                 hideLabelOnLoading
                 onClick={() => {
                   startSpin150();
@@ -280,7 +280,7 @@ const PotControllerExtension = ({
             </PotControlButtonContainer>
             <PotControlButtonContainer>
               <PotControlButton
-                label="역회전200"
+                label="회전 강"
                 hideLabelOnLoading
                 onClick={() => {
                   startSpin200();
