@@ -40,12 +40,12 @@ import Header from '../containers/Header';
 import Flex from '../components/atoms/Flex';
 
 const routes = [
-  {
-    label: '발주',
-    href: '/purchase/*',
-    element: <Purchase />,
-    rootRoute: true,
-  },
+  // {
+  //   label: '발주',
+  //   href: '/purchase/*',
+  //   element: <Purchase />,
+  //   rootRoute: true,
+  // },
   // {
   //   label: '입고',
   //   href: '/storage/*',
@@ -53,36 +53,36 @@ const routes = [
   //   rootRoute: true,
   // },
 
+  // {
+  //   label: '재고관리',
+  //   href: '/inventory/*',
+  //   element: <Inventory />,
+  //   rootRoute: true,
+  // },
+  // {
+  //   label: '자재',
+  //   href: '/product/*',
+  //   element: <Product />,
+  //   rootRoute: true,
+  // },
+  // {
+  //   label: '레시피',
+  //   href: '/recipe/*',
+  //   element: <Recipe />,
+  //   rootRoute: true,
+  // },
   {
-    label: '재고관리',
-    href: '/inventory/*',
-    element: <Inventory />,
-    rootRoute: true,
-  },
-  {
-    label: '자재',
-    href: '/product/*',
-    element: <Product />,
-    rootRoute: true,
-  },
-  {
-    label: '레시피',
-    href: '/recipe/*',
-    element: <Recipe />,
-    rootRoute: true,
-  },
-  {
-    label: '빌',
+    label: '팟',
     href: '/billy/*',
     element: <Billy />,
     rootRoute: true,
   },
-  {
-    label: '개발모드',
-    href: '/pot-controller',
-    element: <DevMode />,
-    rootRoute: true,
-  },
+  // {
+  //   label: '개발모드',
+  //   href: '/pot-controller',
+  //   element: <DevMode />,
+  //   rootRoute: true,
+  // },
   {
     label: '관제',
     href: '/order-monitor/*',
@@ -169,7 +169,7 @@ const App = () => (
       <Route path="/gates/*" element={<Gates />} />
       <Route path="/order-monitor/*" element={<ControlTower />} />
       <Route path="/" element={<Layout />}>
-        <Route index element={<Home />} />
+        <Route index element={<DevMode />} />
         {routes.map((route) => {
           const isInternal = route.href[0] === '/';
           if (!isInternal) return null;
