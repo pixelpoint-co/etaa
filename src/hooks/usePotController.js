@@ -12,14 +12,8 @@ import moment from 'moment';
 import useRecipeData from './useRecipeData';
 import useChefMonitor from './useChefMonitor';
 
-const machineUrl = [
-  'http://192.168.0.200:4100/api/v1',
-  'http://192.168.0.199:4100/api/v1',
-  'http://192.168.0.198:4100/api/v1',
-  'http://192.168.0.197:4100/api/v1',
-  'http://192.168.0.196:4100/api/v1',
-  'http://192.168.0.195:4100/api/v1',
-];
+const machineUrl = process.env.REACT_APP_MACHINE_URL.split(',');
+
 const mapPowerToCommand = (power, id = 0) => {
   return {
     type: 'induction',
@@ -33,7 +27,7 @@ const mapPowerToCommand = (power, id = 0) => {
 export const getMachineUrl = (cookerId) => {
   if (
     process.env.REACT_APP_ENV === 'staging'
-    || process.env.REACT_APP_ENV === 'development'
+    // || process.env.REACT_APP_ENV === 'development'
   ) {
     return 'http://localhost:4100/api/v1';
   }

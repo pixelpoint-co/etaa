@@ -49,7 +49,7 @@ const PotCardContainer = styled(Link)`
 
 const BillyMain = (props) => {
   const location = useLocation();
-
+  const machineUrl = process.env.REACT_APP_MACHINE_URL.split(',');
   const { ...others } = props;
 
   return (
@@ -62,7 +62,7 @@ const BillyMain = (props) => {
         />
       </OrderMonitorContainer> */}
       <PotGridContainer>
-        {_.times(6).map((i) => (
+        {machineUrl.map((url, i) => (
           <PotCardContainer
             key={i}
             href={`${window.origin}/gates/${i + 1}`}

@@ -111,7 +111,7 @@ const ControlTowerMain = (props) => {
   const { data: recipeData } = useRecipeData();
 
   const orderList = data.slice();
-
+  const machineUrl = process.env.REACT_APP_MACHINE_URL.split(',');
   const { ...others } = props;
 
   return (
@@ -129,7 +129,7 @@ const ControlTowerMain = (props) => {
         ))}
       </ReceiptWrapper>
       <PotWrapper>
-        {_.times(5).map((i) => (
+        {machineUrl.map((url, i) => (
           <PotCardContainer
             key={i}
             href={`${window.origin}/gates/${i + 1}`}
