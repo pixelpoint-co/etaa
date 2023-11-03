@@ -232,9 +232,9 @@ const InductionController = (props) => {
             tone={4}
           >
             {power}
-            {power === 5 ? '강' : null}
+            {/* {power === 5 ? '강' : null}
             {power === 4 ? '중' : null}
-            {power === 2 ? '약' : null}
+            {power === 2 ? '약' : null} */}
           </Button>
         ))}
       </ButtonSection>

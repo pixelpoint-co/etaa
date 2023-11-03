@@ -23,6 +23,7 @@ import {
 import {
   useEffect,
   useState,
+  useMemo,
 } from 'react';
 import Text from '../../components/atoms/P';
 import Flex from '../../components/atoms/Flex';
@@ -42,6 +43,12 @@ import OrderSelection from '../../components/organisms/OrderSelection';
 import theme from '../../theme';
 import OrderMonitor from '../../containers/OrderMonitor';
 import useQueryParams from '../../hooks/useQueryParams';
+import InductionController from '../../components/organisms/InductionController';
+import MenuSelect from '../../components/organisms/PotController/MenuSelect';
+import useRecipeData from '../../hooks/useRecipeData';
+import {
+  recipeTags,
+} from '../../constants/pot';
 
 const Wrapper = styled(Flex)`
   flex-direction: column;
@@ -125,6 +132,46 @@ const PotGridContainer = styled(Flex)`
   flex: 0;
   flex-basis: 640px;
 `;
+
+const Column = styled(Card)`
+  margin: 0px 10px;
+  padding: 10px;
+  max-height: 580px;
+  min-height: 100%;
+  flex-basis: 150px;
+  overflow: auto;
+`;
+const MenuSelectContainer = styled(Flex)`
+  flex: 1;
+  flex-direction: column;
+  // min-height: 90vh;
+  // max-height: 90vh;
+  // min-width: 40vw;
+  // max-width: 40vw;
+`;
+const ButtonContainer = styled(Flex)`
+  flex-direction: row;
+  justify-content: stretch;
+  flex: 0;
+  margin: 0 -10px;
+  margin-top: 20px;
+`;
+const SelectButton = styled(Button)`
+  flex: 1;
+  margin: 0 10px;
+`;
+const MenuOptionsSelectContainer = styled(Flex)`
+  margin: 0px -10px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+`;
+const MenuGroupContainer = styled(Column)`
+  flex: 1 0 50px;
+`;
+const MenuListContainer = styled(Column)`
+  flex: 2 0 150px;
+`;
+
 const OffC = (props) => {
   const {
     selectedOrder,
@@ -180,6 +227,7 @@ const OffC = (props) => {
 const GatesMain = (props) => {
   const { id } = useParams();
   const location = useLocation();
+  const isReceipt = JSON.parse(process.env.REACT_APP_RECEIPT.toLowerCase());
   const cookerId = id - 1;
   // const [
   //   orderMonitorVisible,
@@ -190,6 +238,7 @@ const GatesMain = (props) => {
     setQueryParams,
   } = useQueryParams();
   const { orderId: selectedOrderId } = queryParams;
+
   // const [
   //   selectedOrderId,
   //   setSelectedOrderId,
@@ -217,6 +266,7 @@ const GatesMain = (props) => {
     chefMonitoringData,
     cherMonitorPot,
     chefMonitorPotList,
+    setInductionPower,
   } = potController;
   const {
     data,
@@ -228,11 +278,24 @@ const GatesMain = (props) => {
     chefMonitorPotList,
     orderKitchenRefetchTime,
   });
+  const {
+    data: recipeData,
+    error,
+    loading,
+  } = useRecipeData();
 
   const [
     needTaste,
     setNeedTaste,
   ] = useState(false);
+  const [
+    selectedCategoryId,
+    setSelectedCategoryId,
+  ] = useState(130);
+  const [
+    selectedRecipeId,
+    setSelectedRecipeId,
+  ] = useState(null);
   const timerColorProps = { containerBarColor: theme.palette.grayscale[3] };
   const timerColorAlertProps = {
     timerBarColor: theme.palette.red[0],
@@ -262,6 +325,29 @@ const GatesMain = (props) => {
     }
     return setNeedTaste(false);
   };
+
+  const secondaryOptions = useMemo(
+    () => {
+      const selectedRecipeList = _.filter(
+        recipeData,
+      );
+
+      const recipeList = selectedRecipeList
+        .filter((v) => v != null)
+        .map((v) => ({
+          ...v,
+          label: v.name,
+          value: v.id,
+        }));
+
+      return recipeList;
+    },
+    [
+      recipeData,
+      selectedCategoryId,
+    ],
+  );
+
   return (
     <Wrapper>
       <HeaderSection>
@@ -291,19 +377,89 @@ const GatesMain = (props) => {
         </ActivateButton> */}
       </HeaderSection>
       <BodySection>
-        <BodyColumn flex={1} shrink={0} grow={0} basis={720} direction="column">
-          <OrderMonitor
-            onClickOrder={(order) => {
-              setQueryParams((old) => ({
-                ...old,
-                orderId: order.orderId,
-              }));
-            }}
-            selectedChannelNo={selectedOrder.channelNo}
-            pageSize={8}
-            selectRecipe={selectRecipe}
-          />
-        </BodyColumn>
+
+        {
+          isReceipt ? (
+            <BodyColumn flex={1} shrink={0} grow={0} basis={720} direction="column">
+              <OrderMonitor
+                onClickOrder={(order) => {
+                  setQueryParams((old) => ({
+                    ...old,
+                    orderId: order.orderId,
+                  }));
+                }}
+                selectedChannelNo={selectedOrder.channelNo}
+                pageSize={8}
+                selectRecipe={selectRecipe}
+              />
+            </BodyColumn>
+          ) : (
+            <>
+              <BodyColumn>
+                <MenuSelectContainer>
+                  <MenuOptionsSelectContainer>
+                    {/* <MenuGroupContainer>
+                <MenuSelect
+                  value={selectedCategoryId}
+                  options={recipeTags.filter((tag) => tag.viewable === true)}
+                  onSelect={(value) => {
+                    setSelectedCategoryId(value);
+                    if (value !== selectedCategoryId) {
+                      setSelectedRecipeId(null);
+                    }
+                  }}
+                  buttonOffTheme={{
+                    tone: 3,
+                    themeType: 'text',
+                  }}
+                  buttonStyle={{
+                    fontWeight: 'bold',
+                    fontSize: 20,
+                    lineHeight: '20px',
+                  }}
+                />
+              </MenuGroupContainer> */}
+                    <MenuListContainer>
+                      <MenuSelect
+                        value={selectedRecipeId}
+                        onSelect={(v) => setSelectedRecipeId(v)}
+                        options={secondaryOptions}
+                        buttonTheme={{
+                          themeType: 'outline',
+                          tone: 2,
+                        }}
+                        buttonOffTheme={{
+                          themeType: 'text',
+                          tone: 3,
+                        }}
+                      />
+                    </MenuListContainer>
+                  </MenuOptionsSelectContainer>
+
+                  <ButtonContainer>
+                    <SelectButton
+                      label="선택"
+                      disabled={selectedRecipeId == null}
+                      onClick={() => {
+                        selectRecipe(selectedRecipeId);
+                      }}
+                    />
+                  </ButtonContainer>
+                </MenuSelectContainer>
+              </BodyColumn>
+              <BodyColumn flex={1} shrink={0} grow={0} basis={320} gap={20} direction="row">
+                <InductionController
+                  power={potController.stoves[0].power}
+                />
+                <InductionController
+                  power={potController.stoves[1].power}
+                />
+              </BodyColumn>
+            </>
+
+          )
+        }
+
         <BodyColumn flex={0} shrink={0} grow={1} basis={10} direction="column">
           <PotController
             potController={potController}
