@@ -52,7 +52,12 @@ const Wrapper = styled(Card)`
   position: relative;
   overflow: hidden;
   flex-direction: row;
-  justify-content: space-between;
+  ${ifProp(
+    'hide',
+    css`justify-content: center;`,
+    css`justify-content: space-between;`,
+  )}
+  
   gap: 10px;
 `;
 const PotNumber = styled(Text)`
@@ -208,7 +213,7 @@ const InductionController = (props) => {
   } = props;
 
   return (
-    <Wrapper {...others} hasError={!!error}>
+    <Wrapper {...others} hasError={!!error} hide={props.hide}>
       <PotSection>
         <ProgressBar
           direction="vertical"
@@ -222,22 +227,26 @@ const InductionController = (props) => {
           containerStyle={{ padding: 5 }}
         />
       </PotSection>
-      <ButtonSection>
-        {_.times(9).reverse().map((power) => (
-          <Button
-            key={power}
-            style={{ width: '100%' }}
-            palette="grayscale"
-            onClick={(e) => onChange(power)}
-            tone={4}
-          >
-            {power}
-            {/* {power === 5 ? '강' : null}
+      {
+        props.hide ? null : (
+          <ButtonSection>
+            {_.times(9).reverse().map((power) => (
+              <Button
+                key={power}
+                style={{ width: '100%' }}
+                palette="grayscale"
+                onClick={(e) => onChange(power)}
+                tone={4}
+              >
+                {power}
+                {/* {power === 5 ? '강' : null}
             {power === 4 ? '중' : null}
             {power === 2 ? '약' : null} */}
-          </Button>
-        ))}
-      </ButtonSection>
+              </Button>
+            ))}
+          </ButtonSection>
+        )
+      }
     </Wrapper>
   );
 };

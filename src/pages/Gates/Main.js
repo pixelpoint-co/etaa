@@ -398,27 +398,6 @@ const GatesMain = (props) => {
               <BodyColumn>
                 <MenuSelectContainer>
                   <MenuOptionsSelectContainer>
-                    {/* <MenuGroupContainer>
-                <MenuSelect
-                  value={selectedCategoryId}
-                  options={recipeTags.filter((tag) => tag.viewable === true)}
-                  onSelect={(value) => {
-                    setSelectedCategoryId(value);
-                    if (value !== selectedCategoryId) {
-                      setSelectedRecipeId(null);
-                    }
-                  }}
-                  buttonOffTheme={{
-                    tone: 3,
-                    themeType: 'text',
-                  }}
-                  buttonStyle={{
-                    fontWeight: 'bold',
-                    fontSize: 20,
-                    lineHeight: '20px',
-                  }}
-                />
-              </MenuGroupContainer> */}
                     <MenuListContainer>
                       <MenuSelect
                         value={selectedRecipeId}
@@ -449,9 +428,11 @@ const GatesMain = (props) => {
               </BodyColumn>
               <BodyColumn flex={1} shrink={0} grow={0} basis={320} gap={20} direction="row">
                 <InductionController
+                  hide
                   power={potController.stoves[0].power}
                 />
                 <InductionController
+                  hide
                   power={potController.stoves[1].power}
                 />
               </BodyColumn>

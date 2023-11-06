@@ -27,7 +27,7 @@ const mapPowerToCommand = (power, id = 0) => {
 export const getMachineUrl = (cookerId) => {
   if (
     process.env.REACT_APP_ENV === 'staging'
-    // || process.env.REACT_APP_ENV === 'development'
+    || process.env.REACT_APP_ENV === 'development'
   ) {
     return 'http://localhost:4100/api/v1';
   }
