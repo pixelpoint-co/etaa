@@ -66,8 +66,8 @@ const usePotController = (cookerId, opts = {}) => {
       {
         type: 'motor',
         command: {
-          velocity: 6500 * 1.5,
-          id: 1,
+          velocity: 3,
+          id: 2,
           exec: 'run',
         },
       },
@@ -79,8 +79,8 @@ const usePotController = (cookerId, opts = {}) => {
       {
         type: 'motor',
         command: {
-          velocity: 6500 * 2,
-          id: 1,
+          velocity: 5,
+          id: 2,
           exec: 'run',
         },
       },
@@ -310,13 +310,13 @@ const usePotController = (cookerId, opts = {}) => {
       return 0;
     }
     switch (t.position) {
-      case -79000:
+      case -35000:
         return 45;
-      case -150000:
+      case -52000:
         return 135;
-      case -123000:
+      case -123000: // 음식담기 각도가 기존보다 더 내려갈 경우
         return 135;
-      case -255000:
+      case -100000:
         return 180;
       default:
         return 0;
