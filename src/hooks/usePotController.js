@@ -309,18 +309,24 @@ const usePotController = (cookerId, opts = {}) => {
     if (t.exec === 'home') {
       return 0;
     }
-    switch (t.position) {
-      case -35000:
-        return 45;
-      case -52000:
-        return 135;
-      case -123000: // 음식담기 각도가 기존보다 더 내려갈 경우
-        return 135;
-      case -100000:
-        return 180;
-      default:
-        return 0;
-    }
+    if (t.position <= 0 && t.position >= -35000) return 45; // prep-cook
+    if (t.position <= 35001 && t.position >= -70000) return 135; // finish-cook
+    if (t.position <= 70001 && t.position >= -105000) return 180; // wash
+    return 0;
+    // switch (t.position) {
+    //   case -35000:
+    //     return 45;
+    //   case -31000:
+    //     return 45;
+    //   case -52000:
+    //     return 135;
+    //   case -123000:
+    //     return 135;
+    //   case -100000:
+    //     return 180;
+    //   default:
+    //     return 0;
+    // }
   };
   const parsedMachineState = {
     isSpinning: spinData.exec === 'run',
