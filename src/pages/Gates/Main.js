@@ -428,12 +428,18 @@ const GatesMain = (props) => {
               </BodyColumn>
               <BodyColumn flex={1} shrink={0} grow={0} basis={320} gap={20} direction="row">
                 <InductionController
-                  hide
                   power={potController.stoves[0].power}
+                  onChange={(power) => setInductionPower(
+                    power,
+                    0,
+                  )}
                 />
                 <InductionController
-                  hide
                   power={potController.stoves[1].power}
+                  onChange={(power) => setInductionPower(
+                    power,
+                    1,
+                  )}
                 />
               </BodyColumn>
             </>
