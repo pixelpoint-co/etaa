@@ -41,17 +41,6 @@ export const pulseStyle = css`
     animation: pulse 1.5s infinite;
     animation-delay: 250ms;
   }
-  /* &::after {
-    content: " ";
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-
-    animation: pulse 1.5s infinite;
-    animation-delay: 450ms;
-  } */
 `;
 
 export default pulseStyle;

@@ -34,12 +34,26 @@ const Image = ({
   );
 };
 
-Image.defaultProps = { circle: false };
+Image.defaultProps = {
+  circle: false,
+  width: null,
+  height: null,
+  size: null,
+};
 
 Image.propTypes = {
-  width: PropTypes.number,
-  height: PropTypes.number,
-  size: PropTypes.number,
+  width: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]),
+  height: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]),
+  size: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]),
   circle: PropTypes.bool,
   src: PropTypes.string,
 };

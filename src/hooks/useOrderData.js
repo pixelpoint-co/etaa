@@ -164,11 +164,7 @@ export default (options = {}) => {
       };
     },
   );
-  console.log({
-    orderList,
-    orderItemList,
-    itemisedOrderList,
-  });
+
   const completeOrder = (orderId) => {
     global.api.put(
       `${getMachineUrl(0)}/order/${orderId}/complete`,
