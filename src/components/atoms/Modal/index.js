@@ -11,7 +11,7 @@ import styled, {
 ReactModal.setAppElement('#root'); // Set the root element where your app is rendered
 ReactModal.defaultStyles.overlay = {
   ...ReactModal.defaultStyles.overlay,
-  zIndex: 2,
+  zIndex: 2000,
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',

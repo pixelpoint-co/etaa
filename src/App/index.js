@@ -29,6 +29,7 @@ import SignIn from '../pages/SignIn';
 import Storage from '../pages/Storage';
 import Recipe from '../pages/Recipe';
 import Billy from '../pages/Billy';
+import Demo from '../pages/Demo';
 import ControlTower from '../pages/ControlTower';
 import Gates from '../pages/Gates';
 import Playground from '../pages/Playground';
@@ -71,12 +72,12 @@ const routes = [
   //   element: <Recipe />,
   //   rootRoute: true,
   // },
-  {
-    label: '팟',
-    href: '/billy/*',
-    element: <Billy />,
-    rootRoute: true,
-  },
+  // {
+  //   label: '팟',
+  //   href: '/billy/*',
+  //   element: <Billy />,
+  //   rootRoute: true,
+  // },
   // {
   //   label: '개발모드',
   //   href: '/pot-controller',
@@ -88,12 +89,12 @@ const routes = [
     href: '/order-monitor/*',
     rootRoute: true,
   },
-  {
-    label: '놀이터',
-    href: '/playground/*',
-    element: <Playground />,
-    // rootRoute: true,
-  },
+  // {
+  //   label: '놀이터',
+  //   href: '/playground/*',
+  //   element: <Playground />,
+  //   // rootRoute: true,
+  // },
   // {
   //   label: '자재관리',
   //   href: '/inventory/:id',
@@ -117,42 +118,28 @@ const Wrapper = styled(Flex)`
 const PageWrapper = styled(Flex)`
   transition: padding 250ms ease-in-out;
   flex-grow: 1;
-  max-width: 100vw;
+  max-width: 100%;
 
-  padding-left: calc(80px);
+  /* padding-left: calc(80px);
 
   ${ifProp(
     'leftMenuOpen',
     css`
       padding-left: calc(220px);
     `,
-  )}
+  )} */
   /* padding-top: 50px; */
   @media (max-width: ${size('mobileBreakpoint')}){
   }
 `;
-// const PageWrapper = styled(Flex)`
-//   padding-left: calc(250px);
-//   max-width: 100vw;
-//   padding-right: ${size('padding.default')};
-//   flex-grow: 1;
-//   height: calc(100% - 40px);
-
-//   @media (max-width: ${size('mobileBreakpoint')}){
-//     padding-left: 0px;
-//     padding-right: 0px;
-//     padding-top: 50px;
-//     height: calc(100% - 60px);
-//   }
-// `;
 
 const Layout = () => {
   const leftMenuOpen = useSelector((state) => state.leftMenu.open);
   return (
     <Wrapper>
-      <LeftMenu links={routes.filter((v) => v.rootRoute)} open={leftMenuOpen} />
+      {/* <LeftMenu links={routes.filter((v) => v.rootRoute)} open={leftMenuOpen} /> */}
       <PageWrapper
-        leftMenuOpen={leftMenuOpen}
+        leftMenuOpen={false}
       >
 
         <Outlet />
@@ -169,7 +156,7 @@ const App = () => (
       <Route path="/gates/*" element={<Gates />} />
       <Route path="/order-monitor/*" element={<ControlTower />} />
       <Route path="/" element={<Layout />}>
-        <Route index element={<Billy />} />
+        <Route index element={<Demo />} />
         {routes.map((route) => {
           const isInternal = route.href[0] === '/';
           if (!isInternal) return null;

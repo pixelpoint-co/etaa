@@ -29,7 +29,7 @@ export const getMachineUrl = (cookerId) => {
     process.env.REACT_APP_ENV === 'staging'
     || process.env.REACT_APP_ENV === 'development'
   ) {
-    return 'http://localhost:4100/api/v1';
+    return 'https://eight-receipt.fly.dev/api/v1';
   }
   return machineUrl[cookerId];
 };

@@ -93,8 +93,7 @@ const GlobalStyle = createGlobalStyle`
     --toastify-toast-width: 480px;
 
     .offcanvas {
-      --cui-offcanvas-zindex: 1;
-
+      /* --cui-offcanvas-zindex: 1; */
     }
   }
   .Toastify__toast {
