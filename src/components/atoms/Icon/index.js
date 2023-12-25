@@ -204,9 +204,18 @@ const Icon = ({
 
 Icon.propTypes = {
   icon: PropTypes.string.isRequired,
-  height: PropTypes.number,
-  width: PropTypes.number,
-  size: PropTypes.number,
+  height: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]),
+  width: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]),
+  size: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]),
   hoverPalette: PropTypes.string,
   palette: PropTypes.string,
   rotateDeg: PropTypes.number,

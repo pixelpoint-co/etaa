@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { palette } from 'styled-tools';
 
 import moment from 'moment';
+import { Fragment } from 'react';
 import EKStatusTag from '../EKStatusTag';
 import Flex from '../../atoms/Flex';
 import Card from '../../atoms/Card';
@@ -156,12 +157,12 @@ const Receipt = (props) => {
         const option = order.orderItem.filter((oi) => oi.parentId === orderItem.id);
 
         return (
-          <ReceiptInnerSection key={orderItem.id}>
+          <ReceiptInnerSection key={orderItem.id} {...other}>
             {i === 0 ? (
               <ReceiptHeader palette="grayscale">
                 <HaederContent>
                   <HeaderContentRow>
-                    <BrandIcon size={36} />
+                    {/* <BrandIcon size={36} /> */}
                     <ChannelNumber>
                       {lastFour(order.channelNumber || order.outsideId)}
                     </ChannelNumber>
@@ -209,8 +210,8 @@ const Receipt = (props) => {
               ) : null}
               <OptionSection>
                 {option.map((option) => (
-                  <>
-                    <OptionName key={option.id}>{option.name}</OptionName>
+                  <Fragment key={option.id}>
+                    <OptionName>{option.name}</OptionName>
                     {option.orderKitchen ? (
                       <TagSection>
                         <EKStatusTag
@@ -224,7 +225,7 @@ const Receipt = (props) => {
                         />
                       </TagSection>
                     ) : null}
-                  </>
+                  </Fragment>
                 ))}
               </OptionSection>
             </StyledRipped>
