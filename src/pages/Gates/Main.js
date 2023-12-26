@@ -9,19 +9,11 @@ import _, {
   get,
 } from 'lodash';
 import {
-  size,
-} from 'styled-theme';
-import {
   ifProp,
   palette,
 } from 'styled-tools';
 
 import {
-  COffcanvas,
-} from '@coreui/react';
-
-import {
-  useEffect,
   useState,
   useMemo,
 } from 'react';
@@ -30,25 +22,15 @@ import Flex from '../../components/atoms/Flex';
 import Button from '../../components/atoms/Button';
 import Heading from '../../components/atoms/Heading';
 import Card from '../../components/atoms/Card';
-import AntDList from '../../components/organisms/AntDList';
-import PotUnit from '../../components/organisms/PotUnit';
 import ProgressTimer from '../../components/molecules/ProgressTimer';
-import Label from '../../components/atoms/Label';
 
-import PotControlButton from '../../components/organisms/PotControlButton';
 import PotController from '../../components/organisms/PotController';
 import usePotController from '../../hooks/usePotController';
-import useOrderData from '../../hooks/useOrderData';
-import OrderSelection from '../../components/organisms/OrderSelection';
 import theme from '../../theme';
 import OrderMonitor from '../../containers/OrderMonitor';
-import useQueryParams from '../../hooks/useQueryParams';
 import InductionController from '../../components/organisms/InductionController';
 import MenuSelect from '../../components/organisms/PotController/MenuSelect';
 import useRecipeData from '../../hooks/useRecipeData';
-import {
-  recipeTags,
-} from '../../constants/pot';
 
 const Wrapper = styled(Flex)`
   flex-direction: column;
@@ -107,32 +89,6 @@ const BodyColumn = styled(Flex)`
   margin: 0px 8px;
   overflow: hidden;
 `;
-const PotControlButtonContainer = styled(Flex)`
-  flex-basis: 50%;
-  padding: 8px;
-`;
-
-const ActivateButton = styled(Button)`
-  margin-left: 15px;
-`;
-
-const OrderListCard = styled(Card)`
-`;
-
-const OrderListSection = styled(Card)`
-  background-color: ${palette(
-    'grayscale',
-    4,
-  )};
-  padding: 10px 20px;
-`;
-const PotGridContainer = styled(Flex)`
-  margin: -10px 0px;
-  flex-wrap: wrap;
-  flex: 0;
-  flex-basis: 640px;
-`;
-
 const Column = styled(Card)`
   margin: 0px 10px;
   padding: 10px;
@@ -165,88 +121,14 @@ const MenuOptionsSelectContainer = styled(Flex)`
   flex-direction: column;
   flex-wrap: nowrap;
 `;
-const MenuGroupContainer = styled(Column)`
-  flex: 1 0 50px;
-`;
 const MenuListContainer = styled(Column)`
   flex: 2 0 150px;
 `;
 
-const OffC = (props) => {
-  const {
-    selectedOrder,
-    selectedItemisedOrder,
-    chefMonitoringData,
-    selectRecipe,
-    ...others
-  } = props;
-  const {
-    queryParams,
-    setQueryParams,
-  } = useQueryParams();
-  return (
-    <COffcanvas
-      visible={queryParams.orderId > 0}
-      placement="start"
-      backdrop={false}
-      onHide={() => setQueryParams(({
-        orderId,
-        ...rest
-      }) => rest)}
-      style={{
-        width: '852px',
-        marginTop: '94px',
-        marginBottom: '14px',
-        overflow: 'auto',
-        backgroundColor: '#EEF0F3',
-        border: 'none',
-      }}
-    >
-      <Flex flex={0}>
-        <Card padding={0}>
-          <OrderSelection
-            order={selectedOrder}
-            orderItems={selectedItemisedOrder}
-            chefMonitoringData={chefMonitoringData}
-            onClickOrderChange={() => setQueryParams(({
-              orderId,
-              ...rest
-            }) => rest)}
-            onClickOrderPrepare={(orderKitchen) => {
-              selectRecipe(
-                orderKitchen.recipeId,
-                orderKitchen.id,
-              );
-            }}
-          />
-        </Card>
-      </Flex>
-    </COffcanvas>
-  );
-};
 const GatesMain = (props) => {
   const { id } = useParams();
-  const location = useLocation();
   const isReceipt = JSON.parse(process.env.REACT_APP_RECEIPT.toLowerCase());
   const cookerId = id - 1;
-  // const [
-  //   orderMonitorVisible,
-  //   setOrderMonitorVisible,
-  // ] = useState(false);
-  const {
-    queryParams,
-    setQueryParams,
-  } = useQueryParams();
-  const { orderId: selectedOrderId } = queryParams;
-
-  // const [
-  //   selectedOrderId,
-  //   setSelectedOrderId,
-  // ] = useState(null);
-  const {
-    pot,
-    ...others
-  } = props;
 
   const potController = usePotController(cookerId);
   const {
@@ -259,25 +141,8 @@ const GatesMain = (props) => {
     isWashing,
     lastActionId,
     selectRecipe,
-    orderRefetchTime,
-    updateOrderKitchenStatus,
-    orderKitchenRefetchTime,
-    potMonitoringData,
-    chefMonitoringData,
-    cherMonitorPot,
-    chefMonitorPotList,
     setInductionPower,
   } = potController;
-  const {
-    data,
-    itemisedOrderList,
-  } = useOrderData({
-    orderRefetchTime,
-    chefMonitoringData,
-    cherMonitorPot,
-    chefMonitorPotList,
-    orderKitchenRefetchTime,
-  });
   const {
     data: recipeData,
     error,
@@ -288,10 +153,7 @@ const GatesMain = (props) => {
     needTaste,
     setNeedTaste,
   ] = useState(false);
-  const [
-    selectedCategoryId,
-    setSelectedCategoryId,
-  ] = useState(130);
+  const [selectedCategoryId] = useState(130);
   const [
     selectedRecipeId,
     setSelectedRecipeId,
@@ -310,15 +172,6 @@ const GatesMain = (props) => {
   if (isCooking && currentRecipeId !== 21) recipeName = currentRecipe?.name;
   if (lastActionType === 'abort') recipeName = '정지중';
   if (lastActionType === 'machine') recipeName = lastActionId;
-  const selectedOrder = data.find((o) => Number(o.id) === Number(selectedOrderId)) || {};
-  const selectedItemisedOrder = itemisedOrderList
-    .filter((io) => get(
-      io,
-      [
-        'order',
-        'id',
-      ],
-    ) === Number(selectedOrderId));
   const handleCountUpdate = (count) => {
     if (count && count < 90 && isCooking) {
       return setNeedTaste(true);
@@ -372,24 +225,12 @@ const GatesMain = (props) => {
             {...(needTaste ? timerColorAlertProps : timerColorProps)}
           />
         </TimerSection>
-        {/* <ActivateButton>
-          button
-        </ActivateButton> */}
       </HeaderSection>
       <BodySection>
-
         {
           isReceipt ? (
             <BodyColumn flex={1} shrink={0} grow={0} basis={720} direction="column">
               <OrderMonitor
-                onClickOrder={(order) => {
-                  setQueryParams((old) => ({
-                    ...old,
-                    orderId: order.orderId,
-                  }));
-                }}
-                selectedChannelNo={selectedOrder.channelNo}
-                pageSize={8}
                 selectRecipe={selectRecipe}
               />
             </BodyColumn>
@@ -454,12 +295,6 @@ const GatesMain = (props) => {
           />
         </BodyColumn>
       </BodySection>
-      <OffC
-        selectedOrder={selectedOrder}
-        selectedItemisedOrder={selectedItemisedOrder}
-        chefMonitoringData={chefMonitoringData}
-        selectRecipe={selectRecipe}
-      />
     </Wrapper>
   );
 };
