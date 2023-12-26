@@ -33,7 +33,7 @@ const Kitchen = (props) => {
       data-tooltip-id={id}
     >
       <Image width={370} height="auto" src={kitchenSrc} />
-      <Tooltip
+      {/* <Tooltip
         id={id}
         isOpen
         style={{
@@ -43,7 +43,7 @@ const Kitchen = (props) => {
         }}
       >
         <ErrorPulse />
-      </Tooltip>
+      </Tooltip> */}
     </Container>
   );
 };
