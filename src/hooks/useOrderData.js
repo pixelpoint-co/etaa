@@ -20,15 +20,12 @@ import useRecipeData from './useRecipeData';
 import { getMachineUrl } from './usePotController';
 
 const orderQueryFn = ({ queryKey }) => {
-  const [
-    _key,
-    {
-      pageSize,
-      currentPage,
-      sortOrder,
-      maxOrderStatus,
-    },
-  ] = queryKey;
+  const [_key] = queryKey;
+  const pageSize = 200;
+  const currentPage = 0;
+  const sortOrder = 'desc';
+  const maxOrderStatus = 99;
+  console.log(_key);
   return global.api.get(
     '/order-item',
     {
@@ -53,19 +50,13 @@ export default (options = {}) => {
   } = options;
 
   const { data: recipeList } = useRecipeData();
+  console.log({
+    orderRefetchTime,
+    orderKitchenRefetchTime,
+  });
   const getOrderDataQuery = useQuery(
     {
-      queryKey: [
-        'order-item',
-        {
-          pageSize: 200,
-          currentPage: 0,
-          sortOrder,
-          maxOrderStatus,
-          orderRefetchTime,
-          orderKitchenRefetchTime,
-        },
-      ],
+      queryKey: ['order-item'],
       queryFn: orderQueryFn,
     },
   );
@@ -76,6 +67,7 @@ export default (options = {}) => {
   useEffect(
     () => {
       function onMessageEvent(value) {
+        console.log(value);
         refetch();
       }
 
