@@ -50,6 +50,7 @@ const Top = styled(Flex)`
   flex-grow: 0;
   background: transparent;
   position: relative;
+  justify-content: center;
 `;
 const Bottom = styled(Flex)`
   flex: 0;
@@ -58,6 +59,7 @@ const Bottom = styled(Flex)`
   flex-shrink: 0;
   flex-grow: 0;
   position: relative;
+  justify-content: center;
 `;
 const MonitorContainer = styled(Flex)`
   left: 50%;

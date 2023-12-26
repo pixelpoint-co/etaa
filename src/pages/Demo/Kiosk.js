@@ -46,7 +46,7 @@ const StyledTooltip = styled(Tooltip)`
       transform: translateX(-50px) translatey(0px);
     }
   }
-  margin-top: 70px;
+  margin-top: 50px;
   font-size: 18px;
   letter-spacing: 0.8px;
   text-transform: uppercase;
@@ -60,11 +60,12 @@ const StyledTooltip = styled(Tooltip)`
 `;
 
 const Container = styled(Flex)`
+  position: absolute;
   flex: 0;
   align-self: shrink;
   background-color: transparent;
-  padding-top: 1%;
-  transform: translateX(-4%);
+  left: 0;
+  translate: -2% -4%;
 `;
 const Kiosk = (props) => {
   const id = useMemo(

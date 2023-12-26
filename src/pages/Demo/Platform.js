@@ -12,7 +12,7 @@ const Container = styled(Flex)`
   flex: 0;
   align-self: shrink;
   background-color: transparent;
-  translate: 0 -88%;
+  padding-top: 136px;
 `;
 const Platform = ({}) => {
   return (

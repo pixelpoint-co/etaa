@@ -18,7 +18,8 @@ const Container = styled(Flex)`
   align-self: shrink;
   background-color: transparent;
   position: absolute;
-  translate: -12%;
+  right: 0;
+  translate: 8% -2%;
 `;
 const Kitchen = (props) => {
   const id = useMemo(
