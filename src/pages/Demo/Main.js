@@ -25,6 +25,7 @@ import AntDList from '../../components/organisms/AntDList';
 import PotUnit from '../../components/organisms/PotUnit';
 import OrderMonitor from '../../containers/OrderMonitor';
 import Link from '../../components/atoms/Link';
+import PotTab from '../../components/organisms/PotTab';
 import useOrderData from '../../hooks/useOrderData';
 import useChefMonitor from '../../hooks/useChefMonitor';
 import useRecipeData from '../../hooks/useRecipeData';
@@ -32,8 +33,10 @@ import Receipt from '../../components/organisms/Receipt';
 import Kiosk from './Kiosk';
 import Kitchen from './Kitchen';
 import Platform from './Platform';
+import Cooker from './Cooker';
 import PotController from '../../components/organisms/PotController';
 import usePotController from '../../hooks/usePotController';
+import useQueryParams from '../../hooks/useQueryParams';
 
 const Wrapper = styled(Flex)`
   flex-direction: row;
@@ -105,17 +108,17 @@ const OffC = (props) => {
     selectRecipe,
     ...others
   } = props;
-  // const {
-  //   queryParams,
-  //   setQueryParams,
-  // } = useQueryParams();
-  const potController = usePotController(0);
+
+  const potController = usePotController(props.queryParams.selectedCookerId);
   return (
     <COffcanvas
-      visible
+      visible={props.queryParams.selectedCookerId > -1}
       placement="end"
       backdrop
-      onHide={() => {}}
+      onHide={() => props.setQueryParams(({
+        selectedCookerId,
+        ...rest
+      }) => rest)}
       style={{
         height: 720,
         margin: 'auto',
@@ -126,9 +129,8 @@ const OffC = (props) => {
         zIndex: 1041,
       }}
     >
-      <Card>
-        <PotController potController={potController} />
-      </Card>
+
+      <Cooker />
     </COffcanvas>
   );
 };
@@ -136,6 +138,10 @@ const DemoMain = (props) => {
   const location = useLocation();
   const machineUrl = process.env.REACT_APP_MACHINE_URL.split(',');
   const { ...others } = props;
+  const {
+    queryParams,
+    setQueryParams,
+  } = useQueryParams({ initialQueryParams: { selectedCookerId: 0 } });
 
   const {
     data,
@@ -178,23 +184,32 @@ const DemoMain = (props) => {
             <Flex>
               <Kitchen />
             </Flex>
+            <PotTab
+              themeProps={{
+                palette: 'white',
+                boxShadow: '0px 2px 4px rgba(50, 50, 93, 0.1)',
+              }}
+              offThemeProps={{
+                palette: 'grayscale',
+                tone: 6,
+                type: 'text',
+              }}
+              options={[
+                { value: 0 },
+                { value: 1 },
+                { value: 2 },
+                { value: 3 },
+              ]}
+              value={queryParams.selectedCookerId}
+              onSelect={setQueryParams}
+            />
           </Top>
           <Bottom>
             <Platform />
           </Bottom>
-          {/* {machineUrl.map((url, i) => (
-          <PotCardContainer
-            key={i}
-            href={`${window.origin}/gates/${i + 1}`}
-          >
-            <PotUnit
-              cookerId={i}
-            />
-          </PotCardContainer>
-        ))} */}
         </KitchenContainer>
       </Bottom>
-      <OffC />
+      <OffC queryParams={queryParams} setQueryParams={setQueryParams} />
     </Wrapper>
   );
 };
