@@ -13,7 +13,7 @@ import useRecipeData from './useRecipeData';
 import useChefMonitor from './useChefMonitor';
 
 const machineUrl = process.env.REACT_APP_MACHINE_URL.split(',');
-
+console.log(machineUrl);
 const mapPowerToCommand = (power, id = 0) => {
   return {
     type: 'induction',
@@ -25,12 +25,17 @@ const mapPowerToCommand = (power, id = 0) => {
   };
 };
 export const getMachineUrl = (cookerId) => {
-  if (
-    process.env.REACT_APP_ENV === 'staging'
-    || process.env.REACT_APP_ENV === 'development'
-  ) {
-    return 'https://eight-receipt.fly.dev/api/v1';
-  }
+  // if (
+  //   process.env.REACT_APP_ENV === 'staging'
+  //   || process.env.REACT_APP_ENV === 'development'
+  // ) {
+  //   return 'https://eight-receipt.fly.dev/api/v1';
+  // }
+  console.log({
+    machineUrl,
+    cookerId,
+    url: machineUrl[cookerId],
+  });
   return machineUrl[cookerId];
 };
 
@@ -166,7 +171,7 @@ const usePotController = (cookerId, opts = {}) => {
       `${getMachineUrl(cookerId)}/cooker/0/dish-out`,
     );
   };
-  const selectRecipe = (recipeId, orderKitchenId) => {
+  const selectRecipe = async (recipeId, orderKitchenId) => {
     // global.api.post(
     //   `/cooker/${cookerId}/prep-cook`,
     //   {
@@ -174,15 +179,15 @@ const usePotController = (cookerId, opts = {}) => {
     //     orderKitchenId,
     //   },
     // );
-    global.api.post(
+    setSelectedRecipeId(recipeId);
+    setSelectedOrderKitchenId(orderKitchenId);
+    return global.api.post(
       `${getMachineUrl(cookerId)}/cooker/0/select-recipe`,
       {
         recipeId,
         orderKitchenId,
       },
     );
-    setSelectedRecipeId(recipeId);
-    setSelectedOrderKitchenId(orderKitchenId);
   };
   const selectedRecipe = useMemo(
     () => _.find(

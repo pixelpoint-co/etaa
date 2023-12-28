@@ -76,7 +76,7 @@ const ErrorPulseSection = styled(Flex)`
     z-index: 1;
     right: 4px;
     top: 4px;
-  
+
     ${ifNotProp(
     'hasError',
     css`
@@ -154,7 +154,7 @@ const Rotate = styled(Flex)`
         }
       `,
   )}
-  
+
     @keyframes spin {
       0% {
         transform: rotateZ(0deg);
@@ -219,10 +219,6 @@ const PotUnit = (props) => {
     // recordList,
     // parsedRecordList,
   } = potController;
-  console.log(
-    'potController ',
-    potController,
-  );
   const orderName = null;
   const recipeId = get(
     recipe,

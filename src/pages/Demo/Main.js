@@ -37,6 +37,7 @@ import Cooker from './Cooker';
 import PotController from '../../components/organisms/PotController';
 import usePotController from '../../hooks/usePotController';
 import useQueryParams from '../../hooks/useQueryParams';
+import { useSprite } from '../../hooks/useSprite';
 
 const Wrapper = styled(Flex)`
   flex-direction: row;
@@ -108,40 +109,43 @@ const OffC = (props) => {
     selectRecipe,
     ...others
   } = props;
-
-  const potController = usePotController(props.queryParams.selectedCookerId);
+  const {
+    queryParams,
+    setQueryParams,
+  } = useQueryParams();
+  const visible = queryParams.selectedCookerId > -1;
+  console.log({ queryParams });
   return (
     <COffcanvas
-      visible={props.queryParams.selectedCookerId > -1}
+      visible={visible}
       placement="end"
       backdrop
-      onHide={() => props.setQueryParams(({
+      onHide={() => setQueryParams(({
         selectedCookerId,
         ...rest
       }) => rest)}
       style={{
-        height: 720,
+        height: 680,
         margin: 'auto',
-        marginRight: 60,
+        marginRight: 20,
         overflow: 'auto',
-        backgroundColor: 'transparent',
+        backgroundColor: 'white',
         border: 'none',
+        maxWidth: 680,
+        width: '80%',
         zIndex: 1041,
       }}
     >
-
-      <Cooker />
+      <Cooker
+        visible={visible}
+        cookerId={Number(queryParams.selectedCookerId)}
+        onSelect={setQueryParams}
+      />
     </COffcanvas>
   );
 };
 const DemoMain = (props) => {
-  const location = useLocation();
-  const machineUrl = process.env.REACT_APP_MACHINE_URL.split(',');
   const { ...others } = props;
-  const {
-    queryParams,
-    setQueryParams,
-  } = useQueryParams({ initialQueryParams: { selectedCookerId: 0 } });
 
   const {
     data,
@@ -159,7 +163,6 @@ const DemoMain = (props) => {
   return (
     <Wrapper>
       <Top>
-
         <MonitorContainer>
           <ReceiptWrapper>
             {data.map((order) => (
@@ -181,10 +184,10 @@ const DemoMain = (props) => {
         >
           <Top style={{ zIndex: 1 }}>
             <Kiosk />
-            <Flex>
+            <Link to="?selectedCookerId=0">
               <Kitchen />
-            </Flex>
-            <PotTab
+            </Link>
+            {/* <PotTab
               themeProps={{
                 palette: 'white',
                 boxShadow: '0px 2px 4px rgba(50, 50, 93, 0.1)',
@@ -194,22 +197,17 @@ const DemoMain = (props) => {
                 tone: 6,
                 type: 'text',
               }}
-              options={[
-                { value: 0 },
-                { value: 1 },
-                { value: 2 },
-                { value: 3 },
-              ]}
+              options={machineUrl.map((v, i) => ({ value: i }))}
               value={queryParams.selectedCookerId}
               onSelect={setQueryParams}
-            />
+            /> */}
           </Top>
           <Bottom>
             <Platform />
           </Bottom>
         </KitchenContainer>
       </Bottom>
-      <OffC queryParams={queryParams} setQueryParams={setQueryParams} />
+      <OffC />
     </Wrapper>
   );
 };

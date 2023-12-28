@@ -10,9 +10,6 @@ import {
   useState,
 } from 'react';
 import _ from 'lodash';
-import {
-  toast,
-} from 'react-toastify';
 import Modal from '../../atoms/Modal';
 import PotControlButton from '../PotControlButton';
 import Flex from '../../atoms/Flex';
