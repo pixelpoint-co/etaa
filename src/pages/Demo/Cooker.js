@@ -91,7 +91,7 @@ const DemoCooker = (props) => {
             background: theme.palette.grayscale[5],
           }}
         />
-        <Flex style={{ zoom: 0.5 }}>
+        <Flex>
           <PotSprite
             shouldAnimate={shouldAnimate}
           />

@@ -1,4 +1,4 @@
-import spriceSource from '../../assets/image/sprite-angle.png';
+import spriceSource from '../../assets/image/sprite-angle.jpg';
 
 import { useSprite } from '../../hooks/useSprite';
 
@@ -11,8 +11,8 @@ const PotSprite = (props) => {
   const styles = useSprite({
     sprite: spriceSource,
     shouldAnimate,
-    width: 1080,
-    height: 1920,
+    width: 540,
+    height: 960,
     fps: 12,
     stopLastFrame: !shouldLoop,
   });
