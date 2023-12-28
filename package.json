@@ -1,6 +1,7 @@
 {
-  "name": "erp",
+  "name": "etaa",
   "version": "0.1.0",
+  "homepage": "https://etaa.pixelpoint.co",
   "private": true,
   "dependencies": {
     "@ant-design/icons": "5.0.1",
@@ -76,7 +77,7 @@
     "build-storybook": "build-storybook -s public",
     "build": "react-scripts build",
     "build:staging": "env-cmd -f ./.env.staging react-scripts build",
-    "build:page": "NODE_ENV=development react-scripts build",
+    "build:page": "NODE_ENV=production react-scripts build && echo \"etaa.pixelpoint.co\" > build/CNAME",
     "predeploy:page": "npm run build:page",
     "deploy:page": "gh-pages -d build"
   },
