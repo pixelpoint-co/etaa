@@ -205,7 +205,7 @@ const PotStation = (props) => {
   );
 
   return (
-    <Wrapper>
+    <Wrapper {...others}>
       <HeaderSection>
         <PotNumber>
           {_.padStart(

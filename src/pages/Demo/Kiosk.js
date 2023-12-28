@@ -86,9 +86,7 @@ const Kiosk = (props) => {
         isOpen
         floating
       >
-        <span>
-          order here
-        </span>
+        order here
       </StyledTooltip>
     </Container>
   );

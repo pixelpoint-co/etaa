@@ -282,7 +282,8 @@ const OrderMonitor = (props) => {
                 selectRecipe(
                   row.orderKitchen.recipeId,
                   row.orderKitchen.id,
-                );
+                )
+                  .then(refetch);
               }}
             >
               레시피 선택

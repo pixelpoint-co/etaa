@@ -155,6 +155,7 @@ const Anchor = styled.a`
 `;
 const StyledButton = styled.button`
   ${styles};
+  position: relative;
 `;
 
 const Button = ({

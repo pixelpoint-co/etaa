@@ -187,7 +187,6 @@ const PotUnit = (props) => {
     error,
     ...others
   } = props;
-
   const potController = usePotController(
     cookerId,
     {},

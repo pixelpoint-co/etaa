@@ -19,9 +19,6 @@ import {
   v4 as uuidv4,
 } from 'uuid';
 
-import {
-  ToastContainer, toast,
-} from 'react-toastify';
 import Flex from '../../atoms/Flex';
 
 import PotControlButton from '../PotControlButton';

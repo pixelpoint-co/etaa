@@ -115,7 +115,6 @@ const OrderMonitor = (props) => {
     pickCellRenderers,
     selectRecipe,
     onClickOrder,
-    selectedChannelNo,
     ...others
   } = props;
   const {
@@ -128,7 +127,10 @@ const OrderMonitor = (props) => {
     selectedTab,
     setSelectedTab,
   ] = useState('all');
-  const { data: orderData } = useOrderData({
+  const {
+    data: orderData,
+    refetch,
+  } = useOrderData({
     sortOrder: 'asc',
     maxOrderStatus: 99,
     limit: pageSize,
@@ -242,10 +244,12 @@ const OrderMonitor = (props) => {
             completedJobsById={completedJobsById}
             recipeData={recipeData}
             onClickOrderKitchenTag={(orderKitchen) => {
+              console.log(orderKitchen);
               selectRecipe(
                 orderKitchen.recipeId,
                 orderKitchen.id,
-              );
+              )
+                .then(refetch);
             }}
           />
         ))}
