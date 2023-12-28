@@ -147,7 +147,6 @@ const DevModeMain = (props) => {
     pot,
     ...others
   } = props;
-
   const potController = usePotController(cookerId);
   const {
     currentRecipe,

@@ -130,6 +130,7 @@ const PotStation = (props) => {
     cookerId,
     ...others
   } = props;
+  console.log(cookerId);
   const isReceipt = JSON.parse(process.env.REACT_APP_RECEIPT.toLowerCase());
   const potController = usePotController(cookerId);
   const {
@@ -203,7 +204,7 @@ const PotStation = (props) => {
   );
 
   return (
-    <Wrapper>
+    <Wrapper {...others}>
       <HeaderSection>
         <PotNumber>
           {_.padStart(

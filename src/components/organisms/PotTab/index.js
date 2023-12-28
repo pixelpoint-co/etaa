@@ -11,7 +11,7 @@ import Icon from '../../atoms/Icon';
 import Flex from '../../atoms/Flex';
 import Text from '../../atoms/P';
 import Link from '../../atoms/Link';
-import PotUnit from './PotUnit';
+import PotUnit from '../PotUnit';
 import Button, {
   themeStyle,
   themeColor,
@@ -33,6 +33,8 @@ const Container = styled(Flex)`
     'grayscale',
     6,
   )};
+
+  zoom: 0.5;
 `;
 const ButtonContainer = styled(Flex)`
   margin: 0px 3px;
@@ -84,7 +86,6 @@ const PotTab = (props) => {
           <PotCardContainer
             key={option.value}
           >
-
             <PotUnit
               {...tabThemeProp}
               style={{ flex: 1 }}
@@ -95,7 +96,6 @@ const PotTab = (props) => {
                 selectedCookerId: option.value,
               }))}
             />
-
           </PotCardContainer>
         );
       })}
