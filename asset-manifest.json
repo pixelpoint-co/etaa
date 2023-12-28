@@ -1,0 +1,36 @@
+{
+  "files": {
+    "main.css": "/static/css/main.65f933db.css",
+    "main.js": "/static/js/main.61b71755.js",
+    "static/js/787.10e7632a.chunk.js": "/static/js/787.10e7632a.chunk.js",
+    "static/media/kitchen.png": "/static/media/kitchen.60c8e2d2a1bdc2cba520.png",
+    "service-worker.js": "/service-worker.js",
+    "static/media/kiosk.png": "/static/media/kiosk.058aa6c89731b1a1b0c6.png",
+    "static/media/platform.png": "/static/media/platform.6f910028f78c127dc89d.png",
+    "static/media/pot.png": "/static/media/pot.b0e9b77a17965253aee9.png",
+    "static/media/loader.svg": "/static/media/loader.8fc27d85d620e3de0182e54c2922b4ee.svg",
+    "static/media/pot-rotate.svg": "/static/media/pot-rotate.0830dc12aed74de94d662b15e5d66c0e.svg",
+    "static/media/logo-cre.svg": "/static/media/logo-cre.8d133f45d55f50afca802995aa0a29ce.svg",
+    "static/media/logo.svg": "/static/media/logo.5979902a3b541addec640838418121d3.svg",
+    "static/media/drawer-toggle.svg": "/static/media/drawer-toggle.e898af05f08527553f5f87e69c2f6b27.svg",
+    "static/media/logo-o.svg": "/static/media/logo-o.c8033ed55257fcf32589d294016c71df.svg",
+    "static/media/x.svg": "/static/media/x.d4913aaf410227ab9d2e9052ea7c5cac.svg",
+    "static/media/clock.svg": "/static/media/clock.80012f6b661189d3ef2578c15b169ded.svg",
+    "static/media/arrow-tail.svg": "/static/media/arrow-tail.8c7158e8de6ce42f936baf52226f5877.svg",
+    "static/media/arrow.svg": "/static/media/arrow.e42516c3942f5456b0062e15a86bb2ff.svg",
+    "static/media/alert.svg": "/static/media/alert.ca02ffa6febb6ed5286882035b5adfc2.svg",
+    "index.html": "/index.html",
+    "static/media/check.svg": "/static/media/check.9e8ffc7e875e4a65a8e61fdae308cac5.svg",
+    "static/media/pot-rotate-straight.svg": "/static/media/pot-rotate-straight.4a8e66959e0b61fb5451810d1d4e76cf.svg",
+    "static/media/play.svg": "/static/media/play.92638a76ff200479627cd2ef9a544c98.svg",
+    "static/media/paper-cut.svg": "/static/media/paper-cut.05f98b3a87324ec28a8714bff59c02aa.svg",
+    "static/media/caret.svg": "/static/media/caret.818ee0051fe45da0c15c3ae72b68a3fe.svg",
+    "main.65f933db.css.map": "/static/css/main.65f933db.css.map",
+    "main.61b71755.js.map": "/static/js/main.61b71755.js.map",
+    "787.10e7632a.chunk.js.map": "/static/js/787.10e7632a.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.65f933db.css",
+    "static/js/main.61b71755.js"
+  ]
+}

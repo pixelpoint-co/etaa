@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 20 20">
+  <defs>
+    <clipPath id="drawer-toggle_svg__clip-path">
+      <rect id="drawer-toggle_svg__Rectangle_1221" data-name="Rectangle 1221" width="12.333" height="14.109"/>
+    </clipPath>
+  </defs>
+  <g id="drawer-toggle_svg__Group_1348" data-name="Group 1348" transform="translate(-360 -55)">
+    <g id="drawer-toggle_svg__Group_1328" data-name="Group 1328" transform="translate(360 55)">
+      <rect id="drawer-toggle_svg__Rectangle_60" data-name="Rectangle 60" width="20" height="20" transform="translate(0 0)" fill="none"/>
+    </g>
+    <g id="drawer-toggle_svg__Group_1347" data-name="Group 1347" transform="translate(363.619 57.732)">
+      <g id="drawer-toggle_svg__Group_1346" data-name="Group 1346" clip-path="url(#drawer-toggle_svg__clip-path)">
+        <path id="drawer-toggle_svg__Path_539" data-name="Path 539" d="M15.894,12.385,10.273,7.013l5.621-5.372A.952.952,0,0,0,15.825.255a1.06,1.06,0,0,0-1.449.066L8.127,6.353a.949.949,0,0,0,0,1.32L14.376,13.7a1.06,1.06,0,0,0,1.449.066.951.951,0,0,0,.069-1.386" transform="translate(-3.828 0)" fill="#a8a9ad"/>
+        <path id="drawer-toggle_svg__Path_540" data-name="Path 540" d="M.9,0A.9.9,0,0,0,0,.9V13.211a.9.9,0,0,0,1.8,0V.9A.9.9,0,0,0,.9,0" fill="#a8a9ad"/>
+      </g>
+    </g>
+  </g>
+</svg>

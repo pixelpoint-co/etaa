@@ -1,0 +1,10 @@
+<svg id="arrow_svg__Group_1853" data-name="Group 1853" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20.176" height="10.709" viewBox="0 0 20.176 10.709">
+  <defs>
+    <clipPath id="arrow_svg__clip-path">
+      <rect id="arrow_svg__Rectangle_1624" data-name="Rectangle 1624" width="20.176" height="10.709" fill="#a8a9ad"/>
+    </clipPath>
+  </defs>
+  <g id="arrow_svg__Group_1852" data-name="Group 1852" clip-path="url(#arrow_svg__clip-path)">
+    <path id="arrow_svg__Path_603" data-name="Path 603" d="M10.088,0a1.41,1.41,0,0,0-.95.368L.461,8.254a1.411,1.411,0,0,0,1.9,2.088l7.728-7.024,7.728,7.024a1.411,1.411,0,0,0,1.9-2.088L11.038.367A1.41,1.41,0,0,0,10.088,0" transform="translate(0 0)" fill="#a8a9ad"/>
+  </g>
+</svg>
