@@ -1,12 +1,14 @@
 {
   "files": {
     "main.css": "/static/css/main.65f933db.css",
-    "main.js": "/static/js/main.61b71755.js",
+    "main.js": "/static/js/main.13f65874.js",
     "static/js/787.10e7632a.chunk.js": "/static/js/787.10e7632a.chunk.js",
+    "static/media/sprite-angle.png": "/static/media/sprite-angle.ad078e41df00b58d78cc.png",
     "static/media/kitchen.png": "/static/media/kitchen.60c8e2d2a1bdc2cba520.png",
     "service-worker.js": "/service-worker.js",
-    "static/media/kiosk.png": "/static/media/kiosk.058aa6c89731b1a1b0c6.png",
+    "static/media/kiosk.png": "/static/media/kiosk.e542891633fbea92f8c0.png",
     "static/media/platform.png": "/static/media/platform.6f910028f78c127dc89d.png",
+    "static/media/pasta.png": "/static/media/pasta.104e15875f06d6c7737d.png",
     "static/media/pot.png": "/static/media/pot.b0e9b77a17965253aee9.png",
     "static/media/loader.svg": "/static/media/loader.8fc27d85d620e3de0182e54c2922b4ee.svg",
     "static/media/pot-rotate.svg": "/static/media/pot-rotate.0830dc12aed74de94d662b15e5d66c0e.svg",
@@ -26,11 +28,11 @@
     "static/media/paper-cut.svg": "/static/media/paper-cut.05f98b3a87324ec28a8714bff59c02aa.svg",
     "static/media/caret.svg": "/static/media/caret.818ee0051fe45da0c15c3ae72b68a3fe.svg",
     "main.65f933db.css.map": "/static/css/main.65f933db.css.map",
-    "main.61b71755.js.map": "/static/js/main.61b71755.js.map",
+    "main.13f65874.js.map": "/static/js/main.13f65874.js.map",
     "787.10e7632a.chunk.js.map": "/static/js/787.10e7632a.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.65f933db.css",
-    "static/js/main.61b71755.js"
+    "static/js/main.13f65874.js"
   ]
 }
