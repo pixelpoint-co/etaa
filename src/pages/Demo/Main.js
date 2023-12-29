@@ -107,6 +107,8 @@ const OffC = (props) => {
     selectedItemisedOrder,
     chefMonitoringData,
     selectRecipe,
+    activeStatusById,
+    completedJobsById,
     ...others
   } = props;
   const {
@@ -125,21 +127,23 @@ const OffC = (props) => {
         ...rest
       }) => rest)}
       style={{
-        height: 680,
+        height: 650,
         margin: 'auto',
         marginRight: 20,
         overflow: 'auto',
         backgroundColor: 'white',
         border: 'none',
-        maxWidth: 680,
-        width: '80%',
         zIndex: 1041,
+        maxWidth: '900px',
+        width: '90%',
       }}
     >
       <Cooker
         visible={visible}
         cookerId={Number(queryParams.selectedCookerId)}
         onSelect={setQueryParams}
+        activeStatusById={activeStatusById}
+        completedJobsById={completedJobsById}
       />
     </COffcanvas>
   );
@@ -155,8 +159,10 @@ const DemoMain = (props) => {
     maxOrderStatus: 99,
   });
   const {
+    cookerList,
     activeStatusById,
     completedJobsById,
+    machineStateById,
   } = useChefMonitor();
   const { data: recipeData } = useRecipeData();
 
@@ -207,7 +213,10 @@ const DemoMain = (props) => {
           </Bottom>
         </KitchenContainer>
       </Bottom>
-      <OffC />
+      <OffC
+        activeStatusById={activeStatusById}
+        completedJobsById={completedJobsById}
+      />
     </Wrapper>
   );
 };

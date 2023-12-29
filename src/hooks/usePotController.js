@@ -380,6 +380,7 @@ const usePotController = (cookerId, opts = {}) => {
     recipeData,
     currentRecipe,
     currentRecipeId,
+    activeStatus,
     isWashing: _.get(
       activeStatus,
       [

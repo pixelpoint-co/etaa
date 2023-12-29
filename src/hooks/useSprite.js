@@ -32,6 +32,7 @@ export const useSprite = ({
   stopLastFrame,
   reset,
   scale = 1,
+  backwards = false,
   wrapAfter,
   frame,
 }) => {
@@ -134,15 +135,16 @@ export const useSprite = ({
   const getSpritePosition = useCallback(
     (frame = 0) => {
       const isHorizontal = direction === 'horizontal';
+      const adjustedFrame = (backwards ? (maxFrames - 1) - frame : frame);
 
       let row; let
         col;
       if (typeof wrapAfter === 'undefined') {
-        row = isHorizontal ? 0 : frame;
-        col = isHorizontal ? frame : 0;
+        row = isHorizontal ? 0 : adjustedFrame;
+        col = isHorizontal ? adjustedFrame : 0;
       } else {
-        row = isHorizontal ? Math.floor(frame / wrapAfter) : frame % wrapAfter;
-        col = isHorizontal ? frame % wrapAfter : Math.floor(frame / wrapAfter);
+        row = isHorizontal ? Math.floor(adjustedFrame / wrapAfter) : adjustedFrame % wrapAfter;
+        col = isHorizontal ? adjustedFrame % wrapAfter : Math.floor(adjustedFrame / wrapAfter);
       }
       const _width = (-width * col) / scale;
       const _height = (-height * row) / scale;
@@ -154,6 +156,7 @@ export const useSprite = ({
       height,
       wrapAfter,
       scale,
+      backwards,
     ],
   );
 
