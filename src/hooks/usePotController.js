@@ -24,6 +24,7 @@ const mapPowerToCommand = (power, id = 0) => {
     },
   };
 };
+
 export const getMachineUrl = (cookerId) => {
   // if (
   //   process.env.REACT_APP_ENV === 'staging'
