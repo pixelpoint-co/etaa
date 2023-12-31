@@ -12,6 +12,7 @@ import { size } from 'styled-theme';
 import Image from '../../components/atoms/Image';
 import kioskSrc from '../../assets/image/kiosk.png';
 import Flex from '../../components/atoms/Flex';
+import Button from '../../components/atoms/Button';
 
 const StyledTooltip = styled(Tooltip)`
   @keyframes float {
@@ -49,11 +50,12 @@ const StyledTooltip = styled(Tooltip)`
   }
 `;
 
-const Container = styled(Flex)`
+const Container = styled(Button)`
   position: absolute;
   flex: 0;
   align-self: shrink;
   background-color: transparent;
+  border-color: transparent;
   left: 0;
   translate: -2% -4%;
 `;
@@ -68,6 +70,7 @@ const Kiosk = (props) => {
     <Container
       transparent
       data-tooltip-id={id}
+      theme="grayscale"
       {...props}
     >
       <Image width={isMobile ? 165 : 330} height="auto" src={kioskSrc} />

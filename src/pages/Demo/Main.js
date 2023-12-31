@@ -1,31 +1,13 @@
-// import { connect } from 'react-redux';
-import {
-  useLocation,
-} from 'react-router-dom';
-
 import styled from 'styled-components';
-import _ from 'lodash';
-import {
-  size,
-} from 'styled-theme';
 import {
   palette,
 } from 'styled-tools';
 import {
   COffcanvas,
 } from '@coreui/react';
-import Text from '../../components/atoms/P';
 import Flex from '../../components/atoms/Flex';
 import Button from '../../components/atoms/Button';
-import propTypes from '../../propTypes';
-import Heading from '../../components/atoms/Heading';
-import Card from '../../components/atoms/Card';
-import PageAction from '../../components/organisms/PageAction/index';
-import AntDList from '../../components/organisms/AntDList';
-import PotUnit from '../../components/organisms/PotUnit';
-import OrderMonitor from '../../containers/OrderMonitor';
 import Link from '../../components/atoms/Link';
-import PotTab from '../../components/organisms/PotTab';
 import useOrderData from '../../hooks/useOrderData';
 import useChefMonitor from '../../hooks/useChefMonitor';
 import useRecipeData from '../../hooks/useRecipeData';
@@ -34,10 +16,8 @@ import Kiosk from './Kiosk';
 import Kitchen from './Kitchen';
 import Platform from './Platform';
 import Cooker from './Cooker';
-import PotController from '../../components/organisms/PotController';
-import usePotController from '../../hooks/usePotController';
 import useQueryParams from '../../hooks/useQueryParams';
-import { useSprite } from '../../hooks/useSprite';
+import { getMachineUrl } from '../../hooks/usePotController';
 
 const Wrapper = styled(Flex)`
   flex-direction: row;
@@ -116,7 +96,6 @@ const OffC = (props) => {
     setQueryParams,
   } = useQueryParams();
   const visible = queryParams.selectedCookerId > -1;
-  console.log({ queryParams });
   return (
     <COffcanvas
       visible={visible}
@@ -160,10 +139,8 @@ const DemoMain = (props) => {
     maxOrderStatus: 99,
   });
   const {
-    cookerList,
     activeStatusById,
     completedJobsById,
-    machineStateById,
   } = useChefMonitor();
   const { data: recipeData } = useRecipeData();
 
@@ -188,7 +165,13 @@ const DemoMain = (props) => {
       <Bottom>
         <KitchenContainer>
           <Top style={{ zIndex: 1 }}>
-            <Kiosk />
+            <Kiosk
+              onClick={() => {
+                return global.api.post(
+                  '/order/mock',
+                );
+              }}
+            />
             <Link to="?selectedCookerId=0">
               <Kitchen />
             </Link>
@@ -212,10 +195,10 @@ const DemoMain = (props) => {
           </Bottom>
         </KitchenContainer>
       </Bottom>
-      <OffC
+      {/* <OffC
         activeStatusById={activeStatusById}
         completedJobsById={completedJobsById}
-      />
+      /> */}
     </Wrapper>
   );
 };
