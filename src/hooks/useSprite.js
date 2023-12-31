@@ -35,6 +35,9 @@ export const useSprite = ({
   backwards = false,
   wrapAfter,
   frame,
+
+  from,
+  to,
 }) => {
   const prevTime = useRef();
   const [
@@ -135,16 +138,15 @@ export const useSprite = ({
   const getSpritePosition = useCallback(
     (frame = 0) => {
       const isHorizontal = direction === 'horizontal';
-      const adjustedFrame = (backwards ? (maxFrames - 1) - frame : frame);
 
       let row; let
         col;
       if (typeof wrapAfter === 'undefined') {
-        row = isHorizontal ? 0 : adjustedFrame;
-        col = isHorizontal ? adjustedFrame : 0;
+        row = isHorizontal ? 0 : frame;
+        col = isHorizontal ? frame : 0;
       } else {
-        row = isHorizontal ? Math.floor(adjustedFrame / wrapAfter) : adjustedFrame % wrapAfter;
-        col = isHorizontal ? adjustedFrame % wrapAfter : Math.floor(adjustedFrame / wrapAfter);
+        row = isHorizontal ? Math.floor(frame / wrapAfter) : frame % wrapAfter;
+        col = isHorizontal ? frame % wrapAfter : Math.floor(frame / wrapAfter);
       }
       const _width = (-width * col) / scale;
       const _height = (-height * row) / scale;
@@ -156,7 +158,6 @@ export const useSprite = ({
       height,
       wrapAfter,
       scale,
-      backwards,
     ],
   );
 
@@ -171,20 +172,36 @@ export const useSprite = ({
 
   useEffect(
     () => {
+      console.log({
+        backwards,
+        currentFrame,
+        maxFrames,
+      });
       if (shouldAnimate) {
-        const nextFrame = currentFrame + 1 >= maxFrames ? startFrame : currentFrame + 1;
-
-        if (!shouldAnimate) {
-          return;
-        }
-        if (currentFrame === maxFrames - 1 && stopLastFrame) {
+        if (
+          (
+            (!backwards && currentFrame === maxFrames - 1)
+            || (backwards && currentFrame === 0)
+          )
+          && stopLastFrame
+        ) {
           onEnd();
           return;
         }
-
+        const nextFrame = backwards
+          ? Math.max(
+            0,
+            currentFrame - 1,
+          )
+          : Math.min(
+            maxFrames - 1,
+            currentFrame + 1,
+          );
+        const reachedEnd = nextFrame === currentFrame;
+        const loopStartFrame = backwards ? (maxFrames - 1 - startFrame) : startFrame;
         let id = requestAnimationFrame((time) => {
           id = animate(
-            nextFrame,
+            reachedEnd ? loopStartFrame : nextFrame,
             time,
           );
         });
@@ -196,14 +213,20 @@ export const useSprite = ({
       maxFrames,
       currentFrame,
       startFrame,
+      backwards,
     ],
   );
 
   useEffect(
     () => {
-      setCurrentFrame(startFrame);
+      setCurrentFrame(backwards ? (maxFrames - 1) - startFrame : startFrame);
     },
-    [reset],
+    [
+      reset,
+      backwards,
+      maxFrames,
+      startFrame,
+    ],
   );
 
   useEffect(

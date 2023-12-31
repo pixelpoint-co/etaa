@@ -17,6 +17,7 @@ import {
   useState,
   useMemo,
 } from 'react';
+import { size } from 'styled-theme';
 import Text from '../../components/atoms/P';
 import Flex from '../../components/atoms/Flex';
 import Button from '../../components/atoms/Button';
@@ -85,10 +86,18 @@ const BodySection = styled(Flex)`
   flex-basis: 100%;
   flex-grow: 0;
   overflow: hidden;
+
+  @media (max-width: ${size('mobileBreakpoint')}) {
+    flex-direction: column;
+  }
 `;
 const BodyColumn = styled(Flex)`
   margin: 0px 8px;
   overflow: hidden;
+
+  @media (max-width: ${size('mobileBreakpoint')}) {
+    flex-basis: 50%;
+  }
 `;
 const Column = styled(Card)`
   margin: 0px 10px;
@@ -187,7 +196,6 @@ const PotStation = (props) => {
       const selectedRecipeList = _.filter(
         recipeData,
       );
-
       const recipeList = selectedRecipeList
         .filter((v) => v != null)
         .map((v) => ({
@@ -195,6 +203,7 @@ const PotStation = (props) => {
           label: v.name,
           value: v.id,
         }));
+      console.log({ recipeList });
 
       return recipeList;
     },

@@ -1,8 +1,11 @@
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { palette } from 'styled-theme';
+import {
+  palette, size,
+} from 'styled-theme';
 
+import { useMediaQuery } from 'react-responsive';
 import Image from '../../components/atoms/Image';
 import platformSrc from '../../assets/image/platform.png';
 import Card from '../../components/atoms/Card';
@@ -12,34 +15,22 @@ const Container = styled(Flex)`
   flex: 0;
   align-self: shrink;
   background-color: transparent;
-  padding-top: 136px;
+  padding-top: 22%;
 `;
 const Platform = ({}) => {
+  const isMobile = useMediaQuery({ query: `(max-width: ${size('mobileBreakpoint')})` });
+
   return (
     <Container
       transparent
     >
-      <Image width={644} height="auto" src={platformSrc} />
+      <Image width={isMobile ? 322 : 644} height="auto" src={platformSrc} />
     </Container>
   );
 };
 
-Platform.propTypes = {
-  title: PropTypes.string,
-  hourly: PropTypes.number,
-  type: PropTypes.string,
-  beforeTax: PropTypes.number,
-  afterTax: PropTypes.number,
-  date: PropTypes.string, // ISO string
-};
+Platform.propTypes = {};
 
-Platform.defaultProps = {
-  title: 'title',
-  hourly: 10000,
-  type: 'monthly',
-  beforeTax: 321000,
-  afterTax: 321000,
-  date: moment().toISOString(),
-};
+Platform.defaultProps = {};
 
 export default Platform;

@@ -209,7 +209,14 @@ const PotControllerExtension = ({
       selectedCategoryId,
     ],
   );
-
+  console.log({
+    data,
+    selectedRecipeList: _.filter(
+      data,
+      { tags: [selectedCategoryId] },
+    ),
+    selectedCategoryId,
+  });
   return (
     <>
       <Modal

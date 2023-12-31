@@ -1,7 +1,7 @@
 import {
   useCallback, useEffect, useState,
 } from 'react';
-import spriceSource from '../../assets/image/sprite-angle.jpg';
+import spriceSource from '../../assets/image/tilt-sprite.jpg';
 import usePotController from '../../hooks/usePotController';
 
 import { useSprite } from '../../hooks/useSprite';
@@ -54,8 +54,8 @@ const PotSprite = (props) => {
     height: 960,
     display: 'flex',
     fps: 12,
-    startFrame: 3,
-    stopLastFrame: !shouldLoop,
+    startFrame: 0,
+    // stopLastFrame: !shouldLoop,
     reset: resetUUID,
     backwards: (resetUUID % 2) === 0,
   });

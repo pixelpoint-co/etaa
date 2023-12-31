@@ -1,35 +1,17 @@
+import { useMediaQuery } from 'react-responsive';
 import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { palette } from 'styled-theme';
 import {
   v4 as uuidv4,
 } from 'uuid';
 import { Tooltip } from 'react-tooltip';
 import { useMemo } from 'react';
 import { ifProp } from 'styled-tools';
+import { size } from 'styled-theme';
 import Image from '../../components/atoms/Image';
 import kioskSrc from '../../assets/image/kiosk.png';
-import Card from '../../components/atoms/Card';
 import Flex from '../../components/atoms/Flex';
-import ErrorPulse from '../../components/molecules/ErrorPulse';
-
-const floatingCss = css`
-  @keyframes float {
-    0% {
-      box-shadow: 0 5px 15px 0px rgba(0,0,0,0.6);
-      transform: translatey(0px);
-    }
-    50% {
-      box-shadow: 0 10px 15px 0px rgba(0,0,0,0.2);
-      transform: translatey(-4px);
-    }
-    100% {
-      box-shadow: 0 5px 15px 0px rgba(0,0,0,0.6);
-      transform: translatey(0px);
-    }
-  }
-`;
 
 const StyledTooltip = styled(Tooltip)`
   @keyframes float {
@@ -46,6 +28,7 @@ const StyledTooltip = styled(Tooltip)`
       transform: translateX(-50px) translatey(0px);
     }
   }
+  pointer-events: auto;
   margin-top: 50px;
   font-size: 18px;
   letter-spacing: 0.8px;
@@ -57,6 +40,13 @@ const StyledTooltip = styled(Tooltip)`
       animation: float 2s ease-in-out infinite;
     `,
   )}
+
+  @media (max-width: ${size('mobileBreakpoint')}) {
+    font-size: 14px;
+    margin-left: 30px;
+    margin-top: 30px;
+    padding: 6px 12px;
+  }
 `;
 
 const Container = styled(Flex)`
@@ -73,14 +63,14 @@ const Kiosk = (props) => {
     [],
   );
 
+  const isMobile = useMediaQuery({ query: `(max-width: ${size('mobileBreakpoint')})` });
   return (
     <Container
       transparent
       data-tooltip-id={id}
-      // data-tooltip-place="left"
       {...props}
     >
-      <Image width={330} height="auto" src={kioskSrc} />
+      <Image width={isMobile ? 165 : 330} height="auto" src={kioskSrc} />
       <StyledTooltip
         id={id}
         isOpen

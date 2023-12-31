@@ -160,8 +160,7 @@ export default (options = {}) => {
   const completeOrder = (orderId) => {
     global.api.put(
       `${getMachineUrl(0)}/order/${orderId}/complete`,
-    )
-      .then(refetch);
+    );
   };
   return {
     data: orderList,

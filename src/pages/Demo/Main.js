@@ -66,8 +66,6 @@ const Bottom = styled(Flex)`
   justify-content: center;
 `;
 const MonitorContainer = styled(Flex)`
-  left: 50%;
-  translate: -50%;
   border-radius: 15px;
   overflow: hidden;
   border: 3px solid ${palette(
@@ -78,10 +76,12 @@ const MonitorContainer = styled(Flex)`
     'grayscale',
     5,
   )};
-  max-width: 720px;
-  max-height: 400px;
+  max-width: min(720px, 90vw);
+  max-height: min(400px, 40vh);
   bottom: 0px;
-  position: absolute;
+  flex: 1;
+  margin-top: 50px;
+  margin-bottom: 20px;
 `;
 const KitchenContainer = styled(Flex)`
   flex-wrap: wrap;
@@ -90,7 +90,7 @@ const KitchenContainer = styled(Flex)`
   position: absolute;
   left: 50%;
   translate: -50%;
-  /* flex-basis: 100%; */
+  padding-top: 8%;
 `;
 const ReceiptWrapper = styled(Flex)`
   flex-direction: row;
@@ -134,7 +134,8 @@ const OffC = (props) => {
         backgroundColor: 'white',
         border: 'none',
         zIndex: 1041,
-        maxWidth: '900px',
+        // maxWidth: '900px',  // with sprite
+        maxWidth: '680px',
         width: '90%',
       }}
     >
@@ -185,9 +186,7 @@ const DemoMain = (props) => {
         </MonitorContainer>
       </Top>
       <Bottom>
-        <KitchenContainer
-          style={{ paddingTop: '5%' }}
-        >
+        <KitchenContainer>
           <Top style={{ zIndex: 1 }}>
             <Kiosk />
             <Link to="?selectedCookerId=0">
