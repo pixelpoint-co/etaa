@@ -87,8 +87,6 @@ const ButtonsContainer = styled(Flex)`
   flex: 0;
 `;
 
-const isMobile = window.innerWidth <= 1024;
-
 const OrderItemInput = ({
   orderItem,
   onChange, // onChange(v) v = { g }

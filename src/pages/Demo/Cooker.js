@@ -101,7 +101,7 @@ const DemoCooker = (props) => {
             overflow: 'hidden',
           }}
         />
-        <Flex
+        {/* <Flex
           style={{
             border: '4px solid black',
             borderRadius: 15,
@@ -117,7 +117,7 @@ const DemoCooker = (props) => {
             activeStatusById={activeStatusById}
             completedJobsById={completedJobsById}
           />
-        </Flex>
+        </Flex> */}
       </Flex>
     </Wrapper>
   );
