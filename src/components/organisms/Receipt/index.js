@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { palette } from 'styled-tools';
+import { motion } from 'framer-motion';
 
 import moment from 'moment';
 import { Fragment } from 'react';
@@ -12,7 +13,7 @@ import Text from '../../atoms/P';
 import PlatformImage from '../../atoms/PlatformImage';
 import Button from '../../atoms/Button';
 
-const ReceiptContainer = styled(Flex)`
+const ReceiptContainer = styled(motion.div)`
   flex: 0;
   flex-basis: 1px;
   display: inline-flex;
@@ -151,11 +152,22 @@ const Receipt = (props) => {
 
   const mainOrderItemList = order.orderItem.filter((oi) => oi.parentId == null);
   return (
-    <ReceiptContainer key={order.id}>
-
+    <ReceiptContainer
+      key={order.id}
+      initial={{
+        opacity: 0,
+        scale: 0.5,
+        width: 0,
+      }}
+      animate={{
+        opacity: 1,
+        scale: 1,
+        width: 'auto',
+      }}
+      transition={{ duration: 0.5 }}
+    >
       {order.orderItem.filter((oi) => oi.parentId == null).map((orderItem, i) => {
         const option = order.orderItem.filter((oi) => oi.parentId === orderItem.id);
-
         return (
           <ReceiptInnerSection key={orderItem.id} {...other}>
             {i === 0 ? (
@@ -242,6 +254,7 @@ const Receipt = (props) => {
         </ReceiptFooter>
       </ReceiptInnerSection>
     </ReceiptContainer>
+
   );
 };
 
