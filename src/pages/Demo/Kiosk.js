@@ -6,7 +6,9 @@ import {
   v4 as uuidv4,
 } from 'uuid';
 import { Tooltip } from 'react-tooltip';
-import { useMemo } from 'react';
+import {
+  useMemo, useState, useRef, useCallback, useEffect,
+} from 'react';
 import { ifProp } from 'styled-tools';
 import { size } from 'styled-theme';
 import Image from '../../components/atoms/Image';
@@ -14,6 +16,7 @@ import kioskSrc from '../../assets/image/kiosk.png';
 import Flex from '../../components/atoms/Flex';
 import Button from '../../components/atoms/Button';
 import theme from '../../theme';
+import Icon from '../../components/atoms/Icon';
 
 const StyledTooltip = styled(Tooltip)`
   @keyframes float {
@@ -61,8 +64,39 @@ const Container = styled(Button)`
   translate: -4% -6%;
 `;
 const Kiosk = (props) => {
+  const {
+    onClick,
+    ...others
+  } = props;
   const id = useMemo(
     () => uuidv4(),
+    [],
+  );
+  const [
+    tempLoading,
+    setTempLoading,
+  ] = useState(false);
+  const loadingRef = useRef(null);
+
+  const handleClick = useCallback(
+    (e) => {
+      setTempLoading(true);
+      onClick(e);
+
+      loadingRef.current = setTimeout(
+        () => {
+          setTempLoading(false);
+        },
+        800,
+      );
+    },
+    [onClick],
+  );
+
+  useEffect(
+    () => () => {
+      clearTimeout(loadingRef.current);
+    },
     [],
   );
 
@@ -73,6 +107,7 @@ const Kiosk = (props) => {
       data-tooltip-id={id}
       theme="grayscale"
       {...props}
+      onClick={handleClick}
     >
       <Image width={isMobile ? 165 : 330} height="auto" src={kioskSrc} />
       <StyledTooltip
@@ -80,7 +115,9 @@ const Kiosk = (props) => {
         isOpen
         floating
       >
-        order here
+        {tempLoading ? (
+          <Icon icon="loader" palette="white" />
+        ) : 'order here'}
       </StyledTooltip>
     </Container>
   );
