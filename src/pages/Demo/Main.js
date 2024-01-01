@@ -70,7 +70,7 @@ const KitchenContainer = styled(Flex)`
   position: absolute;
   left: 50%;
   translate: -50%;
-  padding-top: 8%;
+  padding-top: 50px;
 `;
 const ReceiptWrapper = styled(Flex)`
   flex-direction: row;
@@ -195,10 +195,10 @@ const DemoMain = (props) => {
           </Bottom>
         </KitchenContainer>
       </Bottom>
-      {/* <OffC
+      <OffC
         activeStatusById={activeStatusById}
         completedJobsById={completedJobsById}
-      /> */}
+      />
     </Wrapper>
   );
 };
