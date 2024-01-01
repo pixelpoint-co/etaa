@@ -13,6 +13,7 @@ import Image from '../../components/atoms/Image';
 import kioskSrc from '../../assets/image/kiosk.png';
 import Flex from '../../components/atoms/Flex';
 import Button from '../../components/atoms/Button';
+import theme from '../../theme';
 
 const StyledTooltip = styled(Tooltip)`
   @keyframes float {
@@ -57,7 +58,7 @@ const Container = styled(Button)`
   background-color: transparent;
   border-color: transparent;
   left: 0;
-  translate: -2% -4%;
+  translate: -4% -6%;
 `;
 const Kiosk = (props) => {
   const id = useMemo(
@@ -65,7 +66,7 @@ const Kiosk = (props) => {
     [],
   );
 
-  const isMobile = useMediaQuery({ query: `(max-width: ${size('mobileBreakpoint')})` });
+  const isMobile = useMediaQuery({ query: `(max-width: ${theme.sizes.mobileBreakpoint})` });
   return (
     <Container
       transparent

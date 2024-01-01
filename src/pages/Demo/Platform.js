@@ -10,6 +10,7 @@ import Image from '../../components/atoms/Image';
 import platformSrc from '../../assets/image/platform.png';
 import Card from '../../components/atoms/Card';
 import Flex from '../../components/atoms/Flex';
+import theme from '../../theme';
 
 const Container = styled(Flex)`
   flex: 0;
@@ -18,8 +19,7 @@ const Container = styled(Flex)`
   padding-top: 22%;
 `;
 const Platform = ({}) => {
-  const isMobile = useMediaQuery({ query: `(max-width: ${size('mobileBreakpoint')})` });
-
+  const isMobile = useMediaQuery({ query: `(max-width: ${theme.sizes.mobileBreakpoint})` });
   return (
     <Container
       transparent

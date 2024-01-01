@@ -12,6 +12,7 @@ import { useMediaQuery } from 'react-responsive';
 import Image from '../../components/atoms/Image';
 import kitchenSrc from '../../assets/image/kitchen.png';
 import Flex from '../../components/atoms/Flex';
+import theme from '../../theme';
 
 const Container = styled(Flex)`
   flex: 0;
@@ -19,7 +20,7 @@ const Container = styled(Flex)`
   background-color: transparent;
   position: absolute;
   right: 0;
-  translate: 8% -2%;
+  translate: 7% -2%;
 `;
 const StyledTooltip = styled(Tooltip)`
   pointer-events: auto;
@@ -46,7 +47,7 @@ const Kitchen = (props) => {
     () => uuidv4(),
     [],
   );
-  const isMobile = useMediaQuery({ query: `(max-width: ${size('mobileBreakpoint')})` });
+  const isMobile = useMediaQuery({ query: `(max-width: ${theme.sizes.mobileBreakpoint})` });
 
   return (
     <Container
