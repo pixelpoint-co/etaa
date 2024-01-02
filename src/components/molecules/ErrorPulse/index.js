@@ -14,6 +14,7 @@ import {
   pulseStyle,
 } from '../../atoms/Pulse';
 import theme from '../../../theme';
+import { defaultStyle } from '../../atoms/Pulse/style';
 
 const StyledButton = styled(Button)`
   max-width: 100%;
@@ -23,11 +24,17 @@ const Wrapper = styled(Flex)`
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 0;
+
 `;
 
 const StyledIcon = styled(Icon)`
   border-radius: ${prop('size')}px;
-  ${pulseStyle}
+  ${ifProp(
+    '$shouldAnimate',
+    pulseStyle,
+    defaultStyle,
+  )}
   &::before {
     border-radius: ${prop('size')}px;
   }
@@ -42,22 +49,31 @@ const StyledIcon = styled(Icon)`
 
 const ErrorPulse = (props) => {
   const {
+    shouldAnimate,
     size = 64,
+    fill = 'white',
     ...others
   } = props;
   return (
-    <Wrapper size={size}>
+    <Wrapper size={size} {...others}>
       <StyledIcon
         icon="alert"
         fill="white"
         size={size}
+        $shouldAnimate={shouldAnimate}
       />
     </Wrapper>
   );
 };
 
-ErrorPulse.propTypes = { size: PropTypes.number };
+ErrorPulse.propTypes = {
+  size: PropTypes.number,
+  shouldAnimate: PropTypes.bool,
+};
 
-ErrorPulse.defaultProps = { size: 64 };
+ErrorPulse.defaultProps = {
+  size: 64,
+  shouldAnimate: true,
+};
 
 export default ErrorPulse;

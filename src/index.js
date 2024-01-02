@@ -33,6 +33,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import '@coreui/coreui/dist/css/coreui.min.css';
 
 import _ from 'lodash';
+import { PostHogProvider } from 'posthog-js/react';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 
@@ -146,6 +147,20 @@ global.api = apiService.create({
   },
 });
 
+const posthogOptions = { api_host: process.env.REACT_APP_PUBLIC_POSTHOG_HOST };
+
+const PostHogProviderWrapper = ({ children }: PropsWithChildren) => {
+  if (process.env.REACT_APP_ENV === 'development') return children;
+  return (
+    <PostHogProvider
+      apiKey={process.env.REACT_APP_PUBLIC_POSTHOG_KEY}
+      options={posthogOptions}
+    >
+      {children}
+    </PostHogProvider>
+  );
+};
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -155,8 +170,10 @@ root.render(
           <Suspense fallback="loading">
             <Router basename={process.env.REACT_APP_BASE_URL || ''}>
               <ThemeProvider theme={theme}>
-                <GlobalStyled />
-                <App />
+                <PostHogProviderWrapper>
+                  <GlobalStyled />
+                  <App />
+                </PostHogProviderWrapper>
               </ThemeProvider>
             </Router>
           </Suspense>

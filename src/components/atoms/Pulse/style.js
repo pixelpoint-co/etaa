@@ -6,12 +6,16 @@ import theme from '../../../theme';
 // import { palette } from 'styled-tools';
 
 const redRgb = convert.hex.rgb(theme.palette.red[0]);
-const redRgba = (op) => `rgba(${[
+export const redRgba = (op) => `rgba(${[
   ...redRgb,
   op,
 ].join(', ')})`;
-export const pulseStyle = css`
+
+export const defaultStyle = css`
   background: ${redRgba(1)};
+`;
+export const pulseStyle = css`
+  ${defaultStyle}
   box-shadow: 0 0 0 0 ${redRgba(1)};
   animation: pulse 1.5s infinite;
 

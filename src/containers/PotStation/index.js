@@ -31,6 +31,7 @@ import OrderMonitor from '../OrderMonitor';
 import InductionController from '../../components/organisms/InductionController';
 import MenuSelect from '../../components/organisms/PotController/MenuSelect';
 import useRecipeData from '../../hooks/useRecipeData';
+import AsanaSupport from '../AsanaSupport';
 
 const Wrapper = styled(Flex)`
   flex-direction: column;
@@ -226,6 +227,7 @@ const PotStation = (props) => {
             {...(needTaste ? timerColorAlertProps : timerColorProps)}
           />
         </TimerSection>
+        <AsanaSupport />
       </HeaderSection>
       <BodySection>
         {
