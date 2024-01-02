@@ -107,6 +107,8 @@ const PotControllerExtension = ({
   prepWash,
   dishIn,
   dishOut,
+  solenoidOpen,
+  solenoidClose,
   selectRecipe,
   isCooking,
   startSpin,
@@ -269,10 +271,10 @@ const PotControllerExtension = ({
             </PotControlButtonContainer>
             <PotControlButtonContainer>
               <PotControlButton
-                label="회전 중"
+                label="세척밸브 열기"
                 hideLabelOnLoading
                 onClick={() => {
-                  startSpin150();
+                  solenoidOpen();
                   onClose();
                 }}
                 active={lastActionType === 'machine' && lastActionId === '역회전'}
@@ -280,10 +282,10 @@ const PotControllerExtension = ({
             </PotControlButtonContainer>
             <PotControlButtonContainer>
               <PotControlButton
-                label="회전 강"
+                label="세척밸브 닫기"
                 hideLabelOnLoading
                 onClick={() => {
-                  startSpin200();
+                  solenoidClose();
                   onClose();
                 }}
                 active={lastActionType === 'machine' && lastActionId === '역회전'}

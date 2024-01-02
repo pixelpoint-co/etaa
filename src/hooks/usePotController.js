@@ -166,6 +166,16 @@ const usePotController = (cookerId, opts = {}) => {
       `${getMachineUrl(cookerId)}/cooker/0/dish-out`,
     );
   };
+  const solenoidOpen = () => {
+    global.api.post(
+      `${getMachineUrl(cookerId)}/cooker/0/solenoid-open`,
+    );
+  };
+  const solenoidClose = () => {
+    global.api.post(
+      `${getMachineUrl(cookerId)}/cooker/0/solenoid-close`,
+    );
+  };
   const selectRecipe = (recipeId, orderKitchenId) => {
     // global.api.post(
     //   `/cooker/${cookerId}/prep-cook`,
@@ -362,6 +372,8 @@ const usePotController = (cookerId, opts = {}) => {
     tiltHome,
     dishIn,
     dishOut,
+    solenoidOpen,
+    solenoidClose,
     home,
     startWash,
     prepWash,
