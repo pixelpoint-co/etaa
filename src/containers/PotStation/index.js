@@ -227,7 +227,9 @@ const PotStation = (props) => {
             {...(needTaste ? timerColorAlertProps : timerColorProps)}
           />
         </TimerSection>
-        <AsanaSupport />
+        <div style={{ marginLeft: 8 }}>
+          <AsanaSupport />
+        </div>
       </HeaderSection>
       <BodySection>
         {
