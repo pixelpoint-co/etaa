@@ -130,7 +130,7 @@ const PotStation = (props) => {
     cookerId,
     ...others
   } = props;
-  const isReceipt = JSON.parse(process.env.REACT_APP_RECEIPT.toLowerCase());
+  const isReceipt = JSON.parse(process.env.REACT_APP_RECEIPT?.toLowerCase());
   const potController = usePotController(cookerId);
   const {
     currentRecipe,
