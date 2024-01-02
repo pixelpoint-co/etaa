@@ -63,6 +63,7 @@ const AsanaSupport = (props) => {
     <ErrorPulse
       {...others}
       shouldAnimate={tempLoading}
+      loading={tempLoading}
       onClick={handleClick}
       style={{ cursor: 'pointer' }}
     />
