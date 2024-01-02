@@ -51,12 +51,13 @@ const ErrorPulse = (props) => {
     shouldAnimate,
     size = 64,
     fill = 'white',
+    loading,
     ...others
   } = props;
   return (
     <Wrapper size={size} {...others}>
       <StyledIcon
-        icon="alert"
+        icon={loading ? 'loader' : 'alert'}
         fill="white"
         size={size}
         $shouldAnimate={shouldAnimate}
