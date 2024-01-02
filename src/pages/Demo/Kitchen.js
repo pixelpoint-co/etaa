@@ -13,12 +13,15 @@ import Image from '../../components/atoms/Image';
 import kitchenSrc from '../../assets/image/kitchen.png';
 import Flex from '../../components/atoms/Flex';
 import theme from '../../theme';
+import Text from '../../components/atoms/P';
+import Button from '../../components/atoms/Button';
 
-const Container = styled(Flex)`
+const Container = styled(Button)`
+  position: absolute;
   flex: 0;
   align-self: shrink;
   background-color: transparent;
-  position: absolute;
+  border-color: transparent;
   right: 0;
   translate: 7% -2%;
 `;
@@ -53,6 +56,7 @@ const Kitchen = (props) => {
     <Container
       transparent
       data-tooltip-id={id}
+      theme="grayscale"
       {...props}
     >
       <Image width={isMobile ? 185 : 370} height="auto" src={kitchenSrc} />
@@ -61,8 +65,7 @@ const Kitchen = (props) => {
         isOpen
         floating
       >
-        {/* <Image src={pasta} size={40} /> */}
-        COOK HERE
+        cook here
       </StyledTooltip>
     </Container>
   );
