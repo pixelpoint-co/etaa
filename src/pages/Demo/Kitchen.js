@@ -24,6 +24,7 @@ const Container = styled(Button)`
   border-color: transparent;
   right: 0;
   translate: 7% -2%;
+  padding: 0px;
 `;
 const StyledTooltip = styled(Tooltip)`
   pointer-events: auto;

@@ -10,6 +10,59 @@ const GlobalStyle = createGlobalStyle`
     height: 100%;
   }
 
+  bold: 700,
+      semiBold: 600,
+      medium: 500,
+      normal: 400,
+    },
+    400,
+
+  @font-face {
+    font-family: 'Pretendard';
+    src: local('Pretendard'), url(/font/Pretendard-Black.woff) format('woff');
+    font-weight: 900;
+  }
+  @font-face {
+    font-family: 'Pretendard';
+    src: local('Pretendard'), url(/font/Pretendard-ExtraBold.woff) format('woff');
+    font-weight: 800;
+  }
+  @font-face {
+    font-family: 'Pretendard';
+    src: local('Pretendard'), url(/font/Pretendard-Bold.woff) format('woff');
+    font-weight: 700;
+  }
+  @font-face {
+    font-family: 'Pretendard';
+    src: local('Pretendard'), url(/font/Pretendard-SemiBold.woff) format('woff');
+    font-weight: 600;
+  }
+  @font-face {
+    font-family: 'Pretendard';
+    src: local('Pretendard'), url(/font/Pretendard-Medium.woff) format('woff');
+    font-weight: 500;
+  }
+  @font-face {
+    font-family: 'Pretendard';
+    src: local('Pretendard'), url(/font/Pretendard-Regular.woff) format('woff');
+    font-weight: 400;
+  }
+  @font-face {
+    font-family: 'Pretendard';
+    src: local('Pretendard'), url(/font/Pretendard-Light.woff) format('woff');
+    font-weight: 300;
+  }
+  @font-face {
+    font-family: 'Pretendard';
+    src: local('Pretendard'), url(/font/Pretendard-ExtraLight.woff) format('woff');
+    font-weight: 200;
+  }
+  @font-face {
+    font-family: 'Pretendard';
+    src: local('Pretendard'), url(/font/Pretendard-Thin.woff) format('woff');
+    font-weight: 100;
+  }
+
   body {
     height: 100%;
     font-family: "Pretendard Std Variable", "Pretendard Std", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;

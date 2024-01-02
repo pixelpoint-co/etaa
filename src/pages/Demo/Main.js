@@ -172,9 +172,7 @@ const DemoMain = (props) => {
                 );
               }}
             />
-            <Link to="?selectedCookerId=0">
-              <Kitchen />
-            </Link>
+            <Kitchen to="?selectedCookerId=0" />
             {/* <PotTab
               themeProps={{
                 palette: 'white',

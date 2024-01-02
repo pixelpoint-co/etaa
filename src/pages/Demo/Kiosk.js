@@ -61,7 +61,8 @@ const Container = styled(Button)`
   background-color: transparent;
   border-color: transparent;
   left: 0;
-  translate: -4% -6%;
+  translate: -4% -4%;
+  padding: 0px;
 `;
 const Kiosk = (props) => {
   const {
