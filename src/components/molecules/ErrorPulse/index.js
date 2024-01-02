@@ -25,7 +25,6 @@ const Wrapper = styled(Flex)`
   align-items: center;
   justify-content: center;
   flex: 0;
-
 `;
 
 const StyledIcon = styled(Icon)`

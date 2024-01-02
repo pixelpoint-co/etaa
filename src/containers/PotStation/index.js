@@ -125,6 +125,7 @@ const MenuOptionsSelectContainer = styled(Flex)`
 const MenuListContainer = styled(Column)`
   flex: 2 0 150px;
 `;
+const COOKER_LOCATION = process.env.REACT_APP_LOCATION;
 
 const PotStation = (props) => {
   const {
@@ -228,7 +229,10 @@ const PotStation = (props) => {
           />
         </TimerSection>
         <div style={{ marginLeft: 8 }}>
-          <AsanaSupport />
+          <AsanaSupport
+            cookerId={cookerId}
+            location={COOKER_LOCATION}
+          />
         </div>
       </HeaderSection>
       <BodySection>

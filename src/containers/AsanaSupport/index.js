@@ -7,7 +7,11 @@ import {
 import ErrorPulse from '../../components/molecules/ErrorPulse';
 
 const AsanaSupport = (props) => {
-  const { ...others } = props;
+  const {
+    cookerId,
+    location,
+    ...others
+  } = props;
   const posthog = usePostHog();
 
   const [
@@ -26,6 +30,13 @@ const AsanaSupport = (props) => {
         {
           location: process.env.REACT_APP_LOCATION,
           cookerId: Number(process.env.REACT_APP_COOKER_ID),
+        },
+      );
+      global.api.post(
+        '/cooker/report',
+        {
+          cookerId,
+          location,
         },
       );
       loadingRef.current = setTimeout(
@@ -53,6 +64,7 @@ const AsanaSupport = (props) => {
       {...others}
       shouldAnimate={tempLoading}
       onClick={handleClick}
+      style={{ cursor: 'pointer' }}
     />
   );
 };
