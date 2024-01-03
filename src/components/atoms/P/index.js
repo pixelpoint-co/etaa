@@ -28,6 +28,7 @@ const defaultStyle = css`
     },
     400,
   )};
+  -webkit-text-size-adjust: none;
 `;
 
 const themeStyle = css`
