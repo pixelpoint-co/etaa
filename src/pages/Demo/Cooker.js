@@ -22,6 +22,12 @@ const Wrapper = styled(Flex)`
   align-items: stretch;
   padding: 15px;
 `;
+const PotStationContainer = styled(Flex)`
+
+  zoom: 0.5;
+  overflow: hidden;
+  -webkit-text-size-adjust: none;
+`;
 const DemoCooker = (props) => {
   const {
     cookerId,
@@ -86,12 +92,7 @@ const DemoCooker = (props) => {
         value={cookerId}
         onSelect={onSelect}
       />
-      <Flex
-        style={{
-          zoom: 0.5,
-          overflow: 'hidden',
-        }}
-      >
+      <PotStationContainer>
         <PotStation
           cookerId={cookerId}
           style={{
@@ -118,7 +119,7 @@ const DemoCooker = (props) => {
             completedJobsById={completedJobsById}
           />
         </Flex> */}
-      </Flex>
+      </PotStationContainer>
     </Wrapper>
   );
 };
