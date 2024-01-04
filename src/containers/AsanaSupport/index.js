@@ -29,7 +29,7 @@ const AsanaSupport = (props) => {
         'customer_support',
         {
           location: process.env.REACT_APP_LOCATION,
-          cookerId: Number(process.env.REACT_APP_COOKER_ID),
+          cookerId: Number(cookerId),
         },
       );
       global.api.post(
