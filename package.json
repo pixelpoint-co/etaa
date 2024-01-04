@@ -6,6 +6,7 @@
   "dependencies": {
     "@ant-design/icons": "5.0.1",
     "@coreui/react": "5.0.0-alpha.0",
+    "@posthog/react-rrweb-player": "github:pixelpoint-co/posthog-react-rrweb-player",
     "@reduxjs/toolkit": "1.8.2",
     "@tanstack/react-query": "4.32.1",
     "@testing-library/jest-dom": "5.16.4",

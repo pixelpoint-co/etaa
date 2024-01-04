@@ -6,8 +6,6 @@ import {
   COffcanvas,
 } from '@coreui/react';
 import Flex from '../../components/atoms/Flex';
-import Button from '../../components/atoms/Button';
-import Link from '../../components/atoms/Link';
 import useOrderData from '../../hooks/useOrderData';
 import useChefMonitor from '../../hooks/useChefMonitor';
 import useRecipeData from '../../hooks/useRecipeData';
@@ -17,7 +15,6 @@ import Kitchen from './Kitchen';
 import Platform from './Platform';
 import Cooker from './Cooker';
 import useQueryParams from '../../hooks/useQueryParams';
-import { getMachineUrl } from '../../hooks/usePotController';
 
 const Wrapper = styled(Flex)`
   flex-direction: row;
@@ -175,20 +172,6 @@ const DemoMain = (props) => {
               }}
             />
             <Kitchen to="?selectedCookerId=0" />
-            {/* <PotTab
-              themeProps={{
-                palette: 'white',
-                boxShadow: '0px 2px 4px rgba(50, 50, 93, 0.1)',
-              }}
-              offThemeProps={{
-                palette: 'grayscale',
-                tone: 6,
-                type: 'text',
-              }}
-              options={machineUrl.map((v, i) => ({ value: i }))}
-              value={queryParams.selectedCookerId}
-              onSelect={setQueryParams}
-            /> */}
           </Top>
           <Bottom>
             <Platform />
