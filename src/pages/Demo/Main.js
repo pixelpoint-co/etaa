@@ -82,7 +82,6 @@ const ReceiptWrapper = styled(Flex)`
   overflow: auto;
   flex-basis: 1px;
   zoom: .5;
-
   -webkit-text-size-adjust: auto;
 `;
 

@@ -3,7 +3,9 @@ import { palette } from 'styled-tools';
 import { motion } from 'framer-motion';
 
 import moment from 'moment';
-import { Fragment } from 'react';
+import {
+  Fragment, useCallback,
+} from 'react';
 import EKStatusTag from '../EKStatusTag';
 import Flex from '../../atoms/Flex';
 import Card from '../../atoms/Card';
@@ -110,7 +112,6 @@ const ReceiptFooter = styled(Ripped)`
   border-radius: 0px 0px 15px 15px;
   padding: 20px;
   padding-top: 10px;
-  z-index: 1;
 `;
 const CustomerRequest = styled(Card)`
   border: 2px solid ${palette(
@@ -151,6 +152,18 @@ const Receipt = (props) => {
     ...other
   } = props;
 
+  const onComplete = useCallback(
+    async () => {
+      completeOrder(order.id);
+    },
+    [
+      order.id,
+      completeOrder,
+    ],
+  );
+
+  const renderedItem = order.orderItem.filter((oi) => oi.parentId == null);
+
   return (
     <ReceiptContainer
       initial={{
@@ -169,8 +182,9 @@ const Receipt = (props) => {
         width: 0,
       }}
       transition={{ duration: 0.5 }}
+      key={order.id}
     >
-      {order.orderItem.filter((oi) => oi.parentId == null).map((orderItem, i) => {
+      {renderedItem.map((orderItem, i) => {
         const option = order.orderItem.filter((oi) => oi.parentId === orderItem.id);
         return (
           <ReceiptInnerSection key={orderItem.id} {...other}>
@@ -201,7 +215,7 @@ const Receipt = (props) => {
 
                 {!hideComplete ? (
                   <HeaderAction>
-                    <Button hideLabelOnLoading label="완료" palette="black" isAsync onClick={async () => completeOrder(order.id)} />
+                    <Button hideLabelOnLoading label="완료" palette="black" isAsync onClick={onComplete} />
                   </HeaderAction>
                 ) : null}
               </ReceiptHeader>
@@ -249,13 +263,14 @@ const Receipt = (props) => {
         );
       })}
       <ReceiptInnerSection>
-        <ReceiptFooter ripBottom={false}>
+        <ReceiptFooter ripBottom={false} ripTop={false}>
           <CustomerRequest>
             <CustomerRequestText>
               {order.customerRequest}
             </CustomerRequestText>
           </CustomerRequest>
         </ReceiptFooter>
+
       </ReceiptInnerSection>
     </ReceiptContainer>
 

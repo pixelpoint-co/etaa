@@ -1,4 +1,5 @@
 import {
+  useCallback,
   useEffect,
   useMemo,
 } from 'react';
@@ -151,11 +152,14 @@ export default (options = {}) => {
     },
   );
 
-  const completeOrder = (orderId) => {
-    global.api.put(
-      `${getMachineUrl(0)}/order/${orderId}/complete`,
-    );
-  };
+  const completeOrder = useCallback(
+    (orderId) => {
+      global.api.put(
+        `${getMachineUrl(0)}/order/${orderId}/complete`,
+      );
+    },
+    [],
+  );
   return {
     data: orderList,
     itemisedOrderList,
