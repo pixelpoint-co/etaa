@@ -263,7 +263,7 @@ const Receipt = (props) => {
         );
       })}
       <ReceiptInnerSection>
-        <ReceiptFooter ripBottom={false} ripTop={false}>
+        <ReceiptFooter ripBottom={false}>
           <CustomerRequest>
             <CustomerRequestText>
               {order.customerRequest}
