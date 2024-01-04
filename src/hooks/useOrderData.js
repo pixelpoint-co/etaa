@@ -67,7 +67,6 @@ export default (options = {}) => {
         },
       ],
       queryFn: orderQueryFn,
-      // refetchInterval: 2 * 1000,
     },
   );
   const {

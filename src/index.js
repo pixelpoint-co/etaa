@@ -52,7 +52,14 @@ import store, {
 } from './store';
 import Button from './components/atoms/Button';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5,
+    },
+  },
+});
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
