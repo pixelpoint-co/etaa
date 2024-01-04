@@ -49,6 +49,7 @@ const AsanaSupport = (props) => {
     [
       tempLoading,
       posthog,
+      cookerId,
     ],
   );
 
