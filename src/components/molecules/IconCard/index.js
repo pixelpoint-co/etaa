@@ -26,22 +26,8 @@ const IconCard = ({
   );
 };
 
-IconCard.propTypes = {
-  title: PropTypes.string,
-  hourly: PropTypes.number,
-  type: PropTypes.string,
-  beforeTax: PropTypes.number,
-  afterTax: PropTypes.number,
-  date: PropTypes.string, // ISO string
-};
+IconCard.propTypes = {};
 
-IconCard.defaultProps = {
-  title: 'title',
-  hourly: 10000,
-  type: 'monthly',
-  beforeTax: 321000,
-  afterTax: 321000,
-  date: moment().toISOString(),
-};
+IconCard.defaultProps = {};
 
 export default IconCard;

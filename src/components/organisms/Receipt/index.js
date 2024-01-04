@@ -151,10 +151,8 @@ const Receipt = (props) => {
     ...other
   } = props;
 
-  const mainOrderItemList = order.orderItem.filter((oi) => oi.parentId == null);
   return (
     <ReceiptContainer
-      key={order.id}
       initial={{
         opacity: 0,
         scale: 0.5,
@@ -164,6 +162,11 @@ const Receipt = (props) => {
         opacity: 1,
         scale: 1,
         width: 'auto',
+      }}
+      exit={{
+        opacity: 0,
+        scale: 0.5,
+        width: 0,
       }}
       transition={{ duration: 0.5 }}
     >

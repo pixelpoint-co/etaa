@@ -5,6 +5,9 @@ import {
 import {
   COffcanvas,
 } from '@coreui/react';
+import {
+  AnimatePresence, motion,
+} from 'framer-motion';
 import Flex from '../../components/atoms/Flex';
 import Button from '../../components/atoms/Button';
 import Link from '../../components/atoms/Link';
@@ -151,16 +154,18 @@ const DemoMain = (props) => {
       <Top>
         <MonitorContainer>
           <ReceiptWrapper>
-            {data.map((order) => (
-              <Receipt
-                key={order.id}
-                order={order}
-                activeStatusById={activeStatusById}
-                completedJobsById={completedJobsById}
-                recipeData={recipeData}
-                completeOrder={completeOrder}
-              />
-            ))}
+            <AnimatePresence>
+              {data.map((order) => (
+                <Receipt
+                  key={order.id}
+                  order={order}
+                  activeStatusById={activeStatusById}
+                  completedJobsById={completedJobsById}
+                  recipeData={recipeData}
+                  completeOrder={completeOrder}
+                />
+              ))}
+            </AnimatePresence>
           </ReceiptWrapper>
         </MonitorContainer>
       </Top>
