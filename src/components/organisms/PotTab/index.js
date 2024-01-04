@@ -35,7 +35,7 @@ const Container = styled(Flex)`
   )};
 
   zoom: 0.5;
-  -webkit-text-size-adjust: none;
+  -webkit-text-size-adjust: auto;
 `;
 const ButtonContainer = styled(Flex)`
   margin: 0px 3px;

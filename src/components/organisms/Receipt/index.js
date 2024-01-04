@@ -22,7 +22,7 @@ const ReceiptContainer = styled(motion.div)`
   align-content: flex-start;
   align-self: stretch;
   padding-bottom: 20px;
-  -webkit-text-size-adjust: none;
+  -webkit-text-size-adjust: auto;
 `;
 const ReceiptInnerSection = styled(Flex)`
   flex-direction: column;

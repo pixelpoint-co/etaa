@@ -26,7 +26,7 @@ const PotStationContainer = styled(Flex)`
 
   zoom: 0.5;
   overflow: hidden;
-  -webkit-text-size-adjust: none;
+  -webkit-text-size-adjust: auto;
 `;
 const DemoCooker = (props) => {
   const {

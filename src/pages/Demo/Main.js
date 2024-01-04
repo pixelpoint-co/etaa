@@ -80,7 +80,7 @@ const ReceiptWrapper = styled(Flex)`
   flex-basis: 1px;
   zoom: .5;
 
-  -webkit-text-size-adjust: none;
+  -webkit-text-size-adjust: auto;
 `;
 
 const OffC = (props) => {

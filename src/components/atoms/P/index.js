@@ -28,7 +28,7 @@ const defaultStyle = css`
     },
     400,
   )};
-  -webkit-text-size-adjust: none;
+  -webkit-text-size-adjust: auto;
 `;
 
 const themeStyle = css`
