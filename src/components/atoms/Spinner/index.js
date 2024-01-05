@@ -2,10 +2,6 @@ import PropTypes from 'prop-types';
 import styled, { keyframes } from 'styled-components';
 import Icon from '../Icon';
 
-const rotation = keyframes`
-  from {transform: rotate(0deg);}
-  to   {transform: rotate(360deg);}
-`;
 const Wrapper = styled.div`
   height: 100%;
   width: 100%;
@@ -23,7 +19,14 @@ const Spinner = ({
   if (!loading) return null;
   return (
     <Wrapper>
-      <Icon icon="loader" size={size} height={size} width={size} animation={rotation} {...others} />
+      <Icon
+        icon="loader"
+        size={size}
+        height={size}
+        width={size}
+        // animation={rotation}
+        {...others}
+      />
     </Wrapper>
   );
 };
