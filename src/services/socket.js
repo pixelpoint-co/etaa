@@ -15,7 +15,21 @@ const url = isRemote ? process.env.REACT_APP_CHEF_URL_REMOTE : process.env.REACT
 console.log(process.env);
 export const socket = io(
   url,
-  { withCredentials: process.env.REACT_APP_ENV === 'production' },
+  {
+    withCredentials: process.env.REACT_APP_ENV === 'production',
+    // query
+  },
+);
+document?.addEventListener(
+  'visibilitychange',
+  () => {
+    if (document.hidden) {
+      socket.disconnect();
+    } else {
+      socket.connect();
+    }
+  },
+  false,
 );
 
 export default socket;

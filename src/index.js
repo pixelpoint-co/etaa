@@ -55,8 +55,8 @@ import Button from './components/atoms/Button';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: false,
-      staleTime: 1000 * 60 * 5,
+      refetchOnWindowFocus: true,
+      staleTime: 1000 * 60 * 1, // minute
     },
   },
 });
@@ -68,65 +68,6 @@ dayjs.extend(duration);
 dayjs.tz.setDefault('Asia/Seoul');
 moment.tz.setDefault('Asia/Seoul');
 moment.locale('ko');
-
-// const httpLinkUri = process.env.REACT_APP_HTTPLINK_URI;
-// const wsLinkUri = process.env.REACT_APP_WSLINK_URI; /** */
-
-// const httpLink = new HttpLink({
-//   uri: `${httpLinkUri}`,
-//   cache: new InMemoryCache(),
-//   name: 'ERP',
-//   version: '0.0.1',
-// });
-
-// const wsClient = new SubscriptionClient(
-//   wsLinkUri,
-//   // { reconnect: true },
-// );
-
-// const wsLink = new WebSocketLink(wsClient);
-// const WSReloadButton = () => <Button label="새로고침" palette="red" onClick={() => window.location.reload()} />;
-// // wsClient.onConnected(() => console.log('websocket connected!!'));
-// // wsClient.onDisconnected((d) => {
-//   // console.log(
-//   //   'onDisconnect!',
-//   //   d,
-//   // );
-//   requestAnimationFrame((s) => {
-//     console.log(
-//       '로드 후 경과: ',
-//       s,
-//     );
-//     if (s > 1000) {
-//       // toast(
-//       //   '서버와의 연결이 끊어졌습니다.',
-//       //   {
-//       //     autoClose: false,
-//       //     type: toast.TYPE.ERROR,
-//       //     toastId: 'WS_DISCONNECT',
-//       //     closeButton: WSReloadButton,
-//       //   },
-//       // );
-//     }
-//   });
-// });
-// wsClient.onReconnected(() => console.log('websocket reconnected!!'));
-// The split function takes three parameters:
-//
-// * A function that's called for each operation to execute
-// * The Link to use for an operation if the function returns a "truthy" value
-// * The Link to use for an operation if the function returns a "falsy" value
-// const splitLink = split(
-//   ({ query }) => {
-//     const definition = getMainDefinition(query);
-//     return (
-//       definition.kind === 'OperationDefinition'
-//       && definition.operation === 'subscription'
-//     );
-//   },
-//   wsLink,
-//   httpLink,
-// );
 
 const currentUrl = new URL(window.location);
 const isRemote = (
