@@ -1,14 +1,15 @@
 {
   "files": {
     "main.css": "/static/css/main.65f933db.css",
-    "main.js": "/static/js/main.6daad007.js",
+    "main.js": "/static/js/main.4198aaa2.js",
     "static/js/787.25559acf.chunk.js": "/static/js/787.25559acf.chunk.js",
     "static/media/tilt-sprite.jpg": "/static/media/tilt-sprite.624c7c844f125de3f5da.jpg",
     "static/media/kitchen.png": "/static/media/kitchen.60c8e2d2a1bdc2cba520.png",
     "service-worker.js": "/service-worker.js",
-    "static/media/kiosk.png": "/static/media/kiosk.e542891633fbea92f8c0.png",
+    "static/media/kiosk-off.png": "/static/media/kiosk-off.a49c40850016e8147d74.png",
     "static/media/platform.png": "/static/media/platform.6f910028f78c127dc89d.png",
     "static/media/pot.png": "/static/media/pot.b0e9b77a17965253aee9.png",
+    "static/media/kiosk-on-overlay.png": "/static/media/kiosk-on-overlay.885623958d07344b3453.png",
     "static/media/loader.svg": "/static/media/loader.8fc27d85d620e3de0182e54c2922b4ee.svg",
     "static/media/pot-rotate.svg": "/static/media/pot-rotate.0830dc12aed74de94d662b15e5d66c0e.svg",
     "static/media/logo-cre.svg": "/static/media/logo-cre.8d133f45d55f50afca802995aa0a29ce.svg",
@@ -27,11 +28,11 @@
     "static/media/paper-cut.svg": "/static/media/paper-cut.05f98b3a87324ec28a8714bff59c02aa.svg",
     "static/media/caret.svg": "/static/media/caret.818ee0051fe45da0c15c3ae72b68a3fe.svg",
     "main.65f933db.css.map": "/static/css/main.65f933db.css.map",
-    "main.6daad007.js.map": "/static/js/main.6daad007.js.map",
+    "main.4198aaa2.js.map": "/static/js/main.4198aaa2.js.map",
     "787.25559acf.chunk.js.map": "/static/js/787.25559acf.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.65f933db.css",
-    "static/js/main.6daad007.js"
+    "static/js/main.4198aaa2.js"
   ]
 }
