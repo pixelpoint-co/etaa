@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import {
   useState, useEffect, useCallback, useRef,
 } from 'react';
@@ -19,27 +20,14 @@ export const loadImage = (url, callback = noop) => {
 
 export const useSprite = ({
   startFrame = 0,
+  endFrame = 0,
   sprite,
   width,
   height,
-  direction = 'horizontal',
-  onError = noop,
-  onLoad = noop,
-  onEnd = noop,
-  frameCount,
   fps = 60,
-  shouldAnimate = true,
-  stopLastFrame,
-  reset,
+  shouldLoop = false,
   scale = 1,
-  backwards = false,
-  wrapAfter,
-  frame,
-
-  from,
-  to,
 }) => {
-  const prevTime = useRef();
   const [
     currentFrame,
     setCurrentFrame,
@@ -57,187 +45,143 @@ export const useSprite = ({
     setIsLoaded,
   ] = useState(false);
   const [
-    isLoading,
-    setIsLoading,
-  ] = useState(false);
-  const [
-    hasErrored,
-    setHasErrored,
-  ] = useState(false);
-  const [
     maxFrames,
     setMaxFrames,
   ] = useState(0);
   const interval = 1000 / fps;
 
+  const requestRef = useRef();
+  const startTimeRef = useRef();
+  const frameRef = useRef();
+  const spriteRef = useRef();
   const loadSprite = useCallback(
     (url) => {
-      let unmounted = false;
-      if (!isLoading && (!isLoaded || !hasErrored)) {
-        setIsLoading(true);
-        loadImage(
-          url,
-          (err, image) => {
-            if (unmounted) {
-              return;
-            }
-            if (err) {
-              onError(err);
-              setHasErrored(true);
-              return;
-            }
-            onLoad();
-            setIsLoaded(true);
-            setIsLoading(false);
-            setMaxFrames(
-              frameCount
-              || Math.floor(
-                direction === 'horizontal'
-                  ? image.width / width
-                  : image.height / height,
-              ),
-            );
-            setSpriteWidth(image.width);
-            setSpriteHeight(image.height);
-          },
-        );
-      }
-      return () => (unmounted = true);
+      if (spriteRef.current) return;
+      spriteRef.current = true;
+      setIsLoaded(false);
+
+      loadImage(
+        url,
+        (err, image) => {
+          setMaxFrames(
+            Math.floor(
+              image.width / width,
+            ),
+          );
+          setSpriteWidth(image.width);
+          setSpriteHeight(image.height);
+          spriteRef.current = false;
+          setIsLoaded(true);
+        },
+      );
     },
-    [
-      sprite,
-      isLoaded,
-      hasErrored,
-    ],
-  );
-
-  const animate = useCallback(
-    (nextFrame, time) => {
-      if (!prevTime.current) {
-        prevTime.current = time;
-      }
-
-      if (shouldAnimate) {
-        const delta = time - prevTime.current;
-        if (delta < interval) {
-          return requestAnimationFrame((time) => animate(
-            nextFrame,
-            time,
-          ));
-        }
-
-        prevTime.current = time - (delta % interval);
-        setCurrentFrame(nextFrame);
-      } else {
-        prevTime.current = 0;
-      }
-    },
-    [shouldAnimate],
+    [width],
   );
 
   const getSpritePosition = useCallback(
     (frame = 0) => {
-      const isHorizontal = direction === 'horizontal';
+      const row = 0;
+      const col = frame;
 
-      let row; let
-        col;
-      if (typeof wrapAfter === 'undefined') {
-        row = isHorizontal ? 0 : frame;
-        col = isHorizontal ? frame : 0;
-      } else {
-        row = isHorizontal ? Math.floor(frame / wrapAfter) : frame % wrapAfter;
-        col = isHorizontal ? frame % wrapAfter : Math.floor(frame / wrapAfter);
-      }
-      const _width = (-width * col) / scale;
-      const _height = (-height * row) / scale;
+      const _width = (-width * col);
+      const _height = (-height * row);
       return `${_width}px ${_height}px`;
     },
     [
-      direction,
       width,
       height,
-      wrapAfter,
-      scale,
     ],
   );
 
   useEffect(
     () => {
-      setIsLoaded(false);
-      setHasErrored(false);
       return loadSprite(sprite);
     },
-    [sprite],
+    [
+      sprite,
+      loadSprite,
+    ],
   );
 
-  useEffect(
-    () => {
-      console.log({
-        backwards,
-        currentFrame,
-        maxFrames,
-      });
-      if (shouldAnimate) {
-        if (
-          (
-            (!backwards && currentFrame === maxFrames - 1)
-            || (backwards && currentFrame === 0)
-          )
-          && stopLastFrame
-        ) {
-          onEnd();
-          return;
-        }
-        const nextFrame = backwards
-          ? Math.max(
-            0,
+  const finalFrame = _.isNumber(endFrame) ? endFrame : (maxFrames || 0);
+  const backwards = finalFrame < startFrame;
+  const animate = useCallback(
+    (time) => {
+      if (!startTimeRef.current) {
+        startTimeRef.current = time;
+      }
+      const elapsed = time - startTimeRef.current;
+      if (elapsed < interval) {
+        requestRef.current = requestAnimationFrame(animate);
+        return;
+      }
+
+      startTimeRef.current += interval;
+
+      const nextFrame = backwards
+        ? Math.max(
+          finalFrame,
+          Math.min(
             currentFrame - 1,
-          )
-          : Math.min(
-            maxFrames - 1,
+            startFrame,
+          ),
+        )
+        : Math.min(
+          finalFrame,
+          Math.max(
             currentFrame + 1,
-          );
-        const reachedEnd = nextFrame === currentFrame;
-        const loopStartFrame = backwards ? (maxFrames - 1 - startFrame) : startFrame;
-        let id = requestAnimationFrame((time) => {
-          id = animate(
-            reachedEnd ? loopStartFrame : nextFrame,
-            time,
-          );
-        });
-        return () => cancelAnimationFrame(id);
+            startFrame,
+          ),
+        );
+      console.log({
+        startFrame,
+        currentFrame,
+        nextFrame,
+        finalFrame,
+      });
+      if (shouldLoop && currentFrame === finalFrame) {
+        frameRef.current = startFrame;
+        setCurrentFrame(startFrame);
+      } else {
+        frameRef.current = nextFrame;
+        setCurrentFrame(nextFrame);
       }
     },
     [
-      shouldAnimate,
-      maxFrames,
+      startFrame,
+      shouldLoop,
       currentFrame,
-      startFrame,
+      finalFrame,
       backwards,
+      interval,
     ],
   );
-
   useEffect(
     () => {
-      setCurrentFrame(backwards ? (maxFrames - 1) - startFrame : startFrame);
+      if (requestRef.current) {
+        cancelAnimationFrame(requestRef.current);
+      }
+      startTimeRef.current = null;
+      requestRef.current = requestAnimationFrame(animate);
+
+      return () => {
+        cancelAnimationFrame(requestRef.current);
+        startTimeRef.current = null;
+      };
     },
     [
-      reset,
-      backwards,
-      maxFrames,
       startFrame,
+      endFrame,
+      animate,
     ],
   );
-
   useEffect(
     () => {
-      if (typeof frame === 'number' && frame !== currentFrame) {
-        setCurrentFrame(frame);
-      }
+      frameRef.current = startFrame;
+      setCurrentFrame(startFrame);
     },
-    [frame],
+    [startFrame],
   );
-
   return {
     backgroundImage: isLoaded ? `url(${sprite})` : null,
     backgroundPosition: isLoaded ? getSpritePosition(currentFrame) : null,

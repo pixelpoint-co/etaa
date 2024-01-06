@@ -33,6 +33,7 @@ import InductionController from '../../components/organisms/InductionController'
 import MenuSelect from '../../components/organisms/PotController/MenuSelect';
 import useRecipeData from '../../hooks/useRecipeData';
 import AsanaSupport from '../AsanaSupport';
+import PotTimer from './PotTimer';
 
 const Wrapper = styled(Flex)`
   flex-direction: column;
@@ -97,6 +98,7 @@ const BodyColumn = styled(Flex)`
 
   @media (max-width: ${size('mobileBreakpoint')}) {
     flex-basis: 50%;
+    padding-top: 20px;
   }
 `;
 const Column = styled(Card)`
@@ -139,6 +141,7 @@ const COOKER_LOCATION = process.env.REACT_APP_LOCATION;
 const PotStation = (props) => {
   const {
     cookerId,
+    forDemo,
     ...others
   } = props;
   const isReceipt = JSON.parse(process.env.REACT_APP_RECEIPT?.toLowerCase());
@@ -207,36 +210,13 @@ const PotStation = (props) => {
 
       return recipeList;
     },
-    [
-      recipeData,
-      selectedCategoryId,
-    ],
+    [recipeData],
   );
 
   return (
     <Wrapper {...others}>
       <HeaderSection>
-        <PotNumber>
-          {_.padStart(
-            cookerId + 1,
-            2,
-            '0',
-          )}
-        </PotNumber>
-        <TimerSection
-          palette="grayscale"
-          tone={4}
-          $needTaste={needTaste}
-        >
-          <ProgressTimer
-            label={recipeName}
-            duration={recipeRemainingTimeMs}
-            totalDuration={isWashing ? Infinity : recipeDurationMs}
-            onComplete={() => handleCountUpdate(0)}
-            onCount={(v) => handleCountUpdate(v)}
-            {...(needTaste ? timerColorAlertProps : timerColorProps)}
-          />
-        </TimerSection>
+        <PotTimer cookerId={cookerId} />
         <div style={{ marginLeft: 8 }}>
           <AsanaSupport
             cookerId={cookerId}
@@ -302,14 +282,13 @@ const PotStation = (props) => {
                 />
               </BodyColumn>
             </>
-
           )
         }
-
         <BodyColumn flex={0} shrink={0} grow={1} basis={10} direction="column">
           <PotController
             potController={potController}
             cookerId={cookerId}
+            forDemo={forDemo}
           />
         </BodyColumn>
       </BodySection>

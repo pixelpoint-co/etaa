@@ -14,11 +14,7 @@ import {
   font,
 } from 'styled-theme';
 import {
-  palette,
   ifProp,
-  ifNotProp,
-  switchProp,
-  prop,
 } from 'styled-tools';
 import Spinner from '../Spinner';
 import Text from '../P';
@@ -81,9 +77,6 @@ const Content = styled(Flex)`
   justify-content: row;
   align-items: center;
   position: relative;
-`;
-const loadingTextStyle = css`
-
 `;
 const labelStyle = css`
   ${themeColor}

@@ -45,7 +45,10 @@ const PotControlButtonContainer = styled(Flex)`
 `;
 
 const PotController = (props) => {
-  const { potController } = props;
+  const {
+    forDemo,
+    potController,
+  } = props;
   const [
     extensionOpen,
     setExtensionOpen,
@@ -138,34 +141,37 @@ const PotController = (props) => {
           disabledTooltip={[isCooking ? '조리중입니다' : null]}
         />
       </PotControlButtonContainer>
-
-      <PotControlButtonContainer>
-        <PotControlButton
-          duration={(isCooking && currentRecipeId === 21) ? recipeRemainingTimeMs : 0}
-          totalDuration={(isCooking && currentRecipeId === 21) ? recipeDurationMs : 0}
-          active={isCooking && currentRecipeId === 21}
-          label="추가 조리"
-          onClick={() => {
-            startCook({ recipeId: 21 });
-          }}
-          disabled={
-            isCooking
+      {!forDemo ? (
+        <>
+          <PotControlButtonContainer>
+            <PotControlButton
+              duration={(isCooking && currentRecipeId === 21) ? recipeRemainingTimeMs : 0}
+              totalDuration={(isCooking && currentRecipeId === 21) ? recipeDurationMs : 0}
+              active={isCooking && currentRecipeId === 21}
+              label="추가 조리"
+              onClick={() => {
+                startCook({ recipeId: 21 });
+              }}
+              disabled={
+                isCooking
             || machineState.tilt !== 45
-          }
-          disabledTooltip={[
-            isCooking ? '조리중입니다' : null,
-            machineState.tilt !== 45 ? '조리준비가 되어있는지 확인해주세요' : null,
-          ]}
-        />
-      </PotControlButtonContainer>
-      <PotControlButtonContainer>
-        <PotControlButton
-          label="···"
-          onClick={() => setExtensionOpen(true)}
-          hideLabelOnLoading
-          fakeLoadingTime={300}
-        />
-      </PotControlButtonContainer>
+              }
+              disabledTooltip={[
+                isCooking ? '조리중입니다' : null,
+                machineState.tilt !== 45 ? '조리준비가 되어있는지 확인해주세요' : null,
+              ]}
+            />
+          </PotControlButtonContainer>
+          <PotControlButtonContainer>
+            <PotControlButton
+              label="···"
+              onClick={() => setExtensionOpen(true)}
+              hideLabelOnLoading
+              fakeLoadingTime={300}
+            />
+          </PotControlButtonContainer>
+        </>
+      ) : null}
       <PotControlButtonContainer>
         <PotControlButton
           label="조리중지"
@@ -217,6 +223,7 @@ const PotController = (props) => {
       </PotControlButtonContainer>
 
       <WashingMask washing={isWashing} abort={abort} />
+      {/* {!forDemo ? ( */}
       <Extension
         isOpen={extensionOpen}
         menuOptionsOpen={recipeModalOpen}
@@ -241,6 +248,7 @@ const PotController = (props) => {
           setRecipeModalOpen(true);
         }}
       />
+      {/* ) : null} */}
     </PotControllerWrapper>
   );
 };

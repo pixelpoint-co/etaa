@@ -93,6 +93,7 @@ const OffC = (props) => {
     selectRecipe,
     activeStatusById,
     completedJobsById,
+    activeJobById,
     ...others
   } = props;
   const {
@@ -110,15 +111,14 @@ const OffC = (props) => {
         ...rest
       }) => rest)}
       style={{
-        height: 650,
+        height: 544,
         margin: 'auto',
         marginRight: 20,
         overflow: 'auto',
         backgroundColor: 'white',
         border: 'none',
         zIndex: 1041,
-        // maxWidth: '900px',  // with sprite
-        maxWidth: '680px',
+        maxWidth: '960px', // with sprite
         width: '90%',
       }}
     >
@@ -128,6 +128,7 @@ const OffC = (props) => {
         onSelect={setQueryParams}
         activeStatusById={activeStatusById}
         completedJobsById={completedJobsById}
+        activeJobById={activeJobById}
       />
     </COffcanvas>
   );
@@ -145,6 +146,7 @@ const DemoMain = (props) => {
   const {
     activeStatusById,
     completedJobsById,
+    activeJobById,
   } = useChefMonitor();
   const { data: recipeData } = useRecipeData();
 
@@ -179,20 +181,6 @@ const DemoMain = (props) => {
               }}
             />
             <Kitchen to="?selectedCookerId=0" />
-            {/* <PotTab
-              themeProps={{
-                palette: 'white',
-                boxShadow: '0px 2px 4px rgba(50, 50, 93, 0.1)',
-              }}
-              offThemeProps={{
-                palette: 'grayscale',
-                tone: 6,
-                type: 'text',
-              }}
-              options={machineUrl.map((v, i) => ({ value: i }))}
-              value={queryParams.selectedCookerId}
-              onSelect={setQueryParams}
-            /> */}
           </Top>
           <Bottom>
             <Platform />
@@ -202,6 +190,7 @@ const DemoMain = (props) => {
       <OffC
         activeStatusById={activeStatusById}
         completedJobsById={completedJobsById}
+        activeJobById={activeJobById}
       />
     </Wrapper>
   );

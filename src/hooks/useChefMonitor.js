@@ -90,10 +90,6 @@ const useChefMonitor = () => {
       machineStateById,
     ],
   );
-  // const chefMonitorPotList = _.groupBy(
-  //   messageEvents.completedJobList,
-  //   (jb) => jb.cookerId,
-  // );
   console.log({
     activeStatusById,
     completedJobsById,

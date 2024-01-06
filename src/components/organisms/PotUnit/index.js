@@ -193,38 +193,19 @@ const PotUnit = (props) => {
   );
 
   const {
-    // cookerMonitoringError,
-    // cookerMonitoringData,
-    // cookerMonitoringUUID,
-    // subscriptionTime,
-
-    // potMonitoringData,
     currentRecipe: recipe,
     recipeRemainingTimeMs,
     recipeDurationMs,
-    // recipeDuration,
-    // recipeEllapsedTimeMs,
-    // recipeEllapsedTime,
-
     stoves,
     isSpinning,
     spinDirection,
     isWashing,
     isCooking,
-
     lastActionType,
     lastActionId,
-
     tiltDegree = 0,
     valveOpen,
-    // recordList,
-    // parsedRecordList,
   } = potController;
-  console.log(
-    'potController ',
-    potController,
-  );
-  const orderName = null;
   const recipeId = get(
     recipe,
     'id',
@@ -242,13 +223,6 @@ const PotUnit = (props) => {
   if (lastActionType === 'abort') recipeName = '정지중';
   if (lastActionType === 'machine') recipeName = lastActionId;
 
-  const taskName = null;
-  console.log(
-    'lastActionType',
-    lastActionType,
-    lastActionId,
-    spinDirection,
-  );
   return (
     <Wrapper {...others} hasError={!!error}>
       <Content>
@@ -279,7 +253,6 @@ const PotUnit = (props) => {
 
           <Rotate
             $rotate={isSpinning}
-            // $reverse={spinDirection > 0}
           >
             <Icon
               icon="potRotateStraight"

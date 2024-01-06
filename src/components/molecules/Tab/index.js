@@ -1,17 +1,7 @@
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import {
-  palette,
-} from 'styled-tools';
-import Icon from '../../atoms/Icon';
 import Flex from '../../atoms/Flex';
-import Text from '../../atoms/P';
-import Button, {
-  themeStyle,
-  themeColor,
-  unsetStyle,
-} from '../../atoms/Button';
-import Tag from '../../atoms/Tag';
+import Button from '../../atoms/Button';
 
 const Container = styled(Flex)`
   padding: 5px 4px;
@@ -22,23 +12,6 @@ const Container = styled(Flex)`
 `;
 const ButtonContainer = styled(Flex)`
   margin: 0px 3px;
-`;
-const Label = styled(Text)`
-  font-size: 20px;
-  line-height: 20px;
-  color: ${palette(
-    'grayscale',
-    2,
-  )};
-`;
-const TagListContainer = styled(Flex)`
-  flex-wrap: wrap;
-  margin: -5px -10px;
-  margin-top: ${(12 - 5)}px;
-`;
-const TagContainer = styled(Flex)`
-  margin: 5px 10px;
-  flex: 0;
 `;
 const Tab = (props) => {
   const {
@@ -52,16 +25,15 @@ const Tab = (props) => {
   return (
     <Container {...others}>
       {options.map((option) => {
-        const isSelected = value === option.value;
-        console.log(
-          value,
-          option,
-          isSelected,
-        );
+        const {
+          value: optionValue,
+          ...optionRest
+        } = option;
+        const isSelected = value === optionValue;
         const buttonThemeProp = isSelected ? themeProps : offThemeProps;
         return (
           <ButtonContainer
-            key={option.value}
+            key={optionValue}
           >
             <Button
               {...buttonThemeProp}
@@ -69,6 +41,7 @@ const Tab = (props) => {
               themeType={buttonThemeProp.type}
               label={option.label}
               onClick={() => onSelect(option.value)}
+              {...optionRest}
             />
           </ButtonContainer>
         );

@@ -357,6 +357,7 @@ const usePotController = (cookerId, opts = {}) => {
     machineState,
   });
   return {
+    cookerId,
     prepCook,
     selectRecipe,
     startSpin,

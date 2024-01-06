@@ -10,6 +10,7 @@ import {
   useState,
 } from 'react';
 import _ from 'lodash';
+import { size } from 'styled-theme';
 import Modal from '../../atoms/Modal';
 import PotControlButton from '../PotControlButton';
 import Flex from '../../atoms/Flex';
@@ -33,6 +34,10 @@ const Container = styled(Flex)`
   padding: 30px;
   border-radius: 15px;
   overflow: hidden;
+
+  @media (max-width: ${size('mobileBreakpoint')}) {
+    zoom: 0.5;
+  }
 `;
 const PotControllerWrapper = styled(Flex)`
   position: relative;
@@ -64,9 +69,7 @@ const MenuSelectContainer = styled(Flex)`
   flex: 1;
   flex-direction: column;
   min-height: 90vh;
-  max-height: 90vh;
   min-width: 90vw;
-  max-width: 90vw;
 `;
 const ButtonContainer = styled(Flex)`
   flex-direction: row;

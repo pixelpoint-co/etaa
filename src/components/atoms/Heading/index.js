@@ -14,32 +14,38 @@ const styles = css`
     {
       grayscale: 0,
       secondary: 0,
-    }, 0,
+    },
+    0,
   )};
   font-size: ${switchProp(
-    prop('level'), {
+    prop('level'),
+    {
       1: '30px',
       2: '26px',
       3: '16px',
     },
   )};
   line-height: ${switchProp(
-    prop('level'), {
+    prop('level'),
+    {
       1: '36px',
       2: '30px',
       3: '16px',
     },
   )};
   font-weight: ${switchProp(
-    prop('level'), {
+    prop('level'),
+    {
       1: '700', // bold
       2: '500', // medium
       3: '500', // medium
     },
   )};
   text-align: ${ifProp(
-    { center: true }, 'center',
+    { center: true },
+    'center',
   )};
+  margin: 0px;
 `;
 
 const Heading = styled(({
@@ -50,7 +56,9 @@ const Heading = styled(({
   theme,
   ...props
 }) => React.createElement(
-  `h${level}`, props, children,
+  `h${level}`,
+  props,
+  children,
 ))`
   ${styles};
 `;

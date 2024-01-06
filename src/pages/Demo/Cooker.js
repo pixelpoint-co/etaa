@@ -1,18 +1,20 @@
 import styled from 'styled-components';
 
-import { palette } from 'styled-theme';
+import {
+  palette, size,
+} from 'styled-theme';
 import {
   useEffect, useState,
 } from 'react';
+import { useMediaQuery } from 'react-responsive';
 import Flex from '../../components/atoms/Flex';
-import PotTab from '../../components/organisms/PotTab';
 import useQueryParams from '../../hooks/useQueryParams';
 import PotStation from '../../containers/PotStation';
-import Card from '../../components/atoms/Card';
 import theme from '../../theme';
-import { useSprite } from '../../hooks/useSprite';
 import PotSprite from './PotSprite';
-import usePotController from '../../hooks/usePotController';
+import PotTimer from '../../containers/PotStation/PotTimer';
+import Tab from '../../components/molecules/Tab';
+import PotUnit from '../../components/organisms/PotUnit';
 
 const Wrapper = styled(Flex)`
   flex-direction: column;
@@ -21,12 +23,39 @@ const Wrapper = styled(Flex)`
   overflow: auto;
   align-items: stretch;
   padding: 15px;
+  padding-top: 5px;
 `;
 const PotStationContainer = styled(Flex)`
-
   zoom: 0.5;
   overflow: hidden;
   -webkit-text-size-adjust: auto;
+  position: relative;
+`;
+const PotSpriteContainer = styled(Flex)`
+  border: 4px solid black;
+  border-radius: 15px;
+  background: ${palette(
+    'grayscale',
+    5,
+  )};
+  overflow: hidden;
+  flex-basis: 540px;
+  flex-shrink: 0;
+  margin-left: 10px;
+
+  @media (max-width: ${size('mobileBreakpoint')}) {
+    z-index: 2;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 540px;
+    zoom: 0.5;
+  }
+`;
+const StyledTab = styled(Tab)`
+  zoom: 0.4;
+  padding: 0px;
+  margin-bottom: 10px;
 `;
 const DemoCooker = (props) => {
   const {
@@ -35,7 +64,12 @@ const DemoCooker = (props) => {
     onSelect,
     activeStatusById,
     completedJobsById,
+    activeJobById,
   } = props;
+  const isMobile = useMediaQuery({ query: `(max-width: ${theme.sizes.mobileBreakpoint})` });
+
+  const { setQueryParams } = useQueryParams();
+
   const machineUrl = process.env.REACT_APP_MACHINE_URL.split(',');
   const [
     shouldAnimate,
@@ -44,53 +78,44 @@ const DemoCooker = (props) => {
 
   useEffect(
     () => {
-      let timer;
-      console.log({
-        visible,
-        shouldAnimate,
-      });
       if (visible) {
         if (!shouldAnimate) {
-          console.log({
-            visible,
-            shouldAnimate,
-          });
           setTimeout(
             () => {
-              console.log({
-                visible,
-                shouldAnimate,
-              });
               setShouldAnimate(visible);
             },
             1000,
           );
-        } else {
-          setShouldAnimate(false);
         }
+      } else {
+        setShouldAnimate(false);
       }
     },
-    [visible],
+    [
+      visible,
+      shouldAnimate,
+    ],
   );
-  console.log({
-    visible,
-    shouldAnimate,
-  });
+
   return (
     <Wrapper>
-      <PotTab
+      <StyledTab
         themeProps={{
-          palette: 'white',
-          boxShadow: '0px 2px 4px rgba(50, 50, 93, 0.1)',
-        }}
-        offThemeProps={{
           palette: 'grayscale',
-          tone: 6,
-          type: 'text',
+          tone: 5,
         }}
-        options={machineUrl.map((v, i) => ({ value: i }))}
+        offThemeProps={{ palette: 'white' }}
+        options={machineUrl
+          .filter((url, i) => (isMobile ? (i < 2) : true))
+          .map((url, i) => ({
+            value: i,
+            label: <PotTimer cookerId={i} />,
+          }))}
         value={cookerId}
-        onSelect={onSelect}
+        onSelect={(i) => setQueryParams((prev) => ({
+          ...prev,
+          selectedCookerId: i,
+        }))}
       />
       <PotStationContainer>
         <PotStation
@@ -101,24 +126,18 @@ const DemoCooker = (props) => {
             background: theme.palette.grayscale[5],
             overflow: 'hidden',
           }}
+          forDemo
         />
-        {/* <Flex
-          style={{
-            border: '4px solid black',
-            borderRadius: 15,
-            background: theme.palette.grayscale[5],
-            overflow: 'hidden',
-            flexBasis: 540,
-            flexShrink: 0,
-            marginLeft: 10,
-          }}
-        >
+        <PotSpriteContainer>
           <PotSprite
+            cookerId={cookerId}
             shouldAnimate={shouldAnimate}
             activeStatusById={activeStatusById}
             completedJobsById={completedJobsById}
+            activeJobById={activeJobById}
+            shouldLoop={false}
           />
-        </Flex> */}
+        </PotSpriteContainer>
       </PotStationContainer>
     </Wrapper>
   );
