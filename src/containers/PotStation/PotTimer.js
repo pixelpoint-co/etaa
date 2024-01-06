@@ -103,6 +103,7 @@ const PotTimer = (props) => {
     currentRecipe,
     currentRecipeId,
     lastActionType,
+    washingRemainingTimeMs,
     recipeRemainingTimeMs,
     recipeDurationMs,
     isCooking,
@@ -146,7 +147,6 @@ const PotTimer = (props) => {
       handleCountUpdate,
     ],
   );
-
   return (
     <Wrapper {...others}>
       <PotNumber>
@@ -163,8 +163,8 @@ const PotTimer = (props) => {
       >
         <ProgressTimer
           label={recipeName}
-          duration={recipeRemainingTimeMs}
-          totalDuration={isWashing ? Infinity : recipeDurationMs}
+          duration={isWashing ? washingRemainingTimeMs : recipeRemainingTimeMs}
+          totalDuration={isWashing ? 111000 : recipeDurationMs}
           onComplete={() => handleCountUpdate(0)}
           onCount={(v) => handleCountUpdate(v)}
           {...(needTaste ? timerColorAlertProps : timerColorProps)}

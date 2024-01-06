@@ -225,25 +225,7 @@ const PotUnit = (props) => {
     'id',
     null,
   );
-  let recipeName = '';
-  if (isWashing) recipeName = '세척 중';
-  if (isCooking && recipeId === 21) recipeName = '추가 조리';
-  if (isCooking && recipeId !== 21) {
-    recipeName = _.get(
-      recipe,
-      'name',
-    );
-  }
-  if (lastActionType === 'abort') recipeName = '정지중';
-  if (lastActionType === 'machine') recipeName = lastActionId;
 
-  const taskName = null;
-  console.log(
-    'lastActionType',
-    lastActionType,
-    lastActionId,
-    spinDirection,
-  );
   return (
     <Wrapper {...others} hasError={!!error}>
       <Content>

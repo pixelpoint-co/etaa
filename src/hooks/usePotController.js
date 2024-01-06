@@ -356,6 +356,23 @@ const usePotController = (cookerId, opts = {}) => {
     parsedMachineState,
     machineState,
   });
+
+  const isWashing = _.get(
+    activeStatus,
+    [
+      0,
+      'name',
+    ],
+  ) === 'wash';
+  const timestamp = _.get(
+    activeStatus,
+    [
+      0,
+      'timestamp',
+    ],
+    0,
+  );
+  const washingRemainingTimeMs = isWashing ? (timestamp + 111000) - Date.now() : 0;
   return {
     cookerId,
     prepCook,
@@ -390,6 +407,7 @@ const usePotController = (cookerId, opts = {}) => {
         'name',
       ],
     ) === 'wash',
+    washingRemainingTimeMs,
     isCooking: _.get(
       activeStatus,
       [

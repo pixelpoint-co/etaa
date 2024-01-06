@@ -75,6 +75,7 @@ const WashingMask = (props) => {
   const {
     washing,
     duration,
+    washingRemainingTimeMs,
     abort,
     ...others
   } = props;
@@ -101,8 +102,8 @@ const WashingMask = (props) => {
       <StyledPotButton
         active
         disableClick
-        duration={Infinity}
-        totalDuration={Infinity}
+        duration={washingRemainingTimeMs}
+        totalDuration={111000}
         label={(
           <LabelWrapper>
             <PotWash size={60} />

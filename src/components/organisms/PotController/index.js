@@ -85,6 +85,7 @@ const PotController = (props) => {
     selectedRecipe,
     isCooking,
     isWashing,
+    washingRemainingTimeMs,
   } = potController;
   const closeExtension = useCallback(
     () => {
@@ -175,7 +176,7 @@ const PotController = (props) => {
       <PotControlButtonContainer>
         <PotControlButton
           label="조리중지"
-          fakeLoadingTime={10 * 1000}
+          fakeLoadingTime={3 * 1000}
           palette="orange"
           tone={0}
           themeType="solid"
@@ -222,7 +223,11 @@ const PotController = (props) => {
         />
       </PotControlButtonContainer>
 
-      <WashingMask washing={isWashing} abort={abort} />
+      <WashingMask
+        washing={isWashing}
+        abort={abort}
+        washingRemainingTimeMs={washingRemainingTimeMs}
+      />
       {/* {!forDemo ? ( */}
       <Extension
         isOpen={extensionOpen}

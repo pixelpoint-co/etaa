@@ -68,6 +68,24 @@ const pathToSpriteOptions = {
     startFrame: finishCookFrame,
     endFrame: prepCookFrame,
   },
+  'cook-stop-cook': {
+    ...defaultSpriteOptions,
+    source: cookSource,
+    startFrame: 0,
+    endFrame: 0,
+  },
+  'stop-cook-cook': {
+    ...defaultSpriteOptions,
+    source: cookSource,
+    startFrame: 0,
+    endFrame: 0,
+  },
+  'prep-cook-cook': {
+    ...defaultSpriteOptions,
+    source: cookSource,
+    startFrame: 0,
+    endFrame: 0,
+  },
   'cook-finish-cook': {
     ...defaultSpriteOptions,
     source: tiltSource,
@@ -131,50 +149,84 @@ const PotSprite = (props) => {
     isWashing,
     isCooking,
   } = usePotController(cookerId);
-
+  const uniqueJobs = _.uniqBy(
+    completedJobsById[cookerId],
+    'name',
+  );
   const [
-    to = 'home',
-    from = 'home',
-    fromPrev = 'home',
+    to,
+    from,
+    fromPrev,
   ] = [
+    // _.get(
+    //   activeStatusById,
+    //   [
+    //     cookerId,
+    //     0,
+    //     'name',
+    //   ],
+    // ),
     _.get(
-      activeStatusById,
+      uniqueJobs,
       [
-        cookerId,
         0,
         'name',
       ],
     ),
     _.get(
-      completedJobsById,
+      uniqueJobs,
       [
-        cookerId,
-        0,
-        'name',
-      ],
-    ),
-    _.get(
-      completedJobsById,
-      [
-        cookerId,
         1,
+        'name',
+      ],
+    ),
+    _.get(
+      uniqueJobs,
+      [
+        2,
         'name',
       ],
     ),
   ].filter((v) => v != null);
 
   const path = `${from}-${to}`;
-  console.log({
-    path,
-    fromPrev,
-  });
+  console.log({ path });
   let spriteOptions = pathToSpriteOptions[path] || defaultSpriteOptions;
   if (to === 'wash') spriteOptions = pathToSpriteOptions.wash;
-  if (isCooking) spriteOptions = pathToSpriteOptions.cooking;
-  if (isWashing) spriteOptions = pathToSpriteOptions.washing;
+
   if (path === 'stop-cook-finish-cook' && fromPrev === 'cook') {
     spriteOptions = pathToSpriteOptions['cook-finish-cook'];
   }
+  if (path === 'stop-cook-prep-cook' && fromPrev === 'cook') {
+    spriteOptions = pathToSpriteOptions.cook;
+  }
+  const washIndex = _.findIndex(
+    uniqueJobs,
+    { name: 'wash' },
+  );
+  const cookIndex = _.findIndex(
+    uniqueJobs,
+    { name: 'cook' },
+  );
+  const finishIndex = _.findIndex(
+    uniqueJobs,
+    { name: 'finish-cook' },
+  );
+  const neverWashed = (cookIndex >= 0)
+    && !(
+      (finishIndex > 0 && finishIndex < cookIndex)
+        || (washIndex > 0 && washIndex < cookIndex)
+    );
+  if (neverWashed && to === 'finish-cook') {
+    spriteOptions = pathToSpriteOptions['cook-finish-cook'];
+  }
+  if (isCooking) spriteOptions = pathToSpriteOptions.cooking;
+  if (isWashing) spriteOptions = pathToSpriteOptions.washing;
+
+  console.log({
+    neverWashed,
+    path,
+  });
 
   const { tilt } = machineState;
   useEffect(
