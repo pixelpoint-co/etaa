@@ -11,12 +11,17 @@ import {
 } from 'react';
 import { ifProp } from 'styled-tools';
 import { size } from 'styled-theme';
+import {
+  AnimatePresence, motion,
+} from 'framer-motion';
 import Image from '../../components/atoms/Image';
-import kioskSrc from '../../assets/image/kiosk.png';
+import kioskSrc from '../../assets/image/kiosk-on-overlay.png';
+import kioskOffSrc from '../../assets/image/kiosk-off.png';
 import Flex from '../../components/atoms/Flex';
 import Button from '../../components/atoms/Button';
 import theme from '../../theme';
 import Icon from '../../components/atoms/Icon';
+import ErrorPulse from '../../components/molecules/ErrorPulse';
 
 const StyledTooltip = styled(Tooltip)`
   @keyframes float {
@@ -64,6 +69,21 @@ const Container = styled(Button)`
   translate: -4% -4%;
   padding: 0px;
 `;
+const Overlay = styled(motion.div)`
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: ${ifProp(
+    '$tempLoading',
+    1,
+    0,
+  )};
+  transition: 200ms ease-in-out opacity;
+  &:hover {
+    opacity: 1;
+  }
+
+`;
 const Kiosk = (props) => {
   const {
     onClick,
@@ -110,7 +130,10 @@ const Kiosk = (props) => {
       {...props}
       onClick={handleClick}
     >
-      <Image width={isMobile ? 165 : 330} height="auto" src={kioskSrc} />
+      <Image width={isMobile ? 165 : 330} height="auto" src={kioskOffSrc} />
+      <Overlay $tempLoading={tempLoading}>
+        <Image width={isMobile ? 165 : 330} height="auto" src={kioskSrc} />
+      </Overlay>
       <StyledTooltip
         id={id}
         isOpen
