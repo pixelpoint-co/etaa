@@ -56,7 +56,9 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: true,
-      staleTime: 1000 * 60 * 1, // minute
+      staleTime: process.env.NODE_ENV === 'development'
+        ? 1000
+        : 1000 * 60 * 1, // minute
     },
   },
 });
