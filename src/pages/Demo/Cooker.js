@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import {
   palette, size,
@@ -7,6 +7,7 @@ import {
   useEffect, useState,
 } from 'react';
 import { useMediaQuery } from 'react-responsive';
+import { ifProp } from 'styled-tools';
 import Flex from '../../components/atoms/Flex';
 import useQueryParams from '../../hooks/useQueryParams';
 import PotStation from '../../containers/PotStation';
@@ -15,6 +16,8 @@ import PotSprite from './PotSprite';
 import PotTimer from '../../containers/PotStation/PotTimer';
 import Tab from '../../components/molecules/Tab';
 import PotUnit from '../../components/organisms/PotUnit';
+import Button from '../../components/atoms/Button';
+import IconButton from '../../components/molecules/IconButton';
 
 const Wrapper = styled(Flex)`
   flex-direction: column;
@@ -23,7 +26,6 @@ const Wrapper = styled(Flex)`
   overflow: auto;
   align-items: stretch;
   padding: 15px;
-  padding-top: 5px;
 `;
 const PotStationContainer = styled(Flex)`
   zoom: 0.5;
@@ -39,23 +41,51 @@ const PotSpriteContainer = styled(Flex)`
     5,
   )};
   overflow: hidden;
-  flex-basis: 540px;
+  flex-basis: 548px;
   flex-shrink: 0;
   margin-left: 10px;
 
   @media (max-width: ${size('mobileBreakpoint')}) {
+    overflow: visible;
     z-index: 2;
     position: absolute;
     top: 0;
     right: 0;
     width: 540px;
     zoom: 0.5;
+    transition: transform 250ms ease-in-out;
+    transform: translate(0%);
+  }
+  ${ifProp(
+    '$hidden',
+    css`
+        @media (max-width: ${size('mobileBreakpoint')}) {
+          transform: translate(100%);
+        }
+      `,
+  )}
+`;
+const SpriteToggle = styled(IconButton)`
+  position: absolute;
+  right: 100%;
+  top: 100px;
+  padding: 24px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  display: none;
+
+  @media (max-width: ${size('mobileBreakpoint')}) {
+    display: flex;
   }
 `;
 const StyledTab = styled(Tab)`
-  zoom: 0.4;
-  padding: 0px;
+  zoom: 0.5;
   margin-bottom: 10px;
+  padding: 12px 0px;
+  background-color: ${palette(
+    'grayscale',
+    5,
+  )}
 `;
 const DemoCooker = (props) => {
   const {
@@ -67,6 +97,10 @@ const DemoCooker = (props) => {
     activeJobById,
   } = props;
   const isMobile = useMediaQuery({ query: `(max-width: ${theme.sizes.mobileBreakpoint})` });
+  const [
+    spriteHidden,
+    setSpriteHidden,
+  ] = useState(false);
 
   const { setQueryParams } = useQueryParams();
 
@@ -100,11 +134,11 @@ const DemoCooker = (props) => {
   return (
     <Wrapper>
       <StyledTab
-        themeProps={{
+        offThemeProps={{
           palette: 'grayscale',
           tone: 5,
         }}
-        offThemeProps={{ palette: 'white' }}
+        themeProps={{ palette: 'white' }}
         options={machineUrl
           .filter((url, i) => (isMobile ? (i < 2) : true))
           .map((url, i) => ({
@@ -128,7 +162,14 @@ const DemoCooker = (props) => {
           }}
           forDemo
         />
-        <PotSpriteContainer>
+        <PotSpriteContainer $hidden={spriteHidden}>
+          <SpriteToggle
+            icon={spriteHidden ? 'play' : 'x'}
+            palette="grayscale"
+            themeType="solid"
+            iconSize={40}
+            onClick={() => setSpriteHidden(!spriteHidden)}
+          />
           <PotSprite
             cookerId={cookerId}
             shouldAnimate={shouldAnimate}

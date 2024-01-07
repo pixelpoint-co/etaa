@@ -12,6 +12,7 @@ const Container = styled(Flex)`
 `;
 const ButtonContainer = styled(Flex)`
   margin: 0px 3px;
+  justify-content: stretch;
 `;
 const Tab = (props) => {
   const {

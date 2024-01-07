@@ -95,7 +95,6 @@ const BodySection = styled(Flex)`
 const BodyColumn = styled(Flex)`
   margin: 0px 8px;
   overflow: hidden;
-
   @media (max-width: ${size('mobileBreakpoint')}) {
     flex-basis: 50%;
     padding-top: 20px;
@@ -217,12 +216,14 @@ const PotStation = (props) => {
     <Wrapper {...others}>
       <HeaderSection>
         <PotTimer cookerId={cookerId} />
-        <div style={{ marginLeft: 8 }}>
-          <AsanaSupport
-            cookerId={cookerId}
-            location={COOKER_LOCATION}
-          />
-        </div>
+        {!forDemo ? (
+          <div style={{ marginLeft: 8 }}>
+            <AsanaSupport
+              cookerId={cookerId}
+              location={COOKER_LOCATION}
+            />
+          </div>
+        ) : null}
       </HeaderSection>
       <BodySection>
         {
@@ -284,7 +285,14 @@ const PotStation = (props) => {
             </>
           )
         }
-        <BodyColumn flex={0} shrink={0} grow={1} basis={10} direction="column">
+        <BodyColumn
+          flex={0}
+          shrink={0}
+          grow={1}
+          basis={10}
+          direction="column"
+          style={{ borderRadius: 16 }}
+        >
           <PotController
             potController={potController}
             cookerId={cookerId}

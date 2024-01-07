@@ -36,6 +36,8 @@ import SwitchButton from '../../molecules/SwitchButton';
 // `;
 const StyledMask = styled(Mask)`
   flex-direction: column;
+  border-radius: 16px;
+  overflow: hidden;
 `;
 const StyledSwitchButton = styled(SwitchButton)`
   margin-top: 10px;

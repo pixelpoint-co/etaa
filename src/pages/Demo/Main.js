@@ -111,15 +111,16 @@ const OffC = (props) => {
         ...rest
       }) => rest)}
       style={{
-        height: 544,
+        height: 580,
         margin: 'auto',
         marginRight: 20,
-        overflow: 'auto',
+        overflow: 'hidden',
         backgroundColor: 'white',
         border: 'none',
         zIndex: 1041,
         maxWidth: '960px', // with sprite
         width: '90%',
+        borderRadius: '10px',
       }}
     >
       <Cooker

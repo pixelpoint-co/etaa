@@ -2,12 +2,19 @@ import {
   useCallback, useEffect, useState,
 } from 'react';
 import _ from 'lodash';
+import styled, { css } from 'styled-components';
+import { ifProp } from 'styled-tools';
 import tiltSource from '../../assets/image/sprite-angle.jpg';
 import washSource from '../../assets/image/sprite-wash.jpg';
 import cookSource from '../../assets/image/sprite-cook.jpg';
 import usePotController from '../../hooks/usePotController';
 
 import { useSprite } from '../../hooks/useSprite';
+import Flex from '../../components/atoms/Flex';
+
+const Container = styled(Flex)`
+
+`;
 
 const defaultSpriteOptions = {
   source: tiltSource,
@@ -158,14 +165,6 @@ const PotSprite = (props) => {
     from,
     fromPrev,
   ] = [
-    // _.get(
-    //   activeStatusById,
-    //   [
-    //     cookerId,
-    //     0,
-    //     'name',
-    //   ],
-    // ),
     _.get(
       uniqueJobs,
       [
@@ -223,9 +222,21 @@ const PotSprite = (props) => {
   if (isCooking) spriteOptions = pathToSpriteOptions.cooking;
   if (isWashing) spriteOptions = pathToSpriteOptions.washing;
 
+  const lastActionTimeMs = _.get(
+    uniqueJobs,
+    [
+      0,
+      'processedOn',
+    ],
+    0,
+  );
+
+  const animationIsOver = !isWashing && !isCooking && (Date.now() - lastActionTimeMs) > 3000;
   console.log({
-    neverWashed,
-    path,
+    lastActionTimeMs,
+    uniqueJobs,
+    time: (Date.now() - lastActionTimeMs),
+    animationIsOver,
   });
 
   const { tilt } = machineState;
@@ -245,10 +256,19 @@ const PotSprite = (props) => {
     height: 960,
     display: 'flex',
     fps: 6,
-    ...spriteOptions,
+    ...{
+      ...spriteOptions,
+      ...(
+        animationIsOver ? { startFrame: spriteOptions.endFrame } : {}
+      ),
+    },
   });
   return (
-    <div style={styles} />
+    <Container>
+      <div
+        style={styles}
+      />
+    </Container>
   );
 };
 
