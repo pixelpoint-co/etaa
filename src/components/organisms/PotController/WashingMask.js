@@ -39,6 +39,7 @@ const StyledMask = styled(Mask)`
   border-radius: 16px;
   overflow: hidden;
   z-index: 3;
+  background-color: rgba(238, 240, 243, 0.7);
 `;
 const StyledSwitchButton = styled(SwitchButton)`
   margin-top: 10px;

@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { size } from 'styled-theme';
 import Flex from '../../atoms/Flex';
 import Button from '../../atoms/Button';
 
@@ -9,6 +10,10 @@ const Container = styled(Flex)`
   flex: 0;
   background-color: white;
   border-radius: 16px;
+
+  @media (max-width: ${size('mobileBreakpoint')}){
+    padding: 8px 6px;
+  }
 `;
 const ButtonContainer = styled(Flex)`
   margin: 0px 3px;

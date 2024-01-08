@@ -60,10 +60,10 @@ const usePotController = (cookerId, opts = {}) => {
     machineStateById,
   } = useChefMonitor();
   const activeStatus = activeStatusById[cookerId];
-  const machineState = machineStateById[cookerId];
+  const machineState = machineStateById[cookerId] || [];
   const startSpin = () => {
     global.api.post(
-      `${getMachineUrl(cookerId)}/cooker/0/start-spin`,
+      `${getMachineUrl(cookerId)}/cooker/${cookerId}/start-spin`,
     );
   };
   const startSpin150 = () => {
@@ -94,35 +94,35 @@ const usePotController = (cookerId, opts = {}) => {
   };
   const stopSpin = () => {
     global.api.post(
-      `${getMachineUrl(cookerId)}/cooker/0/stop-spin`,
+      `${getMachineUrl(cookerId)}/cooker/${cookerId}/stop-spin`,
     );
   };
   const spinHome = () => {
     global.api.post(
-      `${getMachineUrl(cookerId)}/cooker/0/spin-home`,
+      `${getMachineUrl(cookerId)}/cooker/${cookerId}/spin-home`,
     );
   };
 
   const tiltHome = () => {
     global.api.post(
-      `${getMachineUrl(cookerId)}/cooker/0/tilt-home`,
+      `${getMachineUrl(cookerId)}/cooker/${cookerId}/tilt-home`,
     );
   };
 
   const home = () => {
     global.api.post(
-      `${getMachineUrl(cookerId)}/cooker/0/home`,
+      `${getMachineUrl(cookerId)}/cooker/${cookerId}/home`,
     );
   };
 
   const prepCook = () => {
     global.api.post(
-      `${getMachineUrl(cookerId)}/cooker/0/prep-cook`,
+      `${getMachineUrl(cookerId)}/cooker/${cookerId}/prep-cook`,
     );
   };
   const startCook = (data = {}) => {
     global.api.post(
-      `${getMachineUrl(cookerId)}/cooker/0/start-cook`,
+      `${getMachineUrl(cookerId)}/cooker/${cookerId}/start-cook`,
       {
         recipeId: selectedRecipeId,
         orderKitchenId: selectedOrderKitchenId,
@@ -132,23 +132,23 @@ const usePotController = (cookerId, opts = {}) => {
   };
   const stopCook = (data = {}) => {
     global.api.post(
-      `${getMachineUrl(cookerId)}/cooker/0/stop-cook`,
+      `${getMachineUrl(cookerId)}/cooker/${cookerId}/stop-cook`,
       { ...data },
     );
   };
   const startWash = () => {
     global.api.post(
-      `${getMachineUrl(cookerId)}/cooker/0/start-wash`,
+      `${getMachineUrl(cookerId)}/cooker/${cookerId}/start-wash`,
     );
   };
   const prepWash = () => {
     global.api.post(
-      `${getMachineUrl(cookerId)}/cooker/0/prep-wash`,
+      `${getMachineUrl(cookerId)}/cooker/${cookerId}/prep-wash`,
     );
   };
   const finishCook = () => {
     global.api.post(
-      `${getMachineUrl(cookerId)}/cooker/0/finish-cook`,
+      `${getMachineUrl(cookerId)}/cooker/${cookerId}/finish-cook`,
     );
   };
 
@@ -164,12 +164,12 @@ const usePotController = (cookerId, opts = {}) => {
 
   const dishIn = () => {
     global.api.post(
-      `${getMachineUrl(cookerId)}/cooker/0/dish-in`,
+      `${getMachineUrl(cookerId)}/cooker/${cookerId}/dish-in`,
     );
   };
   const dishOut = () => {
     global.api.post(
-      `${getMachineUrl(cookerId)}/cooker/0/dish-out`,
+      `${getMachineUrl(cookerId)}/cooker/${cookerId}/dish-out`,
     );
   };
   const selectRecipe = async (recipeId, orderKitchenId) => {
@@ -183,7 +183,7 @@ const usePotController = (cookerId, opts = {}) => {
     setSelectedRecipeId(recipeId);
     setSelectedOrderKitchenId(orderKitchenId);
     return global.api.post(
-      `${getMachineUrl(cookerId)}/cooker/0/select-recipe`,
+      `${getMachineUrl(cookerId)}/cooker/${cookerId}/select-recipe`,
       {
         recipeId,
         orderKitchenId,
@@ -259,46 +259,40 @@ const usePotController = (cookerId, opts = {}) => {
     );
 
   const spinData = _.get(
-    machineState,
+    machineState.filter((v) => v.name === 'motor-spin'),
     [
-      'spinMotor',
       0,
       'data',
     ],
     {},
   );
   const tiltData = _.get(
-    machineState,
+    machineState.filter((v) => v.name === 'motor-tilt'),
     [
-      'tiltMotor',
       0,
       'data',
     ],
     {},
   );
   const inductionLData = _.get(
-    machineState,
+    machineState.filter((v) => v.name === 'induction-L'),
     [
-      'inductionL',
       0,
       'data',
     ],
     {},
   );
   const inductionRData = _.get(
-    machineState,
+    machineState.filter((v) => v.name === 'induction-R'),
     [
-      'inductionR',
       0,
       'data',
     ],
     {},
   );
-
   const solenoidData = _.get(
-    machineState,
+    machineState.filter((v) => v.name === 'solenoid'),
     [
-      'solenoid',
       0,
       'data',
     ],
@@ -355,6 +349,7 @@ const usePotController = (cookerId, opts = {}) => {
   console.log({
     parsedMachineState,
     machineState,
+    activeStatus,
   });
 
   const isWashing = _.get(

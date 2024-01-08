@@ -45,19 +45,19 @@ const PotNumber = styled(Heading)`
   margin-left: 15px;
 
   @media (max-width: ${size('mobileBreakpoint')}) {
-    position: absolute;
-    left: 12px;
+    /* position: absolute; */
+    /* left: 12px; */
     margin-left: 0px;
-    font-size: 24px;
-    line-height: 24px;
+    font-size: 30px;
+    line-height: 30px;
   }
 `;
 
 const TimerSection = styled(Card)`
   margin-left: 50px;
   @media (max-width: ${size('mobileBreakpoint')}) {
-    margin-left: 0px;
-    padding-left: 50px;
+    margin-left: 10px;
+    /* padding-left: 50px; */
   }
   background-color: ${ifProp(
     '$needTaste',

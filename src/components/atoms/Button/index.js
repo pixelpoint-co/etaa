@@ -11,7 +11,7 @@ import {
   Link,
 } from 'react-router-dom';
 import {
-  font,
+  font, size,
 } from 'styled-theme';
 import {
   ifProp,
@@ -72,6 +72,10 @@ const styles = css`
   transition: all 250ms ease;
 
   ${themeStyle}
+
+  @media (max-width: ${size('mobileBreakpoint')}){
+    padding: 10px;
+  }
 `;
 const Content = styled(Flex)`
   justify-content: row;

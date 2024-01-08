@@ -111,7 +111,7 @@ const OffC = (props) => {
         ...rest
       }) => rest)}
       style={{
-        height: 580,
+        height: 568,
         margin: 'auto',
         marginRight: 20,
         overflow: 'hidden',

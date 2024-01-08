@@ -15,7 +15,8 @@ import theme from '../../theme';
 import PotSprite from './PotSprite';
 import PotTimer from '../../containers/PotStation/PotTimer';
 import Tab from '../../components/molecules/Tab';
-import PotUnit from '../../components/organisms/PotUnit';
+// import PotUnit from '../../components/organisms/PotUnit';
+// import PotUnit from '../../components/organisms/PotTab/PotUnit';
 import Button from '../../components/atoms/Button';
 import IconButton from '../../components/molecules/IconButton';
 
@@ -25,7 +26,7 @@ const Wrapper = styled(Flex)`
   flex-basis: 100%;
   overflow: auto;
   align-items: stretch;
-  padding: 15px;
+  padding: 12px;
 `;
 const PotStationContainer = styled(Flex)`
   zoom: 0.5;
@@ -81,7 +82,6 @@ const SpriteToggle = styled(IconButton)`
 const StyledTab = styled(Tab)`
   zoom: 0.5;
   margin-bottom: 10px;
-  padding: 12px 0px;
   background-color: ${palette(
     'grayscale',
     5,

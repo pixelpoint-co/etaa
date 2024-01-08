@@ -255,7 +255,7 @@ const PotSprite = (props) => {
     width: 540,
     height: 960,
     display: 'flex',
-    fps: 6,
+    fps: spriteOptions.shouldLoop ? 8 : 12,
     ...{
       ...spriteOptions,
       ...(
