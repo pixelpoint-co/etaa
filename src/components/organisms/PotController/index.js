@@ -22,12 +22,9 @@ import {
 import Flex from '../../atoms/Flex';
 
 import PotControlButton from '../PotControlButton';
-import Modal from '../../atoms/Modal';
-import usePotController from '../../../hooks/usePotController';
 import WashingMask from './WashingMask';
 import Extension from './Extension';
 import theme from '../../../theme';
-import InductionController from '../InductionController';
 
 const PotControllerWrapper = styled(Flex)`
   position: relative;

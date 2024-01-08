@@ -38,6 +38,7 @@ const StyledMask = styled(Mask)`
   flex-direction: column;
   border-radius: 16px;
   overflow: hidden;
+  z-index: 3;
 `;
 const StyledSwitchButton = styled(SwitchButton)`
   margin-top: 10px;
