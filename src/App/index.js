@@ -156,7 +156,7 @@ const App = () => (
       <Route path="/gates/*" element={<Gates />} />
       <Route path="/order-monitor/*" element={<ControlTower />} />
       <Route path="/" element={<Layout />}>
-        <Route index element={<Demo />} />
+        <Route index element={<Billy />} />
         {routes.map((route) => {
           const isInternal = route.href[0] === '/';
           if (!isInternal) return null;
