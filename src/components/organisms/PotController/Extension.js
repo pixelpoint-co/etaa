@@ -50,7 +50,7 @@ const PotControlButtonContainer = styled(Flex)`
   /* flex-basis: 240px; */
   flex-basis: 30%;
   /* max-width: 240px; */
-  min-height: 220px;
+  min-height: 170px;
   max-width: 33.3%;
   /* flex-basis: 33%; */
   padding: 8px;
@@ -107,6 +107,8 @@ const PotControllerExtension = ({
   prepWash,
   dishIn,
   dishOut,
+  solenoidOpen,
+  solenoidClose,
   selectRecipe,
   isCooking,
   startSpin,
@@ -309,6 +311,28 @@ const PotControllerExtension = ({
                 label="접시빼기"
                 hideLabelOnLoading
                 onClick={dishOut}
+              />
+            </PotControlButtonContainer>
+            <PotControlButtonContainer>
+              <PotControlButton
+                label="세척밸브 열기"
+                hideLabelOnLoading
+                onClick={() => {
+                  solenoidOpen();
+                  onClose();
+                }}
+                active={lastActionType === 'machine' && lastActionId === '역회전'}
+              />
+            </PotControlButtonContainer>
+            <PotControlButtonContainer>
+              <PotControlButton
+                label="세척밸브 닫기"
+                hideLabelOnLoading
+                onClick={() => {
+                  solenoidClose();
+                  onClose();
+                }}
+                active={lastActionType === 'machine' && lastActionId === '역회전'}
               />
             </PotControlButtonContainer>
             {/* <PotControlButtonContainer>
