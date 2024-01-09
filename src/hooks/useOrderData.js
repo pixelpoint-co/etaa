@@ -170,7 +170,7 @@ export default (options = {}) => {
   });
   const completeOrder = (orderId) => {
     global.api.put(
-      `${process.env.REACT_APP_CHEF_URL}/order/${orderId}/complete`,
+      `${process.env.REACT_APP_CHEF_URL}/api/v1/order/${orderId}/complete`,
     );
   };
   return {
