@@ -77,12 +77,12 @@ const routes = [
     element: <Billy />,
     rootRoute: true,
   },
-  // {
-  //   label: '개발모드',
-  //   href: '/pot-controller',
-  //   element: <DevMode />,
-  //   rootRoute: true,
-  // },
+  {
+    label: '개발모드',
+    href: '/pot-controller',
+    element: <DevMode />,
+    rootRoute: true,
+  },
   {
     label: '관제',
     href: '/order-monitor/*',
@@ -168,6 +168,7 @@ const App = () => (
       <Route path="/signin" element={<SignIn />} />
       <Route path="/gates/*" element={<Gates />} />
       <Route path="/order-monitor/*" element={<ControlTower />} />
+      <Route path="/pot-controller" element={<DevMode />} />
       <Route path="/" element={<Layout />}>
         <Route index element={<Billy />} />
         {routes.map((route) => {
