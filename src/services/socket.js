@@ -12,5 +12,9 @@ const isRemote = (
 const url = isRemote ? process.env.REACT_APP_CHEF_URL_REMOTE : process.env.REACT_APP_CHEF_URL;
 
 // const url = process.env.REACT_APP_CHEF_URL;
+export const socket = io(
+  url,
+  { withCredentials: process.env.REACT_APP_ENV === 'production' },
+);
 
-export const socket = io(url);
+export default socket;
